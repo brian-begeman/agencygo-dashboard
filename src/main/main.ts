@@ -177,22 +177,15 @@ app.on('window-all-closed', () => {
   }
 });
 
-// app
-//   .whenReady()
-//   .then(() => {
-//     createWindow();
-//     app.on('activate', () => {
-//       // On macOS it's common to re-create a window in the app when the
-//       // dock icon is clicked and there are no other windows open.
-//       if (mainWindow === null) createWindow();
-//     });
-//   })
-//   .catch(console.log);
-
 const main = async () => {
   await pie.initialize(app);
   const browser = await pie.connect(app, puppeteer as any);
-  createWindow(browser);
+  await app.whenReady();
+  app.on('activate', () => {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) createWindow(browser);
+  });
 };
 
 main();
