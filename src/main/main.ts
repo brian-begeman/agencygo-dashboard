@@ -12,6 +12,8 @@ import path from 'path';
 import { app, BrowserWindow, shell, BrowserView } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import pie from 'puppeteer-in-electron';
+import puppeteer, { Browser } from 'puppeteer-core';
 import { delay } from '../renderer/utils';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
@@ -52,7 +54,7 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async () => {
+const createWindow = async (browser: Browser) => {
   if (isDebug) {
     await installExtensions();
   }
@@ -110,7 +112,12 @@ const createWindow = async () => {
   await view2.webContents.loadURL('https://onlyfans.com');
 
   view3.setBounds({ x: 324, y: 364, width: 700, height: 364 });
-  await view3.webContents.loadURL('https://onlyfans.com');
+
+  const window = view3;
+  // await view3.webContents.loadURL('https://onlyfans.com');
+
+  const page = await pie.getPage(browser, window);
+  page.goto('https://example.com');
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -170,14 +177,22 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
-  .then(() => {
-    createWindow();
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+// app
+//   .whenReady()
+//   .then(() => {
+//     createWindow();
+//     app.on('activate', () => {
+//       // On macOS it's common to re-create a window in the app when the
+//       // dock icon is clicked and there are no other windows open.
+//       if (mainWindow === null) createWindow();
+//     });
+//   })
+//   .catch(console.log);
+
+const main = async () => {
+  await pie.initialize(app);
+  const browser = await pie.connect(app, puppeteer as any);
+  createWindow(browser);
+};
+
+main();
