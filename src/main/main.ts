@@ -9,9 +9,10 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, BrowserView } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { delay } from '../renderer/utils';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -65,19 +66,51 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
-    show: false,
+    show: true,
     width: 1024,
     height: 728,
     icon: getAssetPath('icon.png'),
+    resizable: false,
+    roundedCorners: true,
+    frame: true,
+  });
+
+  const view1 = new BrowserView({
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
-      webviewTag: true,
+    },
+  });
+  const view2 = new BrowserView({
+    webPreferences: {
+      partition: 'persist:2',
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  const view3 = new BrowserView({
+    webPreferences: {
+      partition: 'persist:3',
+      nodeIntegration: true,
+      devTools: true,
+      allowRunningInsecureContent: true,
+      webSecurity: false,
+    },
+  });
+
+  mainWindow.addBrowserView(view1);
+  mainWindow.addBrowserView(view2);
+  mainWindow.addBrowserView(view3);
+
+  view1.setBounds({ x: 0, y: 26, width: 324, height: 728 });
+  await view1.webContents.loadURL(resolveHtmlPath('index.html'));
+
+  view2.setBounds({ x: 324, y: 26, width: 700, height: 364 });
+
+  await view2.webContents.loadURL('https://onlyfans.com');
+
+  view3.setBounds({ x: 324, y: 364, width: 700, height: 364 });
+  await view3.webContents.loadURL('https://onlyfans.com');
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -103,6 +136,21 @@ const createWindow = async () => {
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
+  });
+
+  view3.webContents.on('dom-ready', async () => {
+    view3.webContents.openDevTools();
+    await delay(1000);
+    const codeString = `
+    const twitterBtn = document.querySelector('a[data-v-dd04cece][href="/twitter/auth?csrf=dbqu8c8uba01c97e1fbb7723638670f56be2a320"][class="g-btn m-rounded m-twitter m-md m-block m-icon-absolute m-mb-16"]');
+    twitterBtn.remove();
+    const googleBtn = document.querySelector(
+      'a[data-v-dd04cece][href^="/auth/google"]'
+    );
+    googleBtn?.remove();
+`;
+
+    view3.webContents.executeJavaScript(codeString, true);
   });
 
   // Remove this if your app does not use auto updates
