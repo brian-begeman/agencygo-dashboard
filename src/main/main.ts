@@ -117,7 +117,9 @@ const createWindow = async (browser: Browser) => {
   // await view3.webContents.loadURL('https://onlyfans.com');
 
   const page = await pie.getPage(browser, window);
-  page.goto('https://example.com');
+  await page.goto('https://onlyfans.com');
+  await page.waitForSelector('a');
+  await page.click('a');
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
