@@ -4,7 +4,9 @@ import './App.css';
 function Main() {
   return (
     <div>
-      <button type="button">Reload Webview 1</button>
+      <input name="email" type="email" />
+      <input name="password" type="password" />
+      <button type="button">Auto Login in Webview 1</button>
     </div>
   );
 }
