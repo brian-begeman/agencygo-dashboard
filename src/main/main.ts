@@ -9,11 +9,11 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, BrowserView } from 'electron';
+import { app, BrowserWindow, shell, BrowserView, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import pie from 'puppeteer-in-electron';
-import puppeteer, { Browser } from 'puppeteer-core';
+import puppeteer, { Browser } from 'puppeteer';
+import * as pie from './packages/electron-puppeteer';
 import { delay } from '../renderer/utils';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
@@ -55,6 +55,8 @@ const installExtensions = async () => {
 };
 
 const createWindow = async (browser: Browser) => {
+  const winDimens = screen.getPrimaryDisplay().workAreaSize;
+
   if (isDebug) {
     await installExtensions();
   }
@@ -69,8 +71,8 @@ const createWindow = async (browser: Browser) => {
 
   mainWindow = new BrowserWindow({
     show: true,
-    width: 1024,
-    height: 728,
+    width: winDimens.width,
+    height: winDimens.height,
     icon: getAssetPath('icon.png'),
     resizable: false,
     roundedCorners: true,
@@ -84,42 +86,40 @@ const createWindow = async (browser: Browser) => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
-  const view2 = new BrowserView({
-    webPreferences: {
-      partition: 'persist:2',
-    },
-  });
 
-  const view3 = new BrowserView({
-    webPreferences: {
-      partition: 'persist:3',
-      nodeIntegration: true,
-      devTools: true,
-      allowRunningInsecureContent: true,
-      webSecurity: false,
-    },
-  });
+  const view2 = new BrowserView({});
 
   mainWindow.addBrowserView(view1);
   mainWindow.addBrowserView(view2);
-  mainWindow.addBrowserView(view3);
 
-  view1.setBounds({ x: 0, y: 26, width: 324, height: 728 });
+  view1.setBounds({
+    x: 0,
+    y: 26,
+    width: Math.round(winDimens.width * 0.25),
+    height: 728,
+  });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
 
-  view2.setBounds({ x: 324, y: 26, width: 700, height: 364 });
+  view2.setBounds({
+    x: Math.round(winDimens.width * 0.25),
+    y: 26,
+    width: Math.round(winDimens.width * 0.75),
+    height: 600,
+  });
 
-  await view2.webContents.loadURL('https://onlyfans.com');
+  view2.webContents.openDevTools();
 
-  view3.setBounds({ x: 324, y: 364, width: 700, height: 364 });
-
-  const window = view3;
-  // await view3.webContents.loadURL('https://onlyfans.com');
+  const window = view2;
 
   const page = await pie.getPage(browser, window);
   await page.goto('https://onlyfans.com');
-  await page.waitForSelector('a');
-  await page.click('a');
+  await page.waitForNavigation();
+  await page.type(
+    'input[at-attr="input"][name="email"]',
+    'ankur4736@gmail.com'
+  );
+  await page.type('input[at-attr="input"][name="password"]', 'Test@123');
+  await page.click('button[at-attr="submit"][type="submit"]');
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -147,8 +147,7 @@ const createWindow = async (browser: Browser) => {
     return { action: 'deny' };
   });
 
-  view3.webContents.on('dom-ready', async () => {
-    view3.webContents.openDevTools();
+  view2.webContents.on('dom-ready', async () => {
     await delay(1000);
     const codeString = `
     const twitterBtn = document.querySelector('a[data-v-dd04cece][href="/twitter/auth?csrf=dbqu8c8uba01c97e1fbb7723638670f56be2a320"][class="g-btn m-rounded m-twitter m-md m-block m-icon-absolute m-mb-16"]');
@@ -159,7 +158,7 @@ const createWindow = async (browser: Browser) => {
     googleBtn?.remove();
 `;
 
-    view3.webContents.executeJavaScript(codeString, true);
+    view2.webContents.executeJavaScript(codeString, true);
   });
 
   // Remove this if your app does not use auto updates
