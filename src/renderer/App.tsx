@@ -15,13 +15,8 @@ function Main() {
   }
 
   return (
-    <div>
-      <input id="email" value="ankur4736@gmail.com" type="email" />
-      <input id="password" value="Test@123" type="password" />
+    <div className="App">
       <Link to="/login">Login Page</Link>
-      <button onClick={onclick} type="button">
-        Auto Login in Webview 1
-      </button>
     </div>
   );
 }

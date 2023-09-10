@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom';
 import Logo from '../../../../../assets/only-manage-logo.png';
 import styles from './styles.module.css';
 
+interface FormFields {
+  email: string;
+  password: string;
+}
+
 export default function Login() {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -25,10 +30,14 @@ export default function Login() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data: FormFields) => {
     // Handle form submission here
     // eslint-disable-next-line no-console
     console.log(data);
+    window.electron.ipcRenderer.sendMessage('attempt-login', {
+      email: data.email,
+      password: data.password,
+    });
   };
 
   return (

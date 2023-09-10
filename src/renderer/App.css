@@ -19,3 +19,15 @@ body {
   font-family: Arimo, sans-serif;
   color: var(--color-white);
 }
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+}
+
+.App a {
+  font-size: 20px;
+  color: var(--color-white);
+}
