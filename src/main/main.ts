@@ -9,11 +9,18 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, BrowserView, screen } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  BrowserView,
+  screen,
+  session,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import puppeteer, { Browser } from 'puppeteer';
-import * as pie from './packages/electron-puppeteer';
+import * as pie from '../packages/electron-puppeteer';
 import { delay } from '../renderer/utils';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
@@ -28,6 +35,8 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let ofBrowser: Browser | null = null;
+let ofBrowserView: BrowserView | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -54,12 +63,12 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async (browser: Browser) => {
+const createWindow = async () => {
   const winDimens = screen.getPrimaryDisplay().workAreaSize;
 
-  if (isDebug) {
+  /*  if (!isDebug) {
     await installExtensions();
-  }
+  } */
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -87,7 +96,11 @@ const createWindow = async (browser: Browser) => {
     },
   });
 
-  const view2 = new BrowserView({});
+  const view2 = new BrowserView({
+    webPreferences: {
+      partition: 'ofbrowser',
+    },
+  });
 
   mainWindow.addBrowserView(view1);
   mainWindow.addBrowserView(view2);
@@ -96,36 +109,25 @@ const createWindow = async (browser: Browser) => {
     x: 0,
     y: 26,
     width: Math.round(winDimens.width * 0.25),
-    height: 728,
+    height: Math.round(winDimens.height),
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
+  // view1.webContents.openDevTools();
 
   view2.setBounds({
     x: Math.round(winDimens.width * 0.25),
     y: 26,
     width: Math.round(winDimens.width * 0.75),
-    height: 600,
+    height: Math.round(winDimens.height),
   });
 
-  view2.webContents.openDevTools();
-
-  const window = view2;
-
-  const page = await pie.getPage(browser, window);
-  await page.goto('https://onlyfans.com');
-  await page.waitForNavigation();
-  await page.type(
-    'input[at-attr="input"][name="email"]',
-    'ankur4736@gmail.com'
-  );
-  await page.type('input[at-attr="input"][name="password"]', 'Test@123');
-  await page.click('button[at-attr="submit"][type="submit"]');
+  await delay(5000);
+  ofBrowserView = view2;
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-    startIPCBridge(mainWindow);
 
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
@@ -147,23 +149,15 @@ const createWindow = async (browser: Browser) => {
     return { action: 'deny' };
   });
 
-  view2.webContents.on('dom-ready', async () => {
-    await delay(1000);
-    const codeString = `
-    const twitterBtn = document.querySelector('a[data-v-dd04cece][href="/twitter/auth?csrf=dbqu8c8uba01c97e1fbb7723638670f56be2a320"][class="g-btn m-rounded m-twitter m-md m-block m-icon-absolute m-mb-16"]');
-    twitterBtn.remove();
-    const googleBtn = document.querySelector(
-      'a[data-v-dd04cece][href^="/auth/google"]'
-    );
-    googleBtn?.remove();
-`;
-
-    view2.webContents.executeJavaScript(codeString, true);
-  });
-
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+  if (ofBrowser && ofBrowserView) {
+    startIPCBridge({
+      ofBrowser,
+      ofBrowserView,
+    });
+  }
 };
 
 /**
@@ -180,12 +174,12 @@ app.on('window-all-closed', () => {
 
 const main = async () => {
   await pie.initialize(app);
-  const browser = await pie.connect(app, puppeteer as any);
+  ofBrowser = await pie.connect(app, puppeteer as any);
   await app.whenReady();
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) createWindow(browser);
+    if (mainWindow === null) createWindow();
   });
 };
 
