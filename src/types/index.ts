@@ -1,1 +1,1 @@
-export type IPCChannels = 'webview-loaded' | 'webview-cookies-extracted';
+export type IPCChannels = 'attempt-login';

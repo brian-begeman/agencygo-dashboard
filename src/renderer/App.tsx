@@ -2,11 +2,22 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 function Main() {
+  function onclick() {
+    const email = document.getElementById('email') as HTMLInputElement;
+    const password = document.getElementById('password') as HTMLInputElement;
+    window.electron.ipcRenderer.sendMessage('attempt-login', {
+      email: email.value,
+      password: password.value,
+    });
+  }
+
   return (
     <div>
-      <input name="email" type="email" />
-      <input name="password" type="password" />
-      <button type="button">Auto Login in Webview 1</button>
+      <input id="email" value="ankur4736@gmail.com" type="email" />
+      <input id="password" value="Test@123" type="password" />
+      <button onClick={onclick} type="button">
+        Auto Login in Webview 1
+      </button>
     </div>
   );
 }

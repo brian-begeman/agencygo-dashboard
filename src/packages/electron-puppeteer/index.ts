@@ -64,6 +64,8 @@ export const initialize = async (app: App, port = 0): Promise<void> => {
   const actualPort = port === 0 ? await getPort({ host: '127.0.0.1' }) : port;
   app.commandLine.appendSwitch('remote-debugging-port', `${actualPort}`);
   app.commandLine.appendSwitch('remote-debugging-address', '127.0.0.1');
+  // Add this line to run Electron in headless mode
+  // app.commandLine.appendSwitch('headless');
   const electronMajor = parseInt(app.getVersion().split('.')[0], 10);
   // NetworkService crashes in electron 6.
   if (electronMajor >= 7) {
@@ -95,12 +97,9 @@ export const connect = async (
 
   await app.whenReady();
   const json = await readJson(port);
-  // eslint-disable-next-line no-console
-  console.log(json);
 
   const browser = await puppeteer.connect({
-    browserWSEndpoint:
-      'ws://127.0.0.1:56842/devtools/browser/4792eaf3-daeb-48fa-821f-4e4bf9e5fa8a',
+    browserWSEndpoint: json.webSocketDebuggerUrl,
     defaultViewport: null,
   });
 
