@@ -1,5 +1,8 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './styles/reset.css';
+import './styles/global.vars.css';
 import './App.css';
+import Login from './pages/Auth/Login';
 
 function Main() {
   function onclick() {
@@ -12,12 +15,8 @@ function Main() {
   }
 
   return (
-    <div>
-      <input id="email" value="ankur4736@gmail.com" type="email" />
-      <input id="password" value="Test@123" type="password" />
-      <button onClick={onclick} type="button">
-        Auto Login in Webview 1
-      </button>
+    <div className="App">
+      <Link to="/login">Login Page</Link>
     </div>
   );
 }
@@ -27,6 +26,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

@@ -103,12 +103,12 @@ const createWindow = async () => {
   });
 
   mainWindow.addBrowserView(view1);
-  mainWindow.addBrowserView(view2);
+  // mainWindow.addBrowserView(view2);
 
   view1.setBounds({
     x: 0,
     y: 26,
-    width: Math.round(winDimens.width * 0.25),
+    width: Math.round(winDimens.width * 1),
     height: Math.round(winDimens.height),
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
