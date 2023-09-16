@@ -1,0 +1,30 @@
+.navbar {
+    display: flex;
+    justify-content:space-between;
+    padding-top: 32px;
+    padding-bottom: 16px;
+    padding-right: 16px;
+    padding-left: 16px;
+   border-bottom: 1px solid white;
+  }
+
+  .end{
+    display: flex;
+    flex-direction: row;
+
+  }
+
+  .navIcon{
+    margin-left: 8px;
+  }
+  .navItem{
+    display: flex;
+    flex-direction: row;
+    padding-left: 32px;
+    align-items: center;
+  }
+
+  .navItemText{
+    font-size: 16px;
+    font-weight: 600;
+  }

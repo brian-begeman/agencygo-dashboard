@@ -8,6 +8,7 @@
 body {
   position: relative;
   background: #0f0f0f;
+  height: 100%;
 }
 
 html {
@@ -24,7 +25,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
+  min-height: 100vh;
 }
 
 .App a {
