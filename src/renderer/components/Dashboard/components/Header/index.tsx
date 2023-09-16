@@ -1,21 +1,43 @@
 import React from 'react';
 import AffiliateSvg from 'Assets/svg/affiliatesSvg';
 import InfoSvg from 'Assets/svg/infoSvg';
-import classes from './styles.module.css';
+import NetworkSvg from 'Assets/svg/networkSvg';
+import BellSvg from 'Assets/svg/bellSvg';
+import ShieldSvg from 'Assets/svg/shieldSvg';
+import AvatarSvg from 'Assets/svg/AvatarSvg';
+import LeftChevronSvg from 'Assets/svg/LeftChevronSvg';
+import RightChevronSvg from 'Assets/svg/RightChevronSvg';
 import localisation from '../../../localisation.json';
+import classes from './styles.module.css';
 
 const navigationItemsConst = [
   {
-    name: localisation.dashboardScreen.version,
+    name: localisation.version,
     icon: <InfoSvg />,
   },
   {
-    name: localisation.dashboardScreen.utc,
+    name: localisation.utc,
     icon: <InfoSvg />,
   },
   {
-    name: localisation.dashboardScreen.affiliates,
+    name: localisation.affiliates,
     icon: <AffiliateSvg />,
+  },
+  {
+    name: localisation.networkReport,
+    icon: <NetworkSvg />,
+  },
+  {
+    name: '',
+    icon: <BellSvg />,
+  },
+  {
+    name: '',
+    icon: <ShieldSvg />,
+  },
+  {
+    namee: '',
+    icon: <AvatarSvg />,
   },
 ];
 
@@ -33,7 +55,10 @@ function NavigationItem(props: any) {
 function Header() {
   return (
     <div className={classes.navbar}>
-      <div className={classes.start}>Start Item</div>
+      <div className={classes.start}>
+        <LeftChevronSvg />
+        <RightChevronSvg />
+      </div>
 
       <div className={classes.endWrapper}>
         <div className={classes.middle} />

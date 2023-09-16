@@ -1,8 +1,5 @@
 {
-    "common":{
-
-    },
-    "dashboardScreen":{
+   
         "version":"Version 4.0.5",
         "utc":"UTC +05:30",
         "affiliates":"Affiliates",
@@ -14,5 +11,5 @@
         "s4s":"S4S",
         "creators":"Creators",
         "employees":"Employees"
-    }
+    
 }
