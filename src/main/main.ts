@@ -9,22 +9,14 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  BrowserView,
-  screen,
-  session,
-} from 'electron';
+import { app, BrowserWindow, shell, BrowserView, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import puppeteer, { Browser } from 'puppeteer';
-import * as pie from '../packages/electron-puppeteer';
-import { delay } from '../renderer/utils';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import * as pie from '../packages/electron-puppeteer';
 
 class AppUpdater {
   constructor() {
@@ -36,7 +28,6 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 let ofBrowser: Browser | null = null;
-let ofBrowserView: BrowserView | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -96,14 +87,7 @@ const createWindow = async () => {
     },
   });
 
-  const view2 = new BrowserView({
-    webPreferences: {
-      partition: 'ofbrowser',
-    },
-  });
-
   mainWindow.addBrowserView(view1);
-  // mainWindow.addBrowserView(view2);
 
   view1.setBounds({
     x: 0,
@@ -113,16 +97,6 @@ const createWindow = async () => {
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
   // view1.webContents.openDevTools();
-
-  view2.setBounds({
-    x: Math.round(winDimens.width * 0.25),
-    y: 26,
-    width: Math.round(winDimens.width * 0.75),
-    height: Math.round(winDimens.height),
-  });
-
-  await delay(5000);
-  ofBrowserView = view2;
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -152,10 +126,11 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
-  if (ofBrowser && ofBrowserView) {
+
+  if (mainWindow && ofBrowser) {
     startIPCBridge({
+      mainWindow,
       ofBrowser,
-      ofBrowserView,
     });
   }
 };
