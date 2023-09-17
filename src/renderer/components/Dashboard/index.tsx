@@ -11,7 +11,7 @@ function Dashboard() {
       <div className={classes.secondChild}>
         <Header />
         <div>
-          content will <CardDemo />
+          content will <CardDemo Logo={"OF"} Amount={'448.5'} Earnings={'Total Earnings'} RiseUpdate={'12.7'}/>
         </div>
       </div>
     </div>
