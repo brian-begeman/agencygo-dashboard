@@ -1,0 +1,9 @@
+.dashboardWrapper{
+    display: grid;
+    grid-template-columns: 89px 1fr;
+}
+
+.secondChild{
+    display: grid;
+    grid-template-rows: 80px 1fr;
+}

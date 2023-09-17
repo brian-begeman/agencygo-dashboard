@@ -1,0 +1,37 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 32px;
+  padding-bottom: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
+  align-items: center;
+}
+
+.end {
+  display: flex;
+  flex-direction: row;
+}
+
+.navIcon {
+  margin-left: 8px;
+  margin-top: 3px;
+}
+.navItem {
+  display: flex;
+  flex-direction: row;
+  padding-left: 32px;
+  align-items: center;
+}
+
+.navItemText {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.start {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}

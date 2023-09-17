@@ -1,0 +1,31 @@
+.card {
+  padding: 32px;
+  border-top: 1px solid var(--color-sub-background-border);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.card:last-child {
+  border-bottom: 1px solid var(--color-sub-background-border);
+}
+
+.title {
+  color: var(--color-white);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.icon {
+  display: flex;
+  gap: 2px;
+  background-color: var(--color-sub-background-border);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.iconText {
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 400;
+}
