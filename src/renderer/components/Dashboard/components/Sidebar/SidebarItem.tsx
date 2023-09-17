@@ -5,74 +5,82 @@ import { Stack } from '@mui/material';
 import classes from './styles.module.css';
 
 function Options(props: any) {
-  const { menu } = props;
+  const { menu, handlePopoverClose } = props;
   return (
-    <div className={classes.optionWrapper}>
-      {menu.map((menuItem) => (
-        <div className={classes.optionItem}>{menuItem.label}</div>
+    <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
+      {menu.map((menuItem, index) => (
+        <div className={classes.optionItem} key={index}>
+          {menuItem.label}
+        </div>
       ))}
     </div>
   );
 }
 export default function SidebarItem(props: any) {
-  const { name, icon, menu } = props;
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const [menuHovered, setMenuHovered] = React.useState<boolean>(false);
+  const {
+    name,
+    icon,
+    menu,
+    index,
+    currentNavItemHovered,
+    handlePopoverOpen,
+    handlePopoverClose,
+  } = props;
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const currentElem = React.useRef(null);
+  const open = currentNavItemHovered === index;
 
-  const handlePopoverClose = () => {
-    if (!menuHovered) {
-      setAnchorEl(null);
+  const openPopOver = () => {
+    if (Array.isArray(menu) && menu.length > 0) {
+      handlePopoverOpen(index);
+    } else {
+      handlePopoverOpen(-1);
     }
   };
-
-  const open = Boolean(anchorEl);
-
-  const handleMenuPopoverOpen = () => {
-    setMenuHovered(true);
-  };
-
-  const handleMenuPopoverClose = () => {
-    setMenuHovered(false);
-  };
-
   return (
-    <Stack
-      alignItems="center"
-      paddingBottom="32px"
-      aria-owns={open ? 'mouse-over-popover' : undefined}
-      aria-haspopup="true"
-      onMouseEnter={handlePopoverOpen}
-      onMouseLeave={handlePopoverClose}
+    <div
+      className={
+        open ? classes.sidebarItemWrapperActive : classes.sidebarItemWrapper
+      }
     >
-      <div>{icon}</div>
-      <Typography sx={{ fontSize: '11px', fontWeight: 600, marginTop: '4px' }}>
-        {name}
-      </Typography>
-      <Popover
-        id="mouse-over-popover"
-        onMouseEnter={handleMenuPopoverOpen}
-        onMouseLeave={handleMenuPopoverClose}
+      <Stack
+        alignItems="center"
+        aria-owns={open ? 'mouse-over-popover' : undefined}
+        aria-haspopup="true"
+        onMouseEnter={openPopOver}
+        ref={currentElem}
+        onMouseLeave={handlePopoverClose}
         sx={{
-          pointerEvents: 'none',
+          cursor: 'pointer',
         }}
-        open={open || menuHovered}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 60,
-          horizontal: 'left',
-        }}
-        disableRestoreFocus
       >
-        <Options menu={menu} />
-      </Popover>
-    </Stack>
+        <div>{icon}</div>
+        <Typography
+          sx={{ fontSize: '11px', fontWeight: 600, marginTop: '4px' }}
+        >
+          {name}
+        </Typography>
+        <Popover
+          id="mouse-over-popover"
+          sx={{
+            pointerEvents: 'cursor',
+          }}
+          open={open}
+          elevation={20}
+          anchorEl={currentElem.current}
+          anchorOrigin={{
+            vertical: 'center',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 60,
+            horizontal: -20,
+          }}
+          onClose={handlePopoverClose}
+        >
+          <Options menu={menu} handlePopoverClose={handlePopoverClose} />
+        </Popover>
+      </Stack>
+    </div>
   );
 }

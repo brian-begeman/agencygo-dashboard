@@ -125,12 +125,33 @@ function BrandLogo() {
 }
 
 function SideBar() {
+  const [currentNavItemHovered, setCurrentNavItemHovered] =
+    React.useState<number>(-1);
+  const handlePopoverOpen = (index: number) => {
+    setCurrentNavItemHovered(index);
+  };
+
+  const handlePopoverClose = () => {
+    setCurrentNavItemHovered(-1);
+  };
+
   return (
     <div className={classes.sidebar}>
       <BrandLogo />
       <div className={classes.sidebarNavWrapper}>
-        {sideBarMenuConst.map(({ name, icon, menu }) => {
-          return <SidebarItem name={name} icon={icon} menu={menu} />;
+        {sideBarMenuConst.map(({ name, icon, menu }, index) => {
+          return (
+            <SidebarItem
+              handlePopoverOpen={handlePopoverOpen}
+              handlePopoverClose={handlePopoverClose}
+              name={name}
+              icon={icon}
+              menu={menu}
+              currentNavItemHovered={currentNavItemHovered}
+              index={index}
+              key={index}
+            />
+          );
         })}
       </div>
     </div>

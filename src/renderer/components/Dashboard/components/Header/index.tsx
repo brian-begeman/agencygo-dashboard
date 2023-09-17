@@ -63,8 +63,8 @@ function Header() {
       <div className={classes.endWrapper}>
         <div className={classes.middle} />
         <div className={classes.end}>
-          {navigationItemsConst.map(({ name, icon }) => {
-            return <NavigationItem name={name} icon={icon} />;
+          {navigationItemsConst.map(({ name, icon }, index) => {
+            return <NavigationItem name={name} icon={icon} key={index} />;
           })}
         </div>
       </div>
