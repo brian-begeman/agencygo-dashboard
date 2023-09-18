@@ -96,8 +96,8 @@ export default function ManageEmployees() {
             ))}
           </Stack>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ minHeight: '76.5vh' }}>
-          <Filter />
+        <Stack direction="row" spacing={5} sx={{ height: '76.5vh' }}>
+          <Filter wrapperClassName={styles.filter} />
           <FilterTable tableHeaders={employeesTableHeaders}>
             <>
               {employeesTableData.map(

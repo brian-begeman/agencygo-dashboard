@@ -5,6 +5,7 @@
   margin-right: 16px;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 }
 
 .search {
@@ -12,4 +13,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.filter {
+  height: 75vh;
 }
