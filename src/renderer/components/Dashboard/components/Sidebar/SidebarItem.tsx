@@ -2,7 +2,7 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
 
 function Options(props: any) {
@@ -31,6 +31,8 @@ export default function SidebarItem(props: any) {
 
   const currentElem = React.useRef(null);
   const open = currentNavItemHovered === index;
+  const location = useLocation();
+  const isActive = location.pathname === link;
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
@@ -42,7 +44,9 @@ export default function SidebarItem(props: any) {
   return (
     <div
       className={
-        open ? classes.sidebarItemWrapperActive : classes.sidebarItemWrapper
+        open || isActive
+          ? classes.sidebarItemWrapperActive
+          : classes.sidebarItemWrapper
       }
     >
       <NavLink to={link || '#'} className={classes.sidebarItemNav}>

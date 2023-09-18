@@ -2,9 +2,9 @@ import { Button, Stack, Typography } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
+import Filter from 'renderer/components/Filter';
+import FilterTable from 'renderer/components/Filter/FilterTable';
 import styles from './styles.module.css';
-import Filter from './components/Filter';
-import FilterTable from './components/FilterTable';
 
 export default function ManageCreators() {
   return (
@@ -39,7 +39,7 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" spacing={5}>
+        <Stack direction="row" spacing={5} sx={{ minHeight: '76.5vh' }}>
           <Filter />
           <FilterTable />
         </Stack>
