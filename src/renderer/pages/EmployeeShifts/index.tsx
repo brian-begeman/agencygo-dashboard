@@ -18,7 +18,7 @@ export default function EmployeeShifts() {
   return (
     <Dashboard>
       <section className={styles.wrapper}>
-        <SectionHeader title={localisation.onlyFansManagerSuite} />
+        <SectionHeader title={localisation.employeeShifts} />
         <div className={styles.innerWrapper}>
           <aside className={styles.aside}>
             <div className={styles.search}>
@@ -31,12 +31,16 @@ export default function EmployeeShifts() {
               </SearchInput>
             </div>
             {managers.map(
-              ({ name, profileImage, notificationCount, messageCount }) => (
+              (
+                { name, profileImage, notificationCount, messageCount },
+                index
+              ) => (
                 <UserCardWImage
                   name={name}
                   profileImage={profileImage}
                   notificationCount={notificationCount}
                   messageCount={messageCount}
+                  key={index}
                 />
               )
             )}

@@ -1,12 +1,14 @@
 .wrapper{
-    padding: 20px 32px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 28px;
    
 }
 
 .innerWrapper{
 
     display: grid;
-    grid-template-columns: 40px 1fr 40px;
+    grid-template-columns: 55px 1fr 40px;
     align-items: center;
     margin-bottom:10px
 }
@@ -49,8 +51,8 @@
 }
 
 .timeBoxParentWrapper {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 48px 1fr;
     align-items: center;
     margin-bottom: 16px;
     gap: 8px;
