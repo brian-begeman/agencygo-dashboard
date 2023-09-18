@@ -3,6 +3,8 @@ import SearchInput from 'renderer/components/SearchInput';
 import { useState } from 'react';
 import managers from 'renderer/utils/managerSuiteConstant';
 import UserCardWImage from 'renderer/components/UserCardWImage';
+import PageTopbar from 'renderer/components/PageTopbar';
+import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 
 export default function ManagerSuite() {
@@ -15,10 +17,10 @@ export default function ManagerSuite() {
   return (
     <Dashboard>
       <section className={styles.wrapper}>
-        <header className={styles.header}>
-          <h1 className={styles.headerText}>OnlyFans Manager Suite</h1>
-        </header>
-        <aside className={styles.aside}>
+        <PageTopbar>
+          <PageTopbar.HeaderText>OnlyFans Manager Suite</PageTopbar.HeaderText>
+        </PageTopbar>
+        <PageAside>
           <div className={styles.search}>
             <SearchInput
               value={search}
@@ -38,7 +40,7 @@ export default function ManagerSuite() {
               />
             )
           )}
-        </aside>
+        </PageAside>
       </section>
     </Dashboard>
   );

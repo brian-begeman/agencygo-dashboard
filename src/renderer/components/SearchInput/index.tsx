@@ -9,23 +9,32 @@ interface $Props {
   onUpdateSearch: (v: string) => void;
   onSearch: () => void;
   children?: ReactNode | ReactNode[];
+  placeholder?: string;
+  className?: string;
 }
 
-function SearchInput({ value, onUpdateSearch, onSearch, children }: $Props) {
+function SearchInput({
+  value,
+  onUpdateSearch,
+  onSearch,
+  placeholder = 'Search',
+  children,
+  className = '',
+}: $Props) {
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     onUpdateSearch(event.target.value as string);
   };
 
   return (
-    <div className={styles.search}>
+    <div className={`${styles.search} ${className}`}>
       <OutlinedInput
         value={value}
         onChange={handleSearch}
         size="small"
         type="text"
         id="search-input"
-        className={styles.input}
-        placeholder="Search"
+        className={`${styles.input} ${className}`}
+        placeholder={placeholder}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
