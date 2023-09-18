@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
-import Avatar from 'Assets/svg/avatarSvg';
+import Avatar from 'Assets/svg/AvatarSvg';
 import Activated from 'Assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'Assets/svg/DeactivatedSvg';
 import OnlyFansSvg from 'Assets/svg/OnlyFansSvg';
