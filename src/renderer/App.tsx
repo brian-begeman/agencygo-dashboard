@@ -9,6 +9,7 @@ import DashboardPage from './pages/DasboardPage';
 import ManagerSuite from './pages/ManagerSuite';
 import ManageCreators from './pages/ManageCreators';
 import theme from './styles/muiTheme';
+import ManageEmployees from './pages/ManageEmployees';
 
 function Main() {
   return (
@@ -19,6 +20,7 @@ function Main() {
         <Link to="/of-account">Onlyfans Account Page</Link>
         <Link to="/manager-suite">Only Manager Suite</Link>
         <Link to="/creators">Manage Creators</Link>
+        <Link to="/employees-manage-employees">Manage Employees</Link>
       </Stack>
     </div>
   );
@@ -35,6 +37,10 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/manager-suite" element={<ManagerSuite />} />
           <Route path="/creators" element={<ManageCreators />} />
+          <Route
+            path="/employees-manage-employees"
+            element={<ManageEmployees />}
+          />
         </Routes>
       </Router>
     </ThemeProvider>

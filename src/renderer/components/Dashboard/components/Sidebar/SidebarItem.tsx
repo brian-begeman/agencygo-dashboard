@@ -10,9 +10,13 @@ function Options(props: any) {
   return (
     <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
       {menu.map((menuItem, index) => (
-        <div className={classes.optionItem} key={menuItem.label}>
+        <NavLink
+          to={menuItem.link || '#'}
+          className={classes.optionItem}
+          key={menuItem.label}
+        >
           {menuItem.label}
-        </div>
+        </NavLink>
       ))}
     </div>
   );
@@ -32,7 +36,16 @@ export default function SidebarItem(props: any) {
   const currentElem = React.useRef(null);
   const open = currentNavItemHovered === index;
   const location = useLocation();
-  const isActive = location.pathname === link;
+
+  const getActiveStatus = () => {
+    return (
+      link?.includes(location.pathname) ||
+      menu?.some((el) => el.link?.includes(location.pathname)) ||
+      location.pathname === link
+    );
+  };
+
+  const isActive = getActiveStatus();
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
@@ -40,6 +53,7 @@ export default function SidebarItem(props: any) {
     } else {
       handlePopoverOpen(-1);
     }
+    console.log(link, location.pathname, 'location');
   };
   return (
     <div

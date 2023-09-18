@@ -4,8 +4,10 @@
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   display: flex;
-  align-items: center;
   padding: 40px 32px 32px 32px;
+  flex-direction: column;
+  position: relative;
+  min-height: 57px;
 }
 
 .headerText {

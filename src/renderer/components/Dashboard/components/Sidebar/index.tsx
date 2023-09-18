@@ -106,6 +106,7 @@ const sideBarMenuConst = [
       {
         label: 'Manage Employees',
         value: 'manageEmployees',
+        link: '/employees-manage-employees',
       },
       {
         label: 'Manage Shifts',
