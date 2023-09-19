@@ -17,6 +17,7 @@ const sideBarMenuConst = [
     name: localisation.home,
     icon: <HomeSvg />,
     menu: [],
+    link: '/home',
   },
   {
     name: localisation.manager,

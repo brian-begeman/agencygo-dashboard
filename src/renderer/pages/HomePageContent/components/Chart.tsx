@@ -11,7 +11,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, TableContainer } from '@mui/material';
+import { Box } from '@mui/material';
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +25,7 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       position: 'top' as const,
@@ -52,16 +53,18 @@ export const data = {
 
 export function ChartLine() {
   return (
-    <Box>
-      <TableContainer
-        sx={{
-          border: `1px solid ${theme.palette.primary.contrastText}`,
-          borderRadius: '12px',
-          marginTop: '16px',
-        }}
-      >
-        <Line options={options} data={data} />
-      </TableContainer>
+    <Box
+      sx={{
+        backgroundColor: theme.palette.secondary.main,
+        maxHeight: '200px',
+        borderRadius: '16px',
+      }}
+    >
+      <Line
+        options={options}
+        data={data}
+        style={{ width: '100%', height: '100%' }}
+      />
     </Box>
   );
 }
