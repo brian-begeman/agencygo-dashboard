@@ -1,18 +1,19 @@
-import React from 'react';
-import HomePage from 'renderer/pages/HomePageContent';
+import { ReactNode } from 'react';
 import classes from './styles.module.css';
 import SideBar from './components/Sidebar';
 import Header from './components/Header';
 
-function Dashboard() {
+interface $Props {
+  children: ReactNode | ReactNode[];
+}
+
+function Dashboard({ children }: $Props) {
   return (
     <div className={classes.dashboardWrapper}>
       <SideBar />
       <div className={classes.secondChild}>
         <Header />
-        <div>
-        <HomePage />
-        </div>
+        {children}
       </div>
     </div>
   );

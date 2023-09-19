@@ -7,9 +7,7 @@ export default function Earnings() {
       <Typography color="#AAAAAA" fontSize="22px" fontWeight="600">
         Creators Earnings Overview
       </Typography>
-      <Box sx={{border: `1px solid ${theme.palette.primary.contrastText`}}>
-
-      </Box>
+      <Box sx={{ border: `1px solid ${theme.palette.primary.contrastText}` }} />
     </Container>
   );
 }

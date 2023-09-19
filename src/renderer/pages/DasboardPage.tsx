@@ -4,7 +4,9 @@ import Dashboard from '../components/Dashboard';
 function DashboardPage() {
   return (
     <div>
-      <Dashboard />
+      <Dashboard>
+        <div />
+      </Dashboard>
     </div>
   );
 }
