@@ -109,7 +109,7 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ minHeight: '76.5vh' }}>
+        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
           <Filter />
           <FilterTable tableHeaders={creatorsTableHeaders}>
             <>

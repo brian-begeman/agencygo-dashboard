@@ -3,13 +3,14 @@
   border-radius: 16px;
   max-height: 90vh;
   margin-right: 16px;
-  display: grid;
+  display: flex;
   flex-direction: column;
 }
 
-.innerWrapper{
+.innerWrapper {
   display: grid;
   grid-template-columns: 416px 1fr;
+  height: 100%;
 }
 
 .search {

@@ -3,11 +3,9 @@
   display: flex;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  display: flex;
-  padding: 40px 32px 32px 32px;
-  flex-direction: column;
+  padding: 32px;
   position: relative;
-  min-height: 57px;
+  justify-content: space-between;
 }
 
 .headerText {

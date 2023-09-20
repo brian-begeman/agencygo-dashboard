@@ -7,6 +7,7 @@ import ShieldSvg from 'renderer/assets/svg/shieldSvg';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import LeftChevronSvg from 'renderer/assets/svg/leftChevronSvg';
 import RightChevronSvg from 'renderer/assets/svg/rightChevronSvg';
+import { NavLink } from 'react-router-dom';
 import localisation from '../../../localisation.json';
 import classes from './styles.module.css';
 
@@ -30,6 +31,7 @@ const navigationItemsConst = [
   {
     name: '',
     icon: <BellSvg />,
+    link: '/notification',
   },
   {
     name: '',
@@ -42,14 +44,23 @@ const navigationItemsConst = [
 ];
 
 function NavigationItem(props: any) {
-  const { name, icon } = props;
-  return (
+  const { name, icon, link } = props;
+  const renderNavItem = () => (
     <div className={classes.navItem}>
       <div className={classes.navItemText}>{name}</div>
 
       <div className={classes.navIcon}>{icon}</div>
     </div>
   );
+
+  if (link) {
+    return (
+      <NavLink to={link} className={classes.navLink}>
+        {renderNavItem()}
+      </NavLink>
+    );
+  }
+  return renderNavItem();
 }
 
 function Header() {
@@ -63,8 +74,10 @@ function Header() {
       <div className={classes.endWrapper}>
         <div className={classes.middle} />
         <div className={classes.end}>
-          {navigationItemsConst.map(({ name, icon }) => {
-            return <NavigationItem name={name} icon={icon} key={name} />;
+          {navigationItemsConst.map(({ name, icon, link }) => {
+            return (
+              <NavigationItem name={name} icon={icon} link={link} key={name} />
+            );
           })}
         </div>
       </div>

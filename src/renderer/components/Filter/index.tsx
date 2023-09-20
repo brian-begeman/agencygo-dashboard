@@ -140,11 +140,7 @@ const initFiltersState = [
   },
 ];
 
-interface $Props {
-  wrapperClassName?: string;
-}
-
-function Filter({ wrapperClassName = '' }: $Props) {
+function Filter() {
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
   const [status, setStatus] = useState('activated');
@@ -155,7 +151,7 @@ function Filter({ wrapperClassName = '' }: $Props) {
   };
 
   return (
-    <PageAside className={wrapperClassName}>
+    <PageAside>
       <div className={styles.search}>
         <CandleSvg />
         <Typography variant="h5">Filters</Typography>

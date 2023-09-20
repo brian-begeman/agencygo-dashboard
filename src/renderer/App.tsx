@@ -23,7 +23,7 @@ function Main() {
         <Link to="/dashboard">Dashboard Page</Link>
         <Link to="/of-account">Onlyfans Account Page</Link>
         <Link to="/manager-suite">Only Manager Suite</Link>
-        <Link to="/employee-shifts">Employee shifts ui</Link>
+        <Link to="/employees-manage-shifts">Employee shifts ui</Link>
         <Link to="/creators">Manage Creators</Link>
         <Link to="/notification">Notification</Link>
         <Link to="/employees-manage-employees">Manage Employees</Link>
@@ -49,7 +49,7 @@ export default function App() {
             path="/employees-manage-employees"
             element={<ManageEmployees />}
           />
-          <Route path="/employee-shifts" element={<EmployeeShifts />} />
+          <Route path="/employees-manage-shifts" element={<EmployeeShifts />} />
         </Routes>
       </Router>
     </ThemeProvider>
