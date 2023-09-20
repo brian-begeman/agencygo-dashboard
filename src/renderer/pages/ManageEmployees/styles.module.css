@@ -14,3 +14,7 @@
   align-items: center;
   gap: 16px;
 }
+
+.filter {
+  height: 75vh;
+}
