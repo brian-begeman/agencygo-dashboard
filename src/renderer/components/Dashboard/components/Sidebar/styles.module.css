@@ -10,10 +10,6 @@
   padding-left: 16px;
 }
 
-.brandIcon {
-  /* width: 40px;
-    height: 40px; */
-}
 .sidebarItem {
   display: flex;
   flex-direction: column;
@@ -50,26 +46,30 @@
   font-weight: 600;
   width: 100%;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .optionItem:last-child {
   border-bottom: none;
 }
-.sidebarItemWrapper{
+.sidebarItemWrapper {
   padding: 8px;
   margin-bottom: 24px;
 }
 
-.sidebarItemWrapper:last-child{
+.sidebarItemWrapper:last-child {
   margin-bottom: 0px;
 }
-.sidebarItemWrapper:hover{
+.sidebarItemWrapper:hover {
   border-radius: 8px;
-  background:  rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.2);
 }
-.sidebarItemWrapperActive{
+.sidebarItemWrapperActive {
   border-radius: 8px;
-  background:  rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.2);
   padding: 8px;
   margin-bottom: 24px;
+}
+.sidebarItemNav {
+  text-decoration: none;
 }

@@ -4,7 +4,7 @@ import InfoSvg from 'renderer/assets/svg/infoSvg';
 import NetworkSvg from 'renderer/assets/svg/networkSvg';
 import BellSvg from 'renderer/assets/svg/bellSvg';
 import ShieldSvg from 'renderer/assets/svg/shieldSvg';
-import AvatarSvg from 'renderer/assets/svg/avatarSvg';
+import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import LeftChevronSvg from 'renderer/assets/svg/leftChevronSvg';
 import RightChevronSvg from 'renderer/assets/svg/rightChevronSvg';
 import localisation from '../../../localisation.json';
@@ -63,8 +63,8 @@ function Header() {
       <div className={classes.endWrapper}>
         <div className={classes.middle} />
         <div className={classes.end}>
-          {navigationItemsConst.map(({ name, icon }, index) => {
-            return <NavigationItem name={name} icon={icon} key={index} />;
+          {navigationItemsConst.map(({ name, icon }) => {
+            return <NavigationItem name={name} icon={icon} key={name} />;
           })}
         </div>
       </div>

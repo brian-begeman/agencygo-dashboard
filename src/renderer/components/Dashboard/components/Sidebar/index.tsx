@@ -17,6 +17,7 @@ const sideBarMenuConst = [
     name: localisation.home,
     icon: <HomeSvg />,
     menu: [],
+    link: '/home',
   },
   {
     name: localisation.manager,
@@ -97,6 +98,7 @@ const sideBarMenuConst = [
     name: localisation.creators,
     icon: <CreatorSvg />,
     menu: [],
+    link: '/creators',
   },
   {
     name: localisation.employees,
@@ -105,6 +107,7 @@ const sideBarMenuConst = [
       {
         label: 'Manage Employees',
         value: 'manageEmployees',
+        link: '/employees-manage-employees',
       },
       {
         label: 'Manage Shifts',
@@ -139,7 +142,7 @@ function SideBar() {
     <div className={classes.sidebar}>
       <BrandLogo />
       <div className={classes.sidebarNavWrapper}>
-        {sideBarMenuConst.map(({ name, icon, menu }, index) => {
+        {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
           return (
             <SidebarItem
               handlePopoverOpen={handlePopoverOpen}
@@ -149,7 +152,8 @@ function SideBar() {
               menu={menu}
               currentNavItemHovered={currentNavItemHovered}
               index={index}
-              key={index}
+              link={link}
+              key={name}
             />
           );
         })}

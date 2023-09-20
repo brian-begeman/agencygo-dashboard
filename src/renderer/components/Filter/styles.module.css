@@ -9,4 +9,12 @@
 
 .search {
   padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.input,
+.input input {
+  width: 100%;
 }
