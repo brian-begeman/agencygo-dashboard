@@ -23,6 +23,7 @@ const sideBarMenuConst = [
     name: localisation.manager,
     icon: <OnlyManagerSvg />,
     menu: [],
+    link: '/manager-suite',
   },
   {
     name: localisation.analytics,
@@ -112,6 +113,7 @@ const sideBarMenuConst = [
       {
         label: 'Manage Shifts',
         value: 'manageShifts',
+        link: '/employees-manage-shifts',
       },
     ],
   },
