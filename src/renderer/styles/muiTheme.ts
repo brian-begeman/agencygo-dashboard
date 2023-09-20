@@ -7,6 +7,10 @@ const theme = createTheme({
       contrastText: '#ffffff33',
       light: '#0CFFC0',
     },
+    secondary: {
+      main: '#0F0F0F',
+      contrastText: '#AAAAAA',
+    },
   },
 });
 

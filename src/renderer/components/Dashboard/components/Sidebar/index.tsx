@@ -1,13 +1,13 @@
 import React from 'react';
 
-import HomeSvg from 'Assets/svg/homeSvg';
-import OnlyManagerSvg from 'Assets/svg/onlyManager';
-import AnalyticsSvg from 'Assets/svg/analyticsSvg';
-import GrowthSvg from 'Assets/svg/growthSvg';
-import S4sSvg from 'Assets/svg/s4sSvg';
-import CreatorSvg from 'Assets/svg/creatorsSvg';
-import EmployeSvg from 'Assets/svg/employeSvg';
-import BrandLogoSvg from 'Assets/svg/brandLogoSvg';
+import HomeSvg from 'renderer/assets/svg/homeSvg';
+import OnlyManagerSvg from 'renderer/assets/svg/onlyManager';
+import AnalyticsSvg from 'renderer/assets/svg/analyticsSvg';
+import GrowthSvg from 'renderer/assets/svg/growthSvg';
+import S4sSvg from 'renderer/assets/svg/s4sSvg';
+import CreatorSvg from 'renderer/assets/svg/creatorsSvg';
+import EmployeSvg from 'renderer/assets/svg/employeSvg';
+import BrandLogoSvg from 'renderer/assets/svg/brandLogoSvg';
 import localisation from '../../../localisation.json';
 import SidebarItem from './SidebarItem';
 import classes from './styles.module.css';
@@ -17,6 +17,7 @@ const sideBarMenuConst = [
     name: localisation.home,
     icon: <HomeSvg />,
     menu: [],
+    link: '/home',
   },
   {
     name: localisation.manager,
@@ -106,6 +107,7 @@ const sideBarMenuConst = [
       {
         label: 'Manage Employees',
         value: 'manageEmployees',
+        link: '/employees-manage-employees',
       },
       {
         label: 'Manage Shifts',

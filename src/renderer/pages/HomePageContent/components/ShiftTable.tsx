@@ -69,14 +69,20 @@ const rows = [
   },
 ];
 
-export default function FilterTable() {
+export default function ShiftTable() {
   return (
-    <Box>
+    <Box
+      padding="16px"
+      sx={{ backgroundColor: theme.palette.secondary.main }}
+      borderRadius="16px"
+    >
+      <Box marginBottom="10px">
+        <Typography>My Shifts</Typography>
+      </Box>
       <TableContainer
         sx={{
+          borderRadius: '16px',
           border: `1px solid ${theme.palette.primary.contrastText}`,
-          borderRadius: '12px',
-          marginTop: '16px',
         }}
       >
         <Table aria-label="manage creators table">

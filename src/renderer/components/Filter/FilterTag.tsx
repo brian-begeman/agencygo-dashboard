@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import CloseCircleSvg from 'Assets/svg/CloseCircleSvg';
+import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
 import theme from 'renderer/styles/muiTheme';
 
 interface $Props {
@@ -20,7 +20,7 @@ export default function FilterTag({ label, onRemoveFilter }: $Props) {
         height: '32px',
       }}
     >
-      <Typography variant="body2" color="#fff">
+      <Typography variant="body2" color="#fff" fontSize="10px">
         {label}
       </Typography>
       <CloseCircleSvg />

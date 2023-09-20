@@ -10,17 +10,21 @@ import ManagerSuite from './pages/ManagerSuite';
 import ManageCreators from './pages/ManageCreators';
 import theme from './styles/muiTheme';
 import Notification from './pages/Notification';
+import HomePage from './pages/HomePageContent';
+import ManageEmployees from './pages/ManageEmployees';
 
 function Main() {
   return (
     <div className="App">
       <Stack spacing={2}>
         <Link to="/login">Login Page</Link>
+        <Link to="/home">Home Page</Link>
         <Link to="/dashboard">Dashboard Page</Link>
         <Link to="/of-account">Onlyfans Account Page</Link>
         <Link to="/manager-suite">Only Manager Suite</Link>
         <Link to="/creators">Manage Creators</Link>
         <Link to="/notification">Notification</Link>
+        <Link to="/employees-manage-employees">Manage Employees</Link>
       </Stack>
     </div>
   );
@@ -38,6 +42,11 @@ export default function App() {
           <Route path="/manager-suite" element={<ManagerSuite />} />
           <Route path="/creators" element={<ManageCreators />} />
           <Route path="/notification" element={<Notification />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route
+            path="/employees-manage-employees"
+            element={<ManageEmployees />}
+          />
         </Routes>
       </Router>
     </ThemeProvider>
