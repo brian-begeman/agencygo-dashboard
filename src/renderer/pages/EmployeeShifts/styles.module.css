@@ -1,0 +1,23 @@
+.wrapper {
+  border: 1px solid var(--color-sub-background-border);
+  border-radius: 16px;
+  max-height: 90vh;
+  margin-right: 16px;
+  display: grid;
+  flex-direction: column;
+}
+
+.innerWrapper{
+  display: grid;
+  grid-template-columns: 416px 1fr;
+}
+
+.search {
+  padding: 32px;
+}
+
+.aside {
+  border-right: 1px solid var(--color-sub-background-border);
+  width: 416px;
+  height: 100%;
+}

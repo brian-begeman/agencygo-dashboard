@@ -6,6 +6,7 @@ import UserCardWImage from 'renderer/components/UserCardWImage';
 import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
+import localisation from '../../components/localisation.json';
 
 export default function ManagerSuite() {
   const [search, setSearch] = useState('');
@@ -18,7 +19,9 @@ export default function ManagerSuite() {
     <Dashboard>
       <section className={styles.wrapper}>
         <PageTopbar>
-          <PageTopbar.HeaderText>OnlyFans Manager Suite</PageTopbar.HeaderText>
+          <PageTopbar.HeaderText>
+            {localisation.onlyFansManagerSuite}
+          </PageTopbar.HeaderText>
         </PageTopbar>
         <PageAside>
           <div className={styles.search}>
