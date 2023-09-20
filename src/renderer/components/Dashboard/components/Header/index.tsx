@@ -4,7 +4,7 @@ import InfoSvg from 'Assets/svg/infoSvg';
 import NetworkSvg from 'Assets/svg/networkSvg';
 import BellSvg from 'Assets/svg/bellSvg';
 import ShieldSvg from 'Assets/svg/shieldSvg';
-import AvatarSvg from 'Assets/svg/avatarSvg';
+import AvatarSvg from 'Assets/svg/AvatarSvg';
 import LeftChevronSvg from 'Assets/svg/LeftChevronSvg';
 import RightChevronSvg from 'Assets/svg/RightChevronSvg';
 import localisation from '../../../localisation.json';

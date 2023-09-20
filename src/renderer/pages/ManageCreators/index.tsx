@@ -6,7 +6,7 @@ import Filter from 'renderer/components/Filter';
 import FilterTable from 'renderer/components/Filter/FilterTable';
 import OnlyFansSvg from 'Assets/svg/OnlyFansSvg';
 import theme from 'renderer/styles/muiTheme';
-import Avatar from 'Assets/svg/avatarSvg';
+import Avatar from 'Assets/svg/AvatarSvg';
 import DeactivatedSvg from 'Assets/svg/DeactivatedSvg';
 import Activated from 'Assets/svg/ActivatedSvg';
 import styles from './styles.module.css';
