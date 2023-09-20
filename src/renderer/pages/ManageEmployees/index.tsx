@@ -54,7 +54,12 @@ export default function ManageEmployees() {
     <Dashboard>
       <section className={styles.wrapper}>
         <PageTopbar>
-          <Stack alignItems="center" direction="row">
+          <Stack
+            alignItems="center"
+            direction="row"
+            marginBottom="20px"
+            width="100%"
+          >
             <PageTopbar.HeaderText>Manage Employees</PageTopbar.HeaderText>
             <Box
               sx={{
@@ -96,8 +101,8 @@ export default function ManageEmployees() {
             ))}
           </Stack>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ height: '76.5vh' }}>
-          <Filter wrapperClassName={styles.filter} />
+        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
+          <Filter />
           <FilterTable tableHeaders={employeesTableHeaders}>
             <>
               {employeesTableData.map(
