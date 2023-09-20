@@ -2,7 +2,7 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
 
 function Options(props: any) {
@@ -10,9 +10,13 @@ function Options(props: any) {
   return (
     <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
       {menu.map((menuItem, index) => (
-        <div className={classes.optionItem} key={menuItem.label}>
+        <NavLink
+          to={menuItem.link || '#'}
+          className={classes.optionItem}
+          key={menuItem.label}
+        >
           {menuItem.label}
-        </div>
+        </NavLink>
       ))}
     </div>
   );
@@ -31,6 +35,17 @@ export default function SidebarItem(props: any) {
 
   const currentElem = React.useRef(null);
   const open = currentNavItemHovered === index;
+  const location = useLocation();
+
+  const getActiveStatus = () => {
+    return (
+      link?.includes(location.pathname) ||
+      menu?.some((el) => el.link?.includes(location.pathname)) ||
+      location.pathname === link
+    );
+  };
+
+  const isActive = getActiveStatus();
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
@@ -38,11 +53,14 @@ export default function SidebarItem(props: any) {
     } else {
       handlePopoverOpen(-1);
     }
+    console.log(link, location.pathname, 'location');
   };
   return (
     <div
       className={
-        open ? classes.sidebarItemWrapperActive : classes.sidebarItemWrapper
+        open || isActive
+          ? classes.sidebarItemWrapperActive
+          : classes.sidebarItemWrapper
       }
     >
       <NavLink to={link || '#'} className={classes.sidebarItemNav}>
