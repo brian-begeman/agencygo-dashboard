@@ -3,7 +3,8 @@ import SearchInput from 'renderer/components/SearchInput';
 import { useState } from 'react';
 import managers from 'renderer/utils/managerSuiteConstant';
 import UserCardWImage from 'renderer/components/UserCardWImage';
-import SectionHeader from 'renderer/components/Dashboard/components/SectionHeader';
+import PageTopbar from 'renderer/components/PageTopbar';
+import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 
@@ -17,8 +18,12 @@ export default function ManagerSuite() {
   return (
     <Dashboard>
       <section className={styles.wrapper}>
-        <SectionHeader title={localisation.onlyFansManagerSuite} />
-        <aside className={styles.aside}>
+        <PageTopbar>
+          <PageTopbar.HeaderText>
+            {localisation.onlyFansManagerSuite}
+          </PageTopbar.HeaderText>
+        </PageTopbar>
+        <PageAside>
           <div className={styles.search}>
             <SearchInput
               value={search}
@@ -38,7 +43,7 @@ export default function ManagerSuite() {
               />
             )
           )}
-        </aside>
+        </PageAside>
       </section>
     </Dashboard>
   );

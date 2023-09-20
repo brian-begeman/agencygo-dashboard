@@ -2,6 +2,7 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
+import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
 
 function Options(props: any) {
@@ -9,9 +10,13 @@ function Options(props: any) {
   return (
     <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
       {menu.map((menuItem, index) => (
-        <div className={classes.optionItem} key={index}>
+        <NavLink
+          to={menuItem.link || '#'}
+          className={classes.optionItem}
+          key={menuItem.label}
+        >
           {menuItem.label}
-        </div>
+        </NavLink>
       ))}
     </div>
   );
@@ -21,6 +26,7 @@ export default function SidebarItem(props: any) {
     name,
     icon,
     menu,
+    link,
     index,
     currentNavItemHovered,
     handlePopoverOpen,
@@ -29,6 +35,17 @@ export default function SidebarItem(props: any) {
 
   const currentElem = React.useRef(null);
   const open = currentNavItemHovered === index;
+  const location = useLocation();
+
+  const getActiveStatus = () => {
+    return (
+      link?.includes(location.pathname) ||
+      menu?.some((el) => el.link?.includes(location.pathname)) ||
+      location.pathname === link
+    );
+  };
+
+  const isActive = getActiveStatus();
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
@@ -36,51 +53,59 @@ export default function SidebarItem(props: any) {
     } else {
       handlePopoverOpen(-1);
     }
+    console.log(link, location.pathname, 'location');
   };
   return (
     <div
       className={
-        open ? classes.sidebarItemWrapperActive : classes.sidebarItemWrapper
+        open || isActive
+          ? classes.sidebarItemWrapperActive
+          : classes.sidebarItemWrapper
       }
     >
-      <Stack
-        alignItems="center"
-        aria-owns={open ? 'mouse-over-popover' : undefined}
-        aria-haspopup="true"
-        onMouseEnter={openPopOver}
-        ref={currentElem}
-        onMouseLeave={handlePopoverClose}
-        sx={{
-          cursor: 'pointer',
-        }}
-      >
-        <div>{icon}</div>
-        <Typography
-          sx={{ fontSize: '11px', fontWeight: 600, marginTop: '4px' }}
+      <NavLink to={link || '#'} className={classes.sidebarItemNav}>
+        <Stack
+          alignItems="center"
+          sx={{ '&:hover': { filter: 'brightness(0.5)' }, cursor: 'pointer' }}
+          aria-owns={open ? 'mouse-over-popover' : undefined}
+          aria-haspopup="true"
+          onMouseEnter={openPopOver}
+          ref={currentElem}
+          onMouseLeave={handlePopoverClose}
         >
-          {name}
-        </Typography>
-        <Popover
-          id="mouse-over-popover"
-          sx={{
-            pointerEvents: 'cursor',
-          }}
-          open={open}
-          elevation={20}
-          anchorEl={currentElem.current}
-          anchorOrigin={{
-            vertical: 'center',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 60,
-            horizontal: -20,
-          }}
-          onClose={handlePopoverClose}
-        >
-          <Options menu={menu} handlePopoverClose={handlePopoverClose} />
-        </Popover>
-      </Stack>
+          <div>{icon}</div>
+          <Typography
+            sx={{
+              fontSize: '11px',
+              fontWeight: 600,
+              marginTop: '4px',
+              color: '#fff',
+            }}
+          >
+            {name}
+          </Typography>
+          <Popover
+            id="mouse-over-popover"
+            sx={{
+              pointerEvents: 'cursor',
+            }}
+            open={open}
+            elevation={20}
+            anchorEl={currentElem.current}
+            anchorOrigin={{
+              vertical: 'center',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 60,
+              horizontal: -20,
+            }}
+            onClose={handlePopoverClose}
+          >
+            <Options menu={menu} handlePopoverClose={handlePopoverClose} />
+          </Popover>
+        </Stack>
+      </NavLink>
     </div>
   );
 }

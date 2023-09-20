@@ -1,7 +1,7 @@
 import React from 'react';
 import LeftChevronSquareSvg from 'renderer/assets/leftChevronSquareSvg';
 import RightChevronSquareSvg from 'renderer/assets/svg/rightChevronSquareSvg';
-import AvatarSvg from 'renderer/assets/svg/avatarSvg';
+import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import classes from './styles.module.css';
 
 interface DateBoxProps {

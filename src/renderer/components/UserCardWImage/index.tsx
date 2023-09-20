@@ -1,4 +1,4 @@
-import Avatar from 'renderer/assets/svg/avatarSvg';
+import Avatar from 'renderer/assets/svg/AvatarSvg';
 import { IconButton, Stack } from '@mui/material';
 import Message from 'renderer/assets/svg/messageSvg';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
