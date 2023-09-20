@@ -1,11 +1,11 @@
 import { KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Divider, Stack, Typography } from '@mui/material';
-import ArchiveAddSvg from 'Assets/svg/ArchiveAddSvg';
-import OnlyFansCircleBlue from 'Assets/svg/OnlyFansCircleBlueSvg';
+import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
+import OnlyFansCircleBlue from 'renderer/assets/svg/OnlyFansCircleBlueSvg';
 import theme from 'renderer/styles/muiTheme';
-import WalletAddSvg from 'Assets/svg/WalletAddSvg';
-import UserAdd from 'Assets/svg/UserAddSvg';
-import SubtitleSvg from 'Assets/svg/SubtitleSvg';
+import WalletAddSvg from 'renderer/assets/svg/WalletAddSvg';
+import UserAdd from 'renderer/assets/svg/UserAddSvg';
+import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import EarningsCard from './EarningsCard';
 import styles from './styles.module.css';
 

@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import CloseCircleSvg from 'Assets/svg/CloseCircleSvg';
+import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
 import theme from 'renderer/styles/muiTheme';
 
 interface $Props {

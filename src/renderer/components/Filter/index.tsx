@@ -9,10 +9,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import CandleSvg from 'Assets/svg/CandleSvg';
+import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
-import CloseCircleSvg from 'Assets/svg/CloseCircleSvg';
+import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
 import { ChangeEvent, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';

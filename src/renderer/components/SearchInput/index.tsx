@@ -1,6 +1,6 @@
 import { ChangeEvent, ReactNode } from 'react';
 import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import Refresh from 'Assets/svg/refreshSvg';
+import Refresh from 'renderer/assets/svg/refreshSvg';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './styles.module.css';
 

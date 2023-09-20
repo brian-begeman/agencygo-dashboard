@@ -4,11 +4,11 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
 import Filter from 'renderer/components/Filter';
 import FilterTable from 'renderer/components/Filter/FilterTable';
-import OnlyFansSvg from 'Assets/svg/OnlyFansSvg';
+import OnlyFansSvg from 'renderer/assets/svg/OnlyFansSvg';
 import theme from 'renderer/styles/muiTheme';
-import Avatar from 'Assets/svg/AvatarSvg';
-import DeactivatedSvg from 'Assets/svg/DeactivatedSvg';
-import Activated from 'Assets/svg/ActivatedSvg';
+import Avatar from 'renderer/assets/svg/AvatarSvg';
+import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
+import Activated from 'renderer/assets/svg/ActivatedSvg';
 import styles from './styles.module.css';
 
 const creatorsTableHeaders = [
