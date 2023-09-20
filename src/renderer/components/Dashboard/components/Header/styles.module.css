@@ -24,6 +24,11 @@
   align-items: center;
 }
 
+.navLink {
+  display: flex;
+  align-items: center;
+}
+
 .navItemText {
   font-size: 13px;
   font-weight: 600;
