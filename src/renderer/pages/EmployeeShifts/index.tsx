@@ -31,16 +31,13 @@ export default function EmployeeShifts() {
               </SearchInput>
             </div>
             {managers.map(
-              (
-                { name, profileImage, notificationCount, messageCount },
-                index
-              ) => (
+              ({ name, profileImage, notificationCount, messageCount }) => (
                 <UserCardWImage
                   name={name}
                   profileImage={profileImage}
                   notificationCount={notificationCount}
                   messageCount={messageCount}
-                  key={index}
+                  key={name}
                 />
               )
             )}

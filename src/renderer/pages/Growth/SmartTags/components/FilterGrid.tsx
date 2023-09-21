@@ -1,0 +1,63 @@
+import { Grid, Stack, TextField, Typography } from '@mui/material';
+import theme from 'renderer/styles/muiTheme';
+import { arrGenerator } from 'renderer/utils';
+
+const gridData = [
+  {
+    title: 'Tag 1',
+    type: 'input',
+  },
+  {
+    title: '< Total spent <',
+    type: 'text',
+  },
+  {
+    title: 'Tag 1',
+    type: 'input',
+  },
+  {
+    title: 'Fans: 0 (0%)',
+    type: 'text',
+  },
+];
+
+export default function FilterGrid() {
+  return (
+    <Grid container spacing={2} marginTop="48px">
+      {arrGenerator(3).map(() =>
+        gridData.map((item) => (
+          <Grid item xs={3} alignItems="center" key={item.title}>
+            {item.type === 'input' ? (
+              <Stack flexDirection="row" gap="10px" alignItems="center">
+                <Typography color="#fff" fontWeight={500} fontSize="14px">
+                  {item.title}
+                </Typography>
+                <TextField
+                  placeholder="0$"
+                  size="small"
+                  sx={{
+                    color: theme.palette.secondary.contrastText,
+                    maxWidth: '161px',
+                    height: '41px',
+                    border: `1px solid ${theme.palette.secondary.contrastText}`,
+                  }}
+                />
+              </Stack>
+            ) : (
+              <Stack
+                flexDirection="row"
+                alignItems="center"
+                height="100%"
+                justifyContent="center"
+              >
+                <Typography color="#fff" fontWeight={500} fontSize="14px">
+                  {item.title}
+                </Typography>
+              </Stack>
+            )}
+          </Grid>
+        ))
+      )}
+    </Grid>
+  );
+}

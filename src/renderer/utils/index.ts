@@ -8,4 +8,7 @@ const isArray = (item: any): boolean => {
   return Array.isArray(item);
 };
 
-export { delay, isArray };
+const arrGenerator = (val: number): number[] =>
+  Array.from({ length: val }, (_, i) => i + 1);
+
+export { delay, isArray, arrGenerator };
