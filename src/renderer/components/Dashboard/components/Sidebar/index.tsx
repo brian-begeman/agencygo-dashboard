@@ -55,6 +55,7 @@ const sideBarMenuConst = [
       {
         label: 'Auto Follow',
         value: 'autoFollow',
+        link: '/growth-auto-follow',
       },
       {
         label: 'Profile Promotion',
