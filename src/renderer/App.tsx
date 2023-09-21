@@ -2,7 +2,7 @@ import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './styles/reset.css';
 import './styles/global.vars.css';
 import './App.css';
-import { Stack, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import Login from './pages/Auth/Login';
 import OnlyfansAccount from './pages/OnlyfansAccount';
 import DashboardPage from './pages/DasboardPage';
@@ -14,11 +14,12 @@ import Notification from './pages/Notification';
 import HomePage from './pages/HomePageContent';
 import ManageEmployees from './pages/ManageEmployees';
 import SmartTags from './pages/Growth/SmartTags';
+import AutoFollow from './pages/Growth/AutoFollow';
 
 function Main() {
   return (
-    <div className="App">
-      <Stack spacing={2}>
+    <main className="App">
+      <section className="main">
         <Link to="/login">Login Page</Link>
         <Link to="/home">Home Page</Link>
         <Link to="/dashboard">Dashboard Page</Link>
@@ -29,8 +30,9 @@ function Main() {
         <Link to="/notification">Notification</Link>
         <Link to="/employees-manage-employees">Manage Employees</Link>
         <Link to="/growth-smart-tags">Growth / Smart Tags</Link>
-      </Stack>
-    </div>
+        <Link to="/growth-auto-follow">Growth / AutoFollow</Link>
+      </section>
+    </main>
   );
 }
 
@@ -53,6 +55,7 @@ export default function App() {
           />
           <Route path="/employees-manage-shifts" element={<EmployeeShifts />} />
           <Route path="/growth-smart-tags" element={<SmartTags />} />
+          <Route path="/growth-auto-follow" element={<AutoFollow />} />
         </Routes>
       </Router>
     </ThemeProvider>
