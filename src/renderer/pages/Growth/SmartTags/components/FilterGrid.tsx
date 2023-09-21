@@ -36,10 +36,10 @@ export default function FilterGrid() {
                   placeholder="0$"
                   size="small"
                   sx={{
-                    color: theme.palette.secondary.contrastText,
                     maxWidth: '161px',
                     height: '41px',
                     border: `1px solid ${theme.palette.secondary.contrastText}`,
+                    input: { color: theme.palette.secondary.contrastText },
                   }}
                 />
               </Stack>
