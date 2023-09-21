@@ -10,6 +10,10 @@ const theme = createTheme({
     secondary: {
       main: '#0F0F0F',
       contrastText: '#AAAAAA',
+      light: '#292929',
+    },
+    error: {
+      main: '#FF0000',
     },
   },
 });

@@ -13,6 +13,7 @@ import theme from './styles/muiTheme';
 import Notification from './pages/Notification';
 import HomePage from './pages/HomePageContent';
 import ManageEmployees from './pages/ManageEmployees';
+import SmartTags from './pages/Growth/SmartTags';
 
 function Main() {
   return (
@@ -27,6 +28,7 @@ function Main() {
         <Link to="/creators">Manage Creators</Link>
         <Link to="/notification">Notification</Link>
         <Link to="/employees-manage-employees">Manage Employees</Link>
+        <Link to="/growth-smart-tags">Growth / Smart Tags</Link>
       </Stack>
     </div>
   );
@@ -50,6 +52,7 @@ export default function App() {
             element={<ManageEmployees />}
           />
           <Route path="/employees-manage-shifts" element={<EmployeeShifts />} />
+          <Route path="/growth-smart-tags" element={<SmartTags />} />
         </Routes>
       </Router>
     </ThemeProvider>
