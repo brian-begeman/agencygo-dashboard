@@ -16,6 +16,7 @@ import YourAccount from 'renderer/components/Settings/YourAccount';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import Preferences from 'renderer/components/Settings/Preferences';
+import Billing from 'renderer/components/Settings/Billing';
 
 const navList = [
   {
@@ -71,6 +72,8 @@ export default function Settings() {
         return <YourAccount />;
       case 'preferences':
         return <Preferences />;
+        case 'billing':
+        return <Billing />;
       default:
         return <h1>Not found</h1>;
     }

@@ -7,7 +7,8 @@ import ShieldSvg from 'renderer/assets/svg/shieldSvg';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import LeftChevronSvg from 'renderer/assets/svg/leftChevronSvg';
 import RightChevronSvg from 'renderer/assets/svg/rightChevronSvg';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 import localisation from '../../../localisation.json';
 import classes from './styles.module.css';
 
@@ -65,11 +66,15 @@ function NavigationItem(props: any) {
 }
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <div className={classes.navbar}>
       <div className={classes.start}>
         <LeftChevronSvg />
         <RightChevronSvg />
+        <Button variant="text" onClick={() => navigate('/')}>
+          Home
+        </Button>
       </div>
 
       <div className={classes.endWrapper}>
