@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ButtonEle from 'renderer/components/Button';
 import { Link } from 'react-router-dom';
-import Logo from '../../../../../assets/only-manage-logo.png';
+import Logo from 'renderer/assets/png/only-manage-logo.png';
 import styles from './styles.module.css';
 
 interface FormFields {
