@@ -72,6 +72,7 @@ const sideBarMenuConst = [
       {
         label: 'Scrips',
         value: 'scripts',
+        link: '/growth/scripts',
       },
     ],
   },
