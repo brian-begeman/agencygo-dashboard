@@ -15,6 +15,7 @@ import HomePage from './pages/HomePageContent';
 import ManageEmployees from './pages/ManageEmployees';
 import SmartTags from './pages/Growth/SmartTags';
 import AutoFollow from './pages/Growth/AutoFollow';
+import Settings from './pages/Settings';
 
 function Main() {
   return (
@@ -31,6 +32,7 @@ function Main() {
         <Link to="/employees-manage-employees">Manage Employees</Link>
         <Link to="/growth-smart-tags">Growth / Smart Tags</Link>
         <Link to="/growth-auto-follow">Growth / AutoFollow</Link>
+        <Link to="/settings">Settings</Link>
       </section>
     </main>
   );
@@ -56,6 +58,7 @@ export default function App() {
           <Route path="/employees-manage-shifts" element={<EmployeeShifts />} />
           <Route path="/growth-smart-tags" element={<SmartTags />} />
           <Route path="/growth-auto-follow" element={<AutoFollow />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
     </ThemeProvider>
