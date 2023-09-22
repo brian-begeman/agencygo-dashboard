@@ -1,5 +1,5 @@
 import Avatar from 'renderer/assets/svg/AvatarSvg';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 import Message from 'renderer/assets/svg/messageSvg';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
@@ -17,7 +17,13 @@ export default function UserCardWImage({
   messageCount,
 }: $Props) {
   return (
-    <Stack spacing={2} direction="row" className={styles.card}>
+    <Stack
+      spacing={2}
+      direction="row"
+      flexShrink={0}
+      flexWrap="wrap"
+      className={styles.card}
+    >
       {profileImage !== '' ? (
         <img
           src={profileImage}
@@ -27,6 +33,7 @@ export default function UserCardWImage({
       ) : (
         <Avatar />
       )}
+
       <h3 className={styles.title}>{name}</h3>
       {notificationCount && (
         <IconButton className={styles.icon}>
@@ -36,7 +43,9 @@ export default function UserCardWImage({
       )}
       {messageCount && (
         <IconButton className={styles.icon}>
-          <span className={styles.iconText}>{messageCount}</span>
+          <Typography noWrap className={styles.iconText}>
+            {messageCount}
+          </Typography>
           <NotificationsNoneIcon
             sx={{
               color: '#AAAAAA',

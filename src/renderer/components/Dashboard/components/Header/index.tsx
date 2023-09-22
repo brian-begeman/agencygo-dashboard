@@ -37,6 +37,7 @@ const navigationItemsConst = [
   {
     name: '',
     icon: <ShieldSvg />,
+    link: '/settings',
   },
   {
     namee: '',

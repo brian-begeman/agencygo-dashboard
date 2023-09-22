@@ -50,12 +50,12 @@ const sideBarMenuConst = [
       {
         label: 'Smart Tags',
         value: 'smartTags',
-        link: '/growth-smart-tags',
+        link: '/growth/smart-tags',
       },
       {
         label: 'Auto Follow',
         value: 'autoFollow',
-        link: '/growth-auto-follow',
+        link: '/growth/auto-follow',
       },
       {
         label: 'Profile Promotion',
@@ -91,10 +91,10 @@ const sideBarMenuConst = [
         label: 'S4S Schedule',
         value: 's4sSchedule',
       },
-      {
-        labl: 'S4S Settings',
-        value: 's4sSettings',
-      },
+      // {
+      //   labl: 'S4S Settings',
+      //   value: 's4sSettings',
+      // },
     ],
   },
   {
