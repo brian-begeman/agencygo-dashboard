@@ -53,8 +53,8 @@ export default function SidebarItem(props: any) {
     } else {
       handlePopoverOpen(-1);
     }
-    console.log(link, location.pathname, 'location');
   };
+
   return (
     <div
       className={
