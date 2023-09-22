@@ -5,7 +5,7 @@ import FilterTable from 'renderer/components/Filter/FilterTable';
 import theme from 'renderer/styles/muiTheme';
 import classes from './styles.module.css';
 
-const billingTableHeaders = [
+const walletTableHeaders = [
   'Invoice ID',
   'Period',
   'Charge Fee',
@@ -15,7 +15,7 @@ const billingTableHeaders = [
   'Operations',
 ];
 
-const billingData = [
+const walletData = [
   {
     invoiceID: '-',
     period: 'Female',
@@ -46,8 +46,8 @@ const billingData = [
 ];
 function Billing() {
   return (
-    <div className={classes.billing}>
-      <div className={classes.billingHeader}>
+    <div className={classes.wallet}>
+      <div className={classes.walletHeader}>
         <div className={classes.buttonWrapper}>
           <Button variant="contained" color="secondary">
             <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
@@ -61,10 +61,10 @@ function Billing() {
           </Button>
         </div>
       </div>
-      <div className={classes.billingTableWrapper}>
-        <FilterTable tableHeaders={billingTableHeaders}>
+      <div className={classes.walletTableWrapper}>
+        <FilterTable tableHeaders={walletTableHeaders}>
           <>
-            {billingData.map(
+            {walletData.map(
               (
                 {
                   invoiceID,

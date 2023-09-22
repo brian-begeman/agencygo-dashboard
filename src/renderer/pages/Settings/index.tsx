@@ -14,6 +14,7 @@ import { useState } from 'react';
 import NavTabs from 'renderer/components/NavTabs';
 import YourAccount from 'renderer/components/Settings/YourAccount';
 import Billing from 'renderer/components/Settings/Billing';
+import Wallet from 'renderer/components/Settings/Wallet';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 
@@ -71,6 +72,8 @@ export default function Settings() {
         return <YourAccount />;
       case 'billing':
         return <Billing />;
+      case 'wallet':
+        return <Wallet />;
       default:
         return <h1>Not found</h1>;
     }
