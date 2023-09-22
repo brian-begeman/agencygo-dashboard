@@ -13,6 +13,7 @@ import PartnersSvg from 'renderer/assets/svg/PartnersSvg';
 import { useState } from 'react';
 import NavTabs from 'renderer/components/NavTabs';
 import YourAccount from 'renderer/components/Settings/YourAccount';
+import Billing from 'renderer/components/Settings/Billing';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 
@@ -68,6 +69,8 @@ export default function Settings() {
     switch (selected) {
       case 'yourAccount':
         return <YourAccount />;
+      case 'billing':
+        return <Billing />;
       default:
         return <h1>Not found</h1>;
     }
