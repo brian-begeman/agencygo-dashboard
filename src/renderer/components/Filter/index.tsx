@@ -23,9 +23,16 @@ import FilterTag from './FilterTag';
 interface $ByCreatorProps {
   creatorSearch: string;
   setCreatorSearch: (v: string) => void;
+  label?: string;
+  placeholder?: string;
 }
 
-function FilterByCreator({ creatorSearch, setCreatorSearch }: $ByCreatorProps) {
+function FilterByCreator({
+  creatorSearch,
+  setCreatorSearch,
+  label = 'By Creator',
+  placeholder = 'Enter creator name',
+}: $ByCreatorProps) {
   const [collapse, setCollapse] = useState(false);
 
   return (
@@ -41,7 +48,7 @@ function FilterByCreator({ creatorSearch, setCreatorSearch }: $ByCreatorProps) {
         onClick={() => setCollapse(!collapse)}
       >
         <Typography variant="h6" fontSize="14px">
-          By Creator
+          {label}
         </Typography>
         {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Box>
@@ -50,7 +57,7 @@ function FilterByCreator({ creatorSearch, setCreatorSearch }: $ByCreatorProps) {
           onSearch={() => {}}
           onUpdateSearch={(v) => setCreatorSearch(v)}
           value={creatorSearch}
-          placeholder="Enter creator name"
+          placeholder={placeholder}
           className={styles.input}
         />
       </Collapse>
@@ -62,17 +69,10 @@ interface $ByStatusProps {
   status: string;
   setStatus: (v: string) => void;
   title: string;
-  option1: string;
-  option2: string;
+  options: string[];
 }
 
-function FilterByStatus({
-  status,
-  setStatus,
-  title,
-  option1,
-  option2,
-}: $ByStatusProps) {
+function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
   const [collapse, setCollapse] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -98,30 +98,20 @@ function FilterByStatus({
       </Box>
       <Collapse in={!collapse}>
         <RadioGroup value={status} onChange={handleChange}>
-          <FormControlLabel
-            value={option1}
-            control={
-              <Radio
-                sx={{
-                  '&:checked': { color: theme.palette.primary.light },
-                  color: theme.palette.primary.contrastText,
-                }}
-              />
-            }
-            label={option1}
-          />
-          <FormControlLabel
-            value={option2}
-            control={
-              <Radio
-                sx={{
-                  '&:checked': { color: theme.palette.primary.light },
-                  color: theme.palette.primary.contrastText,
-                }}
-              />
-            }
-            label={option2}
-          />
+          {options.map((option) => (
+            <FormControlLabel
+              value={option}
+              control={
+                <Radio
+                  sx={{
+                    '&:checked': { color: theme.palette.primary.light },
+                    color: theme.palette.primary.contrastText,
+                  }}
+                />
+              }
+              label={option}
+            />
+          ))}
         </RadioGroup>
       </Collapse>
     </div>
@@ -152,10 +142,17 @@ function Filter() {
 
   return (
     <PageAside>
-      <div className={styles.search}>
+      <Box
+        sx={{
+          padding: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+        }}
+      >
         <CandleSvg />
         <Typography variant="h5">Filters</Typography>
-      </div>
+      </Box>
       <Box
         sx={{
           borderTop: `1px solid ${theme.palette.primary.contrastText}`,
@@ -212,8 +209,7 @@ function Filter() {
           title="By Status"
           status={status}
           setStatus={setStatus}
-          option1="Activated"
-          option2="Deactivated"
+          options={['Activated', 'Deactivated']}
         />
         <Divider
           sx={{
@@ -226,8 +222,7 @@ function Filter() {
         <FilterByStatus
           title="By Link Status"
           status={linkStatus}
-          option1="Linked"
-          option2="Unlinked"
+          options={['Linked', 'Unlinked']}
           setStatus={setLinkStatus}
         />
         <Divider
@@ -240,5 +235,8 @@ function Filter() {
     </PageAside>
   );
 }
+
+Filter.FilterByCreator = FilterByCreator;
+Filter.FilterByStatus = FilterByStatus;
 
 export default Filter;
