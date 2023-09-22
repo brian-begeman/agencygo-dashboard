@@ -50,12 +50,12 @@ const sideBarMenuConst = [
       {
         label: 'Smart Tags',
         value: 'smartTags',
-        link: '/growth-smart-tags',
+        link: '/growth/smart-tags',
       },
       {
         label: 'Auto Follow',
         value: 'autoFollow',
-        link: '/growth-auto-follow',
+        link: '/growth/auto-follow',
       },
       {
         label: 'Profile Promotion',
