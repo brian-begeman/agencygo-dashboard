@@ -27,6 +27,7 @@ export default function UserCardWImage({
       ) : (
         <Avatar />
       )}
+
       <h3 className={styles.title}>{name}</h3>
       {notificationCount && (
         <IconButton className={styles.icon}>

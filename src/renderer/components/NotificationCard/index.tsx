@@ -14,6 +14,7 @@ function NotificationCard() {
         </div>
       </div>
     </div>
+    
   );
 }
 export default NotificationCard;

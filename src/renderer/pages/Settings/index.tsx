@@ -15,6 +15,7 @@ import NavTabs from 'renderer/components/NavTabs';
 import YourAccount from 'renderer/components/Settings/YourAccount';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
+import Preferences from 'renderer/components/Settings/Preferences';
 
 const navList = [
   {
@@ -68,6 +69,8 @@ export default function Settings() {
     switch (selected) {
       case 'yourAccount':
         return <YourAccount />;
+      case 'preferences':
+        return <Preferences />;
       default:
         return <h1>Not found</h1>;
     }
