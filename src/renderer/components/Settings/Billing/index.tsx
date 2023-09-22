@@ -15,7 +15,7 @@ const walletTableHeaders = [
   'Operations',
 ];
 
-const walletData = [
+const withdrawalData = [
   {
     invoiceID: '-',
     period: 'Female',
@@ -64,7 +64,7 @@ function Billing() {
       <div className={classes.walletTableWrapper}>
         <FilterTable tableHeaders={walletTableHeaders}>
           <>
-            {walletData.map(
+            {withdrawalData.map(
               (
                 {
                   invoiceID,
