@@ -84,7 +84,7 @@ const ROUTES = [
         path: 'scan-details',
         element: <ScanDetails />,
         pathName: 'Scan Details',
-        nestedLink: '/growth/auto-follow?sublink=scan-details',
+        nestedLink: '/growth/scan-details',
       },
     ],
   },

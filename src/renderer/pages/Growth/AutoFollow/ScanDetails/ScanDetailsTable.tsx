@@ -69,16 +69,9 @@ const rows = [
   },
 ];
 
-export default function ShiftTable() {
+export default function ScanDetailsTable() {
   return (
-    <Box
-      padding="16px"
-      sx={{ backgroundColor: theme.palette.secondary.main }}
-      borderRadius="16px"
-    >
-      <Box marginBottom="10px">
-        <Typography>My Shifts</Typography>
-      </Box>
+    <Box>
       <TableContainer
         sx={{
           borderRadius: '16px',

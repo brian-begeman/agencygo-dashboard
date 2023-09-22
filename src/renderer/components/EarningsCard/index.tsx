@@ -5,7 +5,7 @@ import theme from 'renderer/styles/muiTheme';
 interface $Props {
   title: string;
   amount: string;
-  icon: ReactNode;
+  icon?: ReactNode;
 }
 
 export default function EarningsCard({ title, amount, icon }: $Props) {
@@ -33,16 +33,18 @@ export default function EarningsCard({ title, amount, icon }: $Props) {
           {amount}
         </Typography>
       </Stack>
-      <Divider
-        orientation="vertical"
-        sx={{
-          display: 'flex',
-          backgroundColor: theme.palette.primary.contrastText,
-          width: '1px',
-          marginRight: '32px',
-        }}
-        component="div"
-      />
+      {icon && (
+        <Divider
+          orientation="vertical"
+          sx={{
+            display: 'flex',
+            backgroundColor: theme.palette.primary.contrastText,
+            width: '1px',
+            marginRight: '32px',
+          }}
+          component="div"
+        />
+      )}
       {icon}
     </Stack>
   );

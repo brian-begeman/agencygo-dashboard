@@ -46,8 +46,7 @@ function Aside() {
 function AutoFollow() {
   const navigate = useNavigate();
 
-  const onOpenScanDetails = () =>
-    navigate('/growth?activeNav=auto-follow&sublink=scan-details');
+  const onOpenScanDetails = () => navigate('/growth/scan-details');
 
   return (
     <>

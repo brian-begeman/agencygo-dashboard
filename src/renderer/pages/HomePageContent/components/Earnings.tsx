@@ -6,7 +6,7 @@ import theme from 'renderer/styles/muiTheme';
 import WalletAddSvg from 'renderer/assets/svg/WalletAddSvg';
 import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
-import EarningsCard from './EarningsCard';
+import EarningsCard from 'renderer/components/EarningsCard';
 import styles from './styles.module.css';
 
 const earningsInitJson = [
