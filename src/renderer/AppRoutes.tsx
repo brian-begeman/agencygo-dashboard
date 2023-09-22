@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
+import ProfilePromotion from './pages/Growth/ProfilePromotion';
 
 const ROUTES = [
   {
@@ -85,6 +86,12 @@ const ROUTES = [
         element: <ScanDetails />,
         pathName: 'Scan Details',
         nestedLink: '/growth/scan-details',
+      },
+      {
+        path: 'profile-promotion',
+        element: <ProfilePromotion />,
+        pathName: 'Profile Promotion',
+        nestedLink: '/growth/profile-promotion',
       },
     ],
   },
