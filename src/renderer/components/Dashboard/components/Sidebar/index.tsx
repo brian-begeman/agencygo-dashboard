@@ -91,10 +91,10 @@ const sideBarMenuConst = [
         label: 'S4S Schedule',
         value: 's4sSchedule',
       },
-      {
-        labl: 'S4S Settings',
-        value: 's4sSettings',
-      },
+      // {
+      //   labl: 'S4S Settings',
+      //   value: 's4sSettings',
+      // },
     ],
   },
   {
