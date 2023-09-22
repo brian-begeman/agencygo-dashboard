@@ -1,5 +1,5 @@
 import React from 'react';
-import LeftChevronSquareSvg from 'renderer/assets/leftChevronSquareSvg';
+import LeftChevronSquareSvg from 'renderer/assets/svg/leftChevronSquareSvg';
 import RightChevronSquareSvg from 'renderer/assets/svg/rightChevronSquareSvg';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import classes from './styles.module.css';

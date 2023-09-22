@@ -1,0 +1,13 @@
+.billingHeader{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 32px;
+}
+
+.buttonWrapper{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 10px;
+}

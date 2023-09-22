@@ -16,6 +16,7 @@ import ManageEmployees from './pages/ManageEmployees';
 import SmartTags from './pages/Growth/SmartTags';
 import AutoFollow from './pages/Growth/AutoFollow';
 import ScanDetails from './pages/Growth/AutoFollow/ScanDetails';
+import Settings from './pages/Settings';
 
 function Main() {
   return (
@@ -35,6 +36,7 @@ function Main() {
         <Link to="/growth-auto-follow/scan-details">
           Growth / AutoFollow / Scan Details
         </Link>
+        <Link to="/settings">Settings</Link>
       </section>
     </main>
   );
@@ -64,6 +66,7 @@ export default function App() {
             path="/growth-auto-follow/scan-details"
             element={<ScanDetails />}
           />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
     </ThemeProvider>
