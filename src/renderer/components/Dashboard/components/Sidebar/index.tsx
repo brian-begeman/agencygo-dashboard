@@ -68,6 +68,7 @@ const sideBarMenuConst = [
       {
         label: 'Tracking Links',
         value: 'trackingLinks',
+        link: '/growth/tracking-links',
       },
       {
         label: 'Scrips',
