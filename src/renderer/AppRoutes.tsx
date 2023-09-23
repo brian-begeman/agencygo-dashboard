@@ -17,6 +17,7 @@ import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
 import Scripts from './pages/Growth/Scripts';
+import TrackingLinks from './pages/Growth/TrackingLinks';
 
 const ROUTES = [
   {
@@ -92,6 +93,12 @@ const ROUTES = [
         element: <Scripts />,
         pathName: 'Scripts',
         nestedLink: '/growth/scripts',
+      },
+      {
+        path: 'tracking-links',
+        element: <TrackingLinks />,
+        pathName: 'Tracking Links',
+        nestedLink: '/growth/tracking-links',
       },
     ],
   },

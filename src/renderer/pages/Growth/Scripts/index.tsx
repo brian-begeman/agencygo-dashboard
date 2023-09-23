@@ -43,6 +43,8 @@ function Aside() {
 
 const tags = ['All tags', 'Tag 1'];
 
+const headTags = ['Name', 'Text', 'Tags', 'Statistics', 'Operations'];
+
 function Scripts() {
   const [search, setSearch] = useState('');
 
@@ -143,21 +145,11 @@ function Scripts() {
             paddingBottom="12px"
             paddingX="16px"
           >
-            <Typography fontWeight={600} fontSize="16px">
-              Name
-            </Typography>
-            <Typography fontWeight={600} fontSize="16px">
-              Text
-            </Typography>
-            <Typography fontWeight={600} fontSize="16px">
-              Tags
-            </Typography>
-            <Typography fontWeight={600} fontSize="16px">
-              Statistics
-            </Typography>
-            <Typography fontWeight={600} fontSize="16px">
-              Operations
-            </Typography>
+            {headTags.map((tag) => (
+              <Typography fontWeight={600} fontSize="16px">
+                {tag}
+              </Typography>
+            ))}
           </Stack>
           <Stack justifyContent="center" direction="row">
             <FileNotFound />
