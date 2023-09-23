@@ -17,6 +17,7 @@ import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
 import ProfilePromotion from './pages/Growth/ProfilePromotion';
+import TrackingLinks from './pages/Growth/TrackingLinks';
 
 const ROUTES = [
   {
@@ -92,6 +93,12 @@ const ROUTES = [
         element: <ProfilePromotion />,
         pathName: 'Profile Promotion',
         nestedLink: '/growth/profile-promotion',
+      },
+      {
+        path: 'tracking-links',
+        element: <TrackingLinks />,
+        pathName: 'Tracking Links',
+        nestedLink: '/growth/tracking-links',
       },
     ],
   },

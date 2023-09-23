@@ -1,0 +1,116 @@
+import { useState } from 'react';
+import SearchInput from 'renderer/components/SearchInput';
+import managers from 'renderer/utils/managerSuiteConstant';
+import UserCardWImage from 'renderer/components/UserCardWImage';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import theme from 'renderer/styles/muiTheme';
+import { Add } from '@mui/icons-material';
+import styles from './styles.module.css';
+
+function Aside() {
+  const [search, setSearch] = useState('');
+
+  const onSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  return (
+    <aside className={styles.aside}>
+      <div className={styles.search}>
+        <SearchInput
+          value={search}
+          onUpdateSearch={onSearch}
+          onSearch={() => {}}
+        >
+          <SearchInput.ReloadButton onRefresh={() => {}} />
+        </SearchInput>
+      </div>
+      {managers.map(
+        ({ name, profileImage, notificationCount, messageCount }) => (
+          <UserCardWImage
+            name={name}
+            profileImage={profileImage}
+            notificationCount={notificationCount}
+            messageCount={messageCount}
+            key={name}
+          />
+        )
+      )}
+    </aside>
+  );
+}
+
+function TrackingLinks() {
+  const [search, setSearch] = useState('');
+
+  const onSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  return (
+    <>
+      <Aside />
+      <Box marginLeft="32px" marginRight="16px" marginTop="16px">
+        <Stack gap="22px">
+          <Stack direction="row" justifyContent="space-between">
+            <SearchInput
+              value={search}
+              onUpdateSearch={onSearch}
+              onSearch={() => {}}
+              placeholder="Search by Campaign Name"
+            />
+            <Button
+              variant="contained"
+              sx={{
+                background: theme.palette.primary.main,
+                marginLeft: 'auto',
+                height: '32px',
+                textTransform: 'unset',
+              }}
+              startIcon={<Add sx={{ color: '#fff' }} />}
+            >
+              <Typography
+                fontWeight={600}
+                fontSize="12px"
+                color="#fff"
+                textTransform="unset"
+              >
+                Create Link
+              </Typography>
+            </Button>
+          </Stack>
+          <Stack gap="10px">
+            <Typography fontWeight={600} fontSize="16px">
+              Campaign Insights
+            </Typography>
+            <Stack
+              gap="16px"
+              direction="row"
+              justifyContent="space-between"
+              sx={{ backgroundColor: theme.palette.primary.contrastText }}
+              className={styles.campaign}
+              paddingTop="30px"
+              paddingBottom="12px"
+              paddingX="16px"
+            >
+              <Typography fontWeight={600} fontSize="16px">
+                Promo
+              </Typography>
+              <Typography fontWeight={600} fontSize="16px">
+                Claims
+              </Typography>
+              <Typography fontWeight={600} fontSize="16px">
+                Revenue
+              </Typography>
+              <Typography fontWeight={600} fontSize="16px">
+                Operations
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Box>
+    </>
+  );
+}
+
+export default TrackingLinks;
