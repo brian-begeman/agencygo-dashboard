@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
+import TrackingLinks from './pages/Growth/TrackingLinks';
 
 const ROUTES = [
   {
@@ -85,6 +86,12 @@ const ROUTES = [
         element: <ScanDetails />,
         pathName: 'Scan Details',
         nestedLink: '/growth/scan-details',
+      },
+      {
+        path: 'tracking-links',
+        element: <TrackingLinks />,
+        pathName: 'Tracking Links',
+        nestedLink: '/growth/tracking-links',
       },
     ],
   },

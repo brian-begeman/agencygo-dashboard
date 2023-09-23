@@ -1,82 +1,54 @@
-import React from 'react';
-import { TableCell, TableRow, Typography, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { TableCell, TableRow, Typography, Button, Stack } from '@mui/material';
 
 import FilterTable from 'renderer/components/Filter/FilterTable';
 import theme from 'renderer/styles/muiTheme';
+import EyeViewSvg from 'renderer/assets/svg/EyeViewSvg';
+import DownloadSvg from 'renderer/assets/svg/DownloadIconSvg';
 import classes from './styles.module.css';
+import WithdrawalTable from './Common/WithdrawalTable';
+import { getCode, transactionData, transactionTableHeaders } from './constant';
+import WithdrawalRequest from './WithdrawalRequests';
 
-const billingTableHeaders = [
-  'Invoice ID',
-  'Period',
-  'Charge Fee',
-  'Discount',
-  'Wallet Payment',
-  'Net Gain',
-  'Operations',
-];
+interface TabProps {
+  handleTabChange: (name: string) => void;
+}
 
-const billingData = [
-  {
-    invoiceID: '-',
-    period: 'Female',
-    chargeFee: 'Female',
-    discount: 'Admin/Owner',
-    walletPayment: 'Admin/Owner',
-    netGain: 'Admin/Owner',
-    operations: 'More',
-  },
-  {
-    invoiceID: '-',
-    period: 'Female',
-    chargeFee: 'Female',
-    discount: 'Admin',
-    walletPayment: 'Admin',
-    netGain: 'Admin',
-    operations: 'More',
-  },
-  {
-    invoiceID: '-',
-    period: 'Male',
-    chargeFee: 'Male',
-    discount: 'Admin',
-    walletPayment: 'Admin',
-    netGain: 'Admin',
-    operations: 'More',
-  },
-];
-function Wallet() {
+function Home(props: TabProps) {
+  const { handleTabChange } = props;
   return (
     <div className={classes.billing}>
       <div className={classes.billingHeader}>
         <div className={classes.buttonWrapper}>
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleTabChange('withdrawalRequest')}
+          >
             <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Settings
+              Withdraw Requests
             </Typography>
           </Button>
-          <Button variant="contained">
+          <Button
+            variant="contained"
+            onClick={() => handleTabChange('paymentMethod')}
+          >
             <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Subscriptions Plans
+              Payment Method
             </Typography>
           </Button>
         </div>
       </div>
+
+      <div className={classes.balanceWrapper}>
+        <div className={classes.balanceText}>$0.00</div>
+      </div>
       <div className={classes.billingTableWrapper}>
-        <FilterTable tableHeaders={billingTableHeaders}>
+        <div className={classes.headingText}>Transaction History</div>
+        <FilterTable tableHeaders={transactionTableHeaders}>
           <>
-            {billingData.map(
-              (
-                {
-                  invoiceID,
-                  period,
-                  chargeFee,
-                  discount,
-                  walletPayment,
-                  netGain,
-                  operations,
-                },
-                index
-              ) => (
+            {transactionData.map(
+              ({ category, amount, type, status, date }, index) => (
                 <TableRow
                   key={index}
                   sx={{
@@ -90,7 +62,7 @@ function Wallet() {
                     scope="row"
                   >
                     <Typography variant="h6" fontSize="18px" color="#fff">
-                      {invoiceID}
+                      {category}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -99,7 +71,7 @@ function Wallet() {
                       color: '#fff',
                     }}
                   >
-                    {period}
+                    {amount}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -107,7 +79,15 @@ function Wallet() {
                       color: '#fff',
                     }}
                   >
-                    {chargeFee}
+                    {type}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderColor: theme.palette.primary.contrastText,
+                      color: getCode(status),
+                    }}
+                  >
+                    {status}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -115,32 +95,17 @@ function Wallet() {
                       color: '#fff',
                     }}
                   >
-                    {discount}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
-                    }}
-                  >
-                    {walletPayment}
+                    {date}
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Typography color="#fff" fontSize="14px">
-                      {netGain}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#37DE8F',
-                    }}
-                  >
-                    {operations}
+                    <Stack spacing={4} direction="row" alignItems="center">
+                      <EyeViewSvg />
+                      <DownloadSvg />
+                    </Stack>
                   </TableCell>
                 </TableRow>
               )
@@ -148,8 +113,35 @@ function Wallet() {
           </>
         </FilterTable>
       </div>
+      <div className={classes.withdrawalTableWrapper}>
+        <div className={classes.headingText}>Withdrawal Requests</div>
+        <WithdrawalTable />
+      </div>
     </div>
   );
+}
+function Wallet() {
+  const [activeTab, setActiveTab] = useState('home');
+
+  const renderTab = (
+    tabName: string,
+    handleTabChange: (name: string) => void
+  ) => {
+    switch (tabName) {
+      case 'home':
+        return <Home handleTabChange={handleTabChange} />;
+      case 'withdrawalRequest':
+        return <WithdrawalRequest handleTabChange={handleTabChange} />;
+      default:
+        return <h5>Not found</h5>;
+    }
+  };
+
+  const handleTabChange = (name: string) => {
+    setActiveTab(name);
+  };
+
+  return <>{renderTab(activeTab, handleTabChange)}</>;
 }
 
 export default Wallet;

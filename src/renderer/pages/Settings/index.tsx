@@ -15,8 +15,9 @@ import NavTabs from 'renderer/components/NavTabs';
 import YourAccount from 'renderer/components/Settings/YourAccount';
 import Preferences from 'renderer/components/Settings/Preferences';
 import Billing from 'renderer/components/Settings/Billing';
-import styles from './styles.module.css';
+import Wallet from 'renderer/components/Settings/Wallet';
 import localisation from '../../components/localisation.json';
+import styles from './styles.module.css';
 
 const navList = [
   {
@@ -73,7 +74,10 @@ export default function Settings() {
       case 'preferences':
         return <Preferences />;
       case 'billing':
+      case 'billing':
         return <Billing />;
+      case 'wallet':
+        return <Wallet />;
       default:
         return <h1>Not found</h1>;
     }
