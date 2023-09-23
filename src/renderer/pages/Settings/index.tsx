@@ -13,10 +13,10 @@ import PartnersSvg from 'renderer/assets/svg/PartnersSvg';
 import { useState } from 'react';
 import NavTabs from 'renderer/components/NavTabs';
 import YourAccount from 'renderer/components/Settings/YourAccount';
-import styles from './styles.module.css';
-import localisation from '../../components/localisation.json';
 import Preferences from 'renderer/components/Settings/Preferences';
 import Billing from 'renderer/components/Settings/Billing';
+import styles from './styles.module.css';
+import localisation from '../../components/localisation.json';
 
 const navList = [
   {
@@ -72,7 +72,7 @@ export default function Settings() {
         return <YourAccount />;
       case 'preferences':
         return <Preferences />;
-        case 'billing':
+      case 'billing':
         return <Billing />;
       default:
         return <h1>Not found</h1>;

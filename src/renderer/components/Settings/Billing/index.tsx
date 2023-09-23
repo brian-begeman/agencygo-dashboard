@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import classes from './styles.module.css';
 import FilterTable from 'renderer/components/Filter/FilterTable';
 import { TableCell, TableRow, Typography } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import ChevronSettingNav from 'renderer/assets/svg/ChevronSettingNav';
+import classes from './styles.module.css';
 
 function Billing() {
   const billingTableHeaders = ['Gross Monthly Earnings', 'Subscription Fee'];
@@ -33,8 +32,8 @@ function Billing() {
           <div className={classes.monthlysubscription}>
             <h2>Monthly subscription Price per creator</h2>
             <Typography sx={{ marginTop: '-5px' }}>
-              Each creator's Subscription will vary based on thier total gross
-              earnings at the end of calender month
+              Each creator&apos Subscription will vary based on thier total
+              gross earnings at the end of calender month
             </Typography>
           </div>
           <div>
