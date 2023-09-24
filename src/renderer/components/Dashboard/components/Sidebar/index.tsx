@@ -60,10 +60,12 @@ const sideBarMenuConst = [
       {
         label: 'Profile Promotion',
         value: 'profilePromotion',
+        link: '/growth/profile-promotion',
       },
       {
         label: 'Trail Links',
         value: 'trialLinks',
+        link: '/growth/trial-links',
       },
       {
         label: 'Tracking Links',
