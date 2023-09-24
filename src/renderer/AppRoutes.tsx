@@ -21,6 +21,7 @@ import ProfilePromotion from './pages/Growth/ProfilePromotion';
 import TrackingLinks from './pages/Growth/TrackingLinks';
 import ShareForShare from './pages/ShareForShare';
 import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
+import InviteLink from './pages/ShareForShare/InviteLink';
 
 const ROUTES = [
   {
@@ -121,6 +122,12 @@ const ROUTES = [
         element: <DiscoverCreators />,
         pathName: 'Discover Creators',
         nestedLink: '/s4s/discover-creators',
+      },
+      {
+        path: 'invite-link',
+        element: <InviteLink />,
+        pathName: 'Invite Link',
+        nestedLink: '/s4s/invite-link',
       },
     ],
   },
