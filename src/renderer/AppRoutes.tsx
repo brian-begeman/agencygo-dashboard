@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
+import Scripts from './pages/Growth/Scripts';
 import ProfilePromotion from './pages/Growth/ProfilePromotion';
 import TrackingLinks from './pages/Growth/TrackingLinks';
 
@@ -87,6 +88,12 @@ const ROUTES = [
         element: <ScanDetails />,
         pathName: 'Scan Details',
         nestedLink: '/growth/scan-details',
+      },
+      {
+        path: 'scripts',
+        element: <Scripts />,
+        pathName: 'Scripts',
+        nestedLink: '/growth/scripts',
       },
       {
         path: 'profile-promotion',

@@ -3,6 +3,7 @@ import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import styles from './styles.module.css';
+import AddScriptsBtns from './Scripts/components/AddScriptsBtns';
 
 const links = [
   { text: 'Smart Tags', link: 'smart-tags' },
@@ -18,6 +19,8 @@ export default function Growth() {
   const path = location.pathname;
   const navigate = useNavigate();
 
+  const isScriptsPage = path.endsWith('scripts');
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -27,8 +30,10 @@ export default function Growth() {
             direction="row"
             marginBottom="20px"
             width="100%"
+            justifyContent="space-between"
           >
             <PageTopbar.HeaderText>Growth</PageTopbar.HeaderText>
+            {isScriptsPage && <AddScriptsBtns />}
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
             {links.map(({ link, text }) => (
