@@ -27,7 +27,7 @@ export default function InviteLink() {
     <>
       <SearchUsers />
       <Stack gap="22px" marginLeft="32px" marginRight="16px" marginTop="16px">
-        <Typography color="#fff" fontWeight={500} fontSize="12px">
+        <Typography color="#fff" fontWeight={500} fontSize="14px">
           Creators can request a Share for Share with{' '}
           <Typography
             component="span"

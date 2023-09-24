@@ -38,7 +38,7 @@ export default function ShareForShare() {
                 text={text}
                 isActiveLink={path.endsWith(link)}
                 isLink
-                onClick={() => navigate(`/growth/${link}`)}
+                onClick={() => navigate(`/s4s/${link}`)}
               />
             ))}
           </Stack>
