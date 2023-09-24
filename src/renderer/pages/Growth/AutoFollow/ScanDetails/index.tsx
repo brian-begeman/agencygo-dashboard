@@ -107,7 +107,7 @@ function ScanDetails() {
           width="max-content"
           marginBottom="16px"
         >
-          {steps.map(({ label, link }) => (
+          {steps.map(({ label, link }, index) => (
             <Stack
               flexDirection="row"
               alignItems="center"
@@ -119,9 +119,11 @@ function ScanDetails() {
                   {label}
                 </Typography>
               </Link>
-              <KeyboardArrowRight
-                sx={{ color: '#292929', marginTop: '0 !important' }}
-              />
+              {steps.length - 1 !== index && (
+                <KeyboardArrowRight
+                  sx={{ color: '#292929', marginTop: '0 !important' }}
+                />
+              )}
             </Stack>
           ))}
         </Stack>

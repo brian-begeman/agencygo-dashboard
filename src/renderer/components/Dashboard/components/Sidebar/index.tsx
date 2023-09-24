@@ -86,19 +86,24 @@ const sideBarMenuConst = [
       {
         label: 'Discover Creators',
         value: 'discoverCreators',
+        link: '/s4s/discover-creators',
       },
       {
         label: 'Invite Link',
         value: 'inviteLink',
       },
       {
+        label: 'Requests',
+        value: 'requests',
+      },
+      {
         label: 'S4S Schedule',
         value: 's4sSchedule',
       },
-      // {
-      //   labl: 'S4S Settings',
-      //   value: 's4sSettings',
-      // },
+      {
+        label: 'S4S Settings',
+        value: 's4sSettings',
+      },
     ],
   },
   {

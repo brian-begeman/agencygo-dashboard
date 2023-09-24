@@ -1,7 +1,3 @@
-import { useState } from 'react';
-import SearchInput from 'renderer/components/SearchInput';
-import managers from 'renderer/utils/managerSuiteConstant';
-import UserCardWImage from 'renderer/components/UserCardWImage';
 import {
   Box,
   Button,
@@ -14,43 +10,12 @@ import {
 import { Add } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 import styles from './styles.module.css';
+import SearchUsers from 'renderer/components/SearchUsers';
 
-function Aside() {
-  const [search, setSearch] = useState('');
-
-  const onSearch = (value: string) => {
-    setSearch(value);
-  };
-
-  return (
-    <aside className={styles.aside}>
-      <div className={styles.search}>
-        <SearchInput
-          value={search}
-          onUpdateSearch={onSearch}
-          onSearch={() => {}}
-        >
-          <SearchInput.ReloadButton onRefresh={() => {}} />
-        </SearchInput>
-      </div>
-      {managers.map(
-        ({ name, profileImage, notificationCount, messageCount }) => (
-          <UserCardWImage
-            name={name}
-            profileImage={profileImage}
-            notificationCount={notificationCount}
-            messageCount={messageCount}
-            key={name}
-          />
-        )
-      )}
-    </aside>
-  );
-}
 function ProfilePromotion() {
   return (
     <>
-      <Aside />
+      <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="12px">
           <Button
