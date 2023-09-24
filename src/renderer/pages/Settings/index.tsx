@@ -74,6 +74,7 @@ export default function Settings() {
       case 'preferences':
         return <Preferences />;
       case 'billing':
+      case 'billing':
         return <Billing />;
       case 'wallet':
         return <Wallet />;

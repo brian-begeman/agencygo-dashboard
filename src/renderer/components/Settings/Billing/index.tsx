@@ -1,152 +1,115 @@
-import React from 'react';
-import { TableCell, TableRow, Typography, Button } from '@mui/material';
-
 import FilterTable from 'renderer/components/Filter/FilterTable';
+import { TableCell, TableRow, Typography } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
+import ChevronSettingNav from 'renderer/assets/svg/ChevronSettingNav';
 import classes from './styles.module.css';
 
-const walletTableHeaders = [
-  'Invoice ID',
-  'Period',
-  'Charge Fee',
-  'Discount',
-  'Wallet Payment',
-  'Net Gain',
-  'Operations',
-];
-
-const withdrawalData = [
-  {
-    invoiceID: '-',
-    period: 'Female',
-    chargeFee: 'Female',
-    discount: 'Admin/Owner',
-    walletPayment: 'Admin/Owner',
-    netGain: 'Admin/Owner',
-    operations: 'More',
-  },
-  {
-    invoiceID: '-',
-    period: 'Female',
-    chargeFee: 'Female',
-    discount: 'Admin',
-    walletPayment: 'Admin',
-    netGain: 'Admin',
-    operations: 'More',
-  },
-  {
-    invoiceID: '-',
-    period: 'Male',
-    chargeFee: 'Male',
-    discount: 'Admin',
-    walletPayment: 'Admin',
-    netGain: 'Admin',
-    operations: 'More',
-  },
-];
 function Billing() {
+  const billingTableHeaders = ['Gross Monthly Earnings', 'Subscription Fee'];
+
+  const billingData = [
+    {
+      GrossMonthlyEarnings: 'Under $1000',
+      SubscriptionFee: '$40',
+    },
+    {
+      GrossMonthlyEarnings: '$1000 - $2000',
+      SubscriptionFee: '$40',
+    },
+  ];
+
   return (
-    <div className={classes.wallet}>
-      <div className={classes.walletHeader}>
-        <div className={classes.buttonWrapper}>
-          <Button variant="contained" color="secondary">
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Settings
+    <div className={classes.wrapper}>
+      <div className={classes.prefernceWrapper}>
+        <div className={classes.inputListWrapper}>
+          <div className={classes.billingheader}>
+            <p className={classes.subscriptionheader}>Billing</p>
+            <div className={classes.iconalign}>
+              <ChevronSettingNav />
+            </div>
+            <p>Subscription</p>
+          </div>
+          <div className={classes.monthlysubscription}>
+            <h2>Monthly subscription Price per creator</h2>
+            <Typography sx={{ marginTop: '-5px' }}>
+              Each creator&apos Subscription will vary based on thier total
+              gross earnings at the end of calender month
             </Typography>
-          </Button>
-          <Button variant="contained">
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Subscriptions Plans
-            </Typography>
-          </Button>
+          </div>
+          <div>
+            <h3 className={classes.labellist}>Estimated Monthly Earnings </h3>
+            <div className={classes.select_box}>
+              <select className={classes.optionlist}>
+                <option>$2000 - $5000</option>
+                <option>Test This Select</option>
+              </select>
+            </div>
+            <div className={classes.card}>
+              <div className={classes.monthlysubscriptioncard}>
+                <h1 className={classes.paidplancard}>$60</h1>
+                <p className={classes.permonth}>Per Month</p>
+              </div>
+
+              <div className={classes.service}>
+                <h2>Service Offerings</h2>
+                <div className={classes.servicecard}>
+                  <div className={classes.servicetype}>
+                    <Typography>- Multi Creator profile</Typography>
+                    <Typography>- Analytics & Reports</Typography>
+                    <Typography>- Anti-Follow</Typography>
+                  </div>
+
+                  <div>
+                    <Typography>- Scheduling System</Typography>
+                    <Typography>- Permission Control</Typography>
+                    <Typography>- Smart Tags</Typography>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h2>Creator SubsCription Fee</h2>
+              <p className={classes.vipcharge}>
+                *Free and VIP profiles are charged separately
+              </p>
+            </div>
+            <div className={classes.billingTableWrapper}>
+              <FilterTable tableHeaders={billingTableHeaders}>
+                <>
+                  {billingData.map(
+                    ({ GrossMonthlyEarnings, SubscriptionFee }, index) => (
+                      <TableRow
+                        key={index}
+                        sx={{
+                          '&:last-child td, &:last-child th': { border: 0 },
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                          }}
+                          scope="row"
+                        >
+                          <Typography variant="h6" fontSize="18px" color="#fff">
+                            {GrossMonthlyEarnings}
+                          </Typography>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                            color: '#fff',
+                          }}
+                        >
+                          {SubscriptionFee}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )}
+                </>
+              </FilterTable>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={classes.walletTableWrapper}>
-        <FilterTable tableHeaders={walletTableHeaders}>
-          <>
-            {withdrawalData.map(
-              (
-                {
-                  invoiceID,
-                  period,
-                  chargeFee,
-                  discount,
-                  walletPayment,
-                  netGain,
-                  operations,
-                },
-                index
-              ) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    '&:last-child td, &:last-child th': { border: 0 },
-                  }}
-                >
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                    }}
-                    scope="row"
-                  >
-                    <Typography variant="h6" fontSize="18px" color="#fff">
-                      {invoiceID}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
-                    }}
-                  >
-                    {period}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
-                    }}
-                  >
-                    {chargeFee}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
-                    }}
-                  >
-                    {discount}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
-                    }}
-                  >
-                    {walletPayment}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                    }}
-                  >
-                    <Typography color="#fff" fontSize="14px">
-                      {netGain}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderColor: theme.palette.primary.contrastText,
-                      color: '#37DE8F',
-                    }}
-                  >
-                    {operations}
-                  </TableCell>
-                </TableRow>
-              )
-            )}
-          </>
-        </FilterTable>
       </div>
     </div>
   );
