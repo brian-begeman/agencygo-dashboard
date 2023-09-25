@@ -19,7 +19,7 @@ export default function Growth() {
   const path = location.pathname;
   const navigate = useNavigate();
 
-  const isScriptsPage = path.endsWith('scripts');
+  const isScriptsPage = path.includes('scripts');
 
   return (
     <Dashboard>
@@ -41,7 +41,7 @@ export default function Growth() {
                 key={text}
                 color="secondary"
                 text={text}
-                isActiveLink={path.endsWith(link)}
+                isActiveLink={path.includes(link)}
                 isLink
                 onClick={() => navigate(`/growth/${link}`)}
               />

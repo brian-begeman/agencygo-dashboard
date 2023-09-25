@@ -9,7 +9,7 @@ import SearchUsers from 'renderer/components/SearchUsers';
 function AutoFollow() {
   const navigate = useNavigate();
 
-  const onOpenScanDetails = () => navigate('/growth/scan-details');
+  const onOpenScanDetails = () => navigate('/growth/auto-follow-scan-details');
 
   return (
     <>

@@ -22,6 +22,7 @@ import TrackingLinks from './pages/Growth/TrackingLinks';
 import ShareForShare from './pages/ShareForShare';
 import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
 import InviteLink from './pages/ShareForShare/InviteLink';
+import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
 
 const ROUTES = [
   {
@@ -87,10 +88,10 @@ const ROUTES = [
         nestedLink: '/growth/auto-follow',
       },
       {
-        path: 'scan-details',
+        path: 'auto-follow-scan-details',
         element: <ScanDetails />,
         pathName: 'Scan Details',
-        nestedLink: '/growth/scan-details',
+        nestedLink: '/growth/auto-follow-scan-details',
       },
       {
         path: 'scripts',
@@ -128,6 +129,12 @@ const ROUTES = [
         element: <InviteLink />,
         pathName: 'Invite Link',
         nestedLink: '/s4s/invite-link',
+      },
+      {
+        path: 'invite-link-create-post',
+        element: <CreatePost />,
+        pathName: 'Create Post',
+        nestedLink: '/s4s/invite-link-create-post',
       },
     ],
   },

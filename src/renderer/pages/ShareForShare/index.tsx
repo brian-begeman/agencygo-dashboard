@@ -36,7 +36,7 @@ export default function ShareForShare() {
                 key={text}
                 color="secondary"
                 text={text}
-                isActiveLink={path.endsWith(link)}
+                isActiveLink={path.includes(link)}
                 isLink
                 onClick={() => navigate(`/s4s/${link}`)}
               />
