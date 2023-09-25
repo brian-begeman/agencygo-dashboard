@@ -14,9 +14,9 @@ function WithdrawalRequest(props: TabProps) {
       <div className={classes.navWrapper}>
         <div
           className={classes.homeText}
-          onClick={() => handleTabChange('home')}
+          onClick={() => handleTabChange('wallet')}
         >
-          Home
+          Wallet
         </div>
         <div>Withdrawal Requests </div>
       </div>
