@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import DocumentText from 'renderer/assets/svg/DocumentText';
 import ImportSvg from 'renderer/assets/svg/ImportSvg';
 import LinkSvg from 'renderer/assets/svg/LinkSvg';
@@ -23,6 +24,8 @@ function S4SLinkMessage({ title, icon }: $LinkMessage) {
 }
 
 export default function InviteLink() {
+  const navigate = useNavigate();
+
   return (
     <>
       <SearchUsers />
@@ -65,6 +68,7 @@ export default function InviteLink() {
                 background: theme.palette.primary.main,
                 textTransform: 'unset !important',
               }}
+              onClick={() => navigate('/s4s/invite-link-create-post')}
             >
               Create Post
             </Button>
