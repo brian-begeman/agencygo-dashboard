@@ -1,56 +1,19 @@
 import { Box, Button, Divider, Stack, Switch, Typography } from '@mui/material';
-import { useState } from 'react';
-import SearchInput from 'renderer/components/SearchInput';
-import managers from 'renderer/utils/managerSuiteConstant';
-import UserCardWImage from 'renderer/components/UserCardWImage';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 import SettingSvg from 'renderer/assets/svg/SettingSvg';
 import UserCircleAddSvg from 'renderer/assets/svg/UserCircleAddSvg';
 import { useNavigate } from 'react-router-dom';
-import styles from './styles.module.css';
-
-function Aside() {
-  const [search, setSearch] = useState('');
-
-  const onSearch = (value: string) => {
-    setSearch(value);
-  };
-
-  return (
-    <aside className={styles.aside}>
-      <div className={styles.search}>
-        <SearchInput
-          value={search}
-          onUpdateSearch={onSearch}
-          onSearch={() => {}}
-        >
-          <SearchInput.ReloadButton onRefresh={() => {}} />
-        </SearchInput>
-      </div>
-      {managers.map(
-        ({ name, profileImage, notificationCount, messageCount }) => (
-          <UserCardWImage
-            name={name}
-            profileImage={profileImage}
-            notificationCount={notificationCount}
-            messageCount={messageCount}
-            key={name}
-          />
-        )
-      )}
-    </aside>
-  );
-}
+import SearchUsers from 'renderer/components/SearchUsers';
 
 function AutoFollow() {
   const navigate = useNavigate();
 
-  const onOpenScanDetails = () => navigate('/growth/scan-details');
+  const onOpenScanDetails = () => navigate('/growth/auto-follow-scan-details');
 
   return (
     <>
-      <Aside />
+      <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" gap="16px" alignItems="center">

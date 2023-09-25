@@ -48,7 +48,7 @@ function CardDemo({ Logo, Amount, Earnings, RiseUpdate }) {
             color: 'rgba(170, 170, 170, 1)',
           }}
         >
-         {Amount}
+          {Amount}
         </Typography>
       </CardContent>
     </Card>

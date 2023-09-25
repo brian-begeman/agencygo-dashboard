@@ -16,6 +16,13 @@ import Settings from './pages/Settings';
 import Growth from './pages/Growth';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
+import Scripts from './pages/Growth/Scripts';
+import ProfilePromotion from './pages/Growth/ProfilePromotion';
+import TrackingLinks from './pages/Growth/TrackingLinks';
+import ShareForShare from './pages/ShareForShare';
+import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
+import InviteLink from './pages/ShareForShare/InviteLink';
+import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
 
 const ROUTES = [
   {
@@ -81,10 +88,53 @@ const ROUTES = [
         nestedLink: '/growth/auto-follow',
       },
       {
-        path: 'scan-details',
+        path: 'auto-follow-scan-details',
         element: <ScanDetails />,
         pathName: 'Scan Details',
-        nestedLink: '/growth/scan-details',
+        nestedLink: '/growth/auto-follow-scan-details',
+      },
+      {
+        path: 'scripts',
+        element: <Scripts />,
+        pathName: 'Scripts',
+        nestedLink: '/growth/scripts',
+      },
+      {
+        path: 'profile-promotion',
+        element: <ProfilePromotion />,
+        pathName: 'Profile Promotion',
+        nestedLink: '/growth/profile-promotion',
+      },
+      {
+        path: 'tracking-links',
+        element: <TrackingLinks />,
+        pathName: 'Tracking Links',
+        nestedLink: '/growth/tracking-links',
+      },
+    ],
+  },
+  {
+    path: 's4s',
+    element: <ShareForShare />,
+    pathName: 'Share For Share',
+    nestedRoutes: [
+      {
+        path: 'discover-creators',
+        element: <DiscoverCreators />,
+        pathName: 'Discover Creators',
+        nestedLink: '/s4s/discover-creators',
+      },
+      {
+        path: 'invite-link',
+        element: <InviteLink />,
+        pathName: 'Invite Link',
+        nestedLink: '/s4s/invite-link',
+      },
+      {
+        path: 'invite-link-create-post',
+        element: <CreatePost />,
+        pathName: 'Create Post',
+        nestedLink: '/s4s/invite-link-create-post',
       },
     ],
   },

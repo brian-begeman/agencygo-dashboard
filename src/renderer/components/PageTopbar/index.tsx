@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Button, Typography } from '@mui/material';
+import theme from 'renderer/styles/muiTheme';
 import styles from './styles.module.css';
 
 interface $Props {
@@ -53,6 +54,22 @@ function ButtonElement({
     return borderRadius;
   };
 
+  const getActiveBorder = () => {
+    if (isActiveLink) {
+      return {
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          border: `2px solid ${theme.palette.primary.main}`,
+        },
+      };
+    }
+    return {};
+  };
+
   return (
     <Button
       variant="contained"
@@ -66,6 +83,8 @@ function ButtonElement({
         alignItems: 'center',
         gap: '5px',
         backgroundColor: getBackgroundColor(),
+        position: 'relative',
+        ...getActiveBorder(),
       }}
       endIcon={endIcon}
       onClick={onClick}

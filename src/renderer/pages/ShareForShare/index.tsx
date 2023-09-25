@@ -3,23 +3,19 @@ import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import styles from './styles.module.css';
-import AddScriptsBtns from './Scripts/components/AddScriptsBtns';
 
 const links = [
-  { text: 'Smart Tags', link: 'smart-tags' },
-  { text: 'Auto Follow', link: 'auto-follow' },
-  { text: 'Profile Promotion', link: 'profile-promotion' },
-  { text: 'Trial Links', link: 'trial-links' },
-  { text: 'Tracking Links', link: 'tracking-links' },
-  { text: 'Scripts', link: 'scripts' },
+  { text: 'Discover Creators', link: 'discover-creators' },
+  { text: 'Invite Link', link: 'invite-link' },
+  { text: 'Requests', link: 'requests' },
+  { text: 'S4S Schedule', link: 's4s-schedule' },
+  { text: 'S4S Settings', link: 's4s-settings' },
 ];
 
-export default function Growth() {
+export default function ShareForShare() {
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
-
-  const isScriptsPage = path.includes('scripts');
 
   return (
     <Dashboard>
@@ -32,8 +28,7 @@ export default function Growth() {
             width="100%"
             justifyContent="space-between"
           >
-            <PageTopbar.HeaderText>Growth</PageTopbar.HeaderText>
-            {isScriptsPage && <AddScriptsBtns />}
+            <PageTopbar.HeaderText>Share For Share</PageTopbar.HeaderText>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
             {links.map(({ link, text }) => (
@@ -43,7 +38,7 @@ export default function Growth() {
                 text={text}
                 isActiveLink={path.includes(link)}
                 isLink
-                onClick={() => navigate(`/growth/${link}`)}
+                onClick={() => navigate(`/s4s/${link}`)}
               />
             ))}
           </Stack>

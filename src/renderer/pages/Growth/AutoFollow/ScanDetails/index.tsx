@@ -1,12 +1,11 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
-import { KeyboardArrowRight } from '@mui/icons-material';
+import { Box, Divider, Typography } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
-import { Link } from 'react-router-dom';
 import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import Filter from 'renderer/components/Filter';
 import { useState } from 'react';
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import EarningsCard from 'renderer/components/EarningsCard';
+import MultiNavLink from 'renderer/components/MultiNavLink';
 import styles from './styles.module.css';
 import ScanDetailsTable from './ScanDetailsTable';
 
@@ -62,7 +61,7 @@ function Aside() {
 const steps = [
   { label: 'Growth', link: '/growth/smart-tags' },
   { label: 'Auto Follow', link: '/growth/auto-follow' },
-  { label: 'Scan Details', link: '/growth/scan-details' },
+  { label: 'Scan Details', link: '/growth/auto-follow-scan-details' },
 ];
 
 const earningsInitJson = [
@@ -100,31 +99,7 @@ function ScanDetails() {
     <>
       <Aside />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          width="max-content"
-          marginBottom="16px"
-        >
-          {steps.map(({ label, link }) => (
-            <Stack
-              flexDirection="row"
-              alignItems="center"
-              key={label}
-              spacing={2}
-            >
-              <Link to={link}>
-                <Typography color="#fff" fontSize="10px" fontWeight={500}>
-                  {label}
-                </Typography>
-              </Link>
-              <KeyboardArrowRight
-                sx={{ color: '#292929', marginTop: '0 !important' }}
-              />
-            </Stack>
-          ))}
-        </Stack>
+        <MultiNavLink steps={steps} />
         <Box
           display="grid"
           gap="16px"

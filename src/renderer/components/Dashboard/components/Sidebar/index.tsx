@@ -60,18 +60,22 @@ const sideBarMenuConst = [
       {
         label: 'Profile Promotion',
         value: 'profilePromotion',
+        link: '/growth/profile-promotion',
       },
       {
         label: 'Trail Links',
         value: 'trialLinks',
+        link: '/growth/trial-links',
       },
       {
         label: 'Tracking Links',
         value: 'trackingLinks',
+        link: '/growth/tracking-links',
       },
       {
         label: 'Scrips',
         value: 'scripts',
+        link: '/growth/scripts',
       },
     ],
   },
@@ -82,19 +86,25 @@ const sideBarMenuConst = [
       {
         label: 'Discover Creators',
         value: 'discoverCreators',
+        link: '/s4s/discover-creators',
       },
       {
         label: 'Invite Link',
         value: 'inviteLink',
+        link: '/s4s/invite-link',
+      },
+      {
+        label: 'Requests',
+        value: 'requests',
       },
       {
         label: 'S4S Schedule',
         value: 's4sSchedule',
       },
-      // {
-      //   labl: 'S4S Settings',
-      //   value: 's4sSettings',
-      // },
+      {
+        label: 'S4S Settings',
+        value: 's4sSettings',
+      },
     ],
   },
   {
