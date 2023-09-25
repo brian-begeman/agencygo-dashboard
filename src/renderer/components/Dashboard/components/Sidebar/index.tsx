@@ -91,6 +91,7 @@ const sideBarMenuConst = [
       {
         label: 'Invite Link',
         value: 'inviteLink',
+        link: '/s4s/invite-link',
       },
       {
         label: 'Requests',
