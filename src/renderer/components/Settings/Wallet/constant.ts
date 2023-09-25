@@ -70,3 +70,49 @@ export const getCode = (status: string): string => {
   };
   return colorCodes[status as keyof typeof colorCodes];
 };
+
+export const paymentMethods = [
+  {
+    heading: 'ACH',
+    subHeading: 'Transfer US Dollars to a local bank in the USA',
+    points: [
+      '$100 Minimum withdrawal limit',
+      'Processes on 1st of the month',
+      'No withdrawal fee',
+    ],
+    cardName: 'ach',
+  },
+  {
+    heading: 'Wire Transfer',
+    subHeading: 'Use SWIFT for cross-border bank payments',
+    points: [
+      '$100 Minimum withdrawal limit',
+      'Processes on 1st of the month',
+      '$20 for withdrawals below $200',
+      '$10 for withdrawals below $300',
+      '$0 for withdrawals above $300',
+    ],
+    cardName: 'wireTransfer',
+  },
+  {
+    heading: 'Bitsafe',
+    subHeading: 'Use SWIFT for cross-border bank payments',
+    points: [
+      '$0 Minimum withdrawal limit',
+      'Processes on 1st of the month',
+      'No withdrawal fee',
+    ],
+    cardName: 'bitSafe',
+  },
+];
+
+export const countryList = [
+  {
+    label: 'India',
+    value: 'india',
+  },
+  {
+    label: 'Nepal',
+    value: 'nepal',
+  },
+];

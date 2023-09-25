@@ -9,12 +9,13 @@ import classes from './styles.module.css';
 import WithdrawalTable from './Common/WithdrawalTable';
 import { getCode, transactionData, transactionTableHeaders } from './constant';
 import WithdrawalRequest from './WithdrawalRequests';
+import PaymentMethod from './PaymentMethod';
 
 interface TabProps {
   handleTabChange: (name: string) => void;
 }
 
-function Home(props: TabProps) {
+function WalletTab(props: TabProps) {
   const { handleTabChange } = props;
   return (
     <div className={classes.billing}>
@@ -121,17 +122,19 @@ function Home(props: TabProps) {
   );
 }
 function Wallet() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('wallet');
 
   const renderTab = (
     tabName: string,
     handleTabChange: (name: string) => void
   ) => {
     switch (tabName) {
-      case 'home':
-        return <Home handleTabChange={handleTabChange} />;
+      case 'wallet':
+        return <WalletTab handleTabChange={handleTabChange} />;
       case 'withdrawalRequest':
         return <WithdrawalRequest handleTabChange={handleTabChange} />;
+      case 'paymentMethod':
+        return <PaymentMethod handleTabChange={handleTabChange} />;
       default:
         return <h5>Not found</h5>;
     }
