@@ -1,44 +1,10 @@
 import { useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
-import managers from 'renderer/utils/managerSuiteConstant';
-import UserCardWImage from 'renderer/components/UserCardWImage';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { Add } from '@mui/icons-material';
+import SearchUsers from 'renderer/components/SearchUsers';
 import styles from './styles.module.css';
-
-function Aside() {
-  const [search, setSearch] = useState('');
-
-  const onSearch = (value: string) => {
-    setSearch(value);
-  };
-
-  return (
-    <aside className={styles.aside}>
-      <div className={styles.search}>
-        <SearchInput
-          value={search}
-          onUpdateSearch={onSearch}
-          onSearch={() => {}}
-        >
-          <SearchInput.ReloadButton onRefresh={() => {}} />
-        </SearchInput>
-      </div>
-      {managers.map(
-        ({ name, profileImage, notificationCount, messageCount }) => (
-          <UserCardWImage
-            name={name}
-            profileImage={profileImage}
-            notificationCount={notificationCount}
-            messageCount={messageCount}
-            key={name}
-          />
-        )
-      )}
-    </aside>
-  );
-}
 
 function TrackingLinks() {
   const [search, setSearch] = useState('');
@@ -49,7 +15,7 @@ function TrackingLinks() {
 
   return (
     <>
-      <Aside />
+      <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
           <Stack direction="row" justifyContent="space-between">

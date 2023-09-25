@@ -19,6 +19,8 @@ import './App.css';
 import Scripts from './pages/Growth/Scripts';
 import ProfilePromotion from './pages/Growth/ProfilePromotion';
 import TrackingLinks from './pages/Growth/TrackingLinks';
+import ShareForShare from './pages/ShareForShare';
+import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
 
 const ROUTES = [
   {
@@ -106,6 +108,19 @@ const ROUTES = [
         element: <TrackingLinks />,
         pathName: 'Tracking Links',
         nestedLink: '/growth/tracking-links',
+      },
+    ],
+  },
+  {
+    path: 's4s',
+    element: <ShareForShare />,
+    pathName: 'Share For Share',
+    nestedRoutes: [
+      {
+        path: 'discover-creators',
+        element: <DiscoverCreators />,
+        pathName: 'Discover Creators',
+        nestedLink: '/s4s/discover-creators',
       },
     ],
   },
