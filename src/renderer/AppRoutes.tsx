@@ -23,6 +23,7 @@ import ShareForShare from './pages/ShareForShare';
 import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
 import InviteLink from './pages/ShareForShare/InviteLink';
 import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
+import Requests from './pages/ShareForShare/Requests';
 
 const ROUTES = [
   {
@@ -135,6 +136,12 @@ const ROUTES = [
         element: <CreatePost />,
         pathName: 'Create Post',
         nestedLink: '/s4s/invite-link-create-post',
+      },
+      {
+        path: 'requests',
+        element: <Requests />,
+        pathName: 'Requests',
+        nestedLink: '/s4s/requests',
       },
     ],
   },
