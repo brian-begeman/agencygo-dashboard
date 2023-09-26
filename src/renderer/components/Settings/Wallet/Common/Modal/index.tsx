@@ -21,6 +21,7 @@ function Overlay(props: OverlayProps) {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+      
       }}
     >
       <div className={classes.innerWrapper}>
