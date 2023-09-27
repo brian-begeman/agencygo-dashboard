@@ -24,6 +24,7 @@ import InviteLink from './pages/ShareForShare/InviteLink';
 import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
 import useAuth from './hooks/useAuth';
 import Requests from './pages/ShareForShare/Requests';
+import TrialLinks from './pages/Growth/TrialLink';
 
 const ROUTES = [
   {
@@ -106,6 +107,12 @@ const ROUTES = [
         element: <TrackingLinks />,
         pathName: 'Tracking Links',
         nestedLink: '/growth/tracking-links',
+      },
+      {
+        path: 'trial-links',
+        element: <TrialLinks />,
+        pathName: 'Trial Links',
+        nestedLink: '/growth/trial-links',
       },
     ],
   },
