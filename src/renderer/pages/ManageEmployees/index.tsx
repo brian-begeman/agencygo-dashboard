@@ -10,6 +10,8 @@ import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import styles from './styles.module.css';
+import AddEmployeeModal from './AddEmployeeModal';
+import { useState } from 'react';
 
 const links = [
   { text: 'Diamond Lifestyle Group', isActive: true },
@@ -50,6 +52,8 @@ const employeesTableData = [
 ];
 
 export default function ManageEmployees() {
+  const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -80,7 +84,8 @@ export default function ManageEmployees() {
               />
               <PageTopbar.Button
                 color="primary"
-                text="Add Creator"
+                text="Add Employee"
+                onClick={() => setOpenAddEmployee(true)}
                 endIcon={
                   <AddIcon
                     sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
@@ -171,6 +176,7 @@ export default function ManageEmployees() {
           </FilterTable>
         </Stack>
       </section>
+      <AddEmployeeModal open={OpenAddEmployee} setOpen={setOpenAddEmployee} />
     </Dashboard>
   );
 }
