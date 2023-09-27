@@ -1,5 +1,5 @@
 .loginWrap {
-  max-width: 304px;
+  max-width: 360px;
   height: 90vh;
   margin: 0 auto;
   display: flex;
@@ -9,39 +9,72 @@
 
 .login {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
-  width: 100px;
+  width: 180px;
+  height: auto;
 }
 
 .introHeader {
-  font-size: 18px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 600;
-  margin-top: 37px;
-  margin-bottom: 53px;
+  margin-top: 24px;
+}
+
+.introDescription {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19.2px;
+  margin: 0;
+  margin-bottom: 32px;
 }
 
 .loginBtn {
   color: var(--color-white) !important;
   font-size: 14px !important;
   font-weight: 500 !important;
-  margin: 32px auto 40px auto !important;
-  width: 272px;
-  height: 41px;
+  width: 100% !important;
+  padding: 10px auto;
   margin-inline: auto;
   display: block !important;
+  margin-top: 24px !important;
 }
 
 .forgotPassword {
-  color: var(--color-sub-white);
-  font-size: 18px;
-  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
   text-decoration: none;
-  margin: 0 auto;
+  margin: 0;
+  margin-top: 24px !important;
 }
 
-.forgotPasswordWrap {
-  text-align: center;
+.createNewContainer {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.createNewText {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 16.8px;
+}
+
+.createNewTextLink {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 16.8px;
+  color: var(--color-primary);
+  cursor: pointer;
 }

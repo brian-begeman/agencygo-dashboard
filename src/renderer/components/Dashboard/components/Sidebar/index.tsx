@@ -77,6 +77,11 @@ const sideBarMenuConst = [
         value: 'scripts',
         link: '/growth/scripts',
       },
+      {
+        label: 'Trial Links',
+        value: 'trialLinks',
+        link: '/growth/trial-links',
+      },
     ],
   },
   {

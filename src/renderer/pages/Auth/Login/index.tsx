@@ -4,16 +4,14 @@ import Input from 'renderer/components/Input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ButtonEle from 'renderer/components/Button';
-import { Link } from 'react-router-dom';
-import Logo from 'renderer/assets/png/only-manage-logo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import Logo from 'renderer/assets/png/agency-go-logo.png';
+import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 
-interface FormFields {
-  email: string;
-  password: string;
-}
-
 export default function Login() {
+  const { mutate: mutateLogin, isLoading } = useMutation({ key: 'login' });
+  const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -30,24 +28,28 @@ export default function Login() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data: FormFields) => {
-    // Handle form submission here
-    // eslint-disable-next-line no-console
-    console.log(data);
-    window.electron.ipcRenderer.sendMessage('attempt-login', {
-      email: data.email,
-      password: data.password,
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    mutateLogin(data, {
+      onSuccess: () => {
+        navigate('/home');
+      },
     });
   };
 
   return (
     <main className={styles.loginWrap}>
       <section className={styles.login}>
-        <div>
-          <img src={Logo} className={styles.logo} alt="only-manage" />
-        </div>
+        <img src={Logo} className={styles.logo} alt="only-manage" />
         <h1 className={styles.introHeader}>Manage your creators and profits</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <p className={styles.introDescription}>
+          Welcome back! Please enter your details.
+        </p>
+        <form
+          style={{
+            width: '100%',
+          }}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {formUtils.loginFields.map((field) => (
             <Input
               key={field.name}
@@ -58,15 +60,24 @@ export default function Login() {
               type={field.type}
             />
           ))}
-          <ButtonEle color="primary" type="submit" className={styles.loginBtn}>
+          <div className={styles.forgotPasswordWrap}>
+            <Link to="/forgot-password" className={styles.forgotPassword}>
+              Forgot Password
+            </Link>
+          </div>
+          <ButtonEle
+            color="primary"
+            type="submit"
+            className={styles.loginBtn}
+            disabled={isLoading}
+          >
             Login
           </ButtonEle>
+          <div className={styles.createNewContainer}>
+            <p className={styles.createNewText}>Don’t have an account?</p>
+            <p className={styles.createNewTextLink}>Create New Account</p>
+          </div>
         </form>
-        <div className={styles.forgotPasswordWrap}>
-          <Link to="/forgot-password" className={styles.forgotPassword}>
-            Forgot Password
-          </Link>
-        </div>
       </section>
     </main>
   );
