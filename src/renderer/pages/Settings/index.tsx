@@ -18,6 +18,7 @@ import Billing from 'renderer/components/Settings/Billing';
 import Wallet from 'renderer/components/Settings/Wallet';
 import localisation from '../../components/localisation.json';
 import styles from './styles.module.css';
+import AboutGO from 'renderer/components/Settings/About';
 
 const navList = [
   {
@@ -78,6 +79,8 @@ export default function Settings() {
         return <Billing />;
       case 'wallet':
         return <Wallet />;
+      case 'about':
+        return <AboutGO />;
       default:
         return <h1>Not found</h1>;
     }
