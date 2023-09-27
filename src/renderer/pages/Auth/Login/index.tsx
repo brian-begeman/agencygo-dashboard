@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ButtonEle from 'renderer/components/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from 'renderer/assets/png/only-manage-logo.png';
+import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 
@@ -31,7 +31,7 @@ export default function Login() {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     mutateLogin(data, {
       onSuccess: () => {
-        navigate('/dashboard');
+        navigate('/home');
       },
     });
   };
@@ -39,11 +39,17 @@ export default function Login() {
   return (
     <main className={styles.loginWrap}>
       <section className={styles.login}>
-        <div>
-          <img src={Logo} className={styles.logo} alt="only-manage" />
-        </div>
+        <img src={Logo} className={styles.logo} alt="only-manage" />
         <h1 className={styles.introHeader}>Manage your creators and profits</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <p className={styles.introDescription}>
+          Welcome back! Please enter your details.
+        </p>
+        <form
+          style={{
+            width: '100%',
+          }}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {formUtils.loginFields.map((field) => (
             <Input
               key={field.name}
@@ -54,6 +60,11 @@ export default function Login() {
               type={field.type}
             />
           ))}
+          <div className={styles.forgotPasswordWrap}>
+            <Link to="/forgot-password" className={styles.forgotPassword}>
+              Forgot Password
+            </Link>
+          </div>
           <ButtonEle
             color="primary"
             type="submit"
@@ -62,12 +73,11 @@ export default function Login() {
           >
             Login
           </ButtonEle>
+          <div className={styles.createNewContainer}>
+            <p className={styles.createNewText}>Don’t have an account?</p>
+            <p className={styles.createNewTextLink}>Create New Account</p>
+          </div>
         </form>
-        <div className={styles.forgotPasswordWrap}>
-          <Link to="/forgot-password" className={styles.forgotPassword}>
-            Forgot Password
-          </Link>
-        </div>
       </section>
     </main>
   );

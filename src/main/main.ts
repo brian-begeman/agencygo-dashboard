@@ -9,10 +9,18 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, BrowserView, screen } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  BrowserView,
+  screen,
+  ipcMain,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import puppeteer, { Browser } from 'puppeteer';
+import Store from 'electron-store';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -42,21 +50,28 @@ if (isDebug) {
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer');
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+//   const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
+//   return installer
+//     .default(
+//       extensions.map((name) => installer[name]),
+//       forceDownload
+//     )
+//     .catch(console.log);
+// };
 
 const createWindow = async () => {
   const winDimens = screen.getPrimaryDisplay().workAreaSize;
+  const store = new Store();
+  ipcMain.handle('get-store', (_, key) => {
+    return store.get(key);
+  });
+  ipcMain.handle('remove-store', (_, key) => {
+    store.delete(key);
+  });
 
   /*  if (!isDebug) {
     await installExtensions();

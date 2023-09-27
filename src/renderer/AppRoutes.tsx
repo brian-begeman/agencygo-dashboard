@@ -1,5 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import { Box, Stack, Typography } from '@mui/material';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
 import OnlyfansAccount from './pages/OnlyfansAccount';
 import DashboardPage from './pages/DasboardPage';
@@ -23,14 +22,10 @@ import ShareForShare from './pages/ShareForShare';
 import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
 import InviteLink from './pages/ShareForShare/InviteLink';
 import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
+import useAuth from './hooks/useAuth';
 import Requests from './pages/ShareForShare/Requests';
 
 const ROUTES = [
-  {
-    path: '/login',
-    element: <Login />,
-    pathName: 'Login',
-  },
   {
     path: '/home',
     element: <HomePage />,
@@ -156,63 +151,34 @@ const ROUTES = [
   },
 ];
 
-function Main() {
-  return (
-    <main className="App">
-      <section className="main">
-        {ROUTES.map(
-          ({ path, pathName, nestedRoutes }) =>
-            path !== '/' && (
-              <Box sx={{ border: nestedRoutes ? '1px solid #AAAAAA' : '' }}>
-                {nestedRoutes ? (
-                  <Box>
-                    <Typography component="small">{pathName}</Typography>
-                    <Stack component="ul">
-                      {nestedRoutes.map((nestedRoute) => (
-                        <li key={nestedRoute.path}>
-                          <Link to={nestedRoute.nestedLink}>
-                            {nestedRoute.pathName}
-                          </Link>
-                        </li>
-                      ))}
-                    </Stack>
-                  </Box>
-                ) : (
-                  <Link key={path} to={path}>
-                    {pathName}
-                  </Link>
-                )}
-              </Box>
-            )
-        )}
-      </section>
-    </main>
-  );
-}
-
 function AppRoutes() {
+  const { isLogin } = useAuth();
   return (
     <Routes>
-      <Route path="/" element={<Main />} />
-      {ROUTES.map(({ path, element, nestedRoutes }) =>
-        nestedRoutes ? (
-          <Route key={path} path={path} element={element}>
-            {nestedRoutes.map((nestedRoute) => (
-              <Route
-                key={nestedRoute.path}
-                path={nestedRoute.path}
-                element={nestedRoute.element}
-              />
-            ))}
-          </Route>
-        ) : (
-          <Route key={path} path={path} element={element} />
-        )
+      {isLogin ? (
+        <>
+          <Route path="/" element={<Navigate to="/home" />} />
+          {ROUTES.map(({ path, element, nestedRoutes }) =>
+            nestedRoutes ? (
+              <Route key={path} path={path} element={element}>
+                {nestedRoutes.map((nestedRoute) => (
+                  <Route
+                    key={nestedRoute.path}
+                    path={nestedRoute.path}
+                    element={nestedRoute.element}
+                  />
+                ))}
+              </Route>
+            ) : (
+              <Route key={path} path={path} element={element} />
+            )
+          )}
+        </>
+      ) : (
+        <Route path="*" element={<Login />} />
       )}
     </Routes>
   );
 }
-
-AppRoutes.Main = Main;
 
 export default AppRoutes;

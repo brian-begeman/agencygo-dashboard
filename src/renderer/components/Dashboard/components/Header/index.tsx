@@ -1,4 +1,3 @@
-import React from 'react';
 import AffiliateSvg from 'renderer/assets/svg/affiliatesSvg';
 import InfoSvg from 'renderer/assets/svg/infoSvg';
 import NetworkSvg from 'renderer/assets/svg/networkSvg';
@@ -7,8 +6,16 @@ import ShieldSvg from 'renderer/assets/svg/shieldSvg';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import LeftChevronSvg from 'renderer/assets/svg/leftChevronSvg';
 import RightChevronSvg from 'renderer/assets/svg/rightChevronSvg';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import {
+  ButtonBase,
+  Divider,
+  List,
+  ListItem,
+  Popover,
+  Typography,
+} from '@mui/material';
+import React from 'react';
 import localisation from '../../../localisation.json';
 import classes from './styles.module.css';
 
@@ -39,10 +46,6 @@ const navigationItemsConst = [
     icon: <ShieldSvg />,
     link: '/settings',
   },
-  {
-    namee: '',
-    icon: <AvatarSvg />,
-  },
 ];
 
 function NavigationItem(props: any) {
@@ -66,15 +69,17 @@ function NavigationItem(props: any) {
 }
 
 function Header() {
-  const navigate = useNavigate();
+  const currentElem = React.useRef(null);
+  const [show, setShow] = React.useState(false);
+
+  const handleLogout: () => void = () => {
+    window.electron.ipcRenderer.sendMessage('logout-request');
+  };
   return (
     <div className={classes.navbar}>
       <div className={classes.start}>
         <LeftChevronSvg />
         <RightChevronSvg />
-        <Button variant="text" onClick={() => navigate('/')}>
-          Home
-        </Button>
       </div>
 
       <div className={classes.endWrapper}>
@@ -85,6 +90,58 @@ function Header() {
               <NavigationItem name={name} icon={icon} link={link} key={name} />
             );
           })}
+          <div className={classes.navItem}>
+            <ButtonBase
+              type="button"
+              onClick={() => setShow(!show)}
+              aria-label="User Menu"
+            >
+              <div
+                className={classes.navIcon}
+                aria-haspopup="true"
+                aria-expanded={show}
+                ref={currentElem}
+              >
+                <AvatarSvg />
+              </div>
+            </ButtonBase>
+            <Popover
+              id="user-menu-popover"
+              open={show}
+              anchorEl={currentElem.current}
+              onClose={() => setShow(false)}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <div className={classes.popoverUser}>
+                <List sx={{ gap: '16px' }}>
+                  <ListItem>
+                    <Typography fontSize={13} color="#AAAAAA" fontWeight={600}>
+                      Help and Support
+                    </Typography>
+                  </ListItem>
+                  <Divider color="#292929" />
+                  <ListItem>
+                    <ButtonBase onClick={handleLogout}>
+                      <Typography
+                        fontSize={13}
+                        color="#FF0000"
+                        fontWeight={600}
+                      >
+                        Logout
+                      </Typography>
+                    </ButtonBase>
+                  </ListItem>
+                </List>
+              </div>
+            </Popover>
+          </div>
         </div>
       </div>
     </div>

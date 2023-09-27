@@ -26,6 +26,12 @@ const AuthServices = () => {
       e.reply('login-error', { error: true, message: error?.message });
     }
   });
+
+  ipcMain.on('logout-request', async (e) => {
+    const store = new Store();
+    store.delete('token');
+    e.reply('logout-response');
+  });
 };
 
 export default AuthServices;
