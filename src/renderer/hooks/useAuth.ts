@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { electron } from 'process';
+import { IpcRenderer } from 'electron';
 
 interface IResponse {
   isLogin: boolean;

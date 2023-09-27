@@ -19,6 +19,7 @@ import Wallet from 'renderer/components/Settings/Wallet';
 import localisation from '../../components/localisation.json';
 import styles from './styles.module.css';
 import AboutGO from 'renderer/components/Settings/About';
+import Partner from 'renderer/components/Settings/Partner';
 
 const navList = [
   {
@@ -81,6 +82,8 @@ export default function Settings() {
         return <Wallet />;
       case 'about':
         return <AboutGO />;
+        case 'partners':
+        return <Partner/>;
       default:
         return <h1>Not found</h1>;
     }
