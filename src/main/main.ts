@@ -17,6 +17,7 @@ import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import * as pie from '../packages/electron-puppeteer';
+import { startIpcServices } from '../services';
 
 class AppUpdater {
   constructor() {
@@ -133,6 +134,9 @@ const createWindow = async () => {
       ofBrowser,
     });
   }
+
+  // start ipc services
+  startIpcServices();
 };
 
 /**

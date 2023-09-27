@@ -4,16 +4,14 @@ import Input from 'renderer/components/Input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ButtonEle from 'renderer/components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from 'renderer/assets/png/only-manage-logo.png';
+import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 
-interface FormFields {
-  email: string;
-  password: string;
-}
-
 export default function Login() {
+  const { mutate: mutateLogin, isLoading } = useMutation({ key: 'login' });
+  const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -30,13 +28,11 @@ export default function Login() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data: FormFields) => {
-    // Handle form submission here
-    // eslint-disable-next-line no-console
-    console.log(data);
-    window.electron.ipcRenderer.sendMessage('attempt-login', {
-      email: data.email,
-      password: data.password,
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    mutateLogin(data, {
+      onSuccess: () => {
+        navigate('/dashboard');
+      },
     });
   };
 
@@ -58,7 +54,12 @@ export default function Login() {
               type={field.type}
             />
           ))}
-          <ButtonEle color="primary" type="submit" className={styles.loginBtn}>
+          <ButtonEle
+            color="primary"
+            type="submit"
+            className={styles.loginBtn}
+            disabled={isLoading}
+          >
             Login
           </ButtonEle>
         </form>
