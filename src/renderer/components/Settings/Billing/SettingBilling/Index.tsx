@@ -31,11 +31,11 @@ export default function SettingBilling() {
   };
 
   const addHandler = () => {
-    console.log('add handler clicked');
+    setOpen(false);
   };
 
   const cancelHandler = () => {
-    console.log('cancel handler');
+    console.log('add handler clicked');
   };
 
   const handleModalClose = () => {
