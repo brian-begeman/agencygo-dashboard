@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 
-function AboutGO() {
+function AboutGo() {
   return (
     <Box sx={{ textAlign: 'center', marginTop: '150px' }}>
       <Typography fontWeight={700} fontSize="53px" sx={{ color: '#fff' }}>
@@ -16,4 +16,4 @@ function AboutGO() {
   );
 }
 
-export default AboutGO;
+export default AboutGo;
