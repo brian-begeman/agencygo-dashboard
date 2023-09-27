@@ -35,7 +35,7 @@ export default function SettingBilling() {
   };
 
   const cancelHandler = () => {
-    console.log('add handler clicked');
+    setOpen(true);
   };
 
   const handleModalClose = () => {
