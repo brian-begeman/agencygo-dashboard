@@ -8,8 +8,8 @@ const links = [
   { text: 'Discover Creators', link: 'discover-creators' },
   { text: 'Invite Link', link: 'invite-link' },
   { text: 'Requests', link: 'requests' },
-  { text: 'S4S Schedule', link: 's4s-schedule' },
-  { text: 'S4S Settings', link: 's4s-settings' },
+  { text: 'S4S Schedule', link: 'schedule' },
+  { text: 'S4S Settings', link: 'settings' },
 ];
 
 export default function ShareForShare() {
