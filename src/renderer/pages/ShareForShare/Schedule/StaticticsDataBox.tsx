@@ -11,7 +11,7 @@ export default function StatisticsDataBox({ title, amount }: $Props) {
     <Box
       sx={{ border: `1px solid ${theme.palette.secondary.light}` }}
       width={'340px'}
-      padding={'5px'}
+      padding={'10px'}
       borderRadius={'16px'}
     >
       <Typography color={'#fff'} fontSize={'12px'} fontWeight={500}>
