@@ -45,10 +45,18 @@ interface DropdownWithLabelProps {
   value: string;
   handleOnChange: (name: string, value: string) => void;
   options: Option[]; // Array of options
+  placeholder?: string;
 }
 
 export function DropdownWithLabel(props: DropdownWithLabelProps) {
-  const { label, inputIdentifierName, value, handleOnChange, options } = props;
+  const {
+    label,
+    inputIdentifierName,
+    value,
+    handleOnChange,
+    options,
+    placeholder = '',
+  } = props;
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -58,6 +66,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         name={inputIdentifierName}
         id={inputIdentifierName}
         value={value}
+        placeholder={placeholder}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
       >
         {options.map(({ label, value }, index) => (
@@ -73,10 +82,17 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
 interface ModalFooterProps {
   addHandler: () => void;
   cancelHandler: () => void;
+  cancelText?: string;
+  addText?: string;
 }
 
 export function ModalFooter(props: ModalFooterProps) {
-  const { addHandler, cancelHandler } = props;
+  const {
+    addHandler,
+    cancelHandler,
+    cancelText = 'Cancel',
+    addText = 'Add',
+  } = props;
   return (
     <div className={classes.modalFooter}>
       <button
@@ -84,14 +100,14 @@ export function ModalFooter(props: ModalFooterProps) {
         onClick={addHandler}
         type="button"
       >
-        Cancel
+        {cancelText}
       </button>
       <button
         onClick={cancelHandler}
         className={classes.addButtonCss}
         type="button"
       >
-        Add
+        {addText}
       </button>
     </div>
   );

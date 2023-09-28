@@ -1,6 +1,7 @@
 import { Modal } from '@mui/material';
 import React, { ReactNode } from 'react';
 import classes from './styles.module.css';
+import { Box } from '@mui/system';
 
 interface OverlayProps {
   heading: string;
@@ -8,6 +9,7 @@ interface OverlayProps {
   open: boolean;
   handleClose: () => void;
 }
+
 function Overlay(props: OverlayProps) {
   const { heading, children, open, handleClose } = props;
   return (
@@ -21,11 +23,19 @@ function Overlay(props: OverlayProps) {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-      
+        background: 'rgba(0, 0, 0, 0.5)',
       }}
     >
       <div className={classes.innerWrapper}>
-        <div className={classes.modalHeader}>{heading}</div>
+        <Box
+          className={classes.modalHeader}
+          sx={{
+            borderTopLeftRadius: '10px',
+            borderTopRightRadius: '10px',
+          }}
+        >
+          {heading}
+        </Box>
         {children}
       </div>
     </Modal>
