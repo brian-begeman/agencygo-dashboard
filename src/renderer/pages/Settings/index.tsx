@@ -16,10 +16,11 @@ import YourAccount from 'renderer/components/Settings/YourAccount';
 import Preferences from 'renderer/components/Settings/Preferences';
 import Billing from 'renderer/components/Settings/Billing';
 import Wallet from 'renderer/components/Settings/Wallet';
-import localisation from '../../components/localisation.json';
-import styles from './styles.module.css';
 import AboutGO from 'renderer/components/Settings/About';
 import Partner from 'renderer/components/Settings/Partner';
+import Role from 'renderer/components/Settings/Role';
+import styles from './styles.module.css';
+import localisation from '../../components/localisation.json';
 
 const navList = [
   {
@@ -82,8 +83,10 @@ export default function Settings() {
         return <Wallet />;
       case 'about':
         return <AboutGO />;
-        case 'partners':
-        return <Partner/>;
+      case 'partners':
+        return <Partner />;
+      case 'roleSetting':
+        return <Role />;
       default:
         return <h1>Not found</h1>;
     }
