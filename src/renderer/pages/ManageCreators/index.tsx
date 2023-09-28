@@ -10,6 +10,8 @@ import Avatar from 'renderer/assets/svg/AvatarSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import styles from './styles.module.css';
+import { useState } from 'react';
+import AddCreaterModal from './components/AddCreaterModal';
 
 const creatorsTableHeaders = [
   'Creators',
@@ -77,6 +79,7 @@ const creatorsTableData = [
 ];
 
 export default function ManageCreators() {
+  const [openAddCreater, setOpenAddCreater] = useState(false);
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -95,6 +98,7 @@ export default function ManageCreators() {
               alignItems: 'center',
               gap: '5px',
             }}
+            onClick={() => setOpenAddCreater(true)}
           >
             <Typography
               sx={{
@@ -230,6 +234,7 @@ export default function ManageCreators() {
           </FilterTable>
         </Stack>
       </section>
+      <AddCreaterModal setOpen={setOpenAddCreater} open={openAddCreater} />
     </Dashboard>
   );
 }
