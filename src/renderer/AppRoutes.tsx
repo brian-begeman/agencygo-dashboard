@@ -25,6 +25,7 @@ import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
 import useAuth from './hooks/useAuth';
 import Requests from './pages/ShareForShare/Requests';
 import TrialLinks from './pages/Growth/TrialLink';
+import Schedule from './pages/ShareForShare/Schedule';
 
 const ROUTES = [
   {
@@ -144,6 +145,12 @@ const ROUTES = [
         element: <Requests />,
         pathName: 'Requests',
         nestedLink: '/s4s/requests',
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
+        pathName: 'Schedule',
+        nestedLink: '/s4s/schedule',
       },
     ],
   },

@@ -13,7 +13,7 @@ interface $Props {
   description: string;
 }
 
-export default function RequestCardWImage({
+export default function ScheduleCardWImage({
   name,
   userTag,
   ofRanking,
@@ -51,34 +51,6 @@ export default function RequestCardWImage({
         <Typography color="#fff" fontWeight={500} fontSize="16px">
           {description}
         </Typography>
-        <Stack direction="row" gap="10px">
-          <Button
-            sx={{
-              color: '#fff',
-              background: theme.palette.secondary.light,
-              fontSize: '12px',
-              fontWeight: 500,
-              borderRadius: '4px',
-              textTransform: 'unset !important',
-              width: '100%',
-            }}
-          >
-            Decline
-          </Button>
-          <Button
-            sx={{
-              color: '#fff',
-              background: theme.palette.primary.main,
-              fontSize: '12px',
-              fontWeight: 500,
-              borderRadius: '4px',
-              textTransform: 'unset !important',
-              width: '100%',
-            }}
-          >
-            Accept
-          </Button>
-        </Stack>
       </Stack>
     </Stack>
   );

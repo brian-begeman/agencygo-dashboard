@@ -106,6 +106,7 @@ const sideBarMenuConst = [
       {
         label: 'S4S Schedule',
         value: 's4sSchedule',
+        link: '/s4s/schedule',
       },
       {
         label: 'S4S Settings',
