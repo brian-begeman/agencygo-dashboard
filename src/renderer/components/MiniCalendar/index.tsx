@@ -13,7 +13,6 @@ export default function MiniCalendar({ date, setDate }: $Props): JSX.Element {
     <div className="relative flex">
       <Calendar
         onChange={(v: any) => {
-          console.log(v, typeof v);
           setDate(v);
         }}
         value={date}
