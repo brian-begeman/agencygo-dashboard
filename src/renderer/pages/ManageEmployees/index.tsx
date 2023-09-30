@@ -1,4 +1,11 @@
-import { Box, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  ButtonBase,
+  Stack,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,15 +16,11 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
+import { useState } from 'react';
+import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddEmployeeModal from './AddEmployeeModal';
-import { useState } from 'react';
-
-const links = [
-  { text: 'Diamond Lifestyle Group', isActive: true },
-  { text: 'Hot n Spicy Group', isActive: false },
-  { text: 'Gud Energy Group', isActive: false },
-];
+import useDataEmployees from './hooks/useData';
 
 const employeesTableHeaders = [
   'Employees',
@@ -27,32 +30,19 @@ const employeesTableHeaders = [
   'Operations',
 ];
 
-const employeesTableData = [
-  {
-    name: 'Joan Adams',
-    imageSrc: '',
-    assignedCreators: 'Female',
-    role: 'Admin/Owner',
-    activated: true,
-  },
-  {
-    name: 'Chris Jean-Baptiste',
-    imageSrc: '',
-    assignedCreators: 'Female',
-    role: 'Admin',
-    activated: true,
-  },
-  {
-    name: 'Joan Adams',
-    imageSrc: '',
-    assignedCreators: 'Male',
-    role: 'Admin',
-    activated: false,
-  },
-];
-
 export default function ManageEmployees() {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
+  const [formType, setFormType] = useState<'add' | 'edit'>('add');
+  const {
+    agencies,
+    refetch,
+    employees,
+    selectedEmployee,
+    setSelectedEmployee,
+  } = useDataEmployees();
+  const { mutate: mutateDelete } = useMutation({
+    key: 'delete-employee',
+  });
 
   return (
     <Dashboard>
@@ -95,7 +85,7 @@ export default function ManageEmployees() {
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {links.map((link) => (
+            {agencies?.map((link) => (
               <PageTopbar.Button
                 key={link.text}
                 color="secondary"
@@ -110,8 +100,16 @@ export default function ManageEmployees() {
           <Filter />
           <FilterTable tableHeaders={employeesTableHeaders}>
             <>
-              {employeesTableData.map(
-                ({ name, assignedCreators, role, activated }) => (
+              {employees.map(
+                ({
+                  name,
+                  assignedCreators,
+                  role,
+                  activated,
+                  email,
+                  roleRaw,
+                  id,
+                }) => (
                   <TableRow
                     key={name}
                     sx={{
@@ -161,12 +159,43 @@ export default function ManageEmployees() {
                       align="right"
                     >
                       <Stack spacing={4} direction="row" alignItems="center">
-                        <Typography variant="body1" color="#fff">
-                          Edit
-                        </Typography>
-                        <Typography variant="body1" color="#fff">
-                          More
-                        </Typography>
+                        <ButtonBase
+                          onClick={() => {
+                            setSelectedEmployee({
+                              name,
+                              role: roleRaw,
+                              email,
+                              id,
+                            });
+                            setFormType('edit');
+                            setOpenAddEmployee(true);
+                          }}
+                        >
+                          <Typography variant="body1" color="#fff">
+                            Edit
+                          </Typography>
+                        </ButtonBase>
+                        <ButtonBase
+                          onClick={() => {
+                            mutateDelete(
+                              { id },
+                              {
+                                onSuccess: () => {
+                                  refetch();
+                                },
+                              }
+                            );
+                          }}
+                        >
+                          <Typography variant="body1" color="#FF0000">
+                            Delete
+                          </Typography>
+                        </ButtonBase>
+                        <ButtonBase>
+                          <Typography variant="body1" color="#fff">
+                            More
+                          </Typography>
+                        </ButtonBase>
                       </Stack>
                     </TableCell>
                   </TableRow>
@@ -176,7 +205,13 @@ export default function ManageEmployees() {
           </FilterTable>
         </Stack>
       </section>
-      <AddEmployeeModal open={OpenAddEmployee} setOpen={setOpenAddEmployee} />
+      <AddEmployeeModal
+        open={OpenAddEmployee}
+        setOpen={setOpenAddEmployee}
+        refetch={refetch}
+        type={formType}
+        selectedEmployee={selectedEmployee}
+      />
     </Dashboard>
   );
 }

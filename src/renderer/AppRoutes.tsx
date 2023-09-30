@@ -25,6 +25,7 @@ import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
 import useAuth from './hooks/useAuth';
 import Requests from './pages/ShareForShare/Requests';
 import TrialLinks from './pages/Growth/TrialLink';
+import Register from './pages/Auth/register';
 import Schedule from './pages/ShareForShare/Schedule';
 
 const ROUTES = [
@@ -189,7 +190,11 @@ function AppRoutes() {
           )}
         </>
       ) : (
-        <Route path="*" element={<Login />} />
+        <>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
       )}
     </Routes>
   );

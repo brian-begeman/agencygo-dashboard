@@ -1,27 +1,24 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
+import fetch from '../utils/fetch';
 
 const AuthServices = () => {
-  ipcMain.on('login-request', async (e) => {
+  ipcMain.on('login-request', async (e, arg) => {
     try {
-      // const response = await fetch('login', {
-      //   method: 'POST',
-      //   body: JSON.stringify(arg),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-      // const cookie = response.headers.get('set-cookie');
-      // // get token on Authorization=token
-      // const cookieToken =
-      //   cookie?.split(';').find((item) => item.includes('Authorization')) || '';
-      // // remove Authorization= from token
-      // const token = cookieToken.split('=')[1];
-      const token = 'development-token';
+      const response = await fetch('login', {
+        method: 'POST',
+        body: JSON.stringify(arg),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cookie = response.headers.get('set-cookie');
+      const cookieToken =
+        cookie?.split(';').find((item) => item.includes('Authorization')) || '';
+      const token = cookieToken.split('=')[1];
       const store = new Store();
-      // save token to electron store
       store.set('token', token);
-      e.reply('login-response', token);
+      e.reply('login-response', await response.json());
     } catch (error: any) {
       e.reply('login-error', { error: true, message: error?.message });
     }
@@ -31,6 +28,45 @@ const AuthServices = () => {
     const store = new Store();
     store.delete('token');
     e.reply('logout-response');
+  });
+
+  ipcMain.on('verify-request', async (e) => {
+    try {
+      const store = new Store();
+      const response = await fetch('verify', {
+        method: 'GET',
+        withAuth: true,
+      });
+      const responseJson = await response.json();
+      const user = responseJson?.data?.user || {};
+      const agency = responseJson?.data?.agency || {};
+      store.set('user', user);
+      store.set('agency', agency);
+      e.reply('verify-response', responseJson);
+    } catch (error: any) {
+      e.reply('verify-error', { error: true, message: error?.message });
+    }
+  });
+
+  ipcMain.on('signup-request', async (e, arg) => {
+    try {
+      const response = await fetch('signup', {
+        method: 'POST',
+        body: JSON.stringify(arg),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const cookie = response.headers.get('set-cookie');
+      const cookieToken =
+        cookie?.split(';').find((item) => item.includes('Authorization')) || '';
+      const token = cookieToken.split('=')[1];
+      const store = new Store();
+      store.set('token', token);
+      e.reply('signup-response', await response.json());
+    } catch (error: any) {
+      e.reply('signup-error', { error: true, message: error?.message });
+    }
   });
 };
 

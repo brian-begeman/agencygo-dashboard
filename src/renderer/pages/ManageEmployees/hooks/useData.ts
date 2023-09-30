@@ -1,0 +1,87 @@
+import { useEffect, useState } from 'react';
+import useQuery from 'renderer/hooks/useQuery';
+
+interface IAgencyList {
+  text: string;
+  isActive: boolean;
+}
+
+interface IEmployeeList {
+  name: string;
+  imageSrc: string;
+  assignedCreators: string;
+  role: string;
+  activated: boolean;
+  email: string;
+  roleRaw: string;
+  id: string;
+}
+
+const ROLE = {
+  admin: 'Admin',
+  manager: 'Manager',
+  chatter: 'Chatter',
+};
+
+export interface ISelectedEmployee {
+  name: string;
+  email: string;
+  role: string;
+  id: string;
+}
+
+const useDataEmployees = () => {
+  const [agencies, setAgencies] = useState<IAgencyList[]>([]);
+  const [employees, setEmployees] = useState<IEmployeeList[]>([]);
+  const [selectedEmployee, setSelectedEmployee] =
+    useState<ISelectedEmployee | null>(null);
+  const { isLoading, data, refetch } = useQuery({ key: 'get-employee' });
+
+  useEffect(() => {
+    window.electron.ipcRenderer
+      .invoke('get-store', 'agency')
+      .then((res) => {
+        const result = {
+          text: res?.agencyName || '',
+          isActive: true,
+        };
+        return setAgencies([result]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (data?.data) {
+      const employeesRes = data?.data?.map((item: any) => {
+        return {
+          name: item?.name || '',
+          imageSrc: '',
+          assignedCreators: 'Female',
+          role: item?.role
+            ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
+            : '',
+          activated: item?.status === 'active',
+          email: item?.email || '',
+          roleRaw: item?.role || '',
+          // eslint-disable-next-line no-underscore-dangle
+          id: item?._id || '',
+        };
+      });
+      setEmployees(employeesRes || []);
+    }
+  }, [data]);
+
+  return {
+    isLoading,
+    data,
+    agencies,
+    refetch,
+    employees,
+    selectedEmployee,
+    setSelectedEmployee,
+  };
+};
+
+export default useDataEmployees;

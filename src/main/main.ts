@@ -6,7 +6,14 @@
  * through IPC.
  *
  * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
+ * `./src/main.js` using webpack. This gives us some performance wins. mutate(null, {
+          onSuccess: () => {
+            setIsLogin(true);
+          },
+          onError: () => {
+            setIsLogin(false);
+          },
+        });
  */
 import path from 'path';
 import {

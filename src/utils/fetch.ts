@@ -1,23 +1,47 @@
 import fetchRaw from 'electron-fetch';
 import type { Response, RequestInit } from 'electron-fetch';
+import Store from 'electron-store';
 import { ipcMain } from 'electron';
 import { API_URL } from '../config';
 
 interface IFetchOptions extends RequestInit {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  withAuth?: boolean;
 }
 
 const fetch = async (
   url: string,
   options: IFetchOptions
 ): Promise<Response> => {
-  const urlPath = `${API_URL}/${url}`;
-  const response = await fetchRaw(urlPath, options);
-  const code = response.status;
-  if (code === 401) {
-    ipcMain.emit('logout-request');
+  try {
+    let token = '';
+    if (options.withAuth) {
+      const store = new Store();
+      token = store.get('token') as string;
+      if (!token) {
+        ipcMain.emit('logout-request');
+        throw new Error('No token');
+      }
+    }
+    const urlPath = `${API_URL}/${url}`;
+    const optionsFetch = {
+      ...options,
+    };
+    if (options.withAuth) {
+      optionsFetch.headers = {
+        ...optionsFetch.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    const response = await fetchRaw(urlPath, optionsFetch);
+    const code = response.status;
+    if (code === 401) {
+      ipcMain.emit('logout-request');
+    }
+    return response;
+  } catch (error: any) {
+    throw new Error(error?.msg || error?.message);
   }
-  return response;
 };
 
 export default fetch;

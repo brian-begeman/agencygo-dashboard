@@ -4,21 +4,25 @@ import Input from 'renderer/components/Input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ButtonEle from 'renderer/components/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import { ButtonBase } from '@mui/material';
-import styles from './styles.module.css';
+import styles from '../Login/styles.module.css';
 
-export default function Login() {
-  const { mutate: mutateLogin, isLoading } = useMutation({ key: 'login' });
+export default function Register() {
+  const { mutate: mutateRegister, isLoading } = useMutation({ key: 'signup' });
   const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters')
+      .min(9, 'Password must be at least 9 characters')
       .max(40, 'Password must not exceed 40 characters'),
+    agencyName: Yup.string().required('Agency name is required'),
+    numberOfCreators: Yup.number().required('Number of creators is required'),
+    agencyWebsite: Yup.string().required('Agency website is required'),
+    agencyMediaSocial: Yup.string(),
   }) as Yup.ObjectSchema<FieldValues>;
 
   const {
@@ -30,7 +34,7 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    mutateLogin(data, {
+    mutateRegister(data, {
       onSuccess: () => {
         navigate('/home');
       },
@@ -51,7 +55,7 @@ export default function Login() {
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          {formUtils.loginFields.map((field) => (
+          {formUtils.registerFields.map((field) => (
             <Input
               key={field.name}
               label={field.label}
@@ -61,29 +65,21 @@ export default function Login() {
               type={field.type}
             />
           ))}
-          <div className={styles.forgotPasswordWrap}>
-            <Link to="/forgot-password" className={styles.forgotPassword}>
-              Forgot Password
-            </Link>
-          </div>
           <ButtonEle
             color="primary"
             type="submit"
             className={styles.loginBtn}
             disabled={isLoading}
           >
-            Login
+            Register
           </ButtonEle>
           <div className={styles.createNewContainer}>
-            <p className={styles.createNewText}>Don’t have an account?</p>
+            <p className={styles.createNewText}>Already have an account?</p>
             <ButtonBase
               className={styles.createNewTextLink}
-              onClick={() => {
-                navigate('/register');
-              }}
-              type="button"
+              onClick={() => navigate('/login')}
             >
-              Create New Account
+              Login
             </ButtonBase>
           </div>
         </form>

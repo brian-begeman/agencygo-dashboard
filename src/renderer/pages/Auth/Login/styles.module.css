@@ -75,6 +75,6 @@
   font-weight: 400;
   margin: 0;
   line-height: 16.8px;
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
   cursor: pointer;
 }

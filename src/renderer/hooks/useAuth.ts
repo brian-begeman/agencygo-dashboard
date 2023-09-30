@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { electron } from 'process';
-import { IpcRenderer } from 'electron';
+import useQuery from './useQuery';
 
 interface IResponse {
   isLogin: boolean;
@@ -11,6 +10,16 @@ interface IResponse {
 
 const useAuth = (): IResponse => {
   const [isLogin, setIsLogin] = useState(false);
+  const { refetch } = useQuery({
+    key: 'verify',
+    notInitialFetch: true,
+    onSuccess: () => {
+      setIsLogin(true);
+    },
+    onError: () => {
+      setIsLogin(false);
+    },
+  });
 
   useEffect(() => {
     (async () => {
@@ -18,23 +27,35 @@ const useAuth = (): IResponse => {
         'get-store',
         'token'
       );
+      console.log('token', token);
       if (token) {
-        setIsLogin(true);
+        setTimeout(() => {
+          refetch();
+        }, 1000);
       } else {
         setIsLogin(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!isLogin) {
-    window.electron.ipcRenderer.on('login-response', () => {
-      setIsLogin(true);
-    });
-  } else {
-    window.electron.ipcRenderer.on('logout-response', async () => {
-      setIsLogin(false);
-    });
-  }
+  useEffect(() => {
+    if (!isLogin) {
+      window.electron.ipcRenderer.on('login-response', () => {
+        setIsLogin(true);
+        refetch();
+      });
+      window.electron.ipcRenderer.on('signup-response', () => {
+        setIsLogin(true);
+        refetch();
+      });
+    } else {
+      window.electron.ipcRenderer.on('logout-response', async () => {
+        setIsLogin(false);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
 
   return {
     isLogin,

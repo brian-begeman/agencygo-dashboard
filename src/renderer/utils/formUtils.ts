@@ -3,4 +3,32 @@ const loginFields = [
   { label: 'Password', name: 'password', type: 'password', required: true },
 ];
 
-export default { loginFields };
+const registerFields = [
+  { label: 'Email', name: 'email', type: 'email', required: true },
+  {
+    label: 'Agency Name',
+    name: 'agencyName',
+    type: 'text',
+    required: true,
+  },
+  {
+    label: 'Number of Creators',
+    name: 'numberOfCreators',
+    type: 'number',
+    required: true,
+  },
+  {
+    label: 'Agency Website URL',
+    name: 'agencyWebsite',
+    type: 'text',
+    required: true,
+  },
+  {
+    label: 'Agency Social Media URL',
+    name: 'agencyMediaSocial',
+    type: 'text',
+  },
+  { label: 'Password', name: 'password', type: 'password', required: true },
+];
+
+export default { loginFields, registerFields };

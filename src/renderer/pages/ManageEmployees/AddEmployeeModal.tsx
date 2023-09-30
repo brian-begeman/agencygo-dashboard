@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
@@ -8,36 +8,39 @@ import {
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { groupList, roleList } from './constant';
-
-const initFormData = {
-  employeeName: '',
-  email: '',
-  group: '',
-  role: '',
-};
+import { roleList } from './constant';
+import useFormEmployee from './hooks/useForm';
 
 interface $Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
+  type: 'add' | 'edit';
+  selectedEmployee?: any;
 }
 
-export default function AddEmployeeModal({ open, setOpen }: $Props) {
-  const [data, setData] = useState(initFormData);
-
-  const handleChange = (name: string, value: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+export default function AddEmployeeModal({
+  open,
+  setOpen,
+  refetch,
+  type,
+  selectedEmployee,
+}: $Props) {
+  const { groupOptions, handleSubmit, register, isLoading } = useFormEmployee(
+    () => {
+      setOpen(false);
+      refetch();
+    },
+    type,
+    selectedEmployee
+  );
 
   const addHandler = () => {
-    setOpen(false);
+    handleSubmit();
   };
 
   const cancelHandler = () => {
-    setOpen(true);
+    setOpen(false);
   };
 
   const handleModalClose = () => {
@@ -45,11 +48,15 @@ export default function AddEmployeeModal({ open, setOpen }: $Props) {
   };
 
   return (
-    <Overlay heading="Add Employee" open={open} handleClose={handleModalClose}>
+    <Overlay
+      heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
+      open={open}
+      handleClose={handleModalClose}
+    >
       <Box sx={{ backgroundColor: '#4B4B4B' }}>
-        <form className={styles.modalBody}>
+        <form className={styles.modalBody} onSubmit={handleSubmit}>
           <Stack
-            gap={'10px'}
+            gap="10px"
             sx={{
               marginRight: '30px',
               marginLeft: '30px',
@@ -60,31 +67,27 @@ export default function AddEmployeeModal({ open, setOpen }: $Props) {
           >
             <InputWithLabel
               label="Employee name"
-              value={data.employeeName}
-              inputIdentifierName="employeeName"
+              inputIdentifierName="name"
               placeholder="Enter name"
-              handleOnChange={handleChange}
+              register={register as any}
             />
             <InputWithLabel
               label="Email"
-              value={data.email}
               inputIdentifierName="email"
               placeholder="Enter email"
-              handleOnChange={handleChange}
+              register={register as any}
             />
             <DropdownWithLabel
               label="Group"
-              value={data.group}
-              inputIdentifierName="group"
-              options={groupList}
-              handleOnChange={handleChange}
+              inputIdentifierName="agencyId"
+              options={groupOptions}
+              register={register as any}
             />
             <DropdownWithLabel
-              label="City"
-              value={data.role}
-              inputIdentifierName="city"
+              label="Role"
+              inputIdentifierName="role"
               options={roleList}
-              handleOnChange={handleChange}
+              register={register as any}
             />
           </Stack>
         </form>
@@ -93,6 +96,7 @@ export default function AddEmployeeModal({ open, setOpen }: $Props) {
         addHandler={addHandler}
         cancelHandler={cancelHandler}
         addText="Add Employee"
+        isLoading={isLoading}
       />
     </Overlay>
   );

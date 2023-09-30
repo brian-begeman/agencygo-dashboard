@@ -1,4 +1,4 @@
-import React from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 import classes from './styles.module.css';
 
 interface LabelTextProps {
@@ -14,12 +14,19 @@ interface InputWithLabelProps {
   label: string;
   inputIdentifierName: string;
   placeholder: string;
-  value: string;
-  handleOnChange: (name: string, value: string) => void;
+  value?: string;
+  handleOnChange?: (name: string, value: string) => void;
+  register?: UseFormRegister<FieldValues>;
 }
 export function InputWithLabel(props: InputWithLabelProps) {
-  const { label, inputIdentifierName, placeholder, value, handleOnChange } =
-    props;
+  const {
+    label,
+    inputIdentifierName,
+    placeholder,
+    value,
+    handleOnChange = () => {},
+    register = () => ({}),
+  } = props;
   return (
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
@@ -29,6 +36,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...register(inputIdentifierName)}
       />
     </div>
   );
@@ -42,10 +51,11 @@ interface Option {
 interface DropdownWithLabelProps {
   label: string;
   inputIdentifierName: string;
-  value: string;
-  handleOnChange: (name: string, value: string) => void;
+  value?: string;
+  handleOnChange?: (name: string, value: string) => void;
   options: Option[]; // Array of options
   placeholder?: string;
+  register?: UseFormRegister<FieldValues>;
 }
 
 export function DropdownWithLabel(props: DropdownWithLabelProps) {
@@ -53,9 +63,10 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     label,
     inputIdentifierName,
     value,
-    handleOnChange,
+    handleOnChange = () => {},
     options,
     placeholder = '',
+    register = () => ({}),
   } = props;
 
   return (
@@ -68,10 +79,13 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         value={value}
         placeholder={placeholder}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...register(inputIdentifierName)}
       >
-        {options.map(({ label, value }, index) => (
-          <option key={index} value={value}>
-            {label}
+        {options.map((res, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <option key={index} value={res?.value}>
+            {res?.label}
           </option>
         ))}
       </select>
@@ -84,6 +98,7 @@ interface ModalFooterProps {
   cancelHandler: () => void;
   cancelText?: string;
   addText?: string;
+  isLoading?: boolean;
 }
 
 export function ModalFooter(props: ModalFooterProps) {
@@ -92,20 +107,22 @@ export function ModalFooter(props: ModalFooterProps) {
     cancelHandler,
     cancelText = 'Cancel',
     addText = 'Add',
+    isLoading,
   } = props;
   return (
     <div className={classes.modalFooter}>
       <button
         className={classes.cancelButtonCss}
-        onClick={addHandler}
+        onClick={cancelHandler}
         type="button"
       >
         {cancelText}
       </button>
       <button
-        onClick={cancelHandler}
+        onClick={addHandler}
         className={classes.addButtonCss}
         type="button"
+        disabled={isLoading}
       >
         {addText}
       </button>

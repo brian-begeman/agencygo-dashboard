@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/no-unescaped-entities */
+import React from 'react';
 import {
   Box,
   FormControlLabel,
@@ -14,57 +15,58 @@ import {
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { genderList, assignEmployeeList } from '../constant';
-
-const initFormData = {
-  headShotName: '',
-  creatorName: '',
-  gender: '',
-  assignEmployee: '',
-  internalNote: '',
-  link: true,
-};
+import { genderList } from '../constant';
+import useFormCreator from '../hooks/useForm';
 
 interface $Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
+  type: 'add' | 'edit';
+  selectedCreator?: any;
 }
 
-export default function AddCreaterModal({ open, setOpen }: $Props) {
-  const [data, setData] = useState(initFormData);
-
-  const handleChange = (name: string, value: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+export default function AddCreaterModal({
+  open,
+  setOpen,
+  refetch,
+  type,
+  selectedCreator,
+}: $Props) {
+  const {
+    employeeOptions,
+    handleSubmit,
+    register,
+    isLoading,
+    isAutoRelink,
+    toggleAutoRelink,
+  } = useFormCreator(
+    () => {
+      setOpen(false);
+      refetch();
+    },
+    type,
+    selectedCreator
+  );
 
   const addHandler = () => {
-    setOpen(false);
+    handleSubmit();
   };
 
   const cancelHandler = () => {
-    setOpen(true);
+    setOpen(false);
   };
 
   const handleModalClose = () => {
     setOpen(false);
   };
 
-  const handleLink = () => {
-    setData((data) => ({
-      ...data,
-      link: !data.link,
-    }));
-  };
-
   return (
     <Overlay heading="Add Creators" open={open} handleClose={handleModalClose}>
       <Box sx={{ backgroundColor: '#4B4B4B', padding: '0px 80px' }}>
-        <form className={styles.modalBody}>
+        <form className={styles.modalBody} onSubmit={addHandler}>
           <Stack
-            gap={'10px'}
+            gap="10px"
             sx={{
               marginRight: '10px',
               marginLeft: '10px',
@@ -73,43 +75,38 @@ export default function AddCreaterModal({ open, setOpen }: $Props) {
             }}
             className={styles.inputListWrapper}
           >
-            <InputWithLabel
+            {/* <InputWithLabel
               label="Add headshot"
-              value={data.headShotName}
               inputIdentifierName="headshotName"
               placeholder="Enter name"
-              handleOnChange={handleChange}
-            />
+              register={register}
+            /> */}
             <InputWithLabel
               label="Creator's name"
-              value={data.creatorName}
-              inputIdentifierName="creatorName"
+              inputIdentifierName="name"
               placeholder="Enter name"
-              handleOnChange={handleChange}
+              register={register as any}
             />
 
             <DropdownWithLabel
               label="Gender"
-              value={data.gender}
               inputIdentifierName="gender"
               options={genderList}
               placeholder="Select gender"
-              handleOnChange={handleChange}
+              register={register as any}
             />
             <DropdownWithLabel
               label="Assign employee"
-              value={data.assignEmployee}
               inputIdentifierName="assignEmployee"
-              options={assignEmployeeList}
+              options={employeeOptions}
               placeholder="Choose employee"
-              handleOnChange={handleChange}
+              register={register as any}
             />
             <InputWithLabel
               label="Internal notes"
-              value={data.internalNote}
-              inputIdentifierName="internalNote"
+              inputIdentifierName="internalNotes"
               placeholder="Enter name"
-              handleOnChange={handleChange}
+              register={register as any}
             />
             <Box
               sx={{
@@ -123,9 +120,9 @@ export default function AddCreaterModal({ open, setOpen }: $Props) {
               <FormGroup>
                 <FormControlLabel
                   control={<Switch />}
-                  checked={data.link}
+                  checked={isAutoRelink}
                   label=""
-                  onClick={handleLink}
+                  onClick={toggleAutoRelink}
                 />
               </FormGroup>
             </Box>
@@ -147,6 +144,7 @@ export default function AddCreaterModal({ open, setOpen }: $Props) {
         addHandler={addHandler}
         cancelHandler={cancelHandler}
         addText="Add Creator"
+        isLoading={isLoading}
       />
     </Overlay>
   );

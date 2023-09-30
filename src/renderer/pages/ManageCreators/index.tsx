@@ -1,4 +1,11 @@
-import { Button, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Button,
+  ButtonBase,
+  Stack,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,9 +16,11 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
-import styles from './styles.module.css';
 import { useState } from 'react';
+import useMutation from 'renderer/hooks/useMutation';
+import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
+import useDataCreators from './hooks/useData';
 
 const creatorsTableHeaders = [
   'Creators',
@@ -24,62 +33,14 @@ const creatorsTableHeaders = [
   'Operations',
 ];
 
-const creatorsTableData = [
-  {
-    name: 'Joan Adams',
-    imageSrc: '',
-    gender: 'Female',
-    internalNotes: '-',
-    platform: {
-      name: 'OnlyFans',
-      icon: <OnlyFansSvg />,
-      linked: true,
-    },
-    employees: 'Chrissie',
-    proxy: {
-      name: 'OnlyManager Proxy',
-      ipAddress: '107.175.227.145',
-    },
-    activated: true,
-  },
-  {
-    name: 'Chris Jean-Baptiste',
-    imageSrc: '',
-    gender: 'Female',
-    internalNotes: '-',
-    platform: {
-      name: 'OnlyFans',
-      icon: <OnlyFansSvg />,
-      linked: true,
-    },
-    employees: 'Chrissie',
-    proxy: {
-      name: 'OnlyManager Proxy',
-      ipAddress: '107.175.227.145',
-    },
-    activated: true,
-  },
-  {
-    name: 'Joan Adams',
-    imageSrc: '',
-    gender: 'Female',
-    internalNotes: '-',
-    platform: {
-      name: 'OnlyFans',
-      icon: <OnlyFansSvg />,
-      linked: true,
-    },
-    employees: 'Chrissie',
-    proxy: {
-      name: 'OnlyManager Proxy',
-      ipAddress: '107.175.227.145',
-    },
-    activated: false,
-  },
-];
-
 export default function ManageCreators() {
   const [openAddCreater, setOpenAddCreater] = useState(false);
+  const [formType, setFormType] = useState<'add' | 'edit'>('add');
+  const { creators, refetch, selectedCreator, setSelectedCreator } =
+    useDataCreators();
+  const { mutate: mutateDelete } = useMutation({
+    key: 'delete-creator',
+  });
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -98,7 +59,10 @@ export default function ManageCreators() {
               alignItems: 'center',
               gap: '5px',
             }}
-            onClick={() => setOpenAddCreater(true)}
+            onClick={() => {
+              setFormType('add');
+              setOpenAddCreater(true);
+            }}
           >
             <Typography
               sx={{
@@ -117,15 +81,16 @@ export default function ManageCreators() {
           <Filter />
           <FilterTable tableHeaders={creatorsTableHeaders}>
             <>
-              {creatorsTableData.map(
+              {creators.map(
                 ({
-                  name,
+                  creatorName: name,
                   gender,
                   internalNotes,
-                  platform,
                   employees,
-                  proxy,
                   activated,
+                  id,
+                  autoRelink,
+                  imageSrc,
                 }) => (
                   <TableRow
                     key={name}
@@ -153,7 +118,7 @@ export default function ManageCreators() {
                       }}
                       align="right"
                     >
-                      {gender}
+                      {gender === 'male' ? 'Male' : 'Female'}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -174,15 +139,15 @@ export default function ManageCreators() {
                         spacing={2}
                         color="#fff"
                       >
-                        {platform.icon}
-                        {platform.name}
+                        OnlyFans
+                        <OnlyFansSvg />
                       </Stack>
                       <Typography
                         component="small"
                         color="#fff"
                         fontSize="11px"
                       >
-                        {platform.linked ? 'Linked' : 'Not Linked'}
+                        Not Linked
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -199,10 +164,10 @@ export default function ManageCreators() {
                       }}
                     >
                       <Typography color="#fff" fontSize="14px">
-                        {proxy.name}
+                        OnlyManager Proxy
                       </Typography>
                       <Typography color="#fff" fontSize="11px">
-                        {proxy.ipAddress}
+                        107.175.227.145
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -219,9 +184,42 @@ export default function ManageCreators() {
                       align="right"
                     >
                       <Stack spacing={4} direction="row" alignItems="center">
-                        <Typography variant="body1" color="#fff">
-                          Edit
-                        </Typography>
+                        <ButtonBase
+                          onClick={() => {
+                            setFormType('edit');
+                            setSelectedCreator({
+                              creatorName: name,
+                              autoRelink,
+                              gender,
+                              id,
+                              internalNotes,
+                              activated,
+                              employees,
+                              imageSrc,
+                            });
+                            setOpenAddCreater(true);
+                          }}
+                        >
+                          <Typography variant="body1" color="#fff">
+                            Edit
+                          </Typography>
+                        </ButtonBase>
+                        <ButtonBase
+                          onClick={() => {
+                            mutateDelete(
+                              { id },
+                              {
+                                onSuccess: () => {
+                                  refetch();
+                                },
+                              }
+                            );
+                          }}
+                        >
+                          <Typography variant="body1" color="#FF0000">
+                            Delete
+                          </Typography>
+                        </ButtonBase>
                         <Typography variant="body1" color="#fff">
                           More
                         </Typography>
@@ -234,7 +232,13 @@ export default function ManageCreators() {
           </FilterTable>
         </Stack>
       </section>
-      <AddCreaterModal setOpen={setOpenAddCreater} open={openAddCreater} />
+      <AddCreaterModal
+        setOpen={setOpenAddCreater}
+        open={openAddCreater}
+        refetch={refetch}
+        type={formType}
+        selectedCreator={selectedCreator}
+      />
     </Dashboard>
   );
 }
