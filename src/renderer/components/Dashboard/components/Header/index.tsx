@@ -73,7 +73,7 @@ function Header() {
   const [show, setShow] = React.useState(false);
 
   const handleLogout: () => void = () => {
-    window.electron.ipcRenderer.sendMessage('logout-request');
+    // window.electron.ipcRenderer.sendMessage('logout-request');
   };
   return (
     <div className={classes.navbar}>

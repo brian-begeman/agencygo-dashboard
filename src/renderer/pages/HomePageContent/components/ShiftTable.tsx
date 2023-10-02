@@ -77,7 +77,7 @@ export default function ShiftTable() {
       borderRadius="16px"
     >
       <Box marginBottom="10px">
-        <Typography>My Shifts</Typography>
+        <Typography fontSize={'22px'}>My Shifts</Typography>
       </Box>
       <TableContainer
         sx={{
@@ -128,7 +128,7 @@ export default function ShiftTable() {
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
                       <Avatar />
-                      <Typography variant="h6" fontSize="18px" color="#fff">
+                      <Typography variant="h6" fontSize="14px" color="#fff">
                         {name}
                       </Typography>
                     </Stack>
@@ -138,7 +138,6 @@ export default function ShiftTable() {
                       borderColor: theme.palette.primary.contrastText,
                       color: '#fff',
                     }}
-                    align="right"
                   >
                     {gender}
                   </TableCell>
@@ -181,10 +180,10 @@ export default function ShiftTable() {
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Typography color="#fff" fontSize="14px">
+                    <Typography color="#fff" fontSize="12px">
                       {proxy.name}
                     </Typography>
-                    <Typography color="#fff" fontSize="11px">
+                    <Typography color="#fff" fontSize="10px">
                       {proxy.ipAddress}
                     </Typography>
                   </TableCell>
@@ -202,10 +201,18 @@ export default function ShiftTable() {
                     align="right"
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
-                      <Typography variant="body1" color="#fff">
+                      <Typography
+                        variant="body1"
+                        color="#fff"
+                        fontSize={'14px'}
+                      >
                         Edit
                       </Typography>
-                      <Typography variant="body1" color="#fff">
+                      <Typography
+                        variant="body1"
+                        color="#fff"
+                        fontSize={'14px'}
+                      >
                         More
                       </Typography>
                     </Stack>

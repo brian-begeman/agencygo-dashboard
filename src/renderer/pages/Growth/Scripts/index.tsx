@@ -6,6 +6,7 @@ import { Add } from '@mui/icons-material';
 import FileNotFound from 'renderer/assets/svg/FileNotFound';
 import SearchUsers from 'renderer/components/SearchUsers';
 import styles from './styles.module.css';
+import DataNotFound from 'renderer/components/DataNotFound';
 
 const tags = ['All tags', 'Tag 1'];
 
@@ -101,25 +102,32 @@ function Scripts() {
               </Typography>
             ))}
           </Stack>
-          <Stack
-            gap="16px"
-            direction="row"
-            justifyContent="space-between"
-            sx={{ backgroundColor: theme.palette.primary.contrastText }}
-            className={styles.campaign}
-            paddingTop="30px"
-            paddingBottom="12px"
-            paddingX="16px"
+          <Box
+            sx={{
+              borderRadius: '12px',
+              border: `1px solid ${theme.palette.primary.contrastText}`,
+            }}
           >
-            {headTags.map((tag) => (
-              <Typography fontWeight={600} fontSize="16px">
-                {tag}
-              </Typography>
-            ))}
-          </Stack>
-          <Stack justifyContent="center" direction="row">
-            <FileNotFound />
-          </Stack>
+            <Stack
+              gap="16px"
+              direction="row"
+              justifyContent="space-between"
+              sx={{
+                backgroundColor: theme.palette.primary.contrastText,
+              }}
+              className={styles.campaign}
+              paddingTop="30px"
+              paddingBottom="12px"
+              paddingX="16px"
+            >
+              {headTags.map((tag) => (
+                <Typography fontWeight={600} fontSize="16px">
+                  {tag}
+                </Typography>
+              ))}
+            </Stack>
+            <DataNotFound />
+          </Box>
         </Stack>
       </Box>
     </>

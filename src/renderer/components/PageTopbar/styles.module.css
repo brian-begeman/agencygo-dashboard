@@ -3,14 +3,7 @@
   display: flex;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  padding: 32px;
+  padding: 28px;
   position: relative;
   justify-content: space-between;
-}
-
-.headerText {
-  color: var(--color-white);
-  font-size: 34px;
-  font-weight: 600;
-  margin: 0;
 }

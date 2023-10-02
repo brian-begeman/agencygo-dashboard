@@ -13,21 +13,21 @@ export default function EarningsCard({ title, amount, icon }: $Props) {
     <Stack
       flexDirection="row"
       borderRadius="16px"
-      gap="15px"
       alignItems="center"
+      justifyContent={'space-between'}
       height="120px"
       sx={{
         padding: '32px',
         border: `1px solid ${theme.palette.primary.contrastText}`,
       }}
     >
-      <Stack spacing="32px" minWidth="190px">
+      <Stack spacing="32px">
         <Typography color="#fff" fontWeight="600" fontSize="14px">
           {title}
         </Typography>
         <Typography
           color={theme.palette.secondary.contrastText}
-          fontSize="50px"
+          fontSize="36px"
           fontWeight={700}
         >
           {amount}
@@ -40,7 +40,6 @@ export default function EarningsCard({ title, amount, icon }: $Props) {
             display: 'flex',
             backgroundColor: theme.palette.primary.contrastText,
             width: '1px',
-            marginRight: '32px',
           }}
           component="div"
         />

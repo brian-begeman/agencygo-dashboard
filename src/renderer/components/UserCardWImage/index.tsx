@@ -34,16 +34,20 @@ export default function UserCardWImage({
         <Avatar />
       )}
 
-      <h3 className={styles.title}>{name}</h3>
+      <Typography variant="h3" color="#fff" fontSize={'14px'} fontWeight={500}>
+        {name}
+      </Typography>
       {notificationCount && (
         <IconButton className={styles.icon}>
-          <span className={styles.iconText}>{notificationCount}</span>
+          <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+            {notificationCount}
+          </Typography>
           <Message />
         </IconButton>
       )}
       {messageCount && (
         <IconButton className={styles.icon}>
-          <Typography noWrap className={styles.iconText}>
+          <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
             {messageCount}
           </Typography>
           <NotificationsNoneIcon

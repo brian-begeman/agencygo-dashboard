@@ -51,7 +51,7 @@ export default function Growth() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(min-content, 416px) 1fr',
+            gridTemplateColumns: 'minmax(min-content, 380px) 1fr',
             height: '100%',
           }}
         >
