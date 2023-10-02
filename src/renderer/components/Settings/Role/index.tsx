@@ -22,6 +22,7 @@ import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import classes from './styles.module.css';
+import RoleManager from './Manager';
 
 const roleMenu = [
   {
@@ -108,8 +109,13 @@ const employeesTableData = [
     activated: false,
   },
 ];
+interface TabProps {
+  handleTabChange: (name: string) => void;
+}
 
-function Role() {
+
+function RoleLanding(props:TabProps) {
+  const {handleTabChange}=props;
   const [searchText, setSearchText] = useState('');
   const [anchorElRoleName, setAnchorElRoleName] =
     React.useState<HTMLButtonElement | null>(null);
@@ -139,6 +145,11 @@ function Role() {
   const statusPopoverOpen = Boolean(anchorElStatus);
   const statusId = statusPopoverOpen ? 'status-name' : undefined;
 
+  const handleRowClick=(name:string)=>{
+    if(name==="Manager"){
+      handleTabChange('RoleManager');
+    }
+  }
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -219,6 +230,7 @@ function Role() {
               sx={{
                 '&:last-child td, &:last-child th': { border: 0 },
               }}
+              onClick={()=>handleRowClick(role)}
             >
               <TableCell
                 sx={{
@@ -292,6 +304,35 @@ function Role() {
       </FilterTable>
     </div>
   );
+}
+
+
+
+
+function Role() {
+  const [activeTab, setActiveTab] = useState('Role');
+
+  const renderTab = (
+    tabName: string,
+    handleTabChange: (name: string) => void
+  ) => {
+    switch (tabName) {
+      case 'Role':
+        return <RoleLanding handleTabChange={handleTabChange} />;
+      case 'RoleManager':
+        return <RoleManager handleTabChange={handleTabChange} />;
+      
+
+      default:
+        return <h5>Not found</h5>;
+    }
+  };
+
+  const handleTabChange = (name: string) => {
+    setActiveTab(name);
+  };
+
+  return <>{renderTab(activeTab, handleTabChange)}</>;
 }
 
 export default Role;

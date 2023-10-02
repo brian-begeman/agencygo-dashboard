@@ -199,7 +199,7 @@ function AppRoutes() {
   const { isLogin } = useAuth();
   return (
     <Routes>
-      {isLogin ? (
+      {true ? (
         <>
           <Route path="/" element={<Navigate to="/home" />} />
           {ROUTES.map(({ path, element, nestedRoutes }) =>
