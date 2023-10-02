@@ -27,6 +27,10 @@ import Requests from './pages/ShareForShare/Requests';
 import TrialLinks from './pages/Growth/TrialLink';
 import Register from './pages/Auth/register';
 import Schedule from './pages/ShareForShare/Schedule';
+import Analytics from './pages/Analytics';
+import CreaterReports from './pages/Analytics/CreateReports';
+import ChatterReports from './pages/Analytics/ChatterReports';
+import FanReports from './pages/Analytics/FanReports';
 
 const ROUTES = [
   {
@@ -68,6 +72,31 @@ const ROUTES = [
     path: '/employees-manage-employees',
     element: <ManageEmployees />,
     pathName: 'Manage Employees',
+  },
+  {
+    path: 'analytics',
+    element: <Analytics />,
+    pathName: 'Analytics',
+    nestedRoutes: [
+      {
+        path: 'create-reports',
+        element: <CreaterReports />,
+        pathName: 'Create Reports',
+        nestedLink: '/analytics/create-reports',
+      },
+      {
+        path: 'chatter-reports',
+        element: <ChatterReports />,
+        pathName: 'Chatter Reports',
+        nestedLink: '/analytics/chatter-reports',
+      },
+      {
+        path: 'fan-reports',
+        element: <FanReports />,
+        pathName: 'Fan Reports',
+        nestedLink: '/analytics/fan-reports',
+      },
+    ],
   },
   {
     path: 'growth',

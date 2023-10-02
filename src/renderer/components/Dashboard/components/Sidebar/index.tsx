@@ -32,14 +32,17 @@ const sideBarMenuConst = [
       {
         label: 'Create Reports',
         value: 'createReports',
+        link: '/analytics/create-reports',
       },
       {
         label: 'Chatter Reports',
         value: 'chatterReports',
+        link: '/analytics/chatter-reports',
       },
       {
         label: 'Fan Reports',
         value: 'fanReports',
+        link: '/analytics/fan-reports',
       },
     ],
   },
