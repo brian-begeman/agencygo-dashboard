@@ -98,7 +98,10 @@ export default function ManageEmployees() {
         </PageTopbar>
         <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
           <Filter />
-          <FilterTable tableHeaders={employeesTableHeaders}>
+          <FilterTable
+            isEmptyContent={!employees.length}
+            tableHeaders={employeesTableHeaders}
+          >
             <>
               {employees.map(
                 ({
