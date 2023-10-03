@@ -54,14 +54,17 @@ export default function AddEmployeeModal({
       handleClose={handleModalClose}
     >
       <Box sx={{ backgroundColor: '#4B4B4B' }}>
-        <form className={styles.modalBody} onSubmit={handleSubmit}>
+        <form
+          className={styles.modalBody}
+          id="addEmployee"
+          onSubmit={handleSubmit}
+        >
           <Stack
             gap="10px"
             sx={{
-              marginRight: '30px',
-              marginLeft: '30px',
-              paddingTop: '10px',
-              paddingBottom: '10px',
+              marginInline: '30px',
+              paddingTop: '30px',
+              paddingBottom: '50px',
             }}
             className={styles.inputListWrapper}
           >
@@ -97,6 +100,7 @@ export default function AddEmployeeModal({
         cancelHandler={cancelHandler}
         addText="Add Employee"
         isLoading={isLoading}
+        id="addEmployee"
       />
     </Overlay>
   );
