@@ -43,9 +43,7 @@ export default function UpdateButtons() {
           />
         }
       >
-        <Typography fontWeight={500} fontSize="12px" sx={{ color: '#fff' }}>
-          Edit
-        </Typography>
+        <Typography variant="h5">Edit</Typography>
       </Button>
     </Stack>
   );
