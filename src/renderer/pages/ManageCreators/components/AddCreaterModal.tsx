@@ -64,7 +64,11 @@ export default function AddCreaterModal({
   return (
     <Overlay heading="Add Creators" open={open} handleClose={handleModalClose}>
       <Box sx={{ backgroundColor: '#4B4B4B', padding: '0px 80px' }}>
-        <form className={styles.modalBody} onSubmit={addHandler}>
+        <form
+          id="addCreator"
+          className={styles.modalBody}
+          onSubmit={addHandler}
+        >
           <Stack
             gap="10px"
             sx={{
@@ -75,12 +79,6 @@ export default function AddCreaterModal({
             }}
             className={styles.inputListWrapper}
           >
-            {/* <InputWithLabel
-              label="Add headshot"
-              inputIdentifierName="headshotName"
-              placeholder="Enter name"
-              register={register}
-            /> */}
             <InputWithLabel
               label="Creator's name"
               inputIdentifierName="name"
@@ -144,6 +142,7 @@ export default function AddCreaterModal({
         addHandler={addHandler}
         cancelHandler={cancelHandler}
         addText="Add Creator"
+        id="addCreator"
         isLoading={isLoading}
       />
     </Overlay>
