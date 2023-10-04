@@ -15,6 +15,7 @@ interface InputWithLabelProps {
   inputIdentifierName: string;
   placeholder: string;
   value?: string;
+  required?: boolean;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -24,6 +25,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     inputIdentifierName,
     placeholder,
     value,
+    required = false,
     handleOnChange = () => {},
     register = () => ({}),
   } = props;
@@ -34,6 +36,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
         className={classes.inputCss}
         name={inputIdentifierName}
         placeholder={placeholder}
+        required={required}
         value={value}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -99,6 +102,7 @@ interface ModalFooterProps {
   cancelText?: string;
   addText?: string;
   isLoading?: boolean;
+  id?: string;
 }
 
 export function ModalFooter(props: ModalFooterProps) {
@@ -108,6 +112,7 @@ export function ModalFooter(props: ModalFooterProps) {
     cancelText = 'Cancel',
     addText = 'Add',
     isLoading,
+    id = '',
   } = props;
   return (
     <div className={classes.modalFooter}>
@@ -121,7 +126,8 @@ export function ModalFooter(props: ModalFooterProps) {
       <button
         onClick={addHandler}
         className={classes.addButtonCss}
-        type="button"
+        type="submit"
+        id={id}
         disabled={isLoading}
       >
         {addText}

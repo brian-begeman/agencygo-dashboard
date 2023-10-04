@@ -69,9 +69,7 @@ export default function CreatePost() {
               },
             }}
           />
-          <Typography fontSize="12px" fontWeight={500} color="#fff">
-            Select Media Files
-          </Typography>
+          <Typography variant="h5">Select Media Files</Typography>
           <Stack direction="row" gap="20px">
             <IconButton sx={{ padding: '0px !important' }}>
               <AddImageSvg />

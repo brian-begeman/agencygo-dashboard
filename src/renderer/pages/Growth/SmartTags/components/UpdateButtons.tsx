@@ -25,7 +25,7 @@ export default function UpdateButtons() {
       >
         <Typography
           fontWeight={500}
-          fontSize="14px"
+          fontSize="12px"
           sx={{ color: theme.palette.error.main }}
         >
           Delete
@@ -43,9 +43,7 @@ export default function UpdateButtons() {
           />
         }
       >
-        <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-          Edit
-        </Typography>
+        <Typography variant="h5">Edit</Typography>
       </Button>
     </Stack>
   );

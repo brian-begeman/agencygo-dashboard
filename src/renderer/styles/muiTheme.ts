@@ -20,6 +20,13 @@ const theme = createTheme({
       main: '#37DE8F',
     },
   },
+  typography: {
+    h5: {
+      fontWeight: 500,
+      fontSize: '12px',
+      color: '#fff',
+    },
+  },
 });
 
 export default theme;

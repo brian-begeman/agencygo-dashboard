@@ -24,31 +24,24 @@ export default function FilterTag() {
             variant="text"
             sx={{ background: theme.palette.secondary.light }}
           >
-            <Typography
-              fontWeight={600}
-              fontSize="14px"
-              color="#fff"
-              padding="5px 10px"
-            >
+            <Typography fontWeight={600} fontSize="12px" color="#fff">
               Total Spent
             </Typography>
           </Button>
           <Button variant="text">
-            <Typography
-              fontWeight={600}
-              fontSize="14px"
-              color="#fff"
-              padding="5px 10px"
-            >
+            <Typography fontWeight={600} fontSize="12px" color="#fff">
               Last 30 days spend
             </Typography>
           </Button>
         </Box>
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ fontSize: '18px', color: theme.palette.secondary.contrastText }}
+        />
       </Stack>
       <FormGroup>
         <FormControlLabel
           control={<Checkbox sx={{ color: '#fff' }} />}
+          sx={{ '& .MuiFormControlLabel-label': { fontSize: '12px' } }}
           label="Add expired fans"
         />
       </FormGroup>

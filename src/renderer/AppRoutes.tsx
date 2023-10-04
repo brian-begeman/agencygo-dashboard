@@ -34,6 +34,11 @@ import FanReports from './pages/Analytics/FanReports';
 
 const ROUTES = [
   {
+    path: '*',
+    element: <Login />,
+    pathName: 'Login',
+  },
+  {
     path: '/home',
     element: <HomePage />,
     pathName: 'Home Page',

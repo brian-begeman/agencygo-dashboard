@@ -79,7 +79,10 @@ export default function ManageCreators() {
         </PageTopbar>
         <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
           <Filter />
-          <FilterTable tableHeaders={creatorsTableHeaders}>
+          <FilterTable
+            isEmptyContent={!creators.length}
+            tableHeaders={creatorsTableHeaders}
+          >
             <>
               {creators.map(
                 ({

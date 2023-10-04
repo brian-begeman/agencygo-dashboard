@@ -52,7 +52,7 @@ export default function Earnings() {
       }}
     >
       <Box marginBottom="10px">
-        <Typography color="#AAAAAA" fontWeight="600" fontSize="18px">
+        <Typography color="#AAAAAA" fontWeight="600" fontSize="22px">
           Creators Earnings Overview
         </Typography>
       </Box>
@@ -86,6 +86,7 @@ export default function Earnings() {
           <Typography
             variant="h3"
             fontWeight="700"
+            fontSize={'36px'}
             color={theme.palette.secondary.contrastText}
           >
             $473.44

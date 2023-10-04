@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import styles from './styles.module.css';
 
@@ -8,11 +8,25 @@ interface $Props {
 }
 
 function PageTopbar({ children }: $Props) {
-  return <header className={styles.header}>{children}</header>;
+  return (
+    <Box component={'header'} className={styles.header}>
+      {children}
+    </Box>
+  );
 }
 
 function HeaderText({ children }: $Props) {
-  return <h1 className={styles.headerText}>{children}</h1>;
+  return (
+    <Typography
+      variant="h1"
+      color={'#fff'}
+      fontSize={'22px'}
+      fontWeight={600}
+      margin={0}
+    >
+      {children}
+    </Typography>
+  );
 }
 
 interface $ButtonProps {

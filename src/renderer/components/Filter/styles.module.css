@@ -11,3 +11,8 @@
 .input input {
   width: 100%;
 }
+
+.campaign {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}

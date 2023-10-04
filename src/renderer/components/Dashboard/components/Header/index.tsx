@@ -75,6 +75,7 @@ function Header() {
   const handleLogout: () => void = () => {
     window.electron.ipcRenderer.sendMessage('logout-request');
   };
+
   return (
     <div className={classes.navbar}>
       <div className={classes.start}>
