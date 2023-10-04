@@ -17,8 +17,7 @@ export default function Register() {
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
       .required('Password is required')
-      .min(9, 'Password must be at least 9 characters')
-      .max(40, 'Password must not exceed 40 characters'),
+      .min(6, 'Password must be at least 6 characters'),
     agencyName: Yup.string().required('Agency name is required'),
     numberOfCreators: Yup.number().required('Number of creators is required'),
     agencyWebsite: Yup.string().required('Agency website is required'),
