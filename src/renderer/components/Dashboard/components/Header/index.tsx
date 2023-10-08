@@ -15,9 +15,10 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
 import localisation from '../../../localisation.json';
 import classes from './styles.module.css';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 const navigationItemsConst = [
   {
@@ -71,9 +72,10 @@ function NavigationItem(props: any) {
 function Header() {
   const currentElem = React.useRef(null);
   const [show, setShow] = React.useState(false);
+  const { logout } = useContext(AuthContext);
 
   const handleLogout: () => void = () => {
-    window.electron.ipcRenderer.sendMessage('logout-request');
+    logout();
   };
 
   return (

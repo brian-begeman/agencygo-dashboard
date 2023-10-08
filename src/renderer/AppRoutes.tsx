@@ -31,6 +31,8 @@ import Analytics from './pages/Analytics';
 import CreaterReports from './pages/Analytics/CreateReports';
 import ChatterReports from './pages/Analytics/ChatterReports';
 import FanReports from './pages/Analytics/FanReports';
+import { useContext } from 'react';
+import { AuthContext } from './contexts/AuthContext';
 
 const ROUTES = [
   {
@@ -201,7 +203,8 @@ const ROUTES = [
 ];
 
 function AppRoutes() {
-  const { isLogin } = useAuth();
+  const { isLogin } = useContext(AuthContext);
+
   return (
     <Routes>
       {isLogin ? (

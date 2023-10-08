@@ -9,8 +9,11 @@ import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import { ButtonBase } from '@mui/material';
 import styles from '../Login/styles.module.css';
+import { AuthContext } from 'renderer/contexts/AuthContext';
+import { useContext } from 'react';
 
 export default function Register() {
+  const { login } = useContext(AuthContext);
   const { mutate: mutateRegister, isLoading } = useMutation({ key: 'signup' });
   const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
@@ -33,11 +36,13 @@ export default function Register() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    mutateRegister(data, {
-      onSuccess: () => {
-        navigate('/home');
-      },
-    });
+    // mutateRegister(data, {
+    //   onSuccess: () => {
+    //     navigate('/home');
+    //   },
+    // });
+    login();
+    navigate('/home');
   };
 
   return (

@@ -5,13 +5,16 @@ import './App.css';
 import { ThemeProvider } from '@mui/material';
 import theme from './styles/muiTheme';
 import AppRoutes from './AppRoutes';
+import AuthProvider from './contexts/AuthContext';
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
