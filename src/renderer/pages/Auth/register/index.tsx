@@ -9,15 +9,18 @@ import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import { ButtonBase } from '@mui/material';
 import styles from '../Login/styles.module.css';
+import { AuthContext } from 'renderer/contexts/AuthContext';
+import { useContext } from 'react';
 
 export default function Register() {
+  const { login } = useContext(AuthContext);
   const { mutate: mutateRegister, isLoading } = useMutation({ key: 'signup' });
   const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters'),
+      .min(9, 'Password must be at least 9 characters'),
     agencyName: Yup.string().required('Agency name is required'),
     numberOfCreators: Yup.number().required('Number of creators is required'),
     agencyWebsite: Yup.string().required('Agency website is required'),
@@ -33,11 +36,13 @@ export default function Register() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    mutateRegister(data, {
-      onSuccess: () => {
-        navigate('/home');
-      },
-    });
+    // mutateRegister(data, {
+    //   onSuccess: () => {
+    //     navigate('/home');
+    //   },
+    // });
+    login();
+    navigate('/home');
   };
 
   return (

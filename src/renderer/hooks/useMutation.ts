@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AuthServices from 'services/auth';
 import { TMutationService } from 'types';
 
 interface IProps {
@@ -26,34 +27,31 @@ const useMutation = (props: IProps): IResponse => {
   const [data, setData] = useState<any>(null);
 
   const mutate = async (body: any, options?: IOptionsMutate) => {
+    const { onSuccess, onError } = options || {};
     try {
-      const { onSuccess, onError } = options || {};
       setLoading(true);
-
-      window.electron.ipcRenderer.sendMessage(`${key}-request`, body);
-      await new Promise((resolve, reject) => {
-        window.electron.ipcRenderer.on(`${key}-response`, (res) => {
-          setLoading(false);
-          setSuccess(true);
-          setError(false);
-          setData(res);
-          if (onSuccess) {
-            onSuccess(res);
-          }
-          resolve(res);
-        });
-        window.electron.ipcRenderer.on(`${key}-error`, () => {
-          setLoading(false);
-          setError(true);
-          setSuccess(false);
-          if (onError) {
-            onError(data);
-          }
-          reject(data);
-        });
-      });
+      let resp = {};
+      if (key === 'signup') {
+        resp = await AuthServices.signupRequest(body);
+      }
+      if (key === 'login') {
+        resp = await AuthServices.loginRequest(body);
+      }
+      console.log({ resp });
+      setLoading(false);
+      setSuccess(true);
+      setError(false);
+      setData(resp);
+      if (onSuccess) {
+        onSuccess(resp);
+      }
     } catch (err: any) {
-      console.log(err);
+      setLoading(false);
+      setError(true);
+      setSuccess(false);
+      if (onError) {
+        onError(data);
+      }
     }
   };
 

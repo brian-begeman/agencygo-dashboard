@@ -18,24 +18,24 @@ const useQuery = (props: IProps) => {
 
   const fetch = async () => {
     setLoading(true);
-    window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
-    window.electron.ipcRenderer.on(`${key}-response`, (res) => {
-      setLoading(false);
-      setSuccess(true);
-      setError(false);
-      setData(res);
-      if (onSuccess) {
-        onSuccess();
-      }
-    });
-    window.electron.ipcRenderer.on(`${key}-error`, () => {
-      setLoading(false);
-      setError(true);
-      setSuccess(false);
-      if (onError) {
-        onError();
-      }
-    });
+    // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
+    // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
+    //   setLoading(false);
+    //   setSuccess(true);
+    //   setError(false);
+    //   setData(res);
+    //   if (onSuccess) {
+    //     onSuccess();
+    //   }
+    // });
+    // window.electron.ipcRenderer.on(`${key}-error`, () => {
+    //   setLoading(false);
+    //   setError(true);
+    //   setSuccess(false);
+    //   if (onError) {
+    //     onError();
+    //   }
+    // });
   };
 
   useEffect(() => {

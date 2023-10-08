@@ -40,9 +40,9 @@ export default function ManageEmployees() {
     selectedEmployee,
     setSelectedEmployee,
   } = useDataEmployees();
-  const { mutate: mutateDelete } = useMutation({
-    key: 'delete-employee',
-  });
+  // const { mutate: mutateDelete } = useMutation({
+  //   key: 'delete-employee',
+  // });
 
   return (
     <Dashboard>
@@ -180,14 +180,14 @@ export default function ManageEmployees() {
                         </ButtonBase>
                         <ButtonBase
                           onClick={() => {
-                            mutateDelete(
-                              { id },
-                              {
-                                onSuccess: () => {
-                                  refetch();
-                                },
-                              }
-                            );
+                            // mutateDelete(
+                            //   { id },
+                            //   {
+                            //     onSuccess: () => {
+                            //       refetch();
+                            //     },
+                            //   }
+                            // );
                           }}
                         >
                           <Typography variant="body1" color="#FF0000">

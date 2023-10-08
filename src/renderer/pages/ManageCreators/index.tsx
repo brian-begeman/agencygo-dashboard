@@ -38,9 +38,9 @@ export default function ManageCreators() {
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const { creators, refetch, selectedCreator, setSelectedCreator } =
     useDataCreators();
-  const { mutate: mutateDelete } = useMutation({
-    key: 'delete-creator',
-  });
+  // const { mutate: mutateDelete } = useMutation({
+  //   key: 'delete-creator',
+  // });
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -209,14 +209,14 @@ export default function ManageCreators() {
                         </ButtonBase>
                         <ButtonBase
                           onClick={() => {
-                            mutateDelete(
-                              { id },
-                              {
-                                onSuccess: () => {
-                                  refetch();
-                                },
-                              }
-                            );
+                            // mutateDelete(
+                            //   { id },
+                            //   {
+                            //     onSuccess: () => {
+                            //       refetch();
+                            //     },
+                            //   }
+                            // );
                           }}
                         >
                           <Typography variant="body1" color="#FF0000">
