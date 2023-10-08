@@ -38,18 +38,18 @@ const useDataEmployees = () => {
   const { isLoading, data, refetch } = useQuery({ key: 'get-employee' });
 
   useEffect(() => {
-    window.electron.ipcRenderer
-      .invoke('get-store', 'agency')
-      .then((res) => {
-        const result = {
-          text: res?.agencyName || '',
-          isActive: true,
-        };
-        return setAgencies([result]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // window.electron.ipcRenderer
+    //   .invoke('get-store', 'agency')
+    //   .then((res) => {
+    //     const result = {
+    //       text: res?.agencyName || '',
+    //       isActive: true,
+    //     };
+    //     return setAgencies([result]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, []);
 
   useEffect(() => {
