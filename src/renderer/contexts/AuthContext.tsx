@@ -19,8 +19,6 @@ interface $Props {
 export default function AuthProvider({ children }: $Props) {
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log({ isLogin });
-
   const login = () => {
     setIsLogin(true);
   };
