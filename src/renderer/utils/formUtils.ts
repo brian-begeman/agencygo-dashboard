@@ -31,4 +31,19 @@ const registerFields = [
   { label: 'Password', name: 'password', type: 'password', required: true },
 ];
 
-export default { loginFields, registerFields };
+const resetPasswordFields = [
+  {
+    label: 'Please enter your password',
+    name: 'password',
+    type: 'password',
+    required: true,
+  },
+  {
+    label: 'Please enter new password',
+    name: 'newPassword',
+    type: 'password',
+    required: true,
+  },
+];
+
+export default { loginFields, registerFields, resetPasswordFields };
