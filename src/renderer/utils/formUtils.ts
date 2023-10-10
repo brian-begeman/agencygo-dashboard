@@ -3,6 +3,15 @@ const loginFields = [
   { label: 'Password', name: 'password', type: 'password', required: true },
 ];
 
+const setPasswordFields = [
+  {
+    label: 'Please enter your password',
+    name: 'password',
+    type: 'password',
+    required: true,
+  },
+];
+
 const registerFields = [
   { label: 'Email', name: 'email', type: 'email', required: true },
   {
@@ -31,4 +40,8 @@ const registerFields = [
   { label: 'Password', name: 'password', type: 'password', required: true },
 ];
 
-export default { loginFields, registerFields };
+export default {
+  loginFields,
+  registerFields,
+  setPasswordFields,
+};
