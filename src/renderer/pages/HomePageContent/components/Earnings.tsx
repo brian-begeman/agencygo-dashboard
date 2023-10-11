@@ -8,6 +8,8 @@ import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import EarningsCard from 'renderer/components/EarningsCard';
 import styles from './styles.module.css';
+import ButtonGroup from 'renderer/components/ButtonGroup';
+import { useState } from 'react';
 
 const earningsInitJson = [
   {
@@ -42,7 +44,16 @@ const earningsInitJson = [
   },
 ];
 
+const timeButton = [
+  { id: 1, title: 'Yesterday' },
+  { id: 2, title: 'Today' },
+  { id: 3, title: 'This Week' },
+  { id: 4, title: 'Today' },
+  { id: 5, title: 'This Month' },
+];
+
 export default function Earnings() {
+  const [activeButton, setActiveButton] = useState(1);
   return (
     <Box
       padding="16px"
@@ -51,10 +62,15 @@ export default function Earnings() {
         backgroundColor: theme.palette.secondary.main,
       }}
     >
-      <Box marginBottom="10px">
+      <Box marginBottom="10px" display="flex" justifyContent="space-between">
         <Typography color="#AAAAAA" fontWeight="600" fontSize="22px">
           Creators Earnings Overview
         </Typography>
+        <ButtonGroup
+          tabButton={timeButton}
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
+        />
       </Box>
       <Stack flexDirection="row" gap="20px">
         <Stack
@@ -63,7 +79,7 @@ export default function Earnings() {
           sx={{
             padding: '32px',
             border: `1px solid ${theme.palette.primary.contrastText}`,
-            minWidth: '350px',
+            minWidth: '250px',
           }}
         >
           <OnlyFansCircleBlue />
