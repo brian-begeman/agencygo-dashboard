@@ -13,6 +13,7 @@ import theme from 'renderer/styles/muiTheme';
 import { Box, Stack, Typography } from '@mui/material';
 import ButtonGroup from 'renderer/components/ButtonGroup';
 import { useState } from 'react';
+import { ErrorOutline } from '@mui/icons-material';
 
 const tabButtonData = [
   { id: 1, title: 'All', value: 'all' },
@@ -91,7 +92,10 @@ export default function Earnings() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography fontSize="22px">Earnings</Typography>
+        <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+          Earnings
+          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+        </Typography>
         <ButtonGroup
           tabButton={tabButtonData}
           activeButton={activeButton}

@@ -7,11 +7,16 @@ import styles from './styles.module.css';
 import fields from 'renderer/utils/formUtils';
 import { Box, Link } from '@mui/material';
 
-const SetPassword = () => {
+const ResetPassword = () => {
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required('Password is required')
-      .min(9, 'Password must be at least 9 characters'),
+      .min(9, 'Password must be at least 9 characters')
+      .max(40, 'Password must not exceed 40 characters'),
+    newPassword: Yup.string()
+      .required('Password is required')
+      .min(9, 'Password must be at least 9 characters')
+      .max(40, 'Password must not exceed 40 characters'),
   }) as Yup.ObjectSchema<FieldValues>;
   const {
     register,
@@ -20,18 +25,16 @@ const SetPassword = () => {
   } = useForm<FieldValues>({
     resolver: yupResolver(validationSchema),
   });
-
   const onSubmit: SubmitHandler<FieldValues> = (data) => {};
-
   return (
     <>
       <Box className={styles.header}>
         <h1>INFLOWW LOGO</h1>
       </Box>
       <Box className={styles.resetpass}>
-        <h1 className={styles.heading}>Set Password</h1>
+        <h1 className={styles.heading}>Reset Password</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {fields.setPasswordFields?.map((field) => (
+          {fields.resetPasswordFields?.map((field) => (
             <Input
               key={field.name}
               label={field.label}
@@ -54,5 +57,4 @@ const SetPassword = () => {
     </>
   );
 };
-
-export default SetPassword;
+export default ResetPassword;
