@@ -1,12 +1,29 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRangePicker } from 'react-date-range';
 import { addDays, subDays } from 'date-fns';
 
-const Calendar = ({ onChange }: any) => {
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  boxShadow: 24,
+  p: 4,
+};
+
+type CalendarProps = {
+  open?: boolean;
+  setOpen?: any;
+  onChange?: any;
+};
+
+const DatePicker = ({ onChange }: any) => {
   const [state, setState] = useState([
     {
       startDate: subDays(new Date(), 7),
@@ -22,7 +39,7 @@ const Calendar = ({ onChange }: any) => {
   };
 
   return (
-    <div style={{ position: 'absolute', background: 'black',width:'50%',boxShadow:' 2px 0px 10px gray' }}>
+    <div>
       <DateRangePicker
         maxDate={new Date()}
         onChange={handleOnChange}
@@ -35,8 +52,26 @@ const Calendar = ({ onChange }: any) => {
   );
 };
 
-Calendar.propTypes = {
+DatePicker.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default Calendar;
+export default function Calendar({
+  open = false,
+  setOpen,
+  onChange,
+}: CalendarProps) {
+  const handleClose = () => setOpen(false);
+  return (
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <DatePicker onChange={onChange} />
+      </Box>
+    </Modal>
+  );
+}

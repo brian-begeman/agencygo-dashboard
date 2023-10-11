@@ -154,7 +154,7 @@ function CreaterReports() {
         />
       </Stack>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {open && <Calendar onChange={onChange} />}
+        {open && <Calendar onChange={onChange} open={open} setOpen={setOpen}/>}
       </div>
       {activeButton === 1 ? <Overview /> : <CreatorPerformance />}
     </Box>
