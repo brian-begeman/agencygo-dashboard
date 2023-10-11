@@ -5,6 +5,8 @@ import ButtonGroup from 'renderer/components/ButtonGroup';
 import CreatorPerformance from './CreatorPerformance';
 import theme from 'renderer/styles/muiTheme';
 import DatePickerSvg from 'renderer/assets/svg/DatePickerSvg';
+import Calendar from 'renderer/components/DateRangePicker';
+import moment from 'moment'
 
 const pageButton = [
   { id: 1, title: 'Overview', component: <Overview /> },
@@ -19,8 +21,18 @@ const timeButton = [
 ];
 
 function CreaterReports() {
+  let date = new Date()
+  let today = moment(date).format('yyyy-MM-DD')
   const [activeButton, setActiveButton] = useState(1);
   const [activeTime, setActiveTime] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [startDate, setStartDate] = useState(today)
+  const [endDate, setEndDate] = useState(today)
+
+  const onChange = (ranges:any) => {  
+    setStartDate(moment(ranges.startDate).format('yyyy-MM-DD'))
+    setEndDate(moment(ranges.endDate).format('yyyy-MM-DD'))
+  };
 
   return (
     <Box
@@ -53,10 +65,11 @@ function CreaterReports() {
             border="2px solid #292929"
             padding="6px 8px"
             borderRadius="4px"
+            onClick={() => setOpen(!open)}
           >
-            <Typography> 2023 - 07 - 29 </Typography>
-            <Typography> -&gt; </Typography>
-            <Typography>2023 - 07 - 29</Typography>
+            <Typography> {startDate} </Typography>
+            <Typography> to </Typography>
+            <Typography>{endDate}</Typography>
             <DatePickerSvg />
           </Box>
           <Select
@@ -140,6 +153,9 @@ function CreaterReports() {
           setActiveButton={setActiveTime}
         />
       </Stack>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {open && <Calendar onChange={onChange} />}
+      </div>
       {activeButton === 1 ? <Overview /> : <CreatorPerformance />}
     </Box>
   );
