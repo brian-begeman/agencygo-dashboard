@@ -11,6 +11,7 @@ import {
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
 import { Box, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
 
 ChartJS.register(
   CategoryScale,
@@ -70,7 +71,10 @@ export default function CreatorEarnings() {
         gap: '20px',
       }}
     >
-      <Typography fontSize="22px">Creator Earnings</Typography>
+      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+        Creator Earnings
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/> 
+      </Typography>
       <Box
         sx={{
           height: '450px',

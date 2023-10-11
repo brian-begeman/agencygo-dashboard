@@ -3,6 +3,7 @@ import Dashboard from 'renderer/components/Dashboard';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 import { useState } from 'react';
+import PageTopbar from 'renderer/components/PageTopbar';
 
 const links = [
   { id: 1, text: 'Creator Reports', link: 'create-reports' },
@@ -11,6 +12,8 @@ const links = [
 ];
 
 export default function ShareForShare() {
+  const location = useLocation();
+  const path = location.pathname;
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const handleClick = (val: any) => {
@@ -42,18 +45,17 @@ export default function ShareForShare() {
             }}
           >
             <Typography sx={{ padding: '20px 0px ' }}>Analytics</Typography>
-            {links.map((val) => {
+            {links.map(({text,link}) => {
               return (
-                <Typography
-                  padding="5px 10px"
-                  margin="10px 0px"
-                  borderRadius={'6px'}
-                  fontSize="14px"
-                  bgcolor={activeTab === val.id ? '#04A1FF' : ''}
-                  onClick={() => handleClick(val)}
-                >
-                  {val.text}
-                </Typography>
+                <PageTopbar.Button
+                tabButton={true}
+                key={text}
+                color="secondary"
+                text={text}
+                isActiveLink={path.includes(link)}
+                isLink
+                onClick={() => navigate(`/analytics/${link}`)}
+              />
               );
             })}
           </Box>

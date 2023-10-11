@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Box, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
+import theme from 'renderer/styles/muiTheme';
 
 ChartJS.register(
   CategoryScale,
@@ -48,7 +50,10 @@ export default function ChargeBacks() {
   return (
     <>
       <Box borderRadius="16px" padding="20px" bgcolor="var(--color-background)">
-        <Typography fontSize="22px">Chargebacks</Typography>
+        <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+          Chargebacks
+          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+        </Typography>
 
         <Box display="flex" flexDirection="column" gap="20px" maxHeight="300px">
           <Line
