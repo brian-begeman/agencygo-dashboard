@@ -3,6 +3,9 @@ import chalk from 'chalk';
 import { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
+import fetchReq from '../utils/fetch';
+import { error } from 'console';
+
 
 const startIPCBridge = ({
   mainWindow,
@@ -66,6 +69,45 @@ const startIPCBridge = ({
       console.log(err);
     }
   });
+  ipcMain.on('try-login' as IPCChannels, async (e, arg) => {
+    try {
+      const apiUrl =
+        'http://ec2-18-190-107-196.us-east-2.compute.amazonaws.com:3000/login';
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: ``, // Include the JWT token in the headers
+        },
+        body: JSON.stringify(arg),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message == 'login successfully') {
+            e.sender.send('login-response', {
+              success: true,
+              message: 'Login successful',
+              data,
+            });
+          } else {
+            e.sender.send('login-response', {
+              success: false,
+              message: 'Login failed',
+              data,
+            });
+          }
+        })
+        .catch((error) => {
+          e.sender.send('login-response', {
+            success: false,
+            message: 'Login failed',
+            error,
+          });
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }); //Invalid Credentials
 };
 
 export default startIPCBridge;

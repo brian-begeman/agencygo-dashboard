@@ -9,8 +9,9 @@ import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import { ButtonBase } from '@mui/material';
 import styles from './styles.module.css';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -33,14 +34,18 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // mutateLogin(data, {
-    //   onSuccess: () => {
-    //     navigate('/home');
-    //   },
-    // });
-    login();
-    navigate('/home');
+    window.electron.ipcRenderer.sendMessage('try-login', data);
   };
+  useEffect(() => {
+    window.electron.ipcRenderer.on('login-response', (event: any, response) => {
+      if (event.success) {
+        login();
+        navigate('/home');
+      } else {
+        console.error('Login failed:', event.message);
+      }
+    });
+  }); //login successfully
 
   return (
     <main className={styles.loginWrap}>
