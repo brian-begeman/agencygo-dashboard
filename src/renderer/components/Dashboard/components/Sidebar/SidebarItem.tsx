@@ -9,7 +9,7 @@ function Options(props: any) {
   const { menu, handlePopoverClose } = props;
   return (
     <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
-      {menu.map((menuItem, index) => (
+      {menu.map((menuItem:any, index:any) => (
         <NavLink
           to={menuItem.link || '#'}
           className={classes.optionItem}
@@ -40,7 +40,7 @@ export default function SidebarItem(props: any) {
   const getActiveStatus = () => {
     return (
       link?.includes(location.pathname) ||
-      menu?.some((el) => el.link?.includes(location.pathname)) ||
+      menu?.some((el:any) => el.link?.includes(location.pathname)) ||
       location.pathname === link
     );
   };

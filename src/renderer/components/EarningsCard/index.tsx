@@ -15,18 +15,21 @@ export default function EarningsCard({ title, amount, icon }: $Props) {
       borderRadius="16px"
       alignItems="center"
       justifyContent={'space-between'}
-      height="120px"
       sx={{
         padding: '32px',
         border: `1px solid ${theme.palette.primary.contrastText}`,
       }}
     >
-      <Stack spacing="32px">
-        <Typography color="#fff" fontWeight="600" fontSize="14px">
+      <Stack spacing="10px" minWidth="60%">
+        <Typography
+          color={theme.typography.h5.color}
+          fontWeight="600"
+          fontSize="14px"
+        >
           {title}
         </Typography>
         <Typography
-          color={theme.palette.secondary.contrastText}
+          color={theme.typography.h5.color}
           fontSize="36px"
           fontWeight={700}
         >
