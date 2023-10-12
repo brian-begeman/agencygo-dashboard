@@ -8,10 +8,11 @@ interface OverlayProps {
   children: ReactNode | ReactNode[];
   open: boolean;
   handleClose: () => void;
+  style?: any;
 }
 
 function Overlay(props: OverlayProps) {
-  const { heading, children, open, handleClose } = props;
+  const { heading, children, open, handleClose, style } = props;
   return (
     <Modal
       open={open}
@@ -19,6 +20,8 @@ function Overlay(props: OverlayProps) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
+        paddingTop: '20px',
+        overflow: 'scroll',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -26,7 +29,7 @@ function Overlay(props: OverlayProps) {
         background: 'rgba(0, 0, 0, 0.5)',
       }}
     >
-      <div className={classes.innerWrapper}>
+      <div className={classes.innerWrapper} style={style}>
         <Box
           className={classes.modalHeader}
           sx={{

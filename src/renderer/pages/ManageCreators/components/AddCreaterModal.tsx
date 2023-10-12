@@ -4,6 +4,7 @@ import {
   Box,
   FormControlLabel,
   FormGroup,
+  Link,
   Switch,
   Typography,
 } from '@mui/material';
@@ -17,6 +18,8 @@ import {
 import { Stack } from '@mui/system';
 import { genderList } from '../constant';
 import useFormCreator from '../hooks/useForm';
+import ImageUpload from './ImageUploader';
+import IconCheckboxes from 'renderer/components/RadioButton';
 
 interface $Props {
   open: boolean;
@@ -26,6 +29,51 @@ interface $Props {
   selectedCreator?: any;
 }
 
+const dummyTypes = [
+  { title: 'Brunette' },
+  { title: 'Blonde' },
+  { title: 'Red Head' },
+  { title: 'Brown' },
+  { title: 'Colored hair' },
+  { title: 'Big Boobs' },
+  { title: 'Small Boobs' },
+  { title: 'Petit' },
+  { title: 'BBW' },
+  { title: 'Slim Thick' },
+  { title: 'Curvy' },
+  { title: 'Muscular' },
+  { title: 'Big Booty' },
+  { title: 'Bubble Butt' },
+  { title: 'Milf' },
+  { title: 'Teen' },
+  { title: 'College Student' },
+  { title: 'Goth' },
+  { title: 'Alt' },
+  { title: 'Cute feet' },
+  { title: 'Latina' },
+  { title: 'White' },
+  { title: 'Arab' },
+  { title: 'Asian' },
+  { title: 'Indian' },
+  { title: 'Ebony' },
+  { title: 'Russian' },
+  { title: 'German' },
+  { title: 'Straight' },
+  { title: 'Gay' },
+  { title: 'Lesbian' },
+  { title: 'Trans' },
+  { title: 'Bisexual' },
+  { title: 'Big Dick' },
+  { title: 'Small Dick' },
+  { title: 'BBC' },
+  { title: 'BWC' },
+  { title: 'Freak' },
+  { title: 'Hairy' },
+  { title: 'Dominant' },
+  { title: 'Submissive' },
+  { title: 'Tattoo' },
+  { title: 'Pierced' },
+];
 export default function AddCreaterModal({
   open,
   setOpen,
@@ -62,8 +110,17 @@ export default function AddCreaterModal({
   };
 
   return (
-    <Overlay heading="Add Creators" open={open} handleClose={handleModalClose}>
-      <Box sx={{ backgroundColor: '#4B4B4B', padding: '0px 80px' }}>
+    <Overlay
+      heading="Add Creators"
+      open={open}
+      handleClose={handleModalClose}
+      style={{
+        width: '700px',
+        marginTop: '800px',
+        marginBottom: '100px',
+      }}
+    >
+      <Box sx={{ backgroundColor: '#0C0C0C', padding: '0px 20px' }}>
         <form
           id="addCreator"
           className={styles.modalBody}
@@ -72,21 +129,32 @@ export default function AddCreaterModal({
           <Stack
             gap="10px"
             sx={{
-              marginRight: '10px',
-              marginLeft: '10px',
               paddingTop: '20px',
               paddingBottom: '20px',
             }}
             className={styles.inputListWrapper}
           >
+            <Box>
+              <Typography>Add Headshot</Typography>
+              <Box>
+                <ImageUpload />
+              </Box>
+            </Box>
             <InputWithLabel
+              inputStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
               label="Creator's name"
               inputIdentifierName="name"
               placeholder="Enter name"
               register={register as any}
             />
-
             <DropdownWithLabel
+              selectStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
               label="Gender"
               inputIdentifierName="gender"
               options={genderList}
@@ -94,6 +162,10 @@ export default function AddCreaterModal({
               register={register as any}
             />
             <DropdownWithLabel
+              selectStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
               options={employeeOptions}
@@ -101,40 +173,86 @@ export default function AddCreaterModal({
               register={register as any}
             />
             <InputWithLabel
+              inputStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
               label="Internal notes"
               inputIdentifierName="internalNotes"
               placeholder="Enter name"
               register={register as any}
             />
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '10px',
-                alignItems: 'center',
-                padding: '10px 0px',
-              }}
-            >
-              <Typography fontSize={20}>Auto relink</Typography>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Switch />}
-                  checked={isAutoRelink}
+            <Box>
+              <Typography fontSize={'14px'}>Creator/Agency Split*</Typography>
+              <Box
+                display={'flex'}
+                gap={'10px'}
+                justifyContent={'space-between'}
+              >
+                <InputWithLabel
+                  inputStyle={{
+                    border: '1px solid #292929',
+                    backgroundColor: '#0C0C0C',
+                  }}
                   label=""
-                  onClick={toggleAutoRelink}
+                  inputIdentifierName="agency"
+                  placeholder="Agency %"
+                  register={register as any}
                 />
-              </FormGroup>
+                <InputWithLabel
+                  inputStyle={{
+                    border: '1px solid #292929',
+                    backgroundColor: '#0C0C0C',
+                  }}
+                  label=""
+                  inputIdentifierName="creator"
+                  placeholder="Creator %"
+                  register={register as any}
+                />
+              </Box>
             </Box>
-
-            <Typography>
-              When enabled, we'll automatically relink the OnlyFans account when
-              they are disconnected from OnlyManager
+            <Box sx={{ padding: '10px 0px' }}>
+              <Typography fontSize={'14px'}>Auto relink</Typography>
+              <Box
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography fontSize={'12px'} width={'350px'}>
+                  When enabled, we'll automatically relink the OnlyFans account
+                  when they are disconnected from OnlyManager
+                </Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Switch />}
+                    checked={isAutoRelink}
+                    label=""
+                    onClick={toggleAutoRelink}
+                  />
+                </FormGroup>
+              </Box>
+            </Box>
+            <Typography fontSize={'14px'}>Network proxy</Typography>
+            <Box
+              display={'flex'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Box display={'flex'} alignItems={'center'}>
+                <IconCheckboxes title="Use AgencyGO Proxy" />
+              </Box>
+              <Link>Use Custom Proxy</Link>
+            </Box>
+            <Typography fontSize={'14px'}>
+              Model Data (select at least 3 and a maximum of 5 options)
             </Typography>
-            <Typography>Network proxy</Typography>
-            <Typography>
-              OnlyManager proxy（To be assigned） Our network proxy enables
-              secure access to the OF account for any employee assigned to the
-              Creator
-            </Typography>
+            <Box display={'flex'} alignItems={'center'} flexWrap={'wrap'}>
+              {dummyTypes.map((data) => (
+                <Box width={'25%'}>
+                  <IconCheckboxes title={`${data.title}`} />
+                </Box>
+              ))}
+            </Box>
           </Stack>
         </form>
       </Box>
