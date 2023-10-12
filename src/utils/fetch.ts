@@ -18,8 +18,7 @@ const fetchReq = async (
     let token = '';
     if (options.withAuth) {
       // const store = new Store();
-      // token = store.get('cookie') as string;
-      // token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTIzYjZjNzNmNDkwYjAyMGE2YTYyYTYiLCJpYXQiOjE2OTcwMjg1MTAsImV4cCI6MTY5NzAzMjExMH0.Y5FlMyQh7n9zjoQ3RymL00dI0DuXruzqbuSe9kn3CmE';
+      // token = store.get('token') as string;
       if (!token) {
         // ipcMain.emit('logout-request');
         throw new Error('No token');
@@ -38,7 +37,6 @@ const fetchReq = async (
     const response = await fetch(urlPath, optionsFetch);
     const code = response.status;
     if (code >= 400) {
-      console.log(response)
       throw new Error('Failed to fetch data');
     }
     return response;

@@ -39,7 +39,6 @@ export default function Login() {
   useEffect(() => {
     window.electron.ipcRenderer.on('login-response', (event: any, response) => {
       if (event.success) {
-        console.log('Login successful:', event.message);
         login();
         navigate('/home');
       } else {
