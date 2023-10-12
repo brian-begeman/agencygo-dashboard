@@ -56,15 +56,6 @@ export default function Login() {
         console.log('Error occured: ',err);
       });
   };
-  // useEffect(() => {
-  //   window.electron.ipcRenderer.on('login-response', (event: any, response) => {
-  //     if (event.success) {
-  //
-  //     } else {
-  //       console.error('Login failed:', event.message);
-  //     }
-  //   });
-  // }); //login successfully
 
   return (
     <main className={styles.loginWrap}>
