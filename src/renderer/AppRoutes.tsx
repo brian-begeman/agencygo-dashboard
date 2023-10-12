@@ -33,6 +33,8 @@ import ChatterReports from './pages/Analytics/ChatterReports';
 import FanReports from './pages/Analytics/FanReports';
 import { useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
+import SetPassword from './pages/SetPassword/index';
+import ResetPassword from './pages/ResetPassword/index';
 
 const ROUTES = [
   {
@@ -230,7 +232,9 @@ function AppRoutes() {
         <>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/set-password" element={<SetPassword />} />
           <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </>
       )}
     </Routes>

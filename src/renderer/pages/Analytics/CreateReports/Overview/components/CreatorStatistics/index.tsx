@@ -13,6 +13,8 @@ import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import WalletAddSvg from 'renderer/assets/svg/WalletAddSvg';
 import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
+import { ErrorOutline } from '@mui/icons-material';
+import theme from 'renderer/styles/muiTheme';
 
 const tabledata = [
   {
@@ -90,7 +92,10 @@ export default function CreatorStatistics() {
       borderRadius="16px"
       gap="15px"
     >
-      <Typography fontSize="22px">Creator Statistics </Typography>
+      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+        Creator Statistics
+      <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+      </Typography>
       <Box display="flex" width="fit-content" gap="10px">
         {earningsInitJson.map((item) => (
           <EarningsRecordCard

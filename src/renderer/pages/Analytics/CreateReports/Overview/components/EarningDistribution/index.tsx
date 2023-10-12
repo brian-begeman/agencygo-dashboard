@@ -12,6 +12,8 @@ import {
 import { Chart } from 'react-chartjs-2';
 import faker from 'faker';
 import { Box, Divider, Stack, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
+import theme from 'renderer/styles/muiTheme';
 
 ChartJS.register(
   CategoryScale,
@@ -146,7 +148,10 @@ export function EaringDistribution() {
       flexDirection="column"
       gap="20px"
     >
-      <Typography fontSize="22px">Earning Distribution</Typography>
+      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+        Earning Distribution
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+      </Typography>
       <Box display="flex">
         <Box width={'70%'}>
           <Chart ref={chartRef} type="line" data={chartData} />
