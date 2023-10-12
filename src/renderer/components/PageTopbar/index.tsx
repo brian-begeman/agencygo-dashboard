@@ -36,16 +36,25 @@ interface $ButtonProps {
   color?: 'primary' | 'secondary';
   isLink?: boolean;
   isActiveLink?: boolean;
+  tabButton?:boolean
 }
 
 function ButtonElement({
   onClick,
+  tabButton = false,
   text,
   color = 'primary',
   endIcon,
   isLink = false,
   isActiveLink = false,
 }: $ButtonProps) {
+  const getWidth = ()=>{
+    let width = 'max-content';
+    if(tabButton){
+      width = '200px';
+    }
+    return width
+  }
   const getBackgroundColor = () => {
     let backgroundColor = '';
     if (isLink) {
@@ -53,6 +62,9 @@ function ButtonElement({
     }
     if (isActiveLink) {
       backgroundColor = '#0f0f0f !important';
+    }
+    if(isActiveLink && tabButton){
+      backgroundColor = `${theme.palette.primary.main}`
     }
     return backgroundColor;
   };
@@ -69,7 +81,7 @@ function ButtonElement({
   };
 
   const getActiveBorder = () => {
-    if (isActiveLink) {
+    if (isActiveLink && !tabButton) {
       return {
         '&::before': {
           content: '""',
@@ -89,7 +101,7 @@ function ButtonElement({
       variant="contained"
       color={color}
       sx={{
-        width: 'max-content',
+        width: getWidth(),
         height: '32px',
         borderRadius: getBorderRadius(),
         boxShadow: 'none',
