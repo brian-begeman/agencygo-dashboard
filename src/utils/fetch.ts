@@ -12,7 +12,6 @@ interface IFetchOptions extends RequestInit {
 const fetchReq = async (
   url: string,
   options: IFetchOptions,
-  
 ): Promise<Response> => {
   try {
     let token = '';
