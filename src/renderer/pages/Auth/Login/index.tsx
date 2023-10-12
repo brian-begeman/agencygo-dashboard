@@ -11,7 +11,7 @@ import { ButtonBase } from '@mui/material';
 import styles from './styles.module.css';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from 'renderer/contexts/AuthContext';
-
+import fetchReq from 'utils/fetch';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -34,18 +34,37 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    window.electron.ipcRenderer.sendMessage('try-login', data);
+    let endpoint = 'login';
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.message == 'login successfully') {
+          login();
+          navigate('/home');
+        } else {
+          console.log('login error occoured: ', res.message)
+        }
+      })
+      .catch((err) => {
+        console.log('Error occured: ',err);
+      });
   };
-  useEffect(() => {
-    window.electron.ipcRenderer.on('login-response', (event: any, response) => {
-      if (event.success) {
-        login();
-        navigate('/home');
-      } else {
-        console.error('Login failed:', event.message);
-      }
-    });
-  }); //login successfully
+  // useEffect(() => {
+  //   window.electron.ipcRenderer.on('login-response', (event: any, response) => {
+  //     if (event.success) {
+  //
+  //     } else {
+  //       console.error('Login failed:', event.message);
+  //     }
+  //   });
+  // }); //login successfully
 
   return (
     <main className={styles.loginWrap}>
