@@ -26,14 +26,15 @@ export default function AddEmployeeModal({
   type,
   selectedEmployee,
 }: $Props) {
-  const { groupOptions, handleSubmit, register, isLoading } = useFormEmployee(
-    () => {
-      setOpen(false);
-      refetch();
-    },
-    type,
-    selectedEmployee
-  );
+  const { groupOptions, assignCreator, handleSubmit, register, isLoading } =
+    useFormEmployee(
+      () => {
+        setOpen(false);
+        refetch();
+      },
+      type,
+      selectedEmployee
+    );
 
   const addHandler = () => {
     handleSubmit();
@@ -90,6 +91,12 @@ export default function AddEmployeeModal({
               label="Role"
               inputIdentifierName="role"
               options={roleList}
+              register={register as any}
+            />
+            <DropdownWithLabel
+              label="Assign Creator"
+              inputIdentifierName="assignCreator"
+              options={assignCreator}
               register={register as any}
             />
           </Stack>

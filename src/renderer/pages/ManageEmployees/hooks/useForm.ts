@@ -16,6 +16,12 @@ const useFormEmployee = (
       value: string;
     }[]
   >([]);
+  const [assignCreator, setAssignCreator] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([]);
   const { mutate: mutataCreate, isLoading: loadingCreate } = useMutation({
     key: 'create-employee',
   });
@@ -28,6 +34,7 @@ const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
+    assignCreator: Yup.string().required('AssignCreator is required'),
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
@@ -35,19 +42,19 @@ const useFormEmployee = (
   });
 
   useEffect(() => {
-    // window.electron.ipcRenderer
-    //   .invoke('get-store', 'agency')
-    //   .then((res) => {
-    //     const result = {
-    //       label: res?.agencyName || '',
-    //       // eslint-disable-next-line no-underscore-dangle
-    //       value: res?._id || '',
-    //     };
-    //     return setGroupOptions([result]);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    window.electron.ipcRenderer
+      .invoke('get-store', 'agency')
+      .then((res) => {
+        const result = {
+          label: res?.agencyName || '',
+          // eslint-disable-next-line no-underscore-dangle
+          value: res?._id || '',
+        };
+        return setGroupOptions([result]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const onSubmit = (data: any) => {
@@ -85,6 +92,7 @@ const useFormEmployee = (
     register,
     handleSubmit: handleSubmit(onSubmit),
     groupOptions,
+    assignCreator,
     isLoading: loadingCreate || loadingUpdate,
   };
 };
