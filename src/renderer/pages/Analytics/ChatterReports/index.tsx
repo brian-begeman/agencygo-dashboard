@@ -6,7 +6,7 @@ import theme from 'renderer/styles/muiTheme';
 import DatePickerSvg from 'renderer/assets/svg/DatePickerSvg';
 import Calendar from 'renderer/components/DateRangePicker';
 import moment from 'moment';
-import CreatorPerformance from './CreatorPerfomance';
+import CreatorPerformance from './CreatorPerformance';
 
 const pageButton = [
   { id: 1, title: 'Overview', component: <Overview /> },
