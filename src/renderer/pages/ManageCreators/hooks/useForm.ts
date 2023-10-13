@@ -31,6 +31,9 @@ const useFormCreator = (
     assignEmployee: Yup.string().required('Assign Employee is required'),
     internalNotes: Yup.string(),
     isAutoRelink: Yup.boolean(),
+    isAgencyProxy: Yup.boolean(),
+    agency: Yup.string().required('Agency is required'),
+    creator: Yup.string().required('Creator is required'),
   });
 
   const { register, handleSubmit, reset, setValue, getValues } = useForm({
@@ -65,6 +68,9 @@ const useFormCreator = (
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
       setValue('isAutoRelink', selectedCreator?.autoRelink);
+      setValue('isAgencyProxy', selectedCreator?.isAgencyProxy);
+      setValue('agency', selectedCreator?.agency);
+      setValue('creator', selectedCreator?.creator);
     } else {
       reset();
     }

@@ -19,6 +19,9 @@ export interface ISelectedCreator {
   internalNotes: string;
   autoRelink: boolean;
   assignEmployee: string;
+  isAgencyProxy: boolean;
+  agency: string;
+  creator: string;
 }
 
 const useDataCreators = () => {
