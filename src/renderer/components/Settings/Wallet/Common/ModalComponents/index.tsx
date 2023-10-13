@@ -16,6 +16,7 @@ interface InputWithLabelProps {
   placeholder: string;
   value?: string;
   required?: boolean;
+  inputStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -25,6 +26,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     inputIdentifierName,
     placeholder,
     value,
+    inputStyle,
     required = false,
     handleOnChange = () => {},
     register = () => ({}),
@@ -33,6 +35,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
       <input
+        style={inputStyle}
         className={classes.inputCss}
         name={inputIdentifierName}
         placeholder={placeholder}
@@ -55,6 +58,7 @@ interface DropdownWithLabelProps {
   label: string;
   inputIdentifierName: string;
   value?: string;
+  selectStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
   options: Option[]; // Array of options
   placeholder?: string;
@@ -66,6 +70,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     label,
     inputIdentifierName,
     value,
+    selectStyle,
     handleOnChange = () => {},
     options,
     placeholder = '',
@@ -76,6 +81,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
       <select
+        style={selectStyle}
         className={classes.selectCss}
         name={inputIdentifierName}
         id={inputIdentifierName}
