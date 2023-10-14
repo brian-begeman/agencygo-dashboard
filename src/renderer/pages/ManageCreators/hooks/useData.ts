@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
+import fetchReq from 'utils/fetch';
 
 export interface ICreatorList {
   creatorName: string;
@@ -10,6 +11,7 @@ export interface ICreatorList {
   activated: boolean;
   autoRelink: boolean;
   id: string;
+  status: boolean;
 }
 
 export interface ISelectedCreator {
@@ -19,9 +21,10 @@ export interface ISelectedCreator {
   internalNotes: string;
   autoRelink: boolean;
   assignEmployee: string;
-  isAgencyProxy: boolean;
+  proxy: boolean;
   agency: string;
   creator: string;
+  status: boolean;
 }
 
 const useDataCreators = () => {

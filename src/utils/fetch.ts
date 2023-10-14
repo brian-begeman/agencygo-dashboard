@@ -11,13 +11,14 @@ interface IFetchOptions extends RequestInit {
 
 const fetchReq = async (
   url: string,
-  options: IFetchOptions,
+  options: IFetchOptions
 ): Promise<Response> => {
   try {
     let token = '';
     if (options.withAuth) {
       // const store = new Store();
       // token = store.get('token') as string;
+      token = sessionStorage.getItem('Authorization') as string;
       if (!token) {
         // ipcMain.emit('logout-request');
         throw new Error('No token');
