@@ -1,48 +1,68 @@
-import {
-  Box,
-  ButtonBase,
-  Stack,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
-import AddIcon from '@mui/icons-material/Add';
-import Filter from 'renderer/components/Filter';
-import FilterTable from 'renderer/components/Filter/FilterTable';
-import { KeyboardArrowDown } from '@mui/icons-material';
-import theme from 'renderer/styles/muiTheme';
-import Avatar from 'renderer/assets/svg/AvatarSvg';
-import Activated from 'renderer/assets/svg/ActivatedSvg';
-import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
-import { useState } from 'react';
-import useMutation from 'renderer/hooks/useMutation';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import styles from './styles.module.css';
+import AddIcon from '@mui/icons-material/Add';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
+import { useEffect, useState } from 'react';
+import fetchReq from 'utils/fetch';
+import LifestyleGroup from './LifestyleGroup';
 
-const employeesTableHeaders = [
-  'Employees',
-  'Assigned Creators',
-  'Role',
-  'Status',
-  'Operations',
-];
+
 
 export default function ManageEmployees() {
+  const location = useLocation();
+  const path = location.pathname;
+  const navigate = useNavigate();
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
+  const [links,setLinks] = useState([
+    { text: 'Diamond Lifestyle Group', link: 'lifestyle-group',name:'diamondLifeStyle' },
+    { text: 'Hot n Spicy Group', link: 'spicy-group',name:'Hot & Spicy group' },
+    { text: 'Gud Energy Group', link: 'energy-group',name:'' },
+  ]);
   const {
-    agencies,
     refetch,
-    employees,
     selectedEmployee,
-    setSelectedEmployee,
   } = useDataEmployees();
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
+
+  useEffect(()=>{
+    let endpoint = 'agency';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        res.data.map(({agencyName,_id}:any,i:number)=>{
+          const updatedData = links.map((item,index) =>{
+            if(agencyName===item.name){
+              return{
+                ...item,
+                agencyId: _id,
+              }
+            }
+            else {
+              return item;
+            }
+          });
+          console.log(updatedData,"???????????????")
+          // setLinks(updatedData);
+        })
+      })
+      .catch((err) => {
+        console.log('Error occured: ',err);
+      });
+  },[])
 
   return (
     <Dashboard>
@@ -53,6 +73,7 @@ export default function ManageEmployees() {
             direction="row"
             marginBottom="20px"
             width="100%"
+            justifyContent="space-between"
           >
             <PageTopbar.HeaderText>Manage Employees</PageTopbar.HeaderText>
             <Box
@@ -85,128 +106,27 @@ export default function ManageEmployees() {
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {agencies?.map((link) => (
+            {links.map(({ link, text,agencyId}) => (
               <PageTopbar.Button
-                key={link.text}
+                key={text}
                 color="secondary"
-                text={link.text}
-                isActiveLink={link.isActive}
+                text={text}
+                isActiveLink={path.includes(link)}
                 isLink
+                onClick={() => navigate(`/employees-manage-employees/${link}`)}
               />
             ))}
           </Stack>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
-          <Filter />
-          <FilterTable
-            isEmptyContent={!employees.length}
-            tableHeaders={employeesTableHeaders}
-          >
-            <>
-              {employees.map(
-                ({
-                  name,
-                  assignedCreators,
-                  role,
-                  activated,
-                  email,
-                  roleRaw,
-                  id,
-                }) => (
-                  <TableRow
-                    key={name}
-                    sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
-                    }}
-                  >
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                      scope="row"
-                    >
-                      <Stack spacing={4} direction="row" alignItems="center">
-                        <Avatar />
-                        <Typography variant="h6" fontSize="18px" color="#fff">
-                          {name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
-                      }}
-                    >
-                      {assignedCreators}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
-                      }}
-                    >
-                      {role}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      {activated ? <Activated /> : <DeactivatedSvg />}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                      align="right"
-                    >
-                      <Stack spacing={4} direction="row" alignItems="center">
-                        <ButtonBase
-                          onClick={() => {
-                            setSelectedEmployee({
-                              name,
-                              role: roleRaw,
-                              email,
-                              id,
-                            });
-                            setFormType('edit');
-                            setOpenAddEmployee(true);
-                          }}
-                        >
-                          <Typography variant="body1" color="#fff">
-                            Edit
-                          </Typography>
-                        </ButtonBase>
-                        <ButtonBase
-                          onClick={() => {
-                            // mutateDelete(
-                            //   { id },
-                            //   {
-                            //     onSuccess: () => {
-                            //       refetch();
-                            //     },
-                            //   }
-                            // );
-                          }}
-                        >
-                          <Typography variant="body1" color="#FF0000">
-                            Delete
-                          </Typography>
-                        </ButtonBase>
-                        <ButtonBase>
-                          <Typography variant="body1" color="#fff">
-                            More
-                          </Typography>
-                        </ButtonBase>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
-            </>
-          </FilterTable>
-        </Stack>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(min-content, 416px) 1fr',
+            height: '100%',
+          }}
+        >
+         <LifestyleGroup/>
+        </Box>
       </section>
       <AddEmployeeModal
         open={OpenAddEmployee}

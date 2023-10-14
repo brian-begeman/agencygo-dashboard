@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TQueryService } from 'types';
+import fetchReq from 'utils/fetch';
 
 interface IProps {
   key: TQueryService;
@@ -18,6 +19,23 @@ const useQuery = (props: IProps) => {
 
   const fetch = async () => {
     setLoading(true);
+    if (key === 'get-employee') {
+      let endpoint = 'employee/6527ad93dedd0418c5d1dc50';
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+    }
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
     //   setLoading(false);

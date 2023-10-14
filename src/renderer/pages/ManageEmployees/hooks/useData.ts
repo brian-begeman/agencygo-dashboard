@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 
 interface IAgencyList {
@@ -9,7 +9,7 @@ interface IAgencyList {
 interface IEmployeeList {
   name: string;
   imageSrc: string;
-  assignedCreators: string;
+  assignedCreators: ReactNode;
   role: string;
   activated: boolean;
   email: string;
@@ -58,7 +58,7 @@ const useDataEmployees = () => {
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreators: 'Female',
+          assignedCreators: '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
             : '',

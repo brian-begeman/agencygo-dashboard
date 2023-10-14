@@ -41,23 +41,25 @@ const useFormEmployee = (
     resolver: yupResolver(validationSchema),
   });
 
-  useEffect(() => {
-    window.electron.ipcRenderer
-      .invoke('get-store', 'agency')
-      .then((res) => {
-        const result = {
-          label: res?.agencyName || '',
-          // eslint-disable-next-line no-underscore-dangle
-          value: res?._id || '',
-        };
-        return setGroupOptions([result]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   window.electron.ipcRenderer
+  //     .invoke('get-store', 'agency')
+  //     .then((res) => {
+  //       const result = {
+  //         label: res?.agencyName || '',
+  //         // eslint-disable-next-line no-underscore-dangle
+  //         value: res?._id || '',
+  //       };
+  //       return setGroupOptions([result]);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const onSubmit = (data: any) => {
+    console.log(data, 'Data+++++++++++++++++++');
+
     if (type === 'add') {
       mutataCreate(data, {
         onSuccess: () => {

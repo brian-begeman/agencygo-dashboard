@@ -46,6 +46,8 @@ export default function Login() {
       .then((response) => response.json())
       .then((res) => {
         if (res.message == 'login successfully') {
+          const authToken = res.token?.token;
+          sessionStorage.setItem("Authorization",authToken)
           login();
           navigate('/home');
         } else {

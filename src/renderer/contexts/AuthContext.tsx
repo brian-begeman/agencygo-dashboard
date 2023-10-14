@@ -24,6 +24,7 @@ export default function AuthProvider({ children }: $Props) {
   };
 
   const logout = () => {
+    sessionStorage.removeItem("Authorization")
     setIsLogin(false);
   };
 

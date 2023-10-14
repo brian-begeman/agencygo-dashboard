@@ -35,6 +35,9 @@ import { useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import SetPassword from './pages/SetPassword/index';
 import ResetPassword from './pages/ResetPassword/index';
+import LifestyleGroup from './pages/ManageEmployees/LifestyleGroup';
+import SpicyGroup from './pages/ManageEmployees/SpicyGroup';
+import EnergyGroup from './pages/ManageEmployees/EnergyGroup';
 
 const ROUTES = [
   {
@@ -81,6 +84,25 @@ const ROUTES = [
     path: '/employees-manage-employees',
     element: <ManageEmployees />,
     pathName: 'Manage Employees',
+    nestedRoutes: [
+      {
+        path: 'lifestyle-group',
+        element: <LifestyleGroup />,
+        pathName: 'Diamond Lifestyle Group',
+        nestedLink: '/employees-manage-employees/lifestyle-group',
+      },
+      {
+        path: 'spicy-group',
+        element: <SpicyGroup />,
+        pathName: 'Hot n Spicy Group',
+        nestedLink: '/employees-manage-employees/spicy-group',
+      },
+      {
+        path: 'energy-group',
+        element: <EnergyGroup />,
+        pathName: 'Gud Energy Group',
+        nestedLink: '/employees-manage-employees/energy-group',
+      }],
   },
   {
     path: 'analytics',
@@ -232,7 +254,7 @@ function AppRoutes() {
         <>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/set-password" element={<SetPassword />} />
+          <Route path="/activate-account" element={<SetPassword />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </>
