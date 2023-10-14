@@ -1,6 +1,5 @@
 import {
   Box,
-  Box,
   Button,
   ButtonBase,
   Stack,
@@ -23,8 +22,6 @@ import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
 import useDataCreators from './hooks/useData';
-import MenuButton from 'renderer/components/MenuButton';
-import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
 import fetchReq from 'utils/fetch';
 
@@ -153,7 +150,6 @@ export default function ManageCreators() {
                   assignEmployee,
                   activated,
                   status,
-                  status,
                   id,
                   autoRelink,
                   imageSrc,
@@ -244,7 +240,6 @@ export default function ManageCreators() {
                       }}
                     >
                       {status ? <Activated /> : <DeactivatedSvg />}
-                      {status ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -266,12 +261,10 @@ export default function ManageCreators() {
                               assignEmployee,
                               imageSrc,
                               status,
-                              status,
                             });
                             setOpenAddCreater(true);
                           }}
                         >
-                          <Typography variant="body1" color="#04A1FF">
                           <Typography variant="body1" color="#04A1FF">
                             Edit
                           </Typography>
