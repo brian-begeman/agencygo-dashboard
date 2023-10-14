@@ -42,19 +42,19 @@ const useFormEmployee = (
   });
 
   useEffect(() => {
-    window.electron.ipcRenderer
-      .invoke('get-store', 'agency')
-      .then((res) => {
-        const result = {
-          label: res?.agencyName || '',
-          // eslint-disable-next-line no-underscore-dangle
-          value: res?._id || '',
-        };
-        return setGroupOptions([result]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // window.electron.ipcRenderer
+    //   .invoke('get-store', 'agency')
+    //   .then((res) => {
+    //     const result = {
+    //       label: res?.agencyName || '',
+    //       // eslint-disable-next-line no-underscore-dangle
+    //       value: res?._id || '',
+    //     };
+    //     return setGroupOptions([result]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, []);
 
   const onSubmit = (data: any) => {

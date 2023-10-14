@@ -46,14 +46,16 @@ export default function Login() {
       .then((response) => response.json())
       .then((res) => {
         if (res.message == 'login successfully') {
+          const authToken = res.token?.token;
+          sessionStorage.setItem('Authorization', authToken);
           login();
           navigate('/home');
         } else {
-          console.log('login error occoured: ', res.message)
+          console.log('login error occoured: ', res.message);
         }
       })
       .catch((err) => {
-        console.log('Error occured: ',err);
+        console.log('Error occured: ', err);
       });
   };
 

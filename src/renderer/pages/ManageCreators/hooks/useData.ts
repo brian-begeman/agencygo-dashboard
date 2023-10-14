@@ -6,10 +6,11 @@ export interface ICreatorList {
   imageSrc: string;
   gender: string;
   internalNotes: string;
-  employees: string;
+  assignEmployee: string;
   activated: boolean;
   autoRelink: boolean;
   id: string;
+  status: boolean;
 }
 
 export interface ISelectedCreator {
@@ -19,9 +20,10 @@ export interface ISelectedCreator {
   internalNotes: string;
   autoRelink: boolean;
   assignEmployee: string;
-  isAgencyProxy: boolean;
+  proxy: boolean;
   agency: string;
   creator: string;
+  status: boolean;
 }
 
 const useDataCreators = () => {

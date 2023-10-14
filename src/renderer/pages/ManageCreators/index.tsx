@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonBase,
   Stack,
@@ -21,6 +22,8 @@ import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
 import useDataCreators from './hooks/useData';
+import MenuButton from 'renderer/components/MenuButton';
+import fetchReq from 'utils/fetch';
 
 const creatorsTableHeaders = [
   'Creators',
@@ -38,9 +41,64 @@ export default function ManageCreators() {
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const { creators, refetch, selectedCreator, setSelectedCreator } =
     useDataCreators();
+
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-creator',
   // });
+
+  const handleDelete = (id: string) => {
+    let endpoint = `creators/${id}`;
+    let options = {
+      method: 'DELETE' as 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.message == 'creator deleted') refetch();
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
+  const handleActivate = (id: string, status: boolean) => {
+    const data = {
+      status: !status,
+    };
+
+    let endpoint = `creators/${id}`;
+    let options = {
+      method: 'PUT' as 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(data),
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
+  const getOptions = (status: boolean) => {
+    const tabData = [
+      {
+        title: status == true ? 'Deactivate' : 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+    ];
+    return tabData;
+  };
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -77,7 +135,7 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
+        <Stack direction="row" spacing={1} sx={{ height: '100%' }}>
           <Filter />
           <FilterTable
             isEmptyContent={!creators.length}
@@ -89,8 +147,9 @@ export default function ManageCreators() {
                   creatorName: name,
                   gender,
                   internalNotes,
-                  employees,
+                  assignEmployee,
                   activated,
+                  status,
                   id,
                   autoRelink,
                   imageSrc,
@@ -159,7 +218,9 @@ export default function ManageCreators() {
                         color: '#fff',
                       }}
                     >
-                      {employees}
+                      {assignEmployee?.map((employee: any) => {
+                        return `${employee.name},`;
+                      })}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -178,7 +239,7 @@ export default function ManageCreators() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      {activated ? <Activated /> : <DeactivatedSvg />}
+                      {status ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -197,35 +258,25 @@ export default function ManageCreators() {
                               id,
                               internalNotes,
                               activated,
-                              employees,
+                              assignEmployee,
                               imageSrc,
+                              status,
                             });
                             setOpenAddCreater(true);
                           }}
                         >
-                          <Typography variant="body1" color="#fff">
+                          <Typography variant="body1" color="#04A1FF">
                             Edit
                           </Typography>
                         </ButtonBase>
-                        <ButtonBase
-                          onClick={() => {
-                            // mutateDelete(
-                            //   { id },
-                            //   {
-                            //     onSuccess: () => {
-                            //       refetch();
-                            //     },
-                            //   }
-                            // );
-                          }}
-                        >
-                          <Typography variant="body1" color="#FF0000">
-                            Delete
-                          </Typography>
+                        <ButtonBase>
+                          <MenuButton
+                            title="More"
+                            tabData={getOptions(status)}
+                            id={id}
+                            status={status}
+                          />
                         </ButtonBase>
-                        <Typography variant="body1" color="#fff">
-                          More
-                        </Typography>
                       </Stack>
                     </TableCell>
                   </TableRow>
