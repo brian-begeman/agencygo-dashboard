@@ -1,5 +1,6 @@
 import {
   Box,
+  Box,
   Button,
   ButtonBase,
   Stack,
@@ -22,6 +23,8 @@ import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
 import useDataCreators from './hooks/useData';
+import MenuButton from 'renderer/components/MenuButton';
+import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
 import fetchReq from 'utils/fetch';
 
@@ -64,17 +67,19 @@ export default function ManageCreators() {
       });
   };
 
-  const handleActivate = (id: string) => {
+  const handleActivate = (id: string, status: boolean) => {
     const data = {
-      status: true,
+      status: !status,
     };
+
     let endpoint = `creators/${id}`;
     let options = {
       method: 'PUT' as 'PUT',
       headers: {
         'content-type': 'application/json',
       },
-      data: data,
+      withAuth: true,
+      body: JSON.stringify(data),
     };
     fetchReq(endpoint, options)
       .then((response) => response.json())
@@ -145,8 +150,9 @@ export default function ManageCreators() {
                   creatorName: name,
                   gender,
                   internalNotes,
-                  employees,
+                  assignEmployee,
                   activated,
+                  status,
                   status,
                   id,
                   autoRelink,
@@ -216,7 +222,9 @@ export default function ManageCreators() {
                         color: '#fff',
                       }}
                     >
-                      {employees}
+                      {assignEmployee?.map((employee: any) => {
+                        return `${employee.name},`;
+                      })}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -236,6 +244,7 @@ export default function ManageCreators() {
                       }}
                     >
                       {status ? <Activated /> : <DeactivatedSvg />}
+                      {status ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -254,13 +263,15 @@ export default function ManageCreators() {
                               id,
                               internalNotes,
                               activated,
-                              employees,
+                              assignEmployee,
                               imageSrc,
+                              status,
                               status,
                             });
                             setOpenAddCreater(true);
                           }}
                         >
+                          <Typography variant="body1" color="#04A1FF">
                           <Typography variant="body1" color="#04A1FF">
                             Edit
                           </Typography>
@@ -270,6 +281,7 @@ export default function ManageCreators() {
                             title="More"
                             tabData={getOptions(status)}
                             id={id}
+                            status={status}
                           />
                         </ButtonBase>
                       </Stack>
