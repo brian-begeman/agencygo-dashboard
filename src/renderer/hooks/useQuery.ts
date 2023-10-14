@@ -38,7 +38,27 @@ const useQuery = (props: IProps) => {
           setError(true);
           setLoading(false);
         });
+    } else if (key === 'get-employee') {
+      let endpoint = 'employee/6527ad93dedd0418c5d1dc50';
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setLoading(false);
+        });
     }
+
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
     //   setLoading(false);

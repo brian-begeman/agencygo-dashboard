@@ -1,7 +1,11 @@
 export type IPCChannels = string;
 
 // after create services post, put, & delete need to add here without prefix request or response
-export type TMutationService = 'login' | 'signup';
+export type TMutationService =
+  | 'login'
+  | 'signup'
+  | 'create-creator'
+  | 'update-creator';
 // | 'create-employee'
 // | 'update-employee'
 // | 'delete-employee'
