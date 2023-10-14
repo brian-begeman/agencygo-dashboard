@@ -58,6 +58,7 @@ const useQuery = (props: IProps) => {
           setLoading(false);
         });
     }
+
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
     //   setLoading(false);

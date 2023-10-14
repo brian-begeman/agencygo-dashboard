@@ -11,9 +11,11 @@ import {
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
 import {
+  AutoRelinkSwitch,
   DropdownWithLabel,
   InputWithLabel,
   ModalFooter,
+  RadioButton,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
 import { genderList } from '../constant';
@@ -116,8 +118,7 @@ export default function AddCreaterModal({
       handleClose={handleModalClose}
       style={{
         width: '700px',
-        marginTop: '800px',
-        marginBottom: '100px',
+        height: '100vh',
       }}
     >
       <Box sx={{ backgroundColor: '#0C0C0C', padding: '0px 20px' }}>
@@ -146,7 +147,7 @@ export default function AddCreaterModal({
                 backgroundColor: '#0C0C0C',
               }}
               label="Creator's name"
-              inputIdentifierName="name"
+              inputIdentifierName="creatorName"
               placeholder="Enter name"
               register={register as any}
             />
@@ -197,7 +198,7 @@ export default function AddCreaterModal({
                   label=""
                   inputIdentifierName="agency"
                   placeholder="Agency %"
-                  register={register as any}
+                  // register={register as any}
                 />
                 <InputWithLabel
                   inputStyle={{
@@ -207,11 +208,27 @@ export default function AddCreaterModal({
                   label=""
                   inputIdentifierName="creator"
                   placeholder="Creator %"
-                  register={register as any}
+                  // register={register as any}
                 />
               </Box>
             </Box>
-            <Box sx={{ padding: '10px 0px' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                alignItems: 'center',
+                padding: '10px 0px',
+              }}
+            >
+              <Typography fontSize={20}>Auto relink</Typography>
+              <AutoRelinkSwitch
+                toggleAutoRelink={toggleAutoRelink}
+                register={register as any}
+                name={'autoRelink'}
+                isAutoRelink={isAutoRelink}
+              />
+            </Box>
+            {/* <Box sx={{ padding: '10px 0px' }}>
               <Typography fontSize={'14px'}>Auto relink</Typography>
               <Box
                 display={'flex'}
@@ -225,13 +242,14 @@ export default function AddCreaterModal({
                 <FormGroup>
                   <FormControlLabel
                     control={<Switch />}
-                    checked={isAutoRelink}
+                    // checked={isAutoRelink}
                     label=""
-                    onClick={toggleAutoRelink}
+                    // onClick={toggleAutoRelink}
+                    required={register as any}
                   />
                 </FormGroup>
               </Box>
-            </Box>
+            </Box> */}
             <Typography fontSize={'14px'}>Network proxy</Typography>
             <Box
               display={'flex'}
@@ -239,11 +257,17 @@ export default function AddCreaterModal({
               alignItems={'center'}
             >
               <Box display={'flex'} alignItems={'center'}>
-                <IconCheckboxes title="Use AgencyGO Proxy" />
+                <RadioButton title="Use AgencyGO Proxy" />
+                {/* <IconCheckboxes
+                  title="Use AgencyGO Proxy"
+                  name={'isAgencyProxy'}
+                  register={register as any}
+                  // register={register as any}
+                /> */}
               </Box>
               <Link>Use Custom Proxy</Link>
             </Box>
-            <Typography fontSize={'14px'}>
+            {/* <Typography fontSize={'14px'}>
               Model Data (select at least 3 and a maximum of 5 options)
             </Typography>
             <Box display={'flex'} alignItems={'center'} flexWrap={'wrap'}>
@@ -252,7 +276,7 @@ export default function AddCreaterModal({
                   <IconCheckboxes title={`${data.title}`} />
                 </Box>
               ))}
-            </Box>
+            </Box> */}
           </Stack>
         </form>
       </Box>
@@ -261,7 +285,7 @@ export default function AddCreaterModal({
         cancelHandler={cancelHandler}
         addText="Add Creator"
         id="addCreator"
-        isLoading={isLoading}
+        // isLoading={isLoading}
       />
     </Overlay>
   );
