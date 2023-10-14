@@ -8,9 +8,10 @@ type MenuProps = {
   title?: string;
   tabData?: any;
   id?: string;
+  status?: boolean;
 };
 
-export default function MenuButton({ title, tabData, id }: MenuProps) {
+export default function MenuButton({ title, tabData, id, status }: MenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -64,7 +65,9 @@ export default function MenuButton({ title, tabData, id }: MenuProps) {
       >
         {tabData.map((val: any) => {
           return (
-            <MenuItem onClick={() => val.function(id)}>{val.title}</MenuItem>
+            <MenuItem onClick={() => val.function(id, status)}>
+              {val.title}
+            </MenuItem>
           );
         })}
       </Menu>

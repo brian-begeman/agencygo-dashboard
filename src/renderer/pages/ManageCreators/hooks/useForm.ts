@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import useMutation from 'renderer/hooks/useMutation';
 import useQuery from 'renderer/hooks/useQuery';
 import { ISelectedCreator } from './useData';
+import fetchReq from 'utils/fetch';
 
 const useFormCreator = (
   callback: () => void,
@@ -26,14 +27,14 @@ const useFormCreator = (
   });
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    creatorName: Yup.string().required('Name is required'),
     gender: Yup.string().required('Gender is required'),
     assignEmployee: Yup.string().required('Assign Employee is required'),
-    internalNotes: Yup.string(),
+    internalNotes: Yup.string().required('Internal note is required'),
     isAutoRelink: Yup.boolean(),
     isAgencyProxy: Yup.boolean(),
-    agency: Yup.string().required('Agency is required'),
-    creator: Yup.string().required('Creator is required'),
+    agency: Yup.string(),
+    creator: Yup.string(),
   });
 
   const { register, handleSubmit, reset, setValue, getValues } = useForm({
@@ -42,12 +43,31 @@ const useFormCreator = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      mutataCreate(data, {
-        onSuccess: () => {
-          callback();
-          reset();
+      let endpoint = 'creators';
+      let options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
         },
-      });
+        body: JSON.stringify(data),
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          if ((res.message = 'creator added successfully')) {
+            callback();
+          }
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+      // mutataCreate(data, {
+      //   onSuccess: () => {
+      //     callback();
+      //     reset();
+      //   },
+      // });
     } else {
       mutateUpdate(
         { ...data, id: selectedCreator?.id },
@@ -63,12 +83,12 @@ const useFormCreator = (
 
   useEffect(() => {
     if (selectedCreator && type === 'edit') {
-      setValue('name', selectedCreator?.creatorName);
+      setValue('creatorName', selectedCreator?.creatorName);
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
       setValue('isAutoRelink', selectedCreator?.autoRelink);
-      setValue('isAgencyProxy', selectedCreator?.isAgencyProxy);
+      setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('agency', selectedCreator?.agency);
       setValue('creator', selectedCreator?.creator);
     } else {
@@ -102,7 +122,8 @@ const useFormCreator = (
     employeeOptions,
     setEmployeeOptions,
     toggleAutoRelink,
-    isAutoRelink: getValues('isAutoRelink'),
+    // isAutoRelink: getValues('isAutoRelink'),
+    isAutoRelink: true,
   };
 };
 
