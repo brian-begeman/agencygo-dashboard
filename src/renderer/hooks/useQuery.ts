@@ -38,6 +38,25 @@ const useQuery = (props: IProps) => {
           setError(true);
           setLoading(false);
         });
+    } else if (key === 'get-employee') {
+      let endPoint = 'employee/' + params.id;
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endPoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+        });
     }
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {

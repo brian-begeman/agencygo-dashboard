@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'renderer/hooks/useMutation';
 import * as Yup from 'yup';
-import { ISelectedEmployee } from './useData';
+import refetch, { ISelectedEmployee } from './useData';
 import fetchReq from 'utils/fetch';
 
 const useFormEmployee = (
@@ -59,7 +59,6 @@ const useFormEmployee = (
   }, []);
 
   const onSubmit = (data: any) => {
-    console.log(data,"Data+++++++++++++++++++++++++++++++++++++++")
     if (type === 'add') {
       addEmployee(data)
       mutataCreate(data, {
@@ -69,7 +68,7 @@ const useFormEmployee = (
         },
       });
     } else {
-      console.log('data', { ...data, id: selectedEmployee?.id });
+      editEmployee({...data,id:selectedEmployee?.id})
       mutateUpdate(
         { ...data, id: selectedEmployee?.id },
         {
@@ -85,7 +84,7 @@ const useFormEmployee = (
   const addEmployee = (data:any) =>{
     const endPoint = 'employee/'+data.agencyId;
     const options = {
-      method:'POST' as 'POST',
+      method:'PUT' as 'PUT',
       headers:{
         'content-type':'application/json',
     },
@@ -93,8 +92,22 @@ const useFormEmployee = (
     body:JSON.stringify(data),
   }
   fetchReq(endPoint,options).then((responce)=>responce.json()).then((res)=>{
-    console.log(res)
+    refetch()
   }).catch((err)=>console.log(err))
+}
+const editEmployee = (data:any) =>{
+  const endPoint = 'employee/'+data.id;
+  const options = {
+    method:'PUT' as 'PUT',
+    headers:{
+      'content-type':'application/json',
+  },
+  withAuth:true,
+  body:JSON.stringify(data),
+}
+fetchReq(endPoint,options).then((responce)=>responce.json()).then((res)=>{
+  refetch()
+}).catch((err)=>console.log(err))
 }
 
   

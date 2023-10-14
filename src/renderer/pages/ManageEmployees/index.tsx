@@ -40,14 +40,13 @@ export default function ManageEmployees() {
     employees,
     selectedEmployee,
     setSelectedEmployee,
-    data,
+    setEmployees,
+    setSelectedAgency,
+    selectedAgency,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
-  const [people, setPeople] = useState([]);
-  const [activeGroup, setactiveGroup] = useState('');
 
   useEffect(() => {
-    // console.log(agencies,"this is the agency variable.")
     let endpoint = 'agency';
     let options = {
       method: 'GET' as 'GET',
@@ -66,23 +65,9 @@ export default function ManageEmployees() {
       });
   }, []);
   useEffect(() => {
-  let endPoint = 'employee/' + activeGroup;
-  let options = {
-    method: 'GET' as 'GET',
-    headers: {
-      'content-type': 'application/json',
-    },
-    withAuth: true,
-  };
-  fetchReq(endPoint, options)
-    .then((response) => response.json())
-    .then((res) => {
-      setPeople(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }, [activeGroup]);
+    refetch();
+  }, [selectedAgency]);
+
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
@@ -133,9 +118,9 @@ export default function ManageEmployees() {
                 key={index}
                 color="secondary"
                 text={link.agencyName}
-                isActiveLink={link._id == activeGroup ? true : false}
+                isActiveLink={link._id == selectedAgency?.id ? true : false}
                 onClick={() => {
-                  setactiveGroup(link._id);
+                  setSelectedAgency({ id: link._id });
                 }}
                 isLink
               />
@@ -145,22 +130,22 @@ export default function ManageEmployees() {
         <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
           <Filter />
           <FilterTable
-            isEmptyContent={!people.length}
+            isEmptyContent={!employees.length}
             tableHeaders={employeesTableHeaders}
           >
             <>
-            {people.map(
+              {employees.map(
                 ({
                   name,
                   assignedCreators,
                   role,
-                  status,
+                  activated,
                   email,
                   roleRaw,
                   id,
                 }) => (
                   <TableRow
-                    key={name}
+                    key={id}
                     sx={{
                       '&:last-child td, &:last-child th': { border: 0 },
                     }}
@@ -199,7 +184,7 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      {status == 'active' ? <Activated /> : <DeactivatedSvg />}
+                      {activated ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -214,7 +199,7 @@ export default function ManageEmployees() {
                               name,
                               role: roleRaw,
                               email,
-                              id,
+                              id: id,
                             });
                             setFormType('edit');
                             setOpenAddEmployee(true);
