@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import useMutation from 'renderer/hooks/useMutation';
 import * as Yup from 'yup';
 import { ISelectedEmployee } from './useData';
+import fetchReq from 'utils/fetch';
 
 const useFormEmployee = (
   callback: () => void,
@@ -58,7 +59,9 @@ const useFormEmployee = (
   }, []);
 
   const onSubmit = (data: any) => {
+    console.log(data,"Data+++++++++++++++++++++++++++++++++++++++")
     if (type === 'add') {
+      addEmployee(data)
       mutataCreate(data, {
         onSuccess: () => {
           callback();
@@ -79,6 +82,22 @@ const useFormEmployee = (
     }
   };
 
+  const addEmployee = (data:any) =>{
+    const endPoint = 'employee/'+data.agencyId;
+    const options = {
+      method:'POST' as 'POST',
+      headers:{
+        'content-type':'application/json',
+    },
+    withAuth:true,
+    body:JSON.stringify(data),
+  }
+  fetchReq(endPoint,options).then((responce)=>responce.json()).then((res)=>{
+    console.log(res)
+  }).catch((err)=>console.log(err))
+}
+
+  
   useEffect(() => {
     if (selectedEmployee && type === 'edit') {
       setValue('name', selectedEmployee?.name);

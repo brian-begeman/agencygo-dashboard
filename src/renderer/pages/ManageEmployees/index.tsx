@@ -16,11 +16,12 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
+import fetchReq from 'utils/fetch';
 
 const employeesTableHeaders = [
   'Employees',
@@ -39,7 +40,49 @@ export default function ManageEmployees() {
     employees,
     selectedEmployee,
     setSelectedEmployee,
+    data,
   } = useDataEmployees();
+  const [group, setgroup] = useState([]);
+  const [people, setPeople] = useState([]);
+  const [activeGroup, setactiveGroup] = useState('');
+
+  useEffect(() => {
+    // console.log(agencies,"this is the agency variable.")
+    let endpoint = 'agency';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setgroup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  useEffect(() => {
+  let endPoint = 'employee/' + activeGroup;
+  let options = {
+    method: 'GET' as 'GET',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+  };
+  fetchReq(endPoint, options)
+    .then((response) => response.json())
+    .then((res) => {
+      setPeople(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, [activeGroup]);
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
@@ -85,12 +128,15 @@ export default function ManageEmployees() {
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {agencies?.map((link) => (
+            {group?.map((link: any, index: number) => (
               <PageTopbar.Button
-                key={link.text}
+                key={index}
                 color="secondary"
-                text={link.text}
-                isActiveLink={link.isActive}
+                text={link.agencyName}
+                isActiveLink={link._id == activeGroup ? true : false}
+                onClick={() => {
+                  setactiveGroup(link._id);
+                }}
                 isLink
               />
             ))}
@@ -99,16 +145,16 @@ export default function ManageEmployees() {
         <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
           <Filter />
           <FilterTable
-            isEmptyContent={!employees.length}
+            isEmptyContent={!people.length}
             tableHeaders={employeesTableHeaders}
           >
             <>
-              {employees.map(
+            {people.map(
                 ({
                   name,
                   assignedCreators,
                   role,
-                  activated,
+                  status,
                   email,
                   roleRaw,
                   id,
@@ -153,7 +199,7 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      {activated ? <Activated /> : <DeactivatedSvg />}
+                      {status == 'active' ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
                     <TableCell
                       sx={{
