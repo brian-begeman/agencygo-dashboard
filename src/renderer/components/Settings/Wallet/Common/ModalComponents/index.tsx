@@ -1,5 +1,8 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import classes from './styles.module.css';
+import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import LensIcon from '@mui/icons-material/Lens';
 
 interface LabelTextProps {
   label: string;
@@ -139,5 +142,49 @@ export function ModalFooter(props: ModalFooterProps) {
         {addText}
       </button>
     </div>
+  );
+}
+interface AutoRelinkSwitchProps {
+  isAutoRelink: boolean;
+  toggleAutoRelink: () => void;
+  register: any;
+  name: string;
+}
+
+export function AutoRelinkSwitch({
+  isAutoRelink,
+  toggleAutoRelink,
+  register,
+  name,
+}: AutoRelinkSwitchProps) {
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={<Switch defaultChecked={isAutoRelink} />}
+        label=""
+        {...register(name)}
+      />
+    </FormGroup>
+  );
+}
+
+interface RadioProps {
+  title?: string;
+}
+
+export function RadioButton({ title }: RadioProps) {
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={
+          <Checkbox
+            icon={<LensIcon sx={{ color: '#fff' }} />}
+            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
+          />
+        }
+        label=""
+        // label={`${title.title}`}
+      />
+    </FormGroup>
   );
 }

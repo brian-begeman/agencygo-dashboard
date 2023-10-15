@@ -4,15 +4,11 @@ export type IPCChannels = string;
 export type TMutationService =
   | 'login'
   | 'signup'
+  | 'create-employee'
+  | 'update-employee'
+  | 'delete-employee'
   | 'create-creator'
   | 'update-creator'
-  | 'create-employee'
-  | 'update-employee';
-// | 'create-employee'
-// | 'update-employee'
-// | 'delete-employee'
-// | 'create-creator'
-// | 'update-creator'
-// | 'delete-creator';
+  | 'delete-creator';
 // after create services get need to add here without prefix request or response
 export type TQueryService = 'user' | 'verify' | 'get-employee' | 'get-creator';

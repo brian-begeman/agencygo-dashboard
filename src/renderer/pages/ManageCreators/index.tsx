@@ -64,17 +64,19 @@ export default function ManageCreators() {
       });
   };
 
-  const handleActivate = (id: string) => {
+  const handleActivate = (id: string, status: boolean) => {
     const data = {
-      status: true,
+      status: !status,
     };
+
     let endpoint = `creators/${id}`;
     let options = {
       method: 'PUT' as 'PUT',
       headers: {
         'content-type': 'application/json',
       },
-      data: data,
+      withAuth: true,
+      body: JSON.stringify(data),
     };
     fetchReq(endpoint, options)
       .then((response) => response.json())
@@ -145,7 +147,7 @@ export default function ManageCreators() {
                   creatorName: name,
                   gender,
                   internalNotes,
-                  employees,
+                  assignEmployee,
                   activated,
                   status,
                   id,
@@ -216,7 +218,9 @@ export default function ManageCreators() {
                         color: '#fff',
                       }}
                     >
-                      {employees}
+                      {assignEmployee?.map((employee: any) => {
+                        return `${employee.name},`;
+                      })}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -254,7 +258,7 @@ export default function ManageCreators() {
                               id,
                               internalNotes,
                               activated,
-                              employees,
+                              assignEmployee,
                               imageSrc,
                               status,
                             });
@@ -270,6 +274,7 @@ export default function ManageCreators() {
                             title="More"
                             tabData={getOptions(status)}
                             id={id}
+                            status={status}
                           />
                         </ButtonBase>
                       </Stack>

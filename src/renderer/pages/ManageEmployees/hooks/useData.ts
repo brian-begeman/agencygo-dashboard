@@ -5,6 +5,9 @@ interface IAgencyList {
   text: string;
   isActive: boolean;
 }
+interface ISelectedAgency{
+  id:string
+}
 
 interface IEmployeeList {
   name: string;
@@ -35,7 +38,8 @@ const useDataEmployees = () => {
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
-  const { isLoading, data, refetch } = useQuery({ key: 'get-employee' });
+    const [selectedAgency,setSelectedAgency] = useState<ISelectedAgency|null>({id:""})
+  const { isLoading, data, refetch } = useQuery({ key: 'get-employee',params:selectedAgency });
 
   useEffect(() => {
     // window.electron.ipcRenderer
@@ -80,6 +84,9 @@ const useDataEmployees = () => {
     refetch,
     employees,
     selectedEmployee,
+    setEmployees,
+    selectedAgency,
+    setSelectedAgency,
     setSelectedEmployee,
   };
 };

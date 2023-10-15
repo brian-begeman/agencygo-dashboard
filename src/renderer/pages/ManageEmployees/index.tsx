@@ -9,14 +9,12 @@ import {
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from './styles.module.css';
 import AddIcon from '@mui/icons-material/Add';
+import { useState, useEffect } from 'react';
+import styles from './styles.module.css';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
-import {  useState } from 'react';
-import fetchReq from 'utils/fetch';
 import Filter from 'renderer/components/Filter';
 import FilterTable from 'renderer/components/Filter/FilterTable';
 import theme from 'renderer/styles/muiTheme';
@@ -25,6 +23,7 @@ import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './components/ResetPasswordModal';
 import AssignCreatorModal from './components/AssignCreatorModal';
+import fetchReq from 'utils/fetch';
 
 const employeesTableHeaders = [
   'Employees',
@@ -35,31 +34,47 @@ const employeesTableHeaders = [
 ];
 
 export default function ManageEmployees() {
-  const location = useLocation();
-  const path = location.pathname;
-  const navigate = useNavigate();
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
-  const { employees, selectedEmployee, setSelectedEmployee, refetch } =
-    useDataEmployees();
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
-  const [links] = useState([
-    {
-      text: 'Diamond Lifestyle Group',
-      link: 'lifestyle-group',
-      name: 'diamondLifeStyle',
-    },
-    {
-      text: 'Hot n Spicy Group',
-      link: 'spicy-group',
-      name: 'Hot & Spicy group',
-    },
-    { text: 'Gud Energy Group', link: 'energy-group', name: '' },
-  ]);
   const [id, setId] = useState('');
   const [open, setOpen] = useState(false);
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const {
+    agencies,
+    refetch,
+    employees,
+    selectedEmployee,
+    setSelectedEmployee,
+    setEmployees,
+    setSelectedAgency,
+    selectedAgency,
+  } = useDataEmployees();
+  const [group, setgroup] = useState([]);
+
+  useEffect(() => {
+    let endpoint = 'agency';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setgroup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  useEffect(() => {
+    refetch();
+  }, [selectedAgency]);
+
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
@@ -169,28 +184,21 @@ export default function ManageEmployees() {
               />
             </Box>
           </Stack>
-          {/* <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {links.map(({ link, text }) => (
+          <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
+            {group?.map((link: any, index: number) => (
               <PageTopbar.Button
-                key={text}
+                key={index}
                 color="secondary"
-                text={text}
-                isActiveLink={path.includes(link)}
+                text={link.agencyName}
+                isActiveLink={link._id == selectedAgency?.id ? true : false}
+                onClick={() => {
+                  setSelectedAgency({ id: link._id });
+                }}
                 isLink
-                onClick={() => navigate(`/employees-manage-employees/${link}`)}
               />
             ))}
-          </Stack> */}
+          </Stack>
         </PageTopbar>
-        {/* <Box
-          sx={{
-            // display: 'grid',
-            // gridTemplateColumns: 'minmax(min-content, 416px) 1fr',
-            height: '100%',
-          }}
-        >
-         <LifestyleGroup/>
-        </Box> */}
         <Stack direction="row" spacing={1} sx={{ height: '100%' }}>
           <Filter />
           <FilterTable
@@ -207,112 +215,114 @@ export default function ManageEmployees() {
                   email,
                   roleRaw,
                   id,
-                }) => {
-                  return (
-                    <TableRow
-                      key={name}
+                }) => (
+                  <TableRow
+                    key={id}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                    }}
+                  >
+                    <TableCell
                       sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
+                        borderColor: theme.palette.primary.contrastText,
+                      }}
+                      scope="row"
+                    >
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        <Avatar />
+                        <Typography variant="h6" fontSize="18px" color="#fff">
+                          {name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                        color: '#fff',
+                        width: '300px',
+                      }}
+                      onClick={() => {
+                        setAssigneeName(name);
+                        setId(id);
+                        setOpenAssignCreatorModal(!openAssignCreatorModal);
                       }}
                     >
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                        scope="row"
-                      >
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          <Avatar />
-                          <Typography variant="h6" fontSize="18px" color="#fff">
-                            {name}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                          color: '#fff',
-                          width: '300px',
-                        }}
-                        onClick={() => {
-                          setAssigneeName(name);
-                          setId(id);
-                          setOpenAssignCreatorModal(!openAssignCreatorModal);
-                        }}
-                      >
-                        {assignedCreators}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                          color: '#fff',
-                        }}
-                      >
-                        {role}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                      >
-                        {activated ? (
-                          <Activated />
-                        ) : (
-                          <Box
-                            display={'flex'}
-                            gap={'10px'}
-                            alignItems={'center'}
-                          >
-                            <DeactivatedSvg />
-                            <Typography color={'#fff'}>Resend</Typography>
-                          </Box>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                        align="center"
-                      >
-                        <Stack
-                          spacing={4}
-                          direction="row"
-                          alignItems="center"
-                          justifyContent={'start'}
+                      {assignedCreators}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                        color: '#fff',
+                      }}
+                    >
+                      {role}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                      }}
+                    >
+                      {activated ? (
+                        <Activated />
+                      ) : (
+                        <Box
+                          display={'flex'}
+                          gap={'10px'}
+                          alignItems={'center'}
                         >
-                          <ButtonBase
-                            onClick={() => {
-                              setSelectedEmployee({
-                                name,
-                                role: roleRaw,
-                                email,
-                                id,
-                              });
-                              setFormType('edit');
-                              setOpenAddEmployee(true);
-                            }}
-                          >
+                          <DeactivatedSvg />
+                          <Typography color={'#fff'}>Resend</Typography>
+                        </Box>
+                      )}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                      }}
+                    >
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        {activated ? (
+                          <>
+                            <ButtonBase
+                              onClick={() => {
+                                setSelectedEmployee({
+                                  name,
+                                  role: roleRaw,
+                                  email,
+                                  id,
+                                });
+                                setFormType('edit');
+                                setOpenAddEmployee(true);
+                              }}
+                            >
+                              <Typography variant="body1" color="#fff">
+                                Edit
+                              </Typography>
+                            </ButtonBase>
+                            <ButtonBase>
+                              <Typography variant="body1" color="#fff">
+                                <Box onClick={() => handleClick(id, email)}>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
+                                </Box>
+                              </Typography>
+                            </ButtonBase>
+                          </>
+                        ) : (
+                          <ButtonBase onClick={()=>handleDelete(id)}>
                             <Typography variant="body1" color="#fff">
-                              {activated ? 'Edit' : 'Delete'}
+                              Delete
                             </Typography>
                           </ButtonBase>
-                          <ButtonBase>
-                            <Typography variant="body1" color="#fff">
-                              <Box onClick={() => handleClick(id, email)}>
-                                <MenuButton
-                                  title="More"
-                                  tabData={getOptions(activated)}
-                                  id={id}
-                                  status={activated}
-                                />
-                              </Box>
-                            </Typography>
-                          </ButtonBase>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
+                        )}
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                )
               )}
             </>
           </FilterTable>
