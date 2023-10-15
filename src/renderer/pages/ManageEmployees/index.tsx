@@ -16,11 +16,12 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
+import fetchReq from 'utils/fetch';
 
 const employeesTableHeaders = [
   'Employees',
@@ -39,7 +40,34 @@ export default function ManageEmployees() {
     employees,
     selectedEmployee,
     setSelectedEmployee,
+    setEmployees,
+    setSelectedAgency,
+    selectedAgency,
   } = useDataEmployees();
+  const [group, setgroup] = useState([]);
+
+  useEffect(() => {
+    let endpoint = 'agency';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setgroup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  useEffect(() => {
+    refetch();
+  }, [selectedAgency]);
+
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
@@ -85,12 +113,15 @@ export default function ManageEmployees() {
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {agencies?.map((link) => (
+            {group?.map((link: any, index: number) => (
               <PageTopbar.Button
-                key={link.text}
+                key={index}
                 color="secondary"
-                text={link.text}
-                isActiveLink={link.isActive}
+                text={link.agencyName}
+                isActiveLink={link._id == selectedAgency?.id ? true : false}
+                onClick={() => {
+                  setSelectedAgency({ id: link._id });
+                }}
                 isLink
               />
             ))}
@@ -114,7 +145,7 @@ export default function ManageEmployees() {
                   id,
                 }) => (
                   <TableRow
-                    key={name}
+                    key={id}
                     sx={{
                       '&:last-child td, &:last-child th': { border: 0 },
                     }}
@@ -168,7 +199,7 @@ export default function ManageEmployees() {
                               name,
                               role: roleRaw,
                               email,
-                              id,
+                              id: id,
                             });
                             setFormType('edit');
                             setOpenAddEmployee(true);
