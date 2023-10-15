@@ -81,7 +81,6 @@ export default function LifestyleGroup() {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res,"delete record-----------------")
         refetch()
       })
       .catch((err) => {
@@ -106,7 +105,7 @@ export default function LifestyleGroup() {
     setId(id);
     setEmail(email);
   };
-  console.log(employees,':employees===========================')
+
   return (
     <>
       <Stack direction="row" spacing={1} sx={{ height: '100%' }}>

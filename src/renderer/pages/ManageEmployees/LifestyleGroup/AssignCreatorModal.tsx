@@ -34,8 +34,6 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
   },[data])
   
   const handleAssignCreator =(id:string)=>{
-    console.log(id,"====================");
-    
     const payload = selectedValues
     let endpoint = `employee/${id}`;
     let options = {
@@ -54,6 +52,7 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
       .catch((err) => {
         console.log('Error occured: ', err);
       });
+      handleClose()
   }
 
   return (

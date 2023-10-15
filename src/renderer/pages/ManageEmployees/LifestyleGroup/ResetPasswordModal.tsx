@@ -4,7 +4,6 @@ import Modal from '@mui/material/Modal';
 import "./styles.module.css"
 import fetchReq from 'utils/fetch';
 import PageTopbar from 'renderer/components/PageTopbar';
-import useQuery from 'renderer/hooks/useQuery';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,11 +20,27 @@ const style = {
 export default function ResetPasswordModal({ open, setOpen,email,id }: any) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { isLoading, data, refetch } = useQuery({ key: 'reset-password',params:id });
 
   const handleResetPassword = (id: string) => {
-   
+      let endpoint = `email/reset-password/${id}`;
+      let options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res, 'reset pass----------------------');
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+    handleClose()
   };
+
   return (
     <div>
       <Modal
