@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { DropdownWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import PageTopbar from 'renderer/components/PageTopbar';
 import { useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
