@@ -39,6 +39,7 @@ export default function ManageEmployees() {
       headers: {
         'content-type': 'application/json',
       },
+      withAuth: true,
     };
     fetchReq(endpoint, options)
       .then((response) => response.json())
@@ -106,7 +107,7 @@ export default function ManageEmployees() {
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
-            {links.map(({ link, text,agencyId}) => (
+            {links.map(({ link, text}) => (
               <PageTopbar.Button
                 key={text}
                 color="secondary"
@@ -120,8 +121,8 @@ export default function ManageEmployees() {
         </PageTopbar>
         <Box
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(min-content, 416px) 1fr',
+            // display: 'grid',
+            // gridTemplateColumns: 'minmax(min-content, 416px) 1fr',
             height: '100%',
           }}
         >

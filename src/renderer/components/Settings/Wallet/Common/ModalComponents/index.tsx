@@ -55,12 +55,12 @@ interface Option {
 }
 
 interface DropdownWithLabelProps {
-  label: string;
-  inputIdentifierName: string;
+  label?: string;
+  inputIdentifierName?: string;
   value?: string;
   selectStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
-  options: Option[]; // Array of options
+  options?: Option[]; // Array of options
   placeholder?: string;
   register?: UseFormRegister<FieldValues>;
 }
@@ -91,7 +91,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName)}
       >
-        {options.map((res, index) => (
+        {options?.map((res, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <option key={index} value={res?.value}>
             {res?.label}

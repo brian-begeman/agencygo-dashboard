@@ -1,7 +1,13 @@
 export type IPCChannels = string;
 
 // after create services post, put, & delete need to add here without prefix request or response
-export type TMutationService = 'login' | 'signup';
+export type TMutationService =
+  | 'login'
+  | 'signup'
+  | 'create-creator'
+  | 'update-creator'
+  | 'create-employee'
+  | 'update-employee';
 // | 'create-employee'
 // | 'update-employee'
 // | 'delete-employee'
@@ -9,4 +15,9 @@ export type TMutationService = 'login' | 'signup';
 // | 'update-creator'
 // | 'delete-creator';
 // after create services get need to add here without prefix request or response
-export type TQueryService = 'user' | 'verify' | 'get-employee' | 'get-creator';
+export type TQueryService =
+  | 'user'
+  | 'verify'
+  | 'get-employee'
+  | 'get-creator'
+  | 'reset-password';

@@ -26,6 +26,7 @@ const useQuery = (props: IProps) => {
         headers: {
           'content-type': 'application/json',
         },
+        withAuth: true,
       };
       fetchReq(endpoint, options)
         .then((response) => response.json())
@@ -36,6 +37,47 @@ const useQuery = (props: IProps) => {
           console.log('Error occured: ', err);
         });
     }
+
+    if (key === 'get-creator') {
+      let endpoint = 'creators';
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
+
+    if (key === 'reset-password') {
+      let endpoint = `email/reset-password/${params}`;
+      let options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res, 'resest pass----------------------');
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+    }
+
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
     //   setLoading(false);

@@ -18,6 +18,7 @@ import { useLocation } from 'react-router-dom';
 import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './ResetPasswordModal';
 import AssignCreatorModal from './AssignCreatorModal';
+import fetchReq from 'utils/fetch';
 
 const employeesTableHeaders = [
   'Employees',
@@ -31,27 +32,64 @@ export default function LifestyleGroup() {
   const location = useLocation();
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
-  const { employees, setSelectedEmployee } = useDataEmployees();
+  const { employees, setSelectedEmployee,refetch } = useDataEmployees();
   const [id, setId] = useState('');
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
   const [open, setOpen] = useState(false);
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
-  const [assigneeName,setAssigneeName] = useState<string>('')
+  const [assigneeName, setAssigneeName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+
   const handleActivate = (id: string) => {
-    console.log(id, 'handleActivate??????????????');
-  };
-  const handleResetPassword = (id: string) => {
-    setOpen(!open);
-    console.log(id, 'handleResetPassword??????????????????');
-  };
-  const handleDelete = (id: string) => {
-    console.log(id, 'handleDelete?????????????????');
+    const data = {
+      to: email,
+    };
+    let endpoint = `email/${id}`;
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(data),
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
   };
 
-  const getOptions = (activated?: boolean,name?:string) => {
-    setAssigneeName(name)
+  const handleResetPassword = (id: string) => {
+    setOpen(!open);
+  };
+
+  const handleDelete = (id: string) => {
+    let endpoint = `employee/${id}`;
+    let options = {
+      method: 'DELETE' as 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res,"delete record-----------------")
+        refetch()
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
+  const getOptions = (activated?: boolean) => {
     const tabData = [
       {
         title: activated == true ? 'Deactivate' : 'Activate',
@@ -64,9 +102,14 @@ export default function LifestyleGroup() {
     return tabData;
   };
 
+  const handleClick = (id: string, email: string) => {
+    setId(id);
+    setEmail(email);
+  };
+  console.log(employees,':employees===========================')
   return (
-    <section>
-      <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
+    <>
+      <Stack direction="row" spacing={1} sx={{ height: '100%' }}>
         <Filter />
         <FilterTable
           isEmptyContent={!employees.length}
@@ -96,7 +139,7 @@ export default function LifestyleGroup() {
                       }}
                       scope="row"
                     >
-                      <Stack spacing={4} direction="row" alignItems="center">
+                      <Stack spacing={1} direction="row" alignItems="center">
                         <Avatar />
                         <Typography variant="h6" fontSize="18px" color="#fff">
                           {name}
@@ -109,9 +152,11 @@ export default function LifestyleGroup() {
                         color: '#fff',
                         width: '300px',
                       }}
-                      onClick={() =>
-                        setOpenAssignCreatorModal(!openAssignCreatorModal)
-                      }
+                      onClick={() => {
+                        setAssigneeName(name);
+                        setId(id);
+                        setOpenAssignCreatorModal(!openAssignCreatorModal);
+                      }}
                     >
                       {assignedCreators}
                     </TableCell>
@@ -145,13 +190,13 @@ export default function LifestyleGroup() {
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
                       }}
-                      align="right"
+                      align="center"
                     >
                       <Stack
                         spacing={4}
                         direction="row"
                         alignItems="center"
-                        justifyContent={'end'}
+                        justifyContent={'start'}
                       >
                         <ButtonBase
                           onClick={() => {
@@ -171,11 +216,12 @@ export default function LifestyleGroup() {
                         </ButtonBase>
                         <ButtonBase>
                           <Typography variant="body1" color="#fff">
-                            <Box onClick={() => setId(id)}>
+                            <Box onClick={() => handleClick(id, email)}>
                               <MenuButton
                                 title="More"
-                                tabData={getOptions(activated,name)}
+                                tabData={getOptions(activated)}
                                 id={id}
+                                status={activated}
                               />
                             </Box>
                           </Typography>
@@ -188,15 +234,23 @@ export default function LifestyleGroup() {
             )}
           </>
         </FilterTable>
-      </Stack>
-      {open && <ResetPasswordModal open={open} setOpen={setOpen} />}
+      {open && (
+        <ResetPasswordModal
+          open={open}
+          setOpen={setOpen}
+          email={email}
+          id={id}
+        />
+      )}
       {openAssignCreatorModal && (
         <AssignCreatorModal
           name={assigneeName}
           open={openAssignCreatorModal}
           setOpen={setOpenAssignCreatorModal}
+          id={id}
         />
       )}
-    </section>
+      </Stack>
+    </>
   );
 }

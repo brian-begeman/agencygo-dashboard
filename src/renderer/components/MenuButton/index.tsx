@@ -2,16 +2,16 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
 import Typography from '@mui/material/Typography';
 
 type MenuProps = {
   title?: string;
   tabData?: any;
-  id?:string
+  id?: string;
+  status?:boolean;
 };
 
-export default function MenuButton({ title, tabData,id }: MenuProps) {
+export default function MenuButton({ title, tabData, id,status }: MenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,7 +24,9 @@ export default function MenuButton({ title, tabData,id }: MenuProps) {
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Typography onClick={handleClick}>{title}</Typography>
+        <Typography onClick={handleClick} color={'#04A1FF'}>
+          {title}
+        </Typography>
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -62,7 +64,9 @@ export default function MenuButton({ title, tabData,id }: MenuProps) {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {tabData.map((val: any) => {
-          return <MenuItem onClick={()=>val.function(id)}>{val.title}</MenuItem>;
+          return (
+            <MenuItem onClick={() => val.function(id,status)}>{val.title}</MenuItem>
+          );
         })}
       </Menu>
     </React.Fragment>

@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useState } from 'react';
+import fetchReq from 'utils/fetch';
 
 interface AuthContextType {
   isLogin: boolean;
@@ -24,8 +25,25 @@ export default function AuthProvider({ children }: $Props) {
   };
 
   const logout = () => {
-    sessionStorage.removeItem("Authorization")
-    setIsLogin(false);
+    let endpoint = 'logout';
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.message) {
+          sessionStorage.removeItem('Authorization');
+          setIsLogin(false);
+        }
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
   };
 
   return (

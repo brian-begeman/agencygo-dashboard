@@ -26,7 +26,7 @@ export default function FilterTable({
   children,
 }: $Props) {
   return (
-    <Box>
+    <Box width={'100%'}>
       {!isEmptyContent ? (
         <TableContainer
           sx={{
