@@ -38,7 +38,7 @@ const useDataEmployees = () => {
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
-    const [selectedAgency,setSelectedAgency] = useState<ISelectedAgency|null>(null)
+    const [selectedAgency,setSelectedAgency] = useState<ISelectedAgency|null>({id:""})
   const { isLoading, data, refetch } = useQuery({ key: 'get-employee',params:selectedAgency });
 
   useEffect(() => {
