@@ -22,6 +22,7 @@ import styles from './styles.module.css';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
 import fetchReq from 'utils/fetch';
+import MenuButton from 'renderer/components/MenuButton';
 
 const employeesTableHeaders = [
   'Employees',
@@ -45,6 +46,50 @@ export default function ManageEmployees() {
     selectedAgency,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
+  const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
+  const { mutate: mutateActivate } = useMutation({ key: 'activate-employee' });
+
+  const getOptions = (status: boolean) => {
+    const tabData = [
+      {
+        title: status == true ? 'Deactivate' : 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+      { title: 'Reset Password', function: resetPassword },
+    ];
+    return tabData;
+  };
+
+  const handleActivate = (id: any, status: any) => {
+    mutateActivate(
+      { id, status },
+      {
+        onSuccess: (resp) => {
+          console.log(resp)
+          refetch();
+        },
+      }
+    );
+  };
+  const handleDelete = (id: any) => {
+    const endPoint = 'employee/' + id;
+    const options = {
+      method: 'DELETE' as 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const resetPassword = () => {};
 
   useEffect(() => {
     let endpoint = 'agency';
@@ -67,10 +112,6 @@ export default function ManageEmployees() {
   useEffect(() => {
     refetch();
   }, [selectedAgency]);
-
-  // const { mutate: mutateDelete } = useMutation({
-  //   key: 'delete-employee',
-  // });
 
   return (
     <Dashboard>
@@ -209,8 +250,9 @@ export default function ManageEmployees() {
                             Edit
                           </Typography>
                         </ButtonBase>
-                        <ButtonBase
+                        {/* <ButtonBase
                           onClick={() => {
+                            deletEmployee(id);
                             // mutateDelete(
                             //   { id },
                             //   {
@@ -224,11 +266,14 @@ export default function ManageEmployees() {
                           <Typography variant="body1" color="#FF0000">
                             Delete
                           </Typography>
-                        </ButtonBase>
+                        </ButtonBase> */}
                         <ButtonBase>
-                          <Typography variant="body1" color="#fff">
-                            More
-                          </Typography>
+                          <MenuButton
+                            title="More"
+                            tabData={getOptions(activated)}
+                            id={id}
+                            status={activated}
+                          />
                         </ButtonBase>
                       </Stack>
                     </TableCell>

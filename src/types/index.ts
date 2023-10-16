@@ -10,6 +10,7 @@ export type TMutationService =
   | 'create-employee'
   | 'update-employee'
   | 'delete-employee'
+  | 'activate-employee'
   | 'create-creator'
   | 'update-creator'
   | 'delete-creator';
