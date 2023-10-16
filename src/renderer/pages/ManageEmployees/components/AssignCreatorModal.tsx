@@ -23,16 +23,11 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [creatorNames, setCreatorNames] = useState<any>(null)
-  const { isLoading, data, refetch } = useQuery({ key: 'get-creator' });
-  console.log(data,"DATA")
-  useEffect(()=>{
-    setCreatorNames(data?.data)
-  },[data])
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
   
   const handleAssignCreator =(id:string)=>{
     const payload = selectedValues
-    let endpoint = `employees/${id}`;
+    let endpoint = `employee/${id}`;
     let options = {
       method: 'PUT' as 'PUT',
       headers: {

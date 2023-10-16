@@ -108,7 +108,7 @@ import fetchReq from '../utils/fetch';
 // }
 
 async function updateEmployee(data: any) {
-  const endPoint = 'employees/' + data.id;
+  const endPoint = 'employee/' + data.id;
   const options = {
     method: 'PUT' as 'PUT',
     headers: {
@@ -122,7 +122,7 @@ async function updateEmployee(data: any) {
   return resp;
 }
 async function activateEmployee(data: any) {
-  const endPoint = 'employees/' + data.id;
+  const endPoint = 'employee/' + data.id;
 
   const bodyData = {
     status: !data.status ? 'active' : 'inactive',

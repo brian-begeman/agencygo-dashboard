@@ -25,6 +25,7 @@ import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './components/ResetPasswordModal';
 import AssignCreatorModal from './components/AssignCreatorModal';
+import useQuery from 'renderer/hooks/useQuery';
 
 const employeesTableHeaders = [
   'Employees',
@@ -42,6 +43,7 @@ export default function ManageEmployees() {
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
+
   const {
     agencies,
     refetch,
@@ -80,7 +82,7 @@ export default function ManageEmployees() {
     );
   };
   const handleDelete = (id: any) => {
-    const endPoint = 'employees/' + id;
+    const endPoint = 'employee/' + id;
     const options = {
       method: 'DELETE' as 'DELETE',
       headers: {
@@ -118,6 +120,7 @@ export default function ManageEmployees() {
         console.log(err);
       });
   }, []);
+
   useEffect(() => {
     refetch();
   }, [selectedAgency]);
@@ -138,7 +141,7 @@ export default function ManageEmployees() {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res, 'resend----------------------');
+        console.log(res);
       })
       .catch((err) => {
         console.log('Error occured: ', err);

@@ -60,7 +60,7 @@ const useFormEmployee = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      const endPoint = 'employees/' + data.agencyId;
+      const endPoint = 'employee/' + data.agencyId;
       const options = {
         method: 'POST' as 'POST',
         headers: {
