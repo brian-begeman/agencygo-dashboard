@@ -79,6 +79,28 @@ const useQuery = (props: IProps) => {
     //   }
     // });
   };
+  const handleSearch = (data: any) => {
+    const queryString = Object.keys(data)
+      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .join('&');
+
+    let endpoint = `creators/search?${queryString}`;
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
 
   useEffect(() => {
     if (!notInitialFetch) {
@@ -93,6 +115,7 @@ const useQuery = (props: IProps) => {
     isSuccess: success,
     data,
     refetch: fetch,
+    handleSearch: handleSearch,
   };
 };
 
