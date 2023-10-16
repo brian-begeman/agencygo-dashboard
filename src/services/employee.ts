@@ -92,23 +92,22 @@ import fetchReq from '../utils/fetch';
 //     });
 //   }
 // });
-async function createEmployee(data: any) {
-  const endPoint = 'employee/' + data.agencyId;
-  const options = {
-    method: 'POST' as 'POST',
-    headers: {
-      'content-type': 'application/json',
-    },
-    withAuth: true,
-    body: JSON.stringify(data),
-  };
-  let responce = await fetchReq(endPoint, options);
-  let resp = responce.json();
-  return resp;
-}
+// async function createEmployee(data: any) {
+//   const endPoint = 'employee/' + data.agencyId;
+//   const options = {
+//     method: 'POST' as 'POST',
+//     headers: {
+//       'content-type': 'application/json',
+//     },
+//     withAuth: true,
+//     body: JSON.stringify(data),
+//   };
+//   let responce = await fetchReq(endPoint, options);
+//   let resp = responce.json();
+//   return resp;
+// }
 
 async function updateEmployee(data: any) {
-  console.log(data, 'this is from update employee');
   const endPoint = 'employee/' + data.id;
   const options = {
     method: 'PUT' as 'PUT',
@@ -122,11 +121,28 @@ async function updateEmployee(data: any) {
   let resp = await responce.json();
   return resp;
 }
-
-// };
+async function activateEmployee(data: any) {
+  const endPoint = 'employee/' + data.id;
+  
+  const bodyData = {
+    status:!data.status?'active':'inactive'
+  }
+  const options = {
+    method:'PUT' as 'PUT',
+    headers:{
+      'content-type':'application/json',
+    },
+    withAuth:true,
+    body:JSON.stringify(bodyData),
+  }
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();;
+  return resp;
+};
 const EmpoloyeeServices = {
-  createEmployee,
+  // createEmployee,
   updateEmployee,
+  activateEmployee,
 };
 
 export default EmpoloyeeServices;

@@ -46,7 +46,32 @@ export default function ManageEmployees() {
     selectedAgency,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
-  const handleActivate = (id: any, status: any) => {};
+  const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
+  const { mutate: mutateActivate } = useMutation({ key: 'activate-employee' });
+
+  const getOptions = (status: boolean) => {
+    const tabData = [
+      {
+        title: status == true ? 'Deactivate' : 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+      { title: 'Reset Password', function: resetPassword },
+    ];
+    return tabData;
+  };
+
+  const handleActivate = (id: any, status: any) => {
+    mutateActivate(
+      { id, status },
+      {
+        onSuccess: (resp) => {
+          console.log(resp)
+          refetch();
+        },
+      }
+    );
+  };
   const handleDelete = (id: any) => {
     const endPoint = 'employee/' + id;
     const options = {
@@ -63,18 +88,8 @@ export default function ManageEmployees() {
       })
       .catch((err) => console.log(err));
   };
+
   const resetPassword = () => {};
-  const getOptions = (status: boolean) => {
-    const tabData = [
-      {
-        title: status == true ? 'Deactivate' : 'Activate',
-        function: handleActivate,
-      },
-      { title: 'Delete', function: handleDelete },
-      { title: 'Reset Password', function: resetPassword },
-    ];
-    return tabData;
-  };
 
   useEffect(() => {
     let endpoint = 'agency';
@@ -97,12 +112,6 @@ export default function ManageEmployees() {
   useEffect(() => {
     refetch();
   }, [selectedAgency]);
-
-  // const { mutate: mutateDelete } = useMutation({
-  //   key: 'delete-employee',
-  // });
-
-
 
   return (
     <Dashboard>

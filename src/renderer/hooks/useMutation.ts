@@ -38,11 +38,14 @@ const useMutation = (props: IProps): IResponse => {
       if (key === 'login') {
         resp = await AuthServices.loginRequest(body);
       }
-      if (key === 'create-employee') {
-        resp = await EmpoloyeeServices.createEmployee(body);
-      }
-      if(key === 'update-employee'){
+      // if (key === 'create-employee') {
+      //   resp = await EmpoloyeeServices.createEmployee(body);
+      // }
+      if (key === 'update-employee') {
         resp = await EmpoloyeeServices.updateEmployee(body);
+      }
+      if (key === 'activate-employee') {
+        resp = await EmpoloyeeServices.activateEmployee(body);
       }
       console.log({ resp });
       setLoading(false);

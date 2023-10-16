@@ -59,7 +59,6 @@ const useFormEmployee = (
   }, []);
 
   const onSubmit = (data: any) => {
-    console.log(data, 'from add and update data');
     if (type === 'add') {
       const endPoint = 'employee/' + data.agencyId;
       const options = {
@@ -73,7 +72,6 @@ const useFormEmployee = (
       fetchReq(endPoint, options)
         .then((responce) => responce.json)
         .then((res) => {
-          console.log(res, 'the content added');
           callback();
           reset();
           refetch();
