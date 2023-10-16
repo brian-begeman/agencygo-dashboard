@@ -27,7 +27,7 @@ interface $Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
-  type: 'Add' | 'Edit';
+  type: 'add' | 'edit';
   selectedCreator?: any;
 }
 
@@ -110,6 +110,8 @@ export default function AddCreaterModal({
   const handleModalClose = () => {
     setOpen(false);
   };
+
+  console.log(type, 'type+++++++++++++++++++++++');
 
   return (
     <Overlay
