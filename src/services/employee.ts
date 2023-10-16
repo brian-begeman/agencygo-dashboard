@@ -108,7 +108,7 @@ import fetchReq from '../utils/fetch';
 // }
 
 async function updateEmployee(data: any) {
-  const endPoint = 'employee/' + data.id;
+  const endPoint = 'employees/' + data.id;
   const options = {
     method: 'PUT' as 'PUT',
     headers: {
@@ -122,23 +122,23 @@ async function updateEmployee(data: any) {
   return resp;
 }
 async function activateEmployee(data: any) {
-  const endPoint = 'employee/' + data.id;
-  
+  const endPoint = 'employees/' + data.id;
+
   const bodyData = {
-    status:!data.status?'active':'inactive'
-  }
+    status: !data.status ? 'active' : 'inactive',
+  };
   const options = {
-    method:'PUT' as 'PUT',
-    headers:{
-      'content-type':'application/json',
+    method: 'PUT' as 'PUT',
+    headers: {
+      'content-type': 'application/json',
     },
-    withAuth:true,
-    body:JSON.stringify(bodyData),
-  }
+    withAuth: true,
+    body: JSON.stringify(bodyData),
+  };
   let responce = await fetchReq(endPoint, options);
-  let resp = await responce.json();;
+  let resp = await responce.json();
   return resp;
-};
+}
 const EmpoloyeeServices = {
   // createEmployee,
   updateEmployee,

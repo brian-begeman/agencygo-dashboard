@@ -24,6 +24,7 @@ import useDataEmployees from './hooks/useData';
 import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './components/ResetPasswordModal';
+import AssignCreatorModal from './components/AssignCreatorModal';
 
 const employeesTableHeaders = [
   'Employees',
@@ -39,6 +40,8 @@ export default function ManageEmployees() {
   const [email, setEmail] = useState<string>('');
   const [id, setId] = useState('');
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
+  const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
+  const [assigneeName, setAssigneeName] = useState<string>('');
   const {
     agencies,
     refetch,
@@ -77,7 +80,7 @@ export default function ManageEmployees() {
     );
   };
   const handleDelete = (id: any) => {
-    const endPoint = 'employee/' + id;
+    const endPoint = 'employees/' + id;
     const options = {
       method: 'DELETE' as 'DELETE',
       headers: {
@@ -238,6 +241,11 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                         color: '#fff',
                       }}
+                      onClick={() => {
+                        setAssigneeName(name);
+                        setId(id);
+                        setOpenAssignCreatorModal(!openAssignCreatorModal);
+                      }}
                     >
                       {assignedCreators}
                     </TableCell>
@@ -268,6 +276,52 @@ export default function ManageEmployees() {
                       )}
                     </TableCell>
                     <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                      }}
+                    >
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        {activated ? (
+                          <>
+                            <ButtonBase
+                              onClick={() => {
+                                setSelectedEmployee({
+                                  name,
+                                  role: roleRaw,
+                                  email,
+                                  id,
+                                });
+                                setFormType('edit');
+                                setOpenAddEmployee(true);
+                              }}
+                            >
+                              <Typography variant="body1" color="#fff">
+                                Edit
+                              </Typography>
+                            </ButtonBase>
+                            <ButtonBase>
+                              <Typography variant="body1" color="#fff">
+                                <Box onClick={() => handleClick(id, email)}>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
+                                </Box>
+                              </Typography>
+                            </ButtonBase>
+                          </>
+                        ) : (
+                          <ButtonBase onClick={()=>handleDelete(id)}>
+                            <Typography variant="body1" color="#fff">
+                              Delete
+                            </Typography>
+                          </ButtonBase>
+                        )}
+                      </Stack>
+                    </TableCell>
+                    {/* <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
                       }}
@@ -306,7 +360,7 @@ export default function ManageEmployees() {
                           <Typography variant="body1" color="#FF0000">
                             Delete
                           </Typography>
-                        </ButtonBase> */}
+                        </ButtonBase> 
                         <ButtonBase onClick={() => handleClick(id, email)}>
                           <MenuButton
                             title="More"
@@ -316,7 +370,7 @@ export default function ManageEmployees() {
                           />
                         </ButtonBase>
                       </Stack>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 )
               )}
@@ -327,6 +381,14 @@ export default function ManageEmployees() {
               open={open}
               setOpen={setOpen}
               email={email}
+              id={id}
+            />
+          )}
+           {openAssignCreatorModal && (
+            <AssignCreatorModal
+              name={assigneeName}
+              open={openAssignCreatorModal}
+              setOpen={setOpenAssignCreatorModal}
               id={id}
             />
           )}
