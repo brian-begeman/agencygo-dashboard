@@ -1,4 +1,4 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 import './styles/reset.css';
 import './styles/global.vars.css';
 import './App.css';

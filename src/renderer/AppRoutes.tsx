@@ -232,7 +232,7 @@ function AppRoutes() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password/:id" element={<ResetPassword />} />
         </>
       )}
     </Routes>
