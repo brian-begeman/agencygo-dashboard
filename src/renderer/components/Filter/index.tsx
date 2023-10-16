@@ -12,14 +12,15 @@ import {
 import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
-import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
+// import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
 import { ChangeEvent, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import styles from './styles.module.css';
-import FilterTag from './FilterTag';
-import fetchReq from 'utils/fetch';
+// import FilterTag from './FilterTag';
+// import fetchReq from 'utils/fetch';
+import { useLocation } from 'react-router-dom';
 
 interface $ByCreatorProps {
   creatorSearch: string;
@@ -44,7 +45,7 @@ function FilterByCreator({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '32px',
+          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -58,6 +59,51 @@ function FilterByCreator({
           onSearch={() => {}}
           onUpdateSearch={(v) => setCreatorSearch(v)}
           value={creatorSearch}
+          placeholder={placeholder}
+          className={styles.input}
+        />
+      </Collapse>
+    </div>
+  );
+}
+
+interface $ByEmployeeProps {
+  employeeSearch: string;
+  setEmployeeSearch: (v: string) => void;
+  label?: string;
+  placeholder?: string;
+}
+
+function FilterByEmployee({
+  employeeSearch,
+  setEmployeeSearch,
+  label = 'By Employee',
+  placeholder = 'Enter employee name',
+}: $ByEmployeeProps) {
+  const [collapse, setCollapse] = useState(false);
+
+  return (
+    <div>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          marginBottom: '12px',
+        }}
+        onClick={() => setCollapse(!collapse)}
+      >
+        <Typography variant="h6" fontSize="14px">
+          {label}
+        </Typography>
+        {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </Box>
+      <Collapse in={!collapse}>
+        <SearchInput
+          onSearch={() => {}}
+          onUpdateSearch={(v) => setEmployeeSearch(v)}
+          value={employeeSearch}
           placeholder={placeholder}
           className={styles.input}
         />
@@ -88,7 +134,7 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '32px',
+          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -138,9 +184,10 @@ interface $FilterProps {
 function Filter({ handleSearch, refetch }: $FilterProps) {
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
+  const [employeeSearch, setEmployeeSearch] = useState('');
   const [status, setStatus] = useState('');
   const [linkStatus, setLinkStatus] = useState('');
-
+  const location = useLocation()
   const onRemoveFilter = (id: string) => {
     setFilters(filters.filter((filter) => filter.label !== id));
   };
@@ -153,10 +200,17 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     if (status != '') {
       Object.assign(data, { status: status == 'Activated' ? true : false });
     }
-    if (linkStatus != '') {
-      Object.assign(data, {
-        plateformlink: linkStatus == 'Linked' ? true : false,
-      });
+    if(location.pathname==='/creators'){
+      if (linkStatus != '') {
+        Object.assign(data, {
+          plateformlink: linkStatus == 'Linked' ? true : false,
+        });
+      }
+    }
+    else{
+      if (creatorSearch != '') {
+        Object.assign(data, { creator: creatorSearch });
+      }
     }
 
     handleSearch(data);
@@ -226,7 +280,19 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           ))}
         </Stack> */}
       </Box>
-      <Box padding="32px 16px 21px 16px">
+      <Box padding="12px 16px 12px 16px">
+        <FilterByEmployee
+          employeeSearch={employeeSearch}
+          setEmployeeSearch={setEmployeeSearch}
+        />
+        <Divider
+          sx={{
+            background: theme.palette.primary.contrastText,
+            marginTop: '11px',
+          }}
+        />
+      </Box>
+      <Box padding="0px 16px 0px 16px">
         <FilterByCreator
           creatorSearch={creatorSearch}
           setCreatorSearch={setCreatorSearch}
@@ -238,7 +304,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           }}
         />
       </Box>
-      <Box padding="32px 16px 21px 16px">
+      <Box padding="12px 16px 12px 16px">
         <FilterByStatus
           title="By Status"
           status={status}
@@ -252,7 +318,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           }}
         />
       </Box>
-      <Box padding="32px 16px 21px 16px">
+      {location.pathname==="/creators" &&
+      <Box padding="12px 16px 12px 16px">
         <FilterByStatus
           title="By Link Status"
           status={linkStatus}
@@ -265,7 +332,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             marginTop: '11px',
           }}
         />
-      </Box>
+      </Box>}
     </PageAside>
   );
 }

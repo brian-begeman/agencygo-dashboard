@@ -39,11 +39,11 @@ const useDataEmployees = () => {
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
-    id: '',
+    id: '6527ad93dedd0418c5d1dc50',
   });
   const { isLoading, data, refetch } = useQuery({
     key: 'get-employee',
-    params: selectedAgency ? selectedAgency : '6527ad93dedd0418c5d1dc50',
+    params: selectedAgency,
   });
 
   useEffect(() => {
