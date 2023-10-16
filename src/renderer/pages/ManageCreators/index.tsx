@@ -38,7 +38,7 @@ const creatorsTableHeaders = [
 
 export default function ManageCreators() {
   const [openAddCreater, setOpenAddCreater] = useState(false);
-  const [formType, setFormType] = useState<'Add' | 'Edit'>('Add');
+  const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const {
     creators,
     refetch,
@@ -123,7 +123,7 @@ export default function ManageCreators() {
               gap: '5px',
             }}
             onClick={() => {
-              setFormType('Add');
+              setFormType('add');
               setOpenAddCreater(true);
             }}
           >
@@ -257,7 +257,7 @@ export default function ManageCreators() {
                       <Stack spacing={2} direction="row" alignItems="center">
                         <ButtonBase
                           onClick={() => {
-                            setFormType('Edit');
+                            setFormType('edit');
                             setSelectedCreator({
                               creatorName: name,
                               autoRelink,
