@@ -70,7 +70,7 @@ export default function ManageEmployees() {
       { id, status },
       {
         onSuccess: (resp) => {
-          console.log(resp)
+          console.log(resp);
           refetch();
         },
       }
@@ -123,6 +123,24 @@ export default function ManageEmployees() {
     setId(id);
     setEmail(email);
   };
+  const handleResend = ()=>{
+    let endpoint = `email/${id}`;
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res, 'resend----------------------');
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  }
 
   return (
     <Dashboard>
@@ -236,7 +254,18 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      {activated ? <Activated /> : <DeactivatedSvg />}
+                      {activated ? (
+                        <Activated />
+                      ) : (
+                        <Box
+                          display={'flex'}
+                          gap={'10px'}
+                          alignItems={'center'}
+                        >
+                          <DeactivatedSvg />
+                          <Typography color={'#fff'} onClick={()=>handleResend()}>Resend</Typography>
+                        </Box>
+                      )}
                     </TableCell>
                     <TableCell
                       sx={{
