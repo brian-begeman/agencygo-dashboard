@@ -32,7 +32,7 @@ export default function ResetPasswordModal({ open, setOpen,email,id }: any) {
       fetchReq(endpoint, options)
         .then((response) => response.json())
         .then((res) => {
-          console.log(res, 'reset pass----------------------');
+          console.log(res);
         })
         .catch((err) => {
           console.log('Error occured: ', err);
