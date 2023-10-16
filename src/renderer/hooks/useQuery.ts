@@ -38,7 +38,8 @@ const useQuery = (props: IProps) => {
           setError(true);
           setLoading(false);
         });
-    } else if (key === 'get-employee') {
+    } 
+    if (key === 'get-employee') {
       let endPoint = 'employee/' + params.id;
       let options = {
         method: 'GET' as 'GET',

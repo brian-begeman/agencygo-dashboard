@@ -59,58 +59,44 @@ const useFormEmployee = (
   }, []);
 
   const onSubmit = (data: any) => {
+    console.log(data, 'from add and update data');
     if (type === 'add') {
-      addEmployee(data)
-      mutataCreate(data, {
-        onSuccess: () => {
+      const endPoint = 'employee/' + data.agencyId;
+      const options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+        body: JSON.stringify(data),
+      };
+      fetchReq(endPoint, options)
+        .then((responce) => responce.json)
+        .then((res) => {
+          console.log(res, 'the content added');
           callback();
           reset();
-        },
-      });
+          refetch();
+        })
+        .catch((error) => {
+          console.log('there is a error: ', error);
+          callback();
+          reset();
+        });
     } else {
-      editEmployee({...data,id:selectedEmployee?.id})
       mutateUpdate(
         { ...data, id: selectedEmployee?.id },
         {
           onSuccess: () => {
             callback();
             reset();
+            refetch();
           },
         }
       );
     }
   };
 
-  const addEmployee = (data:any) =>{
-    const endPoint = 'employee/'+data.agencyId;
-    const options = {
-      method:'PUT' as 'PUT',
-      headers:{
-        'content-type':'application/json',
-    },
-    withAuth:true,
-    body:JSON.stringify(data),
-  }
-  fetchReq(endPoint,options).then((responce)=>responce.json()).then((res)=>{
-    refetch()
-  }).catch((err)=>console.log(err))
-}
-const editEmployee = (data:any) =>{
-  const endPoint = 'employee/'+data.id;
-  const options = {
-    method:'PUT' as 'PUT',
-    headers:{
-      'content-type':'application/json',
-  },
-  withAuth:true,
-  body:JSON.stringify(data),
-}
-fetchReq(endPoint,options).then((responce)=>responce.json()).then((res)=>{
-  refetch()
-}).catch((err)=>console.log(err))
-}
-
-  
   useEffect(() => {
     if (selectedEmployee && type === 'edit') {
       setValue('name', selectedEmployee?.name);

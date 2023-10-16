@@ -22,6 +22,7 @@ import styles from './styles.module.css';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
 import fetchReq from 'utils/fetch';
+import MenuButton from 'renderer/components/MenuButton';
 
 const employeesTableHeaders = [
   'Employees',
@@ -45,6 +46,23 @@ export default function ManageEmployees() {
     selectedAgency,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
+  const handleActivate=()=>{
+
+  }
+  const handleDelete = () => {
+    
+  }
+  const getOptions = (status: boolean) => {
+    const tabData = [
+      {
+        title: status == true ? 'Deactivate' : 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+      {title:'Reset Password'}
+    ];
+    return tabData;
+  };
 
   useEffect(() => {
     let endpoint = 'agency';
@@ -71,6 +89,23 @@ export default function ManageEmployees() {
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-employee',
   // });
+
+  const deletEmployee = (id: any) => {
+    const endPoint = 'employee/' + id;
+    const options = {
+      method: 'DELETE' as 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Dashboard>
@@ -211,6 +246,7 @@ export default function ManageEmployees() {
                         </ButtonBase>
                         <ButtonBase
                           onClick={() => {
+                            deletEmployee(id);
                             // mutateDelete(
                             //   { id },
                             //   {
@@ -226,9 +262,12 @@ export default function ManageEmployees() {
                           </Typography>
                         </ButtonBase>
                         <ButtonBase>
-                          <Typography variant="body1" color="#fff">
-                            More
-                          </Typography>
+                        <MenuButton
+                            title="More"
+                            tabData={getOptions(activated)}
+                            id={id}
+                            status={activated}
+                          />
                         </ButtonBase>
                       </Stack>
                     </TableCell>
