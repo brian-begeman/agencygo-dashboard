@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Button,
@@ -23,6 +23,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import classes from './styles.module.css';
 import RoleManager from './Manager';
+import fetchReq from 'utils/fetch';
 
 const roleMenu = [
   {
@@ -57,7 +58,7 @@ function Options(props: any) {
   const { menu, handlePopoverClose } = props;
   return (
     <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
-      {menu.map((menuItem, index) => (
+      {menu.map((menuItem: any, index: any) => (
         <NavLink
           to={menuItem.link || '#'}
           className={classes.optionItem}
@@ -89,39 +90,102 @@ const CustomIconButton = styled(IconButton)(() => ({
 
 const employeesTableHeaders = ['Role', 'Users', 'Status', 'Operations'];
 
-const employeesTableData = [
-  {
-    name: 'Joan Adams',
-    status: 'Active',
-    role: 'Admin',
-    activated: true,
-  },
-  {
-    name: 'Chris Jean-Baptiste',
-    status: 'Inactive',
-    role: 'Manager',
-    activated: true,
-  },
-  {
-    name: 'Joan Adams',
-    status: 'Active',
-    role: 'Employee',
-    activated: false,
-  },
+const employeesTableData: any[] = [
+  // {
+  //   name: 'Joan Adams',
+  //   status: 'Active',
+  //   role: 'Admin',
+  //   activated: true,
+  // },
+  // {
+  //   name: 'Chris Jean-Baptiste',
+  //   status: 'Inactive',
+  //   role: 'Manager',
+  //   activated: true,
+  // },
+  // {
+  //   name: 'Joan Adams',
+  //   status: 'Active',
+  //   role: 'Employee',
+  //   activated: false,
+  // },
 ];
+
 interface TabProps {
   handleTabChange: (name: string) => void;
 }
 
-
-function RoleLanding(props:TabProps) {
-  const {handleTabChange}=props;
+function RoleLanding(props: TabProps) {
+  const { handleTabChange } = props;
   const [searchText, setSearchText] = useState('');
   const [anchorElRoleName, setAnchorElRoleName] =
     React.useState<HTMLButtonElement | null>(null);
 
   const [anchorElStatus, setAnchorElStatus] =
     React.useState<HTMLButtonElement | null>(null);
+  const [role, setRoles] = useState([]);
+
+  useEffect(() => {
+    getRoles();
+  }, []);
+
+  const handleStatusChange = (id: string, state: string) => {
+    const endPoint = `roles/${id}`;
+    let data = {
+      status: '',
+    };
+    if (state === 'active') {
+      data.status = 'inactive';
+    } else {
+      data.status = 'active';
+    }
+    let options = {
+      method: 'PATCH' as 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(data),
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        getRoles();
+      })
+      .catch((err) => console.log(err));
+  };
+  const getRoles = () => {
+    const endPoint = 'roles';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        setRoles(res.data);
+      })
+      .catch((err) => {
+        console.log('error trying to fetch role: ', err);
+      });
+  };
+
+  const handleRoleDelete = (id: string) => {
+    console.log('delete triggered', id);
+    const endPoint = `roles/${id}`;
+    const options = {
+      method:'DELETE' as 'DELETE',
+      headers:{
+        'content-type':'application/json',
+      },
+      withAuth:true,
+    }
+    fetchReq(endPoint, options).then((responce) => responce.json()).then((res) => {getRoles()}).catch(err=>{console.log(err)})
+  }
+  ;
 
   const handleRoleNameClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElRoleName(event.currentTarget);
@@ -145,11 +209,11 @@ function RoleLanding(props:TabProps) {
   const statusPopoverOpen = Boolean(anchorElStatus);
   const statusId = statusPopoverOpen ? 'status-name' : undefined;
 
-  const handleRowClick=(name:string)=>{
-    if(name==="Manager"){
+  const handleRowClick = (name: string) => {
+    if (name === 'Manager') {
       handleTabChange('RoleManager');
     }
-  }
+  };
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -224,13 +288,13 @@ function RoleLanding(props:TabProps) {
 
       <FilterTable tableHeaders={employeesTableHeaders}>
         <>
-          {employeesTableData.map(({ role, status }, index) => (
+          {role.map(({ rolename, status, _id }, index) => (
             <TableRow
               key={index}
               sx={{
                 '&:last-child td, &:last-child th': { border: 0 },
               }}
-              onClick={()=>handleRowClick(role)}
+              onClick={() => handleRowClick(rolename)}
             >
               <TableCell
                 sx={{
@@ -239,7 +303,7 @@ function RoleLanding(props:TabProps) {
                 }}
                 scope="row"
               >
-                {role}
+                {rolename}
               </TableCell>
               <TableCell
                 sx={{
@@ -257,7 +321,7 @@ function RoleLanding(props:TabProps) {
                   borderColor: theme.palette.primary.contrastText,
                 }}
               >
-                {status === 'Inactive' ? (
+                {status === 'active' ? (
                   <Chip label="Active" color="success" variant="outlined" />
                 ) : (
                   <Chip
@@ -279,17 +343,21 @@ function RoleLanding(props:TabProps) {
                 <Stack spacing={1} direction="row" alignItems="center">
                   <div
                     className={
-                      status === 'Active'
+                      status === 'active'
                         ? classes.deactivateTextCss
                         : classes.activateTextCss
                     }
+                    onClick={() => {
+                      handleStatusChange(_id, status);
+                    }}
                   >
-                    {status === 'Active' ? 'Deactivate' : 'Activate'}
+                    {status === 'active' ? 'Deactivate' : 'Activate'}
                   </div>
                   <CustomIconButton
                     aria-label="delete"
                     disabled
                     sx={{ color: 'white' }}
+                    onClick={() => {handleRoleDelete(_id)}}
                   >
                     <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
                   </CustomIconButton>
@@ -306,9 +374,6 @@ function RoleLanding(props:TabProps) {
   );
 }
 
-
-
-
 function Role() {
   const [activeTab, setActiveTab] = useState('Role');
 
@@ -321,7 +386,6 @@ function Role() {
         return <RoleLanding handleTabChange={handleTabChange} />;
       case 'RoleManager':
         return <RoleManager handleTabChange={handleTabChange} />;
-      
 
       default:
         return <h5>Not found</h5>;
