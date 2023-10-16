@@ -6,13 +6,15 @@ import * as Yup from 'yup';
 import styles from './styles.module.css';
 import fields from 'renderer/utils/formUtils';
 import { Box, Link } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const ResetPassword = () => {
+  const location = useLocation();
   const validationSchema = Yup.object().shape({
-    password: Yup.string()
-      .required('Password is required')
-      .min(9, 'Password must be at least 9 characters')
-      .max(40, 'Password must not exceed 40 characters'),
+    // password: Yup.string()
+    //   .required('Password is required')
+    //   .min(9, 'Password must be at least 9 characters')
+    //   .max(40, 'Password must not exceed 40 characters'),
     newPassword: Yup.string()
       .required('Password is required')
       .min(9, 'Password must be at least 9 characters')
@@ -25,7 +27,10 @@ const ResetPassword = () => {
   } = useForm<FieldValues>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {};
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data,"::::::::::::::::")
+  };
+  console.log(location.pathname,"::::::::::::::::")
   return (
     <>
       <Box className={styles.header}>

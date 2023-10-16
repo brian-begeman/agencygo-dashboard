@@ -32,12 +32,12 @@ const registerFields = [
 ];
 
 const resetPasswordFields = [
-  {
-    label: 'Please enter your password',
-    name: 'password',
-    type: 'password',
-    required: true,
-  },
+  // {
+  //   label: 'Please enter your password',
+  //   name: 'password',
+  //   type: 'password',
+  //   required: true,
+  // },
   {
     label: 'Please enter new password',
     name: 'newPassword',
