@@ -38,8 +38,9 @@ const useQuery = (props: IProps) => {
           setError(true);
           setLoading(false);
         });
-    } else if (key === 'get-employee') {
-      let endpoint = 'employee/6527ad93dedd0418c5d1dc50';
+    } 
+    if (key === 'get-employee') {
+      let endPoint = 'employee/' + params.id;
       let options = {
         method: 'GET' as 'GET',
         headers: {
@@ -47,13 +48,13 @@ const useQuery = (props: IProps) => {
         },
         withAuth: true,
       };
-      fetchReq(endpoint, options)
+      fetchReq(endPoint, options)
         .then((response) => response.json())
         .then((res) => {
           setData(res);
           setLoading(false);
         })
-        .catch((error) => {
+        .catch((err) => {
           setError(true);
           setLoading(false);
         });

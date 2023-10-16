@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'renderer/hooks/useMutation';
 import * as Yup from 'yup';
-import { ISelectedEmployee } from './useData';
+import refetch, { ISelectedEmployee } from './useData';
+import fetchReq from 'utils/fetch';
 
 const useFormEmployee = (
   callback: () => void,
@@ -59,20 +60,35 @@ const useFormEmployee = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      mutataCreate(data, {
-        onSuccess: () => {
+      const endPoint = 'employee/' + data.agencyId;
+      const options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+        body: JSON.stringify(data),
+      };
+      fetchReq(endPoint, options)
+        .then((responce) => responce.json)
+        .then((res) => {
           callback();
           reset();
-        },
-      });
+          refetch();
+        })
+        .catch((error) => {
+          console.log('there is a error: ', error);
+          callback();
+          reset();
+        });
     } else {
-      console.log('data', { ...data, id: selectedEmployee?.id });
       mutateUpdate(
         { ...data, id: selectedEmployee?.id },
         {
           onSuccess: () => {
             callback();
             reset();
+            refetch();
           },
         }
       );
