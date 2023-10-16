@@ -43,7 +43,7 @@ const useDataEmployees = () => {
   });
   const { isLoading, data, refetch } = useQuery({
     key: 'get-employee',
-    params: selectedAgency ? selectedAgency : '6527ad93dedd0418c5d1dc50',
+    params: selectedAgency,
   });
 
   useEffect(() => {
