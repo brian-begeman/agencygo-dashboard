@@ -32,7 +32,9 @@ const useDataCreators = () => {
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
     null
   );
-  const { data, isLoading, refetch } = useQuery({ key: 'get-creator' });
+  const { data, isLoading, refetch, handleSearch } = useQuery({
+    key: 'get-creator',
+  });
 
   useEffect(() => {
     const creatorsRes =
@@ -50,6 +52,7 @@ const useDataCreators = () => {
     selectedCreator,
     setSelectedCreator,
     refetch,
+    handleSearch,
   };
 };
 

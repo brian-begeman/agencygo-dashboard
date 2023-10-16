@@ -31,7 +31,7 @@ const useFormCreator = (
     gender: Yup.string().required('Gender is required'),
     assignEmployee: Yup.string().required('Assign Employee is required'),
     internalNotes: Yup.string().required('Internal note is required'),
-    isAutoRelink: Yup.boolean(),
+    autoRelink: Yup.boolean(),
     isAgencyProxy: Yup.boolean(),
     agency: Yup.string(),
     creator: Yup.string(),
@@ -57,6 +57,7 @@ const useFormCreator = (
         .then((res) => {
           if ((res.message = 'creator added successfully')) {
             callback();
+            reset();
           }
         })
         .catch((err) => {
@@ -69,15 +70,35 @@ const useFormCreator = (
       //   },
       // });
     } else {
-      mutateUpdate(
-        { ...data, id: selectedCreator?.id },
-        {
-          onSuccess: () => {
+      let endpoint = `creators/${selectedCreator?.id}`;
+      let options = {
+        method: 'PUT' as 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.message == 'creator updated successfully') {
             callback();
             reset();
-          },
-        }
-      );
+          }
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+      // mutateUpdate(
+      //   { ...data, id: selectedCreator?.id },
+      //   {
+      //     onSuccess: () => {
+      //       callback();
+      //       reset();
+      //     },
+      //   }
+      // );
     }
   };
 
@@ -87,10 +108,10 @@ const useFormCreator = (
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
-      setValue('isAutoRelink', selectedCreator?.autoRelink);
+      setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('agency', selectedCreator?.agency);
-      setValue('creator', selectedCreator?.creator);
+      // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
     }
@@ -111,7 +132,7 @@ const useFormCreator = (
   }, [dataEmployeeRaw]);
 
   const toggleAutoRelink = () => {
-    setValue('isAutoRelink', !getValues('isAutoRelink'));
+    setValue('autoRelink', !getValues('autoRelink'));
   };
 
   return {
