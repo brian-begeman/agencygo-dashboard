@@ -25,7 +25,6 @@ import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './components/ResetPasswordModal';
 import AssignCreatorModal from './components/AssignCreatorModal';
-import useQuery from 'renderer/hooks/useQuery';
 
 const employeesTableHeaders = [
   'Employees',
