@@ -177,8 +177,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Only Manage",
+    "appId": "com.agencygo.onlymanage",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -235,9 +235,10 @@
       "./assets/**"
     ],
     "publish": {
-      "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "provider": "s3",
+      "bucket": "agencygo-app-releases",
+      "region": "us-east-2",
+      "acl": "public-read"
     }
   },
   "collective": {
