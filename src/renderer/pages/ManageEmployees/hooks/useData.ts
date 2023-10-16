@@ -67,7 +67,7 @@ const useDataEmployees = () => {
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreators: item.assignedCreators
+          assignedCreators: item.assignedCreators.length
             ? item.assignedCreators.join(', ')
             : '+ Please click to set',
           role: item?.role
