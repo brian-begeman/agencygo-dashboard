@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: latest
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - name: see directory in electron_dist
         run: ls ./release
       - name: add key to single keychain
