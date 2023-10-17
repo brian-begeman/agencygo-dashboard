@@ -71,7 +71,7 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
               background: '#4B4B4B',
             }}
           >
-            <MultiSelect creatorNames={data?.data} selectedValues={selectedValues} setSelectedValues={setSelectedValues}/>
+            <MultiSelect multiple={true} creatorNames={data?.data} selectedValues={selectedValues} setSelectedValues={setSelectedValues}/>
           </Box>
           <Box
             display={'flex'}

@@ -21,6 +21,8 @@ import styles from './styles.module.css';
 // import FilterTag from './FilterTag';
 // import fetchReq from 'utils/fetch';
 import { useLocation } from 'react-router-dom';
+import MultiSelect from '../Dropdown';
+import useQuery from 'renderer/hooks/useQuery';
 
 interface $ByCreatorProps {
   creatorSearch: string;
@@ -187,17 +189,20 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const [employeeSearch, setEmployeeSearch] = useState('');
   const [status, setStatus] = useState('');
   const [linkStatus, setLinkStatus] = useState('');
-  const location = useLocation()
+  const [selectedValues, setSelectedValues] = useState([]);
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
+
+  const location = useLocation();
   const onRemoveFilter = (id: string) => {
     setFilters(filters.filter((filter) => filter.label !== id));
   };
 
   const handleFilterData = () => {
     const data = {};
-    if (creatorSearch != '') {
-      Object.assign(data, { assignedCreators: creatorSearch });
-    }
-    if(location.pathname==='/creators'){
+    if (location.pathname === '/creators') {
+      if (creatorSearch != '') {
+        Object.assign(data, { assignedCreators: creatorSearch });
+      }
       if (status != '') {
         Object.assign(data, { status: status == 'Activated' ? true : false });
       }
@@ -206,16 +211,19 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           plateformlink: linkStatus == 'Linked' ? true : false,
         });
       }
-    }
-    else{
+    } else {
+      if (selectedValues.length) {
+        Object.assign(data, { creator: selectedValues.toString() });
+      }
       if (status != '') {
-        Object.assign(data, { status: status == 'inactive' ? false : true });
+        Object.assign(data, {
+          status: status == 'inactive' ? 'inactive' : 'active',
+        });
       }
       if (employeeSearch != '') {
         Object.assign(data, { name: employeeSearch });
       }
     }
-
     handleSearch(data);
   };
 
@@ -296,10 +304,24 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         />
       </Box>
       <Box padding="0px 16px 0px 16px">
-        <FilterByCreator
-          creatorSearch={creatorSearch}
-          setCreatorSearch={setCreatorSearch}
-        />
+        {location.pathname === '/creators' ? (
+          <FilterByCreator
+            creatorSearch={creatorSearch}
+            setCreatorSearch={setCreatorSearch}
+          />
+        ) : (
+          <>
+            <Typography variant="h6" fontSize="14px" marginBottom={'10px'}>
+              By Creator
+            </Typography>
+            <MultiSelect
+              multiple={false}
+              creatorNames={data?.data}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
+          </>
+        )}
         <Divider
           sx={{
             background: theme.palette.primary.contrastText,
@@ -312,7 +334,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           title="By Status"
           status={status}
           setStatus={setStatus}
-          options={['Activated', 'Deactivated']}
+          options={
+            location.pathname === '/creators'
+              ? ['Activated', 'Deactivated']
+              : ['active', 'inactive']
+          }
         />
         <Divider
           sx={{
@@ -321,21 +347,22 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           }}
         />
       </Box>
-      {location.pathname==="/creators" &&
-      <Box padding="12px 16px 12px 16px">
-        <FilterByStatus
-          title="By Link Status"
-          status={linkStatus}
-          options={['Linked', 'Unlinked']}
-          setStatus={setLinkStatus}
-        />
-        <Divider
-          sx={{
-            background: theme.palette.primary.contrastText,
-            marginTop: '11px',
-          }}
-        />
-      </Box>}
+      {location.pathname === '/creators' && (
+        <Box padding="12px 16px 12px 16px">
+          <FilterByStatus
+            title="By Link Status"
+            status={linkStatus}
+            options={['Linked', 'Unlinked']}
+            setStatus={setLinkStatus}
+          />
+          <Divider
+            sx={{
+              background: theme.palette.primary.contrastText,
+              marginTop: '11px',
+            }}
+          />
+        </Box>
+      )}
     </PageAside>
   );
 }
