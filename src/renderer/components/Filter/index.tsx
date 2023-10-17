@@ -195,12 +195,12 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const handleFilterData = () => {
     const data = {};
     if (creatorSearch != '') {
-      Object.assign(data, { creator: creatorSearch });
-    }
-    if (status != '') {
-      Object.assign(data, { status: status == 'Activated' ? true : false });
+      Object.assign(data, { assignedCreators: creatorSearch });
     }
     if(location.pathname==='/creators'){
+      if (status != '') {
+        Object.assign(data, { status: status == 'Activated' ? true : false });
+      }
       if (linkStatus != '') {
         Object.assign(data, {
           plateformlink: linkStatus == 'Linked' ? true : false,
@@ -208,8 +208,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       }
     }
     else{
-      if (creatorSearch != '') {
-        Object.assign(data, { creator: creatorSearch });
+      if (status != '') {
+        Object.assign(data, { status: status == 'inactive' ? false : true });
+      }
+      if (employeeSearch != '') {
+        Object.assign(data, { name: employeeSearch });
       }
     }
 
