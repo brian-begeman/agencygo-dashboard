@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_on_mac:
-    runs-on: macos-latest
+    runs-on: macos-11
     environment: production
     steps:
       - uses: actions/checkout@v3
@@ -21,8 +21,6 @@ jobs:
         run: security import ./.erb/certs/AgencyGoCertificate.p12 -P ${{ secrets.CSC_KEY_PASSWORD }}
       - name: electron mac os security identities
         run: security find-identity -v
-      - name: Install dependencies
-        run: npm install
       - name: Cache Node.js Dependencies
         uses: actions/cache@v2
         with:
@@ -30,6 +28,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm install
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
