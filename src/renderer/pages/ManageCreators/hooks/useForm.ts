@@ -21,7 +21,6 @@ const useFormCreator = (
 
   const [selectedValues, setSelectedValues] = useState<any>([]);
 
-
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
     params: { id: '6527ad93dedd0418c5d1dc50' },
@@ -49,8 +48,7 @@ const useFormCreator = (
       resolver: yupResolver(validationSchema),
     });
 
-  const onSubmit = (data: any) => 
-  {
+  const onSubmit = (data: any) => {
     if (type === 'add') {
       data.status = true;
       let endpoint = 'creators';
@@ -116,8 +114,6 @@ const useFormCreator = (
 
   useEffect(() => {
     if (selectedCreator && type === 'edit') {
-      console.log(selectedCreator.assignEmployee.map((val)=>(val._id)),"00000000000000");
-      
       setValue('creatorName', selectedCreator?.creatorName);
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
@@ -125,7 +121,7 @@ const useFormCreator = (
       setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('agency', selectedCreator?.agency);
-      setSelectedValues(selectedCreator?.assignEmployee.map((val)=>(val._id)))
+      setSelectedValues(selectedCreator?.assignEmployee.map((val) => val._id));
       // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
@@ -163,8 +159,7 @@ const useFormCreator = (
     isAutoRelink: true,
     setValue,
     selectedValues,
-    setSelectedValues
-
+    setSelectedValues,
   };
 };
 
