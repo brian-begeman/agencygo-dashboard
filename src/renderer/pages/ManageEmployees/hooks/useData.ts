@@ -5,8 +5,8 @@ interface IAgencyList {
   text: string;
   isActive: boolean;
 }
-interface ISelectedAgency{
-  id:string
+interface ISelectedAgency {
+  id: string;
 }
 
 interface IEmployeeList {
@@ -38,8 +38,13 @@ const useDataEmployees = () => {
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
-    const [selectedAgency,setSelectedAgency] = useState<ISelectedAgency|null>({id:""})
-  const { isLoading, data, refetch } = useQuery({ key: 'get-employee',params:selectedAgency });
+  const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
+    id: '',
+  });
+  const { isLoading, data, refetch } = useQuery({
+    key: 'get-employee',
+    params: selectedAgency,
+  });
 
   useEffect(() => {
     // window.electron.ipcRenderer
@@ -62,7 +67,9 @@ const useDataEmployees = () => {
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreators: 'Female',
+          assignedCreators: item.assignedCreators.length
+            ? item.assignedCreators.join(', ')
+            : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
             : '',

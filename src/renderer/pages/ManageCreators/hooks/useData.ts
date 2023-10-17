@@ -32,7 +32,10 @@ const useDataCreators = () => {
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
     null
   );
-  const { data, isLoading, refetch } = useQuery({ key: 'get-creator' });
+  const { data, isLoading, refetch, setData } = useQuery({
+    key: 'get-creator',
+    params: '6527ad93dedd0418c5d1dc50',
+  });
 
   useEffect(() => {
     const creatorsRes =
@@ -44,12 +47,36 @@ const useDataCreators = () => {
     setCreators(creatorsRes);
   }, [data]);
 
+  const handleSearch = (data: any) => {
+    const queryString = Object.keys(data)
+      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .join('&');
+
+    let endpoint = `creators/search?${queryString}`;
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
   return {
     creators,
     isLoading,
     selectedCreator,
     setSelectedCreator,
     refetch,
+    handleSearch,
   };
 };
 

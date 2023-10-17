@@ -38,9 +38,9 @@ const useQuery = (props: IProps) => {
           setError(true);
           setLoading(false);
         });
-    } 
+    }
     if (key === 'get-employee') {
-      let endPoint = 'employee/' + params.id;
+      let endPoint = 'employees/' + params.id;
       let options = {
         method: 'GET' as 'GET',
         headers: {
@@ -93,6 +93,7 @@ const useQuery = (props: IProps) => {
     isSuccess: success,
     data,
     refetch: fetch,
+    setData: setData,
   };
 };
 

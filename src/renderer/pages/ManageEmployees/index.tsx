@@ -23,6 +23,8 @@ import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
 import fetchReq from 'utils/fetch';
 import MenuButton from 'renderer/components/MenuButton';
+import ResetPasswordModal from './components/ResetPasswordModal';
+import AssignCreatorModal from './components/AssignCreatorModal';
 
 const employeesTableHeaders = [
   'Employees',
@@ -34,7 +36,13 @@ const employeesTableHeaders = [
 
 export default function ManageEmployees() {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [id, setId] = useState('');
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
+  const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
+  const [assigneeName, setAssigneeName] = useState<string>('');
+
   const {
     agencies,
     refetch,
@@ -66,7 +74,7 @@ export default function ManageEmployees() {
       { id, status },
       {
         onSuccess: (resp) => {
-          console.log(resp)
+          console.log(resp);
           refetch();
         },
       }
@@ -89,7 +97,9 @@ export default function ManageEmployees() {
       .catch((err) => console.log(err));
   };
 
-  const resetPassword = () => {};
+  const resetPassword = (id: string) => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     let endpoint = 'agency';
@@ -109,9 +119,33 @@ export default function ManageEmployees() {
         console.log(err);
       });
   }, []);
+
   useEffect(() => {
     refetch();
   }, [selectedAgency]);
+
+  const handleClick = (id: string, email: string) => {
+    setId(id);
+    setEmail(email);
+  };
+  const handleResend = ()=>{
+    let endpoint = `email/${id}`;
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  }
 
   return (
     <Dashboard>
@@ -209,6 +243,11 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                         color: '#fff',
                       }}
+                      onClick={() => {
+                        setAssigneeName(name);
+                        setId(id);
+                        setOpenAssignCreatorModal(!openAssignCreatorModal);
+                      }}
                     >
                       {assignedCreators}
                     </TableCell>
@@ -225,9 +264,66 @@ export default function ManageEmployees() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      {activated ? <Activated /> : <DeactivatedSvg />}
+                      {activated ? (
+                        <Activated />
+                      ) : (
+                        <Box
+                          display={'flex'}
+                          gap={'10px'}
+                          alignItems={'center'}
+                        >
+                          <DeactivatedSvg />
+                          <Typography color={'#fff'} onClick={()=>handleResend()}>Resend</Typography>
+                        </Box>
+                      )}
                     </TableCell>
                     <TableCell
+                      sx={{
+                        borderColor: theme.palette.primary.contrastText,
+                      }}
+                    >
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        {activated ? (
+                          <>
+                            <ButtonBase
+                              onClick={() => {
+                                setSelectedEmployee({
+                                  name,
+                                  role: roleRaw,
+                                  email,
+                                  id,
+                                });
+                                setFormType('edit');
+                                setOpenAddEmployee(true);
+                              }}
+                            >
+                              <Typography variant="body1" color="#fff">
+                                Edit
+                              </Typography>
+                            </ButtonBase>
+                            <ButtonBase>
+                              <Typography variant="body1" color="#fff">
+                                <Box onClick={() => handleClick(id, email)}>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
+                                </Box>
+                              </Typography>
+                            </ButtonBase>
+                          </>
+                        ) : (
+                          <ButtonBase onClick={()=>handleDelete(id)}>
+                            <Typography variant="body1" color="#fff">
+                              Delete
+                            </Typography>
+                          </ButtonBase>
+                        )}
+                      </Stack>
+                    </TableCell>
+                    {/* <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
                       }}
@@ -266,8 +362,8 @@ export default function ManageEmployees() {
                           <Typography variant="body1" color="#FF0000">
                             Delete
                           </Typography>
-                        </ButtonBase> */}
-                        <ButtonBase>
+                        </ButtonBase> 
+                        <ButtonBase onClick={() => handleClick(id, email)}>
                           <MenuButton
                             title="More"
                             tabData={getOptions(activated)}
@@ -276,12 +372,28 @@ export default function ManageEmployees() {
                           />
                         </ButtonBase>
                       </Stack>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 )
               )}
             </>
           </FilterTable>
+          {open && (
+            <ResetPasswordModal
+              open={open}
+              setOpen={setOpen}
+              email={email}
+              id={id}
+            />
+          )}
+           {openAssignCreatorModal && (
+            <AssignCreatorModal
+              name={assigneeName}
+              open={openAssignCreatorModal}
+              setOpen={setOpenAssignCreatorModal}
+              id={id}
+            />
+          )}
         </Stack>
       </section>
       <AddEmployeeModal

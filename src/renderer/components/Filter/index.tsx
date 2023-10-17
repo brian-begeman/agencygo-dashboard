@@ -19,6 +19,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import styles from './styles.module.css';
 import FilterTag from './FilterTag';
+import fetchReq from 'utils/fetch';
 
 interface $ByCreatorProps {
   creatorSearch: string;
@@ -130,37 +131,70 @@ const initFiltersState = [
   },
 ];
 
-function Filter() {
+interface $FilterProps {
+  handleSearch?: any;
+  refetch?: any;
+}
+function Filter({ handleSearch, refetch }: $FilterProps) {
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
-  const [status, setStatus] = useState('activated');
-  const [linkStatus, setLinkStatus] = useState('linked');
+  const [status, setStatus] = useState('');
+  const [linkStatus, setLinkStatus] = useState('');
 
   const onRemoveFilter = (id: string) => {
     setFilters(filters.filter((filter) => filter.label !== id));
+  };
+
+  const handleFilterData = () => {
+    const data = {};
+    if (creatorSearch != '') {
+      Object.assign(data, { creator: creatorSearch });
+    }
+    if (status != '') {
+      Object.assign(data, { status: status == 'Activated' ? true : false });
+    }
+    if (linkStatus != '') {
+      Object.assign(data, {
+        plateformlink: linkStatus == 'Linked' ? true : false,
+      });
+    }
+
+    handleSearch(data);
   };
 
   return (
     <PageAside>
       <Box
         sx={{
-          padding: '32px',
+          padding: '20px',
           display: 'flex',
           alignItems: 'center',
           gap: '16px',
         }}
       >
         <CandleSvg />
-        <Typography variant="h5">Filters</Typography>
+        <Typography font-size="22px">Filters</Typography>
       </Box>
       <Box
         sx={{
           borderTop: `1px solid ${theme.palette.primary.contrastText}`,
           borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
           padding: '21px 32px',
+          display: 'flex',
+          gap: '10px',
         }}
       >
-        <Stack
+        <Button variant="outlined" onClick={refetch}>
+          Reset
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ color: 'white' }}
+          onClick={handleFilterData}
+        >
+          Search
+        </Button>
+        {/* <Stack
           justifyContent="space-between"
           flexDirection="row"
           alignItems="center"
@@ -190,7 +224,7 @@ function Filter() {
               label={filter.label}
             />
           ))}
-        </Stack>
+        </Stack> */}
       </Box>
       <Box padding="32px 16px 21px 16px">
         <FilterByCreator

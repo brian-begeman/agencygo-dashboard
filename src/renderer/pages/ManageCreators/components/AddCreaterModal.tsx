@@ -111,9 +111,11 @@ export default function AddCreaterModal({
     setOpen(false);
   };
 
+  console.log(type, 'type+++++++++++++++++++++++');
+
   return (
     <Overlay
-      heading="Add Creators"
+      heading={`${type} Creators`}
       open={open}
       handleClose={handleModalClose}
       style={{
@@ -136,7 +138,7 @@ export default function AddCreaterModal({
             className={styles.inputListWrapper}
           >
             <Box>
-              <Typography>Add Headshot</Typography>
+              <Typography>{`${type} Headshot`}</Typography>
               <Box>
                 <ImageUpload />
               </Box>
@@ -214,19 +216,26 @@ export default function AddCreaterModal({
             </Box>
             <Box
               sx={{
-                display: 'flex',
-                gap: '10px',
-                alignItems: 'center',
                 padding: '10px 0px',
               }}
             >
               <Typography fontSize={20}>Auto relink</Typography>
-              <AutoRelinkSwitch
-                toggleAutoRelink={toggleAutoRelink}
-                register={register as any}
-                name={'autoRelink'}
-                isAutoRelink={isAutoRelink}
-              />
+              <Box
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography fontSize={'12px'} width={'350px'}>
+                  When enabled, we'll automatically relink the OnlyFans account
+                  when they are disconnected from OnlyManager
+                </Typography>
+                <AutoRelinkSwitch
+                  toggleAutoRelink={toggleAutoRelink}
+                  register={register as any}
+                  name={'autoRelink'}
+                  isAutoRelink={isAutoRelink}
+                />
+              </Box>
             </Box>
             {/* <Box sx={{ padding: '10px 0px' }}>
               <Typography fontSize={'14px'}>Auto relink</Typography>
@@ -283,7 +292,7 @@ export default function AddCreaterModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText="Add Creator"
+        addText={`${type} Creator`}
         id="addCreator"
         // isLoading={isLoading}
       />
