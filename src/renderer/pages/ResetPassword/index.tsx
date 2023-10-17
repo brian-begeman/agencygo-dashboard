@@ -6,13 +6,16 @@ import * as Yup from 'yup';
 import styles from './styles.module.css';
 import fields from 'renderer/utils/formUtils';
 import { Box, Link } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import fetchReq from 'utils/fetch';
 
 const ResetPassword = () => {
+  const location = useLocation();
   const validationSchema = Yup.object().shape({
-    password: Yup.string()
-      .required('Password is required')
-      .min(9, 'Password must be at least 9 characters')
-      .max(40, 'Password must not exceed 40 characters'),
+    // password: Yup.string()
+    //   .required('Password is required')
+    //   .min(9, 'Password must be at least 9 characters')
+    //   .max(40, 'Password must not exceed 40 characters'),
     newPassword: Yup.string()
       .required('Password is required')
       .min(9, 'Password must be at least 9 characters')
@@ -25,7 +28,34 @@ const ResetPassword = () => {
   } = useForm<FieldValues>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {};
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const id = location.pathname.split('/').slice(-1).pop();
+    const pass = data.newPassword;
+    const payload = {
+      password: pass,
+      newInvite:true
+    };
+    let endpoint = `employee/${id}`;
+    let options = {
+      method: 'PUT' as 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      // withAuth: true,
+      body: JSON.stringify(payload),
+    };
+
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
   return (
     <>
       <Box className={styles.header}>
