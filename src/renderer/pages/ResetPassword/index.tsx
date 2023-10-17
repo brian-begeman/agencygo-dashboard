@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 import fields from 'renderer/utils/formUtils';
 import { Box, Link } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import fetchReq from 'utils/fetch';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -27,10 +28,34 @@ const ResetPassword = () => {
   } = useForm<FieldValues>({
     resolver: yupResolver(validationSchema),
   });
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data,"::::::::::::::::")
+    const id = location.pathname.split('/').slice(-1).pop();
+    const pass = data.newPassword;
+    const payload = {
+      password: pass,
+    };
+    let endpoint = `employee/${id}`;
+    let options = {
+      method: 'PUT' as 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      // withAuth: true,
+      body: JSON.stringify(payload),
+    };
+    console.log(payload, endpoint, options, '::::::::::::::::');
+
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res, 'res:::::::::::::::::::');
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
   };
-  console.log(location.pathname,"::::::::::::::::")
+
   return (
     <>
       <Box className={styles.header}>
