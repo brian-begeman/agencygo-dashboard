@@ -32,26 +32,11 @@ interface $roleData {
   description?: string;
 }
 
-const roleMenu = [
-  {
-    label: 'All',
-    value: 'all',
-  },
-  {
-    label: 'Admin',
-    value: 'admin',
-  },
-  {
-    label: 'Manager',
-    value: 'manager',
-  },
-  {
-    label: 'Employee',
-    value: 'employee',
-  },
-];
-
 const statusMenu = [
+  {
+    label:"All",
+    value:""
+  },
   {
     label: 'Inactive',
     value: 'inactive',
@@ -61,22 +46,6 @@ const statusMenu = [
     value: 'active',
   },
 ];
-function Options(props: any) {
-  const { menu, handlePopoverClose } = props;
-  return (
-    <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
-      {menu.map((menuItem: any, index: any) => (
-        <NavLink
-          to={menuItem.link || '#'}
-          className={classes.optionItem}
-          key={menuItem.label}
-        >
-          {menuItem.label}
-        </NavLink>
-      ))}
-    </div>
-  );
-}
 
 const CustomButton = styled(Button)(() => ({
   borderRadius: '8px', // Adjust the border radius,
@@ -123,11 +92,33 @@ interface TabProps {
 }
 
 function RoleLanding(props: TabProps) {
+  function Options(props: any) {
+    const { menu, handlePopoverClose, type } = props;
+    return (
+      <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
+        {menu.map((menuItem: any, index: any) => (
+          <NavLink
+            onClick={() => {
+              doSearch(menuItem, type);
+            }}
+            to={'#'}
+            className={classes.optionItem}
+            key={menuItem.label}
+          >
+            {menuItem.label}
+          </NavLink>
+        ))}
+      </div>
+    );
+  }
+
   const { handleTabChange } = props;
   const [searchText, setSearchText] = useState('');
   const [anchorElRoleName, setAnchorElRoleName] =
     React.useState<HTMLButtonElement | null>(null);
-
+  const [roleList, setRoleList] = useState<{ label: string; value: string }[]>(
+    []
+  );
   const [anchorElStatus, setAnchorElStatus] =
     React.useState<HTMLButtonElement | null>(null);
   const [role, setRoles] = useState([]);
@@ -137,6 +128,26 @@ function RoleLanding(props: TabProps) {
   }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState('add');
+
+  const doSearch = (item: any, type: string) => {
+    const endPoint = `roles/search/data?${type}=${item.value}`;
+    const options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) =>{
+        setRoles(res.data);
+        setAnchorElRoleName(null);
+        setAnchorElStatus(null);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleStatusChange = (id: string, state: string) => {
     const endPoint = `roles/${id}`;
     let data = {
@@ -174,6 +185,13 @@ function RoleLanding(props: TabProps) {
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
       .then((res) => {
+        setRoleList([{label:"All",value:''}]);
+        res.data.map((item: any) => {
+          setRoleList((previousdata) => [
+            ...previousdata,
+            { label: item.rolename, value: item.rolename },
+          ]);
+        });
         setRoles(res.data);
       })
       .catch((err) => {
@@ -300,7 +318,11 @@ function RoleLanding(props: TabProps) {
                 horizontal: 'left',
               }}
             >
-              <Options menu={roleMenu} handleClose={handleRoleNameClose} />
+              <Options
+                menu={roleList}
+                handleClose={handleRoleNameClose}
+                type={'searchTerm'}
+              />
             </Popover>
             <CustomButton
               aria-describedby={statusId}
@@ -320,7 +342,11 @@ function RoleLanding(props: TabProps) {
                 horizontal: 'left',
               }}
             >
-              <Options menu={statusMenu} handleClose={handleStatusClose} />
+              <Options
+                menu={statusMenu}
+                handleClose={handleStatusClose}
+                type={'status'}
+              />
             </Popover>
             <CustomButton
               //   aria-describedby={id}
