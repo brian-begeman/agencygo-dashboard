@@ -130,7 +130,7 @@ export default function AddEmployeeModal({
 
   return (
     <Overlay
-      heading={type === 'add' ? 'Add Role' : 'Edit Role'}
+      heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
       open={open}
       handleClose={handleModalClose}
     >

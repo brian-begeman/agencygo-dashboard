@@ -140,7 +140,7 @@ function RoleLanding(props: TabProps) {
     };
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
-      .then((res) =>{ console.log(res)
+      .then((res) =>{
         setRoles(res.data);
         setAnchorElRoleName(null);
         setAnchorElStatus(null);
