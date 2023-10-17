@@ -34,7 +34,7 @@ jobs:
         #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
         #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         #   API_URL: ${{ vars.API_URL }}
-        run: npm run package -- --verbose
+        run: npm run package --verbose
       - name: check env
         run: echo $API_URL
       - name: see directory in electron_dist
