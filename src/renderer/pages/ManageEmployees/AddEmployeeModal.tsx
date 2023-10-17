@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
@@ -10,6 +10,7 @@ import {
 import { Stack } from '@mui/system';
 import { roleList } from './constant';
 import useFormEmployee from './hooks/useForm';
+import fetchReq from 'utils/fetch';
 
 interface $Props {
   open: boolean;
@@ -26,15 +27,37 @@ export default function AddEmployeeModal({
   type,
   selectedEmployee,
 }: $Props) {
-  const { groupOptions, handleSubmit, register, isLoading } = useFormEmployee(
-    () => {
-      setOpen(false);
-      refetch();
+  const { groupOptions, assignCreator, handleSubmit, register, isLoading } =
+    useFormEmployee(
+      () => {
+        setOpen(false);
+        refetch();
+      },
+      type,
+      selectedEmployee
+    );
+  const [agencies, setagencies] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([
+    {
+      label: '',
+      value: '',
     },
-    type,
-    selectedEmployee
-  );
-
+  ]);
+  const [creators, setcreators] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([
+    {
+      label: '',
+      value: '',
+    },
+  ]);
   const addHandler = () => {
     handleSubmit();
   };
@@ -45,6 +68,64 @@ export default function AddEmployeeModal({
 
   const handleModalClose = () => {
     setOpen(false);
+  };
+
+  useEffect(() => {
+    getAgencie();
+    getCreators();
+  },[])
+
+  const getAgencie = () => {
+    const endpoint = 'agency';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth:true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setagencies([]);
+        console.log(res);
+        res.data.map((item: any) => {
+          let tempdata = {
+            value: item._id,
+            label: item.agencyName,
+          };
+          setagencies((previousdata) => [...previousdata, tempdata]);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getCreators = () => {
+    const endpoint = 'creators';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+        setcreators([]);
+        res.data.map((item: any) => {
+          let tempdata = {
+            value: item._id,
+            label: item.creatorName,
+          };
+          setcreators((previousdata) => [...previousdata, tempdata]);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -83,13 +164,19 @@ export default function AddEmployeeModal({
             <DropdownWithLabel
               label="Group"
               inputIdentifierName="agencyId"
-              options={groupOptions}
+              options={agencies}
               register={register as any}
             />
             <DropdownWithLabel
               label="Role"
               inputIdentifierName="role"
               options={roleList}
+              register={register as any}
+            />
+            <DropdownWithLabel
+              label="Assign Creator"
+              inputIdentifierName="assignCreator"
+              options={creators}
               register={register as any}
             />
           </Stack>

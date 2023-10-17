@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AuthServices from 'services/auth';
 import { TMutationService } from 'types';
+import EmpoloyeeServices from 'services/employee';
 
 interface IProps {
   key: TMutationService;
@@ -36,6 +37,15 @@ const useMutation = (props: IProps): IResponse => {
       }
       if (key === 'login') {
         resp = await AuthServices.loginRequest(body);
+      }
+      // if (key === 'create-employee') {
+      //   resp = await EmpoloyeeServices.createEmployee(body);
+      // }
+      if (key === 'update-employee') {
+        resp = await EmpoloyeeServices.updateEmployee(body);
+      }
+      if (key === 'activate-employee') {
+        resp = await EmpoloyeeServices.activateEmployee(body);
       }
       console.log({ resp });
       setLoading(false);

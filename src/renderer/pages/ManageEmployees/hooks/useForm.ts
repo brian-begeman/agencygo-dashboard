@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'renderer/hooks/useMutation';
 import * as Yup from 'yup';
-import { ISelectedEmployee } from './useData';
+import refetch, { ISelectedEmployee } from './useData';
+import fetchReq from 'utils/fetch';
 
 const useFormEmployee = (
   callback: () => void,
@@ -11,6 +12,12 @@ const useFormEmployee = (
   selectedEmployee: ISelectedEmployee
 ) => {
   const [groupOptions, setGroupOptions] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([]);
+  const [assignCreator, setAssignCreator] = useState<
     {
       label: string;
       value: string;
@@ -28,6 +35,7 @@ const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
+    assignCreator: Yup.string().required('AssignCreator is required'),
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
@@ -52,20 +60,35 @@ const useFormEmployee = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      mutataCreate(data, {
-        onSuccess: () => {
+      const endPoint = 'employee/' + data.agencyId;
+      const options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+        body: JSON.stringify(data),
+      };
+      fetchReq(endPoint, options)
+        .then((responce) => responce.json)
+        .then((res) => {
           callback();
           reset();
-        },
-      });
+          refetch();
+        })
+        .catch((error) => {
+          console.log('there is a error: ', error);
+          callback();
+          reset();
+        });
     } else {
-      console.log('data', { ...data, id: selectedEmployee?.id });
       mutateUpdate(
         { ...data, id: selectedEmployee?.id },
         {
           onSuccess: () => {
             callback();
             reset();
+            refetch();
           },
         }
       );
@@ -85,6 +108,7 @@ const useFormEmployee = (
     register,
     handleSubmit: handleSubmit(onSubmit),
     groupOptions,
+    assignCreator,
     isLoading: loadingCreate || loadingUpdate,
   };
 };

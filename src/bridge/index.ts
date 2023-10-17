@@ -3,6 +3,8 @@ import chalk from 'chalk';
 import { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
+import fetchReq from '../utils/fetch';
+import { error } from 'console';
 
 const startIPCBridge = ({
   mainWindow,

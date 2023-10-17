@@ -1,3 +1,4 @@
+
 import path from 'path';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
@@ -20,7 +21,7 @@ const configuration: webpack.Configuration = {
   target: 'electron-preload',
 
   entry: path.join(webpackPaths.srcMainPath, 'preload.ts'),
-
+  
   output: {
     path: webpackPaths.dllPath,
     filename: 'preload.js',

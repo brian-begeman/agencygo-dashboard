@@ -1,5 +1,8 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import classes from './styles.module.css';
+import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import LensIcon from '@mui/icons-material/Lens';
 
 interface LabelTextProps {
   label: string;
@@ -16,6 +19,7 @@ interface InputWithLabelProps {
   placeholder: string;
   value?: string;
   required?: boolean;
+  inputStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -25,6 +29,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     inputIdentifierName,
     placeholder,
     value,
+    inputStyle,
     required = false,
     handleOnChange = () => {},
     register = () => ({}),
@@ -33,6 +38,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
       <input
+        style={inputStyle}
         className={classes.inputCss}
         name={inputIdentifierName}
         placeholder={placeholder}
@@ -55,6 +61,7 @@ interface DropdownWithLabelProps {
   label: string;
   inputIdentifierName: string;
   value?: string;
+  selectStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
   options: Option[]; // Array of options
   placeholder?: string;
@@ -66,6 +73,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     label,
     inputIdentifierName,
     value,
+    selectStyle,
     handleOnChange = () => {},
     options,
     placeholder = '',
@@ -76,6 +84,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
       <select
+        style={selectStyle}
         className={classes.selectCss}
         name={inputIdentifierName}
         id={inputIdentifierName}
@@ -133,5 +142,49 @@ export function ModalFooter(props: ModalFooterProps) {
         {addText}
       </button>
     </div>
+  );
+}
+interface AutoRelinkSwitchProps {
+  isAutoRelink: boolean;
+  toggleAutoRelink: () => void;
+  register: any;
+  name: string;
+}
+
+export function AutoRelinkSwitch({
+  isAutoRelink,
+  toggleAutoRelink,
+  register,
+  name,
+}: AutoRelinkSwitchProps) {
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={<Switch defaultChecked={isAutoRelink} />}
+        label=""
+        {...register(name)}
+      />
+    </FormGroup>
+  );
+}
+
+interface RadioProps {
+  title?: string;
+}
+
+export function RadioButton({ title }: RadioProps) {
+  return (
+    <FormGroup>
+      <FormControlLabel
+        control={
+          <Checkbox
+            icon={<LensIcon sx={{ color: '#fff' }} />}
+            checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
+          />
+        }
+        label=""
+        // label={`${title.title}`}
+      />
+    </FormGroup>
   );
 }

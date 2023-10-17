@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import useMutation from 'renderer/hooks/useMutation';
 import useQuery from 'renderer/hooks/useQuery';
 import { ISelectedCreator } from './useData';
+import fetchReq from 'utils/fetch';
 
 const useFormCreator = (
   callback: () => void,
@@ -17,7 +18,10 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
-  const { data: dataEmployeeRaw } = useQuery({ key: 'get-employee' });
+  const { data: dataEmployeeRaw } = useQuery({
+    key: 'get-employee',
+    params: { id: '6527ad93dedd0418c5d1dc50' },
+  });
   const { mutate: mutataCreate, isLoading: loadingCreate } = useMutation({
     key: 'create-creator',
   });
@@ -26,11 +30,14 @@ const useFormCreator = (
   });
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    creatorName: Yup.string().required('Name is required'),
     gender: Yup.string().required('Gender is required'),
     assignEmployee: Yup.string().required('Assign Employee is required'),
-    internalNotes: Yup.string(),
-    isAutoRelink: Yup.boolean(),
+    internalNotes: Yup.string().required('Internal note is required'),
+    autoRelink: Yup.boolean(),
+    isAgencyProxy: Yup.boolean(),
+    agency: Yup.string(),
+    creator: Yup.string(),
   });
 
   const { register, handleSubmit, reset, setValue, getValues } = useForm({
@@ -39,32 +46,75 @@ const useFormCreator = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      mutataCreate(data, {
-        onSuccess: () => {
-          callback();
-          reset();
+      let endpoint = 'creators';
+      let options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
         },
-      });
-    } else {
-      mutateUpdate(
-        { ...data, id: selectedCreator?.id },
-        {
-          onSuccess: () => {
+        body: JSON.stringify(data),
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          if ((res.message = 'creator added successfully')) {
             callback();
             reset();
-          },
-        }
-      );
+          }
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+      // mutataCreate(data, {
+      //   onSuccess: () => {
+      //     callback();
+      //     reset();
+      //   },
+      // });
+    } else {
+      let endpoint = `creators/${selectedCreator?.id}`;
+      let options = {
+        method: 'PUT' as 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.message == 'creator updated successfully') {
+            callback();
+            reset();
+          }
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+      // mutateUpdate(
+      //   { ...data, id: selectedCreator?.id },
+      //   {
+      //     onSuccess: () => {
+      //       callback();
+      //       reset();
+      //     },
+      //   }
+      // );
     }
   };
 
   useEffect(() => {
     if (selectedCreator && type === 'edit') {
-      setValue('name', selectedCreator?.creatorName);
+      setValue('creatorName', selectedCreator?.creatorName);
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
-      setValue('isAutoRelink', selectedCreator?.autoRelink);
+      setValue('autoRelink', selectedCreator?.autoRelink);
+      setValue('isAgencyProxy', selectedCreator?.proxy);
+      setValue('agency', selectedCreator?.agency);
+      // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
     }
@@ -85,7 +135,7 @@ const useFormCreator = (
   }, [dataEmployeeRaw]);
 
   const toggleAutoRelink = () => {
-    setValue('isAutoRelink', !getValues('isAutoRelink'));
+    setValue('autoRelink', !getValues('autoRelink'));
   };
 
   return {
@@ -96,7 +146,8 @@ const useFormCreator = (
     employeeOptions,
     setEmployeeOptions,
     toggleAutoRelink,
-    isAutoRelink: getValues('isAutoRelink'),
+    // isAutoRelink: getValues('isAutoRelink'),
+    isAutoRelink: true,
   };
 };
 

@@ -180,5 +180,6 @@ const main = async () => {
     if (mainWindow === null) createWindow();
   });
 };
+app.on('ready',createWindow)
 
 main();
