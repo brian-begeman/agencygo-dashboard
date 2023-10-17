@@ -8,7 +8,7 @@ import {
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { roleList } from './constant';
+import { roleList,groupList } from './constant';
 import useFormEmployee from './hooks/useForm';
 import fetchReq from 'utils/fetch';
 
@@ -27,7 +27,7 @@ export default function AddEmployeeModal({
   type,
   selectedEmployee,
 }: $Props) {
-  const { groupOptions, assignCreator, handleSubmit, register, isLoading } =
+  const {assignCreator, handleSubmit, register, isLoading } =
     useFormEmployee(
       () => {
         setOpen(false);

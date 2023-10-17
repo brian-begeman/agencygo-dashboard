@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import PageTopbar from 'renderer/components/PageTopbar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 import MultiSelect from 'renderer/components/Dropdown';
 import fetchReq from 'utils/fetch';
@@ -71,7 +71,7 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
               background: '#4B4B4B',
             }}
           >
-            <MultiSelect creatorNames={data?.data} selectedValues={selectedValues} setSelectedValues={setSelectedValues}/>
+            <MultiSelect multiple={true} creatorNames={data?.data} selectedValues={selectedValues} setSelectedValues={setSelectedValues}/>
           </Box>
           <Box
             display={'flex'}

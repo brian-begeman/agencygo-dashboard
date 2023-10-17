@@ -68,12 +68,12 @@ interface Option {
 }
 
 interface DropdownWithLabelProps {
-  label: string;
-  inputIdentifierName: string;
+  label?: string;
+  inputIdentifierName?: string;
   value?: string;
   selectStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
-  options: Option[]; // Array of options
+  options?: Option[]; // Array of options
   placeholder?: string;
   register?: UseFormRegister<FieldValues>;
 }
