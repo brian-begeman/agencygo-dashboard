@@ -12,13 +12,17 @@ import {
 import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
-import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
+// import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
 import { ChangeEvent, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import styles from './styles.module.css';
-import FilterTag from './FilterTag';
+// import FilterTag from './FilterTag';
+// import fetchReq from 'utils/fetch';
+import { useLocation } from 'react-router-dom';
+import MultiSelect from '../Dropdown';
+import useQuery from 'renderer/hooks/useQuery';
 
 interface $ByCreatorProps {
   creatorSearch: string;
@@ -43,7 +47,7 @@ function FilterByCreator({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '32px',
+          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -57,6 +61,51 @@ function FilterByCreator({
           onSearch={() => {}}
           onUpdateSearch={(v) => setCreatorSearch(v)}
           value={creatorSearch}
+          placeholder={placeholder}
+          className={styles.input}
+        />
+      </Collapse>
+    </div>
+  );
+}
+
+interface $ByEmployeeProps {
+  employeeSearch: string;
+  setEmployeeSearch: (v: string) => void;
+  label?: string;
+  placeholder?: string;
+}
+
+function FilterByEmployee({
+  employeeSearch,
+  setEmployeeSearch,
+  label = 'By Employee',
+  placeholder = 'Enter employee name',
+}: $ByEmployeeProps) {
+  const [collapse, setCollapse] = useState(false);
+
+  return (
+    <div>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          marginBottom: '12px',
+        }}
+        onClick={() => setCollapse(!collapse)}
+      >
+        <Typography variant="h6" fontSize="14px">
+          {label}
+        </Typography>
+        {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </Box>
+      <Collapse in={!collapse}>
+        <SearchInput
+          onSearch={() => {}}
+          onUpdateSearch={(v) => setEmployeeSearch(v)}
+          value={employeeSearch}
           placeholder={placeholder}
           className={styles.input}
         />
@@ -87,7 +136,7 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '32px',
+          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -130,37 +179,87 @@ const initFiltersState = [
   },
 ];
 
-function Filter() {
+interface $FilterProps {
+  handleSearch?: any;
+  refetch?: any;
+}
+function Filter({ handleSearch, refetch }: $FilterProps) {
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
-  const [status, setStatus] = useState('activated');
-  const [linkStatus, setLinkStatus] = useState('linked');
+  const [employeeSearch, setEmployeeSearch] = useState('');
+  const [status, setStatus] = useState('');
+  const [linkStatus, setLinkStatus] = useState('');
+  const [selectedValues, setSelectedValues] = useState([]);
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
 
+  const location = useLocation();
   const onRemoveFilter = (id: string) => {
     setFilters(filters.filter((filter) => filter.label !== id));
+  };
+
+  const handleFilterData = () => {
+    const data = {};
+    if (location.pathname === '/creators') {
+      if (creatorSearch != '') {
+        Object.assign(data, { assignedCreators: creatorSearch });
+      }
+      if (status != '') {
+        Object.assign(data, { status: status == 'Activated' ? true : false });
+      }
+      if (linkStatus != '') {
+        Object.assign(data, {
+          plateformlink: linkStatus == 'Linked' ? true : false,
+        });
+      }
+    } else {
+      if (selectedValues.length) {
+        Object.assign(data, { creator: selectedValues.toString() });
+      }
+      if (status != '') {
+        Object.assign(data, {
+          status: status == 'inactive' ? 'inactive' : 'active',
+        });
+      }
+      if (employeeSearch != '') {
+        Object.assign(data, { name: employeeSearch });
+      }
+    }
+    handleSearch(data);
   };
 
   return (
     <PageAside>
       <Box
         sx={{
-          padding: '32px',
+          padding: '20px',
           display: 'flex',
           alignItems: 'center',
           gap: '16px',
         }}
       >
         <CandleSvg />
-        <Typography variant="h5">Filters</Typography>
+        <Typography font-size="22px">Filters</Typography>
       </Box>
       <Box
         sx={{
           borderTop: `1px solid ${theme.palette.primary.contrastText}`,
           borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
           padding: '21px 32px',
+          display: 'flex',
+          gap: '10px',
         }}
       >
-        <Stack
+        <Button variant="outlined" onClick={refetch}>
+          Reset
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ color: 'white' }}
+          onClick={handleFilterData}
+        >
+          Search
+        </Button>
+        {/* <Stack
           justifyContent="space-between"
           flexDirection="row"
           alignItems="center"
@@ -190,12 +289,12 @@ function Filter() {
               label={filter.label}
             />
           ))}
-        </Stack>
+        </Stack> */}
       </Box>
-      <Box padding="32px 16px 21px 16px">
-        <FilterByCreator
-          creatorSearch={creatorSearch}
-          setCreatorSearch={setCreatorSearch}
+      <Box padding="12px 16px 12px 16px">
+        <FilterByEmployee
+          employeeSearch={employeeSearch}
+          setEmployeeSearch={setEmployeeSearch}
         />
         <Divider
           sx={{
@@ -204,12 +303,42 @@ function Filter() {
           }}
         />
       </Box>
-      <Box padding="32px 16px 21px 16px">
+      <Box padding="0px 16px 0px 16px">
+        {location.pathname === '/creators' ? (
+          <FilterByCreator
+            creatorSearch={creatorSearch}
+            setCreatorSearch={setCreatorSearch}
+          />
+        ) : (
+          <>
+            <Typography variant="h6" fontSize="14px" marginBottom={'10px'}>
+              By Creator
+            </Typography>
+            <MultiSelect
+              multiple={false}
+              creatorNames={data?.data}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
+          </>
+        )}
+        <Divider
+          sx={{
+            background: theme.palette.primary.contrastText,
+            marginTop: '11px',
+          }}
+        />
+      </Box>
+      <Box padding="12px 16px 12px 16px">
         <FilterByStatus
           title="By Status"
           status={status}
           setStatus={setStatus}
-          options={['Activated', 'Deactivated']}
+          options={
+            location.pathname === '/creators'
+              ? ['Activated', 'Deactivated']
+              : ['active', 'inactive']
+          }
         />
         <Divider
           sx={{
@@ -218,20 +347,22 @@ function Filter() {
           }}
         />
       </Box>
-      <Box padding="32px 16px 21px 16px">
-        <FilterByStatus
-          title="By Link Status"
-          status={linkStatus}
-          options={['Linked', 'Unlinked']}
-          setStatus={setLinkStatus}
-        />
-        <Divider
-          sx={{
-            background: theme.palette.primary.contrastText,
-            marginTop: '11px',
-          }}
-        />
-      </Box>
+      {location.pathname === '/creators' && (
+        <Box padding="12px 16px 12px 16px">
+          <FilterByStatus
+            title="By Link Status"
+            status={linkStatus}
+            options={['Linked', 'Unlinked']}
+            setStatus={setLinkStatus}
+          />
+          <Divider
+            sx={{
+              background: theme.palette.primary.contrastText,
+              marginTop: '11px',
+            }}
+          />
+        </Box>
+      )}
     </PageAside>
   );
 }

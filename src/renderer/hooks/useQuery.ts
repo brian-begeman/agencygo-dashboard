@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TQueryService } from 'types';
+import fetchReq from 'utils/fetch';
 
 interface IProps {
   key: TQueryService;
@@ -18,6 +19,47 @@ const useQuery = (props: IProps) => {
 
   const fetch = async () => {
     setLoading(true);
+    if (key === 'get-creator') {
+      let endpoint = 'creators';
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
+    if (key === 'get-employee') {
+      let endPoint = 'employees/' + params.id;
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endPoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
+
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {
     //   setLoading(false);
@@ -51,6 +93,7 @@ const useQuery = (props: IProps) => {
     isSuccess: success,
     data,
     refetch: fetch,
+    setData: setData,
   };
 };
 

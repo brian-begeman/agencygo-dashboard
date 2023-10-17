@@ -9,8 +9,9 @@ import Logo from 'renderer/assets/png/agency-go-logo.png';
 import useMutation from 'renderer/hooks/useMutation';
 import { ButtonBase } from '@mui/material';
 import styles from './styles.module.css';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+import fetchReq from 'utils/fetch';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -33,13 +34,29 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // mutateLogin(data, {
-    //   onSuccess: () => {
-    //     navigate('/home');
-    //   },
-    // });
-    login();
-    navigate('/home');
+    let endpoint = 'login';
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.message == 'login successfully') {
+          const authToken = res.token?.token;
+          sessionStorage.setItem('Authorization', authToken);
+          login();
+          navigate('/home');
+        } else {
+          console.log('login error occoured: ', res.message);
+        }
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
   };
 
   return (

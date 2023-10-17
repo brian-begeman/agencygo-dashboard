@@ -45,12 +45,11 @@ const ResetPassword = () => {
       // withAuth: true,
       body: JSON.stringify(payload),
     };
-    console.log(payload, endpoint, options, '::::::::::::::::');
 
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res, 'res:::::::::::::::::::');
+        console.log(res);
       })
       .catch((err) => {
         console.log('Error occured: ', err);

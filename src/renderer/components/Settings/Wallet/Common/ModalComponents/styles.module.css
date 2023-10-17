@@ -1,3 +1,6 @@
+.inputLabelWrapper {
+  width: 100%;
+}
 .labelText {
   font-size: 14px;
   font-weight: 500;

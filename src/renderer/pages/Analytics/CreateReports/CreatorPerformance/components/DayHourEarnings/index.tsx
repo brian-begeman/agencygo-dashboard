@@ -9,6 +9,8 @@ import {
 import { Scatter } from 'react-chartjs-2';
 import faker from 'faker';
 import { Box, Typography } from '@mui/material';
+import theme from 'renderer/styles/muiTheme';
+import { ErrorOutline } from '@mui/icons-material';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -43,7 +45,10 @@ export default function DayHourEarnings() {
       flexDirection="column"
       gap="20px"
     >
-      <Typography fontSize="22px">Day - Hour Earnings</Typography>
+      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+        Day - Hour Earnings
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+      </Typography>
       <Scatter options={options} data={data} />
     </Box>
   );

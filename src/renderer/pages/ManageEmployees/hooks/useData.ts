@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
+import fetchReq from 'utils/fetch';
 
 interface IAgencyList {
   text: string;
   isActive: boolean;
+}
+interface ISelectedAgency {
+  id: string;
 }
 
 interface IEmployeeList {
@@ -35,7 +39,13 @@ const useDataEmployees = () => {
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
-  const { isLoading, data, refetch } = useQuery({ key: 'get-employee' });
+  const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
+    id: '6527ad93dedd0418c5d1dc50',
+  });
+  const { isLoading, data, refetch, setData } = useQuery({
+    key: 'get-employee',
+    params: selectedAgency,
+  });
 
   useEffect(() => {
     // window.electron.ipcRenderer
@@ -52,13 +62,39 @@ const useDataEmployees = () => {
     //   });
   }, []);
 
+  const handleSearch = (data: any) => {
+    console.log(data, 'data:::::::::::::::::');
+    const queryString = Object.keys(data)
+      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .join('&');
+    console.log(queryString, 'queryString::::::::::::::::::::');
+    let endpoint = `employee/search/data?${queryString}`;
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
+
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreators: 'Female',
+          assignedCreators: item.assignedCreators.length
+            ? item.assignedCreators.join(', ')
+            : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
             : '',
@@ -80,7 +116,11 @@ const useDataEmployees = () => {
     refetch,
     employees,
     selectedEmployee,
+    setEmployees,
+    selectedAgency,
+    setSelectedAgency,
     setSelectedEmployee,
+    handleSearch,
   };
 };
 
