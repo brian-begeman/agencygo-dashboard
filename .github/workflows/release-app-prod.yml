@@ -23,6 +23,13 @@ jobs:
         run: security find-identity -v
       - name: Install dependencies
         run: npm install
+      - name: Cache Node.js Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
