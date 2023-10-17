@@ -51,6 +51,7 @@ export default function ManageEmployees() {
     setEmployees,
     setSelectedAgency,
     selectedAgency,
+    handleSearch
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
   const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
@@ -245,8 +246,8 @@ export default function ManageEmployees() {
             ))}
           </Stack>
         </PageTopbar>
-        <Stack direction="row" spacing={1} sx={{ height: '100%' }}>
-          <Filter />
+        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
+          <Filter handleSearch={handleSearch} refetch={refetch}/>
           <FilterTable
             isEmptyContent={!employees.length}
             tableHeaders={employeesTableHeaders}

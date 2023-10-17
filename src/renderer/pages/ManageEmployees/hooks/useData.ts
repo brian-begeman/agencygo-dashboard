@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
+import fetchReq from 'utils/fetch';
 
 interface IAgencyList {
   text: string;
@@ -42,7 +43,7 @@ const useDataEmployees = () => {
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
     id: '6527ad93dedd0418c5d1dc50',
   });
-  const { isLoading, data, refetch } = useQuery({
+  const { isLoading, data, refetch, setData } = useQuery({
     key: 'get-employee',
     params: selectedAgency,
   });
@@ -61,6 +62,30 @@ const useDataEmployees = () => {
     //     console.log(err);
     //   });
   }, []);
+
+  const handleSearch = (data: any) => {
+    console.log(data, 'data:::::::::::::::::');
+    const queryString = Object.keys(data)
+      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .join('&');
+    console.log(queryString, 'queryString::::::::::::::::::::');
+    let endpoint = `employee/search/data?${queryString}`;
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
 
   useEffect(() => {
     if (data?.data) {
@@ -96,6 +121,7 @@ const useDataEmployees = () => {
     selectedAgency,
     setSelectedAgency,
     setSelectedEmployee,
+    handleSearch,
   };
 };
 
