@@ -34,6 +34,7 @@ const ResetPassword = () => {
     const pass = data.newPassword;
     const payload = {
       password: pass,
+      newInvite:true
     };
     let endpoint = `employee/${id}`;
     let options = {
