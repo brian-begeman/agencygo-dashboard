@@ -47,6 +47,9 @@ const useMutation = (props: IProps): IResponse => {
       if (key === 'activate-employee') {
         resp = await EmpoloyeeServices.activateEmployee(body);
       }
+      if (key === 'deactivate-employee') {
+        resp = await EmpoloyeeServices.dectivateEmployee(body);
+      }
       console.log({ resp });
       setLoading(false);
       setSuccess(true);
