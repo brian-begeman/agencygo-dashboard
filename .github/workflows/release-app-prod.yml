@@ -15,21 +15,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: latest
+          cache: 'npm'
+      - run: npm ci
       - name: see directory in electron_dist
         run: ls ./release
       - name: add key to single keychain
         run: security import ./.erb/certs/AgencyGoCertificate.p12 -P ${{ secrets.CSC_KEY_PASSWORD }}
       - name: electron mac os security identities
         run: security find-identity -v
-      - name: Cache Node.js Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies
-        run: npm install
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
