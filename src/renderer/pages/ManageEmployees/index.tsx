@@ -24,6 +24,7 @@ import MenuButton from 'renderer/components/MenuButton';
 import ResetPasswordModal from './components/ResetPasswordModal';
 import AssignCreatorModal from './components/AssignCreatorModal';
 import fetchReq from 'utils/fetch';
+import useMutation from 'renderer/hooks/useMutation';
 
 const employeesTableHeaders = [
   'Employees',
@@ -35,12 +36,12 @@ const employeesTableHeaders = [
 
 export default function ManageEmployees() {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
-  const [formType, setFormType] = useState<'add' | 'edit'>('add');
-  const [id, setId] = useState('');
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [id, setId] = useState('');
+  const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
   const {
     agencies,
     refetch,
@@ -52,6 +53,67 @@ export default function ManageEmployees() {
     selectedAgency,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
+  const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
+  const { mutate: mutateActivate } = useMutation({ key: 'activate-employee' });
+  const { mutate: mutateDeactivate } = useMutation({
+    key: 'deactivate-employee',
+  });
+
+  const getOptions = (status: string) => {
+    const tabData = [
+      {
+        title: status == "active" ? 'Deactivate' : 'Activate',
+        function: status == "active" ? handleDeactivate : handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+      { title: 'Reset Password', function: resetPassword },
+    ];
+    return tabData;
+  };
+
+  const handleDeactivate = (id: any, status: any) => {
+    mutateDeactivate(
+      { id, status },
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          refetch();
+        },
+      }
+    );
+  };
+
+  const handleActivate = (id: any, status: any) => {
+    mutateActivate(
+      { id, status },
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          refetch();
+        },
+      }
+    );
+  };
+  const handleDelete = (id: any, activated: string) => {
+      const endPoint = 'employee/' + id;
+      const options = {
+        method: 'DELETE' as 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endPoint, options)
+        .then((responce) => responce.json())
+        .then((res) => {
+          refetch();
+        })
+        .catch((err) => console.log(err));
+  };
+
+  const resetPassword = (id: string) => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     let endpoint = 'agency';
@@ -71,76 +133,60 @@ export default function ManageEmployees() {
         console.log(err);
       });
   }, []);
+
   useEffect(() => {
     refetch();
   }, [selectedAgency]);
 
-  // const { mutate: mutateDelete } = useMutation({
-  //   key: 'delete-employee',
-  // });
-
-  const handleActivate = (id: string) => {
-    const data = {
-      to: email,
-    };
-    let endpoint = `email/${id}`;
-    let options = {
-      method: 'POST' as 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      withAuth: true,
-      body: JSON.stringify(data),
-    };
-    fetchReq(endpoint, options)
-      .then((response) => response.json())
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log('Error occured: ', err);
-      });
-  };
-
-  const handleResetPassword = (id: string) => {
-    setOpen(!open);
-  };
-
-  const handleDelete = (id: string) => {
-    let endpoint = `employee/${id}`;
-    let options = {
-      method: 'DELETE' as 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
-      withAuth: true,
-    };
-    fetchReq(endpoint, options)
-      .then((response) => response.json())
-      .then((res) => {
-        refetch();
-      })
-      .catch((err) => {
-        console.log('Error occured: ', err);
-      });
-  };
-
-  const getOptions = (activated?: boolean) => {
-    const tabData = [
-      {
-        title: activated == true ? 'Deactivate' : 'Activate',
-        function: handleActivate,
-      },
-      { title: 'Reset Password', function: handleResetPassword },
-      { title: 'Delete', function: handleDelete },
-    ];
-
-    return tabData;
-  };
-
   const handleClick = (id: string, email: string) => {
     setId(id);
     setEmail(email);
+  };
+
+  const handleResend = (id: string) => {
+      let endpoint = `email/${id}`;
+      let options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+  };
+
+  // const handleActivate = (id: string) => {
+  //   const data = {
+  //     to: email,
+  //   };
+  //   let endpoint = `email/${id}`;
+  //   let options = {
+  //     method: 'POST' as 'POST',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //     },
+  //     withAuth: true,
+  //     body: JSON.stringify(data),
+  //   };
+  //   fetchReq(endpoint, options)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log('Error occured: ', err);
+  //     });
+  // };
+
+  const handleResetPassword = (id: string) => {
+    setOpen(!open);
   };
 
   return (
@@ -215,114 +261,143 @@ export default function ManageEmployees() {
                   email,
                   roleRaw,
                   id,
-                }) => (
-                  <TableRow
-                    key={id}
-                    sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
-                    }}
-                  >
-                    <TableCell
+                }) => {
+                  return (
+                    <TableRow
+                      key={id}
                       sx={{
-                        borderColor: theme.palette.primary.contrastText,
+                        '&:last-child td, &:last-child th': { border: 0 },
                       }}
-                      scope="row"
                     >
-                      <Stack spacing={1} direction="row" alignItems="center">
-                        <Avatar />
-                        <Typography variant="h6" fontSize="18px" color="#fff">
-                          {name}
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                        scope="row"
+                      >
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <Avatar />
+                          <Typography
+                            variant="h6"
+                            fontSize="18px"
+                            color={activated ==="deactivate"? 'gray' : '#fff'}
+                          >
+                            {name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                          color: '#fff',
+                          width: '300px',
+                        }}
+                        onClick={() => {
+                          setAssigneeName(name);
+                          setId(id);
+                          if (activated ==="deactivate") {
+                            setOpenAssignCreatorModal(false);
+                          } else {
+                            setOpenAssignCreatorModal(!openAssignCreatorModal);
+                          }
+                        }}
+                      >
+                        <Typography color={activated ==="deactivate" ? 'gray' : '#fff'}>
+                          {assignedCreators}
                         </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
-                        width: '300px',
-                      }}
-                      onClick={() => {
-                        setAssigneeName(name);
-                        setId(id);
-                        setOpenAssignCreatorModal(!openAssignCreatorModal);
-                      }}
-                    >
-                      {assignedCreators}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
-                      }}
-                    >
-                      {role}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      {activated ? (
-                        <Activated />
-                      ) : (
-                        <Box
-                          display={'flex'}
-                          gap={'10px'}
-                          alignItems={'center'}
-                        >
-                          <DeactivatedSvg />
-                          <Typography color={'#fff'}>Resend</Typography>
-                        </Box>
-                      )}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      <Stack spacing={1} direction="row" alignItems="center">
-                        {activated ? (
-                          <>
-                            <ButtonBase
-                              onClick={() => {
-                                setSelectedEmployee({
-                                  name,
-                                  role: roleRaw,
-                                  email,
-                                  id,
-                                });
-                                setFormType('edit');
-                                setOpenAddEmployee(true);
-                              }}
-                            >
-                              <Typography variant="body1" color="#fff">
-                                Edit
-                              </Typography>
-                            </ButtonBase>
-                            <ButtonBase>
-                              <Typography variant="body1" color="#fff">
-                                <Box onClick={() => handleClick(id, email)}>
-                                  <MenuButton
-                                    title="More"
-                                    tabData={getOptions(activated)}
-                                    id={id}
-                                    status={activated}
-                                  />
-                                </Box>
-                              </Typography>
-                            </ButtonBase>
-                          </>
-                        ) : (
-                          <ButtonBase onClick={()=>handleDelete(id)}>
-                            <Typography variant="body1" color="#fff">
-                              Delete
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                          color: '#fff',
+                        }}
+                      >
+                        <Typography color={activated ==="deactivate" ? 'gray' : '#fff'}>
+                          {role}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        {activated === 'deactivate' && <DeactivatedSvg />}
+                        {activated === 'active' && <Activated />}
+                        {activated === 'inactive' && (
+                          <Box
+                            display={'flex'}
+                            gap={'10px'}
+                            alignItems={'center'}
+                          >
+                            <Typography color={'#fff'}>
+                              Inactive
                             </Typography>
-                          </ButtonBase>
+                            <Typography
+                              color={'#fff'}
+                              sx={{cursor:'pointer'}}
+                              onClick={() => handleResend(id)}
+                            >
+                              Resend
+                            </Typography>
+                          </Box>
                         )}
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                )
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          {(activated==='active' || activated==="deactivate" ) ? (
+                            <>
+                              <ButtonBase
+                                onClick={() => {
+                                  setSelectedEmployee({
+                                    name,
+                                    role: roleRaw,
+                                    email,
+                                    id,
+                                  });
+                                  setFormType('edit');
+                                  setOpenAddEmployee(true);
+                                }}
+                              >
+                                <Typography variant="body1" color="#fff">
+                                  Edit
+                                </Typography>
+                              </ButtonBase>
+                              <ButtonBase>
+                                <Typography variant="body1" color="#fff">
+                                  <Box onClick={() => handleClick(id, email)}>
+                                    <MenuButton
+                                      title="More"
+                                      tabData={getOptions(activated)}
+                                      id={id}
+                                      status={activated}
+                                    />
+                                  </Box>
+                                </Typography>
+                              </ButtonBase>
+                            </>
+                          ) : (
+                            <>
+                              <ButtonBase
+                                onClick={() => handleDelete(id, activated)}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  color={activated ==="deactivate"? 'gray' : '#fff'}
+                                >
+                                  Delete
+                                </Typography>
+                              </ButtonBase>
+                            </>
+                          )}
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
               )}
             </>
           </FilterTable>

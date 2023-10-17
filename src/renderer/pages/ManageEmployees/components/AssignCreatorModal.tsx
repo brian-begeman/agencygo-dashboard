@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import PageTopbar from 'renderer/components/PageTopbar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 import MultiSelect from 'renderer/components/Dropdown';
 import fetchReq from 'utils/fetch';
@@ -19,18 +19,11 @@ const style = {
 };
 
 export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
-  console.log(id,"==================id");
-  
   const [selectedValues, setSelectedValues] = useState([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [creatorNames, setCreatorNames] = useState<any>(null)
-  const { isLoading, data, refetch } = useQuery({ key: 'get-creator' });
-  console.log(data,"DATA")
-  useEffect(()=>{
-    setCreatorNames(data?.data)
-  },[data])
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
   
   const handleAssignCreator =(id:string)=>{
     const payload = selectedValues
@@ -46,7 +39,7 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res, 'handleAssignCreator----------------------');
+        console.log(res);
       })
       .catch((err) => {
         console.log('Error occured: ', err);

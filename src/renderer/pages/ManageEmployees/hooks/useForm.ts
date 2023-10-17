@@ -59,13 +59,13 @@ const useFormEmployee = (
   }, []);
 
   const onSubmit = (data: any) => {
-    console.log(data, 'data employee!!!!!!!!!!!!!!!!!!!!!');
     if (type === 'add') {
       addEmployee(data);
       mutataCreate(data, {
         onSuccess: () => {
           callback();
           reset();
+          refetch();
         },
       });
     } else {
@@ -76,6 +76,7 @@ const useFormEmployee = (
           onSuccess: () => {
             callback();
             reset();
+            refetch();
           },
         }
       );

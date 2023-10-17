@@ -26,13 +26,12 @@ export default function FilterTable({
   children,
 }: $Props) {
   return (
-    <Box width={'100%'}>
+    <Box sx={{ width: '100%', padding: '10px 10px', overflow: 'auto' }}>
       {!isEmptyContent ? (
         <TableContainer
           sx={{
             border: `1px solid ${theme.palette.primary.contrastText}`,
             borderRadius: '12px',
-            marginTop: '16px',
           }}
         >
           <Table aria-label="manage creators table">
