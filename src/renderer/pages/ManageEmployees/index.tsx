@@ -128,7 +128,7 @@ export default function ManageEmployees() {
     setId(id);
     setEmail(email);
   };
-  const handleResend = ()=>{
+  const handleResend = () => {
     let endpoint = `email/${id}`;
     let options = {
       method: 'POST' as 'POST',
@@ -145,7 +145,7 @@ export default function ManageEmployees() {
       .catch((err) => {
         console.log('Error occured: ', err);
       });
-  }
+  };
 
   return (
     <Dashboard>
@@ -273,7 +273,12 @@ export default function ManageEmployees() {
                           alignItems={'center'}
                         >
                           <DeactivatedSvg />
-                          <Typography color={'#fff'} onClick={()=>handleResend()}>Resend</Typography>
+                          <Typography
+                            color={'#fff'}
+                            onClick={() => handleResend()}
+                          >
+                            Resend
+                          </Typography>
                         </Box>
                       )}
                     </TableCell>
@@ -315,7 +320,7 @@ export default function ManageEmployees() {
                             </ButtonBase>
                           </>
                         ) : (
-                          <ButtonBase onClick={()=>handleDelete(id)}>
+                          <ButtonBase onClick={() => handleDelete(id)}>
                             <Typography variant="body1" color="#fff">
                               Delete
                             </Typography>
@@ -386,7 +391,7 @@ export default function ManageEmployees() {
               id={id}
             />
           )}
-           {openAssignCreatorModal && (
+          {openAssignCreatorModal && (
             <AssignCreatorModal
               name={assigneeName}
               open={openAssignCreatorModal}

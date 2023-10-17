@@ -18,6 +18,10 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
+
+  const [selectedValues, setSelectedValues] = useState<any>([]);
+
+
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
     params: { id: '6527ad93dedd0418c5d1dc50' },
@@ -32,20 +36,23 @@ const useFormCreator = (
   const validationSchema = Yup.object().shape({
     creatorName: Yup.string().required('Name is required'),
     gender: Yup.string().required('Gender is required'),
-    assignEmployee: Yup.string().required('Assign Employee is required'),
-    internalNotes: Yup.string().required('Internal note is required'),
+    assignEmployee: Yup.array(),
+    internalNotes: Yup.string(),
     autoRelink: Yup.boolean(),
     isAgencyProxy: Yup.boolean(),
     agency: Yup.string(),
     creator: Yup.string(),
   });
 
-  const { register, handleSubmit, reset, setValue, getValues } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  const { register, handleSubmit, reset, setValue, getValues, control } =
+    useForm({
+      resolver: yupResolver(validationSchema),
+    });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: any) => 
+  {
     if (type === 'add') {
+      data.status = true;
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
@@ -60,6 +67,7 @@ const useFormCreator = (
         .then((res) => {
           if ((res.message = 'creator added successfully')) {
             callback();
+            setSelectedValues([]);
             reset();
           }
         })
@@ -87,6 +95,7 @@ const useFormCreator = (
         .then((res) => {
           if (res.message == 'creator updated successfully') {
             callback();
+            setSelectedValues([]);
             reset();
           }
         })
@@ -107,6 +116,8 @@ const useFormCreator = (
 
   useEffect(() => {
     if (selectedCreator && type === 'edit') {
+      console.log(selectedCreator.assignEmployee.map((val)=>(val._id)),"00000000000000");
+      
       setValue('creatorName', selectedCreator?.creatorName);
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
@@ -114,6 +125,7 @@ const useFormCreator = (
       setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('agency', selectedCreator?.agency);
+      setSelectedValues(selectedCreator?.assignEmployee.map((val)=>(val._id)))
       // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
@@ -144,10 +156,15 @@ const useFormCreator = (
     onSubmit,
     isLoading: loadingCreate || loadingUpdate,
     employeeOptions,
+    control,
     setEmployeeOptions,
     toggleAutoRelink,
     // isAutoRelink: getValues('isAutoRelink'),
     isAutoRelink: true,
+    setValue,
+    selectedValues,
+    setSelectedValues
+
   };
 };
 

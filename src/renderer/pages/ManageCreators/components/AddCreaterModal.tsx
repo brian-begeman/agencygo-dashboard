@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   FormControlLabel,
@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
-import {
+import MultiSelectDropdown, {
   AutoRelinkSwitch,
   DropdownWithLabel,
   InputWithLabel,
@@ -87,9 +87,14 @@ export default function AddCreaterModal({
     employeeOptions,
     handleSubmit,
     register,
+    control,
     isLoading,
     isAutoRelink,
     toggleAutoRelink,
+    setEmployeeOptions,
+    setValue,
+    setSelectedValues,
+    selectedValues,
   } = useFormCreator(
     () => {
       setOpen(false);
@@ -104,18 +109,18 @@ export default function AddCreaterModal({
   };
 
   const cancelHandler = () => {
+    setSelectedValues([]);
     setOpen(false);
   };
 
   const handleModalClose = () => {
+    setSelectedValues([]);
     setOpen(false);
   };
 
-  console.log(type, 'type+++++++++++++++++++++++');
-
   return (
     <Overlay
-      heading={`${type} Creators`}
+      heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
       open={open}
       handleClose={handleModalClose}
       style={{
@@ -138,7 +143,9 @@ export default function AddCreaterModal({
             className={styles.inputListWrapper}
           >
             <Box>
-              <Typography>{`${type} Headshot`}</Typography>
+              <Typography>{`${
+                type == 'add' ? 'Add' : 'Edit'
+              } Headshot`}</Typography>
               <Box>
                 <ImageUpload />
               </Box>
@@ -164,16 +171,16 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <DropdownWithLabel
-              selectStyle={{
-                border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+            <MultiSelectDropdown
+              options={employeeOptions}
+              selectedValues={selectedValues}
+              setSelectedValues={(selected: any) => {
+                console.log(selected, 'selectedselected');
+                setValue('assignEmployee', selected);
+                setSelectedValues(selected);
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-              options={employeeOptions}
-              placeholder="Choose employee"
-              register={register as any}
             />
             <InputWithLabel
               inputStyle={{
@@ -292,7 +299,7 @@ export default function AddCreaterModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText={`${type} Creator`}
+        addText={`${type == 'add' ? 'Add' : 'Edit'} Creator`}
         id="addCreator"
         // isLoading={isLoading}
       />

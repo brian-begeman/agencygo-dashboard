@@ -20,7 +20,7 @@ export interface ISelectedCreator {
   id: string;
   internalNotes: string;
   autoRelink: boolean;
-  assignEmployee: string;
+  assignEmployee: any[];
   proxy: boolean;
   agency: string;
   creator: string;
