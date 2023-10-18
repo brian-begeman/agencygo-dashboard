@@ -179,10 +179,16 @@ interface $ByEmploeeCreatorProps {
   //   status: string;
   //   setStatus: (v: string) => void;
   title: string;
+  setEmployeeId: any;
+  employeeId: any;
   //   options: string[];
 }
 
-function FilterByEmployeeInCreator({ title }: $ByEmploeeCreatorProps) {
+function FilterByEmployeeInCreator({
+  title,
+  employeeId,
+  setEmployeeId,
+}: $ByEmploeeCreatorProps) {
   const MenuProps = {
     PaperProps: {
       style: {
@@ -191,17 +197,15 @@ function FilterByEmployeeInCreator({ title }: $ByEmploeeCreatorProps) {
     },
   };
   const [collapse, setCollapse] = useState(false);
-  const [personName, setPersonName] = React.useState<any>({});
+
   const { isLoading, data } = useQuery({
     key: 'get-employee',
     params: { id: '6527ad93dedd0418c5d1dc50' },
   });
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    setPersonName(event.target.value);
+  const handleChange = (event: SelectChangeEvent<typeof employeeId>) => {
+    setEmployeeId(event.target.value);
   };
-
-  console.log(personName, 'personName=================');
 
   return (
     <div>
@@ -233,14 +237,17 @@ function FilterByEmployeeInCreator({ title }: $ByEmploeeCreatorProps) {
             }}
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
-            value={personName.name}
-            onChange={handleChange}
-            renderValue={(selected) => selected.name}
+            value={employeeId.name}
+            onChange={(e) => handleChange(e)}
+            renderValue={(selected) => (selected.name ? selected.name : '')}
             MenuProps={MenuProps}
           >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
             {data?.data.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
-                <Checkbox checked={personName._id === name._id} />
+                <Checkbox checked={employeeId._id === name._id} />
                 <ListItemText primary={name.name} />
               </MenuItem>
             ))}
@@ -275,6 +282,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const [linkStatus, setLinkStatus] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
+  const [employeeId, setEmployeeId] = React.useState<any>({});
 
   const location = useLocation();
   const onRemoveFilter = (id: string) => {
@@ -293,6 +301,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       if (linkStatus != '') {
         Object.assign(data, {
           plateformlink: linkStatus == 'Linked' ? true : false,
+        });
+      }
+      if (employeeId != '') {
+        Object.assign(data, {
+          assignEmployee: employeeId._id,
         });
       }
     } else {
@@ -457,9 +470,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Box padding="12px 16px 12px 16px">
           <FilterByEmployeeInCreator
             title="By Employee name"
-            // status={linkStatus}
-            // options={['Linked', 'Unlinked']}
-            // setStatus={setLinkStatus}
+            setEmployeeId={setEmployeeId}
+            employeeId={employeeId}
           />
           <Divider
             sx={{
