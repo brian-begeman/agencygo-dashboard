@@ -24,6 +24,53 @@ import { useLocation } from 'react-router-dom';
 import MultiSelect from '../Dropdown';
 import useQuery from 'renderer/hooks/useQuery';
 
+interface $ByManageEmployeeCreatorProps {
+  label?: string;
+}
+
+function FilterByManageEmployeeCreator({
+  label = 'By Creator',
+}: $ByManageEmployeeCreatorProps) {
+  const [collapse, setCollapse] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
+
+  return (
+    <div>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          marginBottom: '12px',
+        }}
+        onClick={() => setCollapse(!collapse)}
+      >
+        <Typography variant="h6" fontSize="14px">
+          {label}
+        </Typography>
+        {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </Box>
+      <Collapse in={!collapse}>
+        {/* <SearchInput
+          onSearch={() => {}}
+          onUpdateSearch={(v) => setCreatorSearch(v)}
+          value={creatorSearch}
+          placeholder={placeholder}
+          className={styles.input}
+        /> */}
+        <MultiSelect
+          multiple={false}
+          creatorNames={data?.data}
+          selectedValues={selectedValues}
+          setSelectedValues={setSelectedValues}
+        />
+      </Collapse>
+    </div>
+  );
+}
+
 interface $ByCreatorProps {
   creatorSearch: string;
   setCreatorSearch: (v: string) => void;
@@ -311,7 +358,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           />
         ) : (
           <>
-            <Typography variant="h6" fontSize="14px" marginBottom={'10px'}>
+            {/* <Typography variant="h6" fontSize="14px" marginBottom={'10px'}>
               By Creator
             </Typography>
             <MultiSelect
@@ -319,7 +366,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
               creatorNames={data?.data}
               selectedValues={selectedValues}
               setSelectedValues={setSelectedValues}
-            />
+            /> */}
+            <FilterByManageEmployeeCreator />
           </>
         )}
         <Divider

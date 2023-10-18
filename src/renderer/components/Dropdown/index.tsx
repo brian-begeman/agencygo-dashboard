@@ -3,8 +3,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function MultiSelect({creatorNames,setSelectedValues,selectedValues, multiple}:any) {
-
+export default function MultiSelect({
+  creatorNames,
+  setSelectedValues,
+  selectedValues,
+  multiple,
+}: any) {
   const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
     setSelectedValues(event.target.value as typeof selectedValues);
   };
@@ -14,17 +18,17 @@ export default function MultiSelect({creatorNames,setSelectedValues,selectedValu
       sx={{
         m: 0,
         minWidth: '100%',
-        background: '#292929',
+        background: '#0f0f0f',
         border: '1px solid #fff',
         borderRadius: '5px',
         outline: 'none',
         color: '#fff',
-        '&:focus': {
+        '& :focus': {
           border: 'none',
           outline: 'none',
         },
         '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-          background: 'gray !important',
+          background: '#0f0f0f !important',
         },
       }}
       size="small"
@@ -32,9 +36,9 @@ export default function MultiSelect({creatorNames,setSelectedValues,selectedValu
       <Select
         sx={{
           '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-            background: 'gray !important',
+            background: '#0f0f0f !important',
           },
-          color:'#fff'
+          color: '#fff',
         }}
         fullWidth
         labelId="demo-multi-select-label"
@@ -44,10 +48,11 @@ export default function MultiSelect({creatorNames,setSelectedValues,selectedValu
         label="Select Values"
         onChange={handleChange}
       >
-        {creatorNames?.map((val:any)=>{
-          return(
-            <MenuItem value={val?._id}>{val?.creatorName}</MenuItem>
-          )
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {creatorNames?.map((val: any) => {
+          return <MenuItem value={val?._id}>{val?.creatorName}</MenuItem>;
         })}
       </Select>
     </FormControl>
