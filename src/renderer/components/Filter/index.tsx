@@ -285,8 +285,16 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const [employeeId, setEmployeeId] = React.useState<any>({});
 
   const location = useLocation();
-  const onRemoveFilter = (id: string) => {
-    setFilters(filters.filter((filter) => filter.label !== id));
+  const onRemoveFilter = () => {
+    setCreatorSearch('');
+    setLinkStatus('');
+    setEmployeeId({});
+    setStatus('');
+    setSelectedValues([]);
+    setEmployeeSearch('');
+    refetch();
+
+    // setFilters(filters.filter((filter) => filter.label !== id));
   };
 
   const handleFilterData = () => {
@@ -346,7 +354,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           gap: '10px',
         }}
       >
-        <Button variant="outlined" onClick={refetch}>
+        <Button variant="outlined" onClick={onRemoveFilter}>
           Reset
         </Button>
         <Button
