@@ -21,6 +21,8 @@ import Partner from 'renderer/components/Settings/Partner';
 import Role from 'renderer/components/Settings/Role';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
+import WhiteLabelSvg from 'renderer/assets/svg/WhiteLabelSvg';
+import WhiteLabel from 'renderer/components/Settings/WhiteLabel';
 
 const navList = [
   {
@@ -54,6 +56,11 @@ const navList = [
     value: 'salesSettings',
   },
   {
+    label: 'White Label',
+    icon: <WhiteLabelSvg />,
+    value: 'whiteLabel',
+  },
+  {
     label: 'About AgencyGo',
     icon: <AboutSvg />,
     value: 'about',
@@ -77,7 +84,6 @@ export default function Settings() {
       case 'preferences':
         return <Preferences />;
       case 'billing':
-      case 'billing':
         return <Billing />;
       case 'wallet':
         return <Wallet />;
@@ -87,6 +93,8 @@ export default function Settings() {
         return <Partner />;
       case 'roleSetting':
         return <Role />;
+      case 'whiteLabel':
+        return <WhiteLabel />;
       default:
         return <h1>Not found</h1>;
     }
