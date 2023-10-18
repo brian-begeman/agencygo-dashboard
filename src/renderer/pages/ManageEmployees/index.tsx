@@ -51,7 +51,7 @@ export default function ManageEmployees() {
     setEmployees,
     setSelectedAgency,
     selectedAgency,
-    handleSearch
+    handleSearch,
   } = useDataEmployees();
   const [group, setgroup] = useState([]);
   const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
@@ -63,8 +63,8 @@ export default function ManageEmployees() {
   const getOptions = (status: string) => {
     const tabData = [
       {
-        title: status == "active" ? 'Deactivate' : 'Activate',
-        function: status == "active" ? handleDeactivate : handleActivate,
+        title: status == 'active' ? 'Deactivate' : 'Activate',
+        function: status == 'active' ? handleDeactivate : handleActivate,
       },
       { title: 'Delete', function: handleDelete },
       { title: 'Reset Password', function: resetPassword },
@@ -96,20 +96,20 @@ export default function ManageEmployees() {
     );
   };
   const handleDelete = (id: any, activated: string) => {
-      const endPoint = 'employee/' + id;
-      const options = {
-        method: 'DELETE' as 'DELETE',
-        headers: {
-          'content-type': 'application/json',
-        },
-        withAuth: true,
-      };
-      fetchReq(endPoint, options)
-        .then((responce) => responce.json())
-        .then((res) => {
-          refetch();
-        })
-        .catch((err) => console.log(err));
+    const endPoint = 'employee/' + id;
+    const options = {
+      method: 'DELETE' as 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
   };
 
   const resetPassword = (id: string) => {
@@ -145,22 +145,22 @@ export default function ManageEmployees() {
   };
 
   const handleResend = (id: string) => {
-      let endpoint = `email/${id}`;
-      let options = {
-        method: 'POST' as 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        withAuth: true,
-      };
-      fetchReq(endpoint, options)
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log('Error occured: ', err);
-        });
+    let endpoint = `email/${id}`;
+    let options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
   };
 
   // const handleActivate = (id: string) => {
@@ -247,7 +247,7 @@ export default function ManageEmployees() {
           </Stack>
         </PageTopbar>
         <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
-          <Filter handleSearch={handleSearch} refetch={refetch}/>
+          <Filter handleSearch={handleSearch} refetch={refetch} />
           <FilterTable
             isEmptyContent={!employees.length}
             tableHeaders={employeesTableHeaders}
@@ -281,7 +281,7 @@ export default function ManageEmployees() {
                           <Typography
                             variant="h6"
                             fontSize="18px"
-                            color={activated ==="deactivate"? 'gray' : '#fff'}
+                            color={activated === 'deactivate' ? 'gray' : '#fff'}
                           >
                             {name}
                           </Typography>
@@ -296,14 +296,16 @@ export default function ManageEmployees() {
                         onClick={() => {
                           setAssigneeName(name);
                           setId(id);
-                          if (activated ==="deactivate") {
+                          if (activated === 'deactivate') {
                             setOpenAssignCreatorModal(false);
                           } else {
                             setOpenAssignCreatorModal(!openAssignCreatorModal);
                           }
                         }}
                       >
-                        <Typography color={activated ==="deactivate" ? 'gray' : '#fff'}>
+                        <Typography
+                          color={activated === 'deactivate' ? 'gray' : '#fff'}
+                        >
                           {assignedCreators}
                         </Typography>
                       </TableCell>
@@ -313,7 +315,9 @@ export default function ManageEmployees() {
                           color: '#fff',
                         }}
                       >
-                        <Typography color={activated ==="deactivate" ? 'gray' : '#fff'}>
+                        <Typography
+                          color={activated === 'deactivate' ? 'gray' : '#fff'}
+                        >
                           {role}
                         </Typography>
                       </TableCell>
@@ -330,12 +334,10 @@ export default function ManageEmployees() {
                             gap={'10px'}
                             alignItems={'center'}
                           >
-                            <Typography color={'#fff'}>
-                              Inactive
-                            </Typography>
+                            <Typography color={'#fff'}>Inactive</Typography>
                             <Typography
                               color={'#fff'}
-                              sx={{cursor:'pointer'}}
+                              sx={{ cursor: 'pointer' }}
                               onClick={() => handleResend(id)}
                             >
                               Resend
@@ -349,7 +351,8 @@ export default function ManageEmployees() {
                         }}
                       >
                         <Stack spacing={1} direction="row" alignItems="center">
-                          {(activated==='active' || activated==="deactivate" ) ? (
+                          {activated === 'active' ||
+                          activated === 'deactivate' ? (
                             <>
                               <ButtonBase
                                 onClick={() => {
@@ -387,7 +390,9 @@ export default function ManageEmployees() {
                               >
                                 <Typography
                                   variant="body1"
-                                  color={activated ==="deactivate"? 'gray' : '#fff'}
+                                  color={
+                                    activated === 'deactivate' ? 'gray' : '#fff'
+                                  }
                                 >
                                   Delete
                                 </Typography>

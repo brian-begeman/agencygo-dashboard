@@ -2,8 +2,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function MultiSelect({creatorNames,setSelectedValues,selectedValues, multiple}:any) {
-
+export default function MultiSelect({
+  creatorNames,
+  setSelectedValues,
+  selectedValues,
+  multiple,
+}: any) {
   const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
     setSelectedValues(event.target.value as typeof selectedValues);
   };
@@ -33,7 +37,7 @@ export default function MultiSelect({creatorNames,setSelectedValues,selectedValu
           '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
             background: 'gray !important',
           },
-          color:'#fff'
+          color: '#fff',
         }}
         fullWidth
         labelId="demo-multi-select-label"
@@ -43,10 +47,8 @@ export default function MultiSelect({creatorNames,setSelectedValues,selectedValu
         label="Select Values"
         onChange={handleChange}
       >
-        {creatorNames?.map((val:any)=>{
-          return(
-            <MenuItem value={val?._id}>{val?.creatorName}</MenuItem>
-          )
+        {creatorNames?.map((val: any) => {
+          return <MenuItem value={val?._id}>{val?.creatorName}</MenuItem>;
         })}
       </Select>
     </FormControl>
