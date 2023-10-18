@@ -7,9 +7,13 @@ import SectionHeader from 'renderer/components/Dashboard/components/SectionHeade
 import EmployeeShiftsBox from 'renderer/components/Dashboard/components/EmployeeShifts';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
+import AddShifts from './addShifts';
 
 export default function EmployeeShifts() {
   const [search, setSearch] = useState('');
+  const [open, setOpen] = useState(false);
+  const [type,setType] = useState('');
+
 
   const onSearch = (value: string) => {
     setSearch(value);
@@ -18,7 +22,7 @@ export default function EmployeeShifts() {
   return (
     <Dashboard>
       <section className={styles.wrapper}>
-        <SectionHeader title={localisation.employeeShifts} />
+        <SectionHeader title={localisation.employeeShifts} openModal = {setOpen} />
         <div className={styles.innerWrapper}>
           <aside className={styles.aside}>
             <div className={styles.search}>
@@ -45,6 +49,7 @@ export default function EmployeeShifts() {
           <EmployeeShiftsBox />
         </div>
       </section>
+      <AddShifts open={open} type={type} setOpen={setOpen}  />
     </Dashboard>
   );
 }
