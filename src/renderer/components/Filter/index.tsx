@@ -191,15 +191,18 @@ function FilterByEmployeeInCreator({ title }: $ByEmploeeCreatorProps) {
     },
   };
   const [collapse, setCollapse] = useState(false);
-  const [personName, setPersonName] = React.useState<any>('');
+  const [personName, setPersonName] = React.useState<any>({});
   const { isLoading, data } = useQuery({
     key: 'get-employee',
     params: { id: '6527ad93dedd0418c5d1dc50' },
   });
 
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    setPersonName(event.target.value._id);
+    setPersonName(event.target.value);
   };
+
+  console.log(personName, 'personName=================');
+
   return (
     <div>
       <Box
@@ -230,15 +233,14 @@ function FilterByEmployeeInCreator({ title }: $ByEmploeeCreatorProps) {
             }}
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
-            value={personName}
+            value={personName.name}
             onChange={handleChange}
-            // input={<OutlinedInput label="Tag" />}
-            renderValue={(selected) => selected}
+            renderValue={(selected) => selected.name}
             MenuProps={MenuProps}
           >
             {data?.data.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
-                <Checkbox checked={personName === name._id} />
+                <Checkbox checked={personName._id === name._id} />
                 <ListItemText primary={name.name} />
               </MenuItem>
             ))}
