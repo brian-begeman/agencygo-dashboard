@@ -1,11 +1,19 @@
 import {
   Box,
   Button,
+  Checkbox,
   Collapse,
   Divider,
+  FormControl,
   FormControlLabel,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
   Radio,
   RadioGroup,
+  Select,
+  SelectChangeEvent,
   Stack,
   Typography,
 } from '@mui/material';
@@ -13,7 +21,7 @@ import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
 // import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -214,6 +222,89 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
   );
 }
 
+interface $ByEmploeeCreatorProps {
+  //   status: string;
+  //   setStatus: (v: string) => void;
+  title: string;
+  setEmployeeId: any;
+  employeeId: any;
+  //   options: string[];
+}
+
+function FilterByEmployeeInCreator({
+  title,
+  employeeId,
+  setEmployeeId,
+}: $ByEmploeeCreatorProps) {
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        width: 250,
+      },
+    },
+  };
+  const [collapse, setCollapse] = useState(false);
+
+  const { isLoading, data } = useQuery({
+    key: 'get-employee',
+    params: { id: '6527ad93dedd0418c5d1dc50' },
+  });
+
+  const handleChange = (event: SelectChangeEvent<typeof employeeId>) => {
+    setEmployeeId(event.target.value);
+  };
+
+  return (
+    <div>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          marginBottom: '12px',
+        }}
+        onClick={() => setCollapse(!collapse)}
+      >
+        <Typography variant="h6" fontSize="14px">
+          {title}
+        </Typography>
+        {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </Box>
+      <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
+        <FormControl sx={{ width: 230, marginBottom: '30px' }}>
+          <Select
+            sx={{
+              color: '#fff',
+              '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select':
+                {
+                  border: ' 1px solid #ffffff33',
+                  height: ' 20px',
+                },
+            }}
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            value={employeeId.name}
+            onChange={(e) => handleChange(e)}
+            renderValue={(selected) => (selected.name ? selected.name : '')}
+            MenuProps={MenuProps}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {data?.data.map((name: any) => (
+              <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
+                <Checkbox checked={employeeId._id === name._id} />
+                <ListItemText primary={name.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Collapse>
+    </div>
+  );
+}
+
 const initFiltersState = [
   {
     label: 'Status',
@@ -238,10 +329,19 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const [linkStatus, setLinkStatus] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
+  const [employeeId, setEmployeeId] = React.useState<any>({});
 
   const location = useLocation();
-  const onRemoveFilter = (id: string) => {
-    setFilters(filters.filter((filter) => filter.label !== id));
+  const onRemoveFilter = () => {
+    setCreatorSearch('');
+    setLinkStatus('');
+    setEmployeeId({});
+    setStatus('');
+    setSelectedValues([]);
+    setEmployeeSearch('');
+    refetch();
+
+    // setFilters(filters.filter((filter) => filter.label !== id));
   };
 
   const handleFilterData = () => {
@@ -256,6 +356,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       if (linkStatus != '') {
         Object.assign(data, {
           plateformlink: linkStatus == 'Linked' ? true : false,
+        });
+      }
+      if (employeeId != '') {
+        Object.assign(data, {
+          assignEmployee: employeeId._id,
         });
       }
     } else {
@@ -296,7 +401,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           gap: '10px',
         }}
       >
-        <Button variant="outlined" onClick={refetch}>
+        <Button variant="outlined" onClick={onRemoveFilter}>
           Reset
         </Button>
         <Button
@@ -339,17 +444,22 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         </Stack> */}
       </Box>
       <Box padding="12px 16px 12px 16px">
-        <FilterByEmployee
-          employeeSearch={employeeSearch}
-          setEmployeeSearch={setEmployeeSearch}
-        />
-        <Divider
-          sx={{
-            background: theme.palette.primary.contrastText,
-            marginTop: '11px',
-          }}
-        />
+        {location.pathname != '/creators' && (
+          <>
+            <FilterByEmployee
+              employeeSearch={employeeSearch}
+              setEmployeeSearch={setEmployeeSearch}
+            />
+            <Divider
+              sx={{
+                background: theme.palette.primary.contrastText,
+                marginTop: '11px',
+              }}
+            />
+          </>
+        )}
       </Box>
+
       <Box padding="0px 16px 0px 16px">
         {location.pathname === '/creators' ? (
           <FilterByCreator
@@ -402,6 +512,22 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             status={linkStatus}
             options={['Linked', 'Unlinked']}
             setStatus={setLinkStatus}
+          />
+          <Divider
+            sx={{
+              background: theme.palette.primary.contrastText,
+              marginTop: '11px',
+            }}
+          />
+        </Box>
+      )}
+
+      {location.pathname == '/creators' && (
+        <Box padding="12px 16px 12px 16px">
+          <FilterByEmployeeInCreator
+            title="By Employee name"
+            setEmployeeId={setEmployeeId}
+            employeeId={employeeId}
           />
           <Divider
             sx={{

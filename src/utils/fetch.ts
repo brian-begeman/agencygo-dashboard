@@ -5,7 +5,7 @@
 import { API_URL } from '../config';
 
 interface IFetchOptions extends RequestInit {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'|'PATCH';
   withAuth?: boolean;
 }
 

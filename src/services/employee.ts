@@ -139,10 +139,29 @@ async function activateEmployee(data: any) {
   let resp = await responce.json();
   return resp;
 }
+async function dectivateEmployee(data: any) {
+  const endPoint = 'employee/' + data.id;
+
+  const bodyData = {
+    status: 'deactivate',
+  };
+  const options = {
+    method: 'PUT' as 'PUT',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+    body: JSON.stringify(bodyData),
+  };
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();
+  return resp;
+}
 const EmpoloyeeServices = {
   // createEmployee,
   updateEmployee,
   activateEmployee,
+  dectivateEmployee,
 };
 
 export default EmpoloyeeServices;
