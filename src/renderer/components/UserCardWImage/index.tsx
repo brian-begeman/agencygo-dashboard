@@ -18,7 +18,7 @@ export default function UserCardWImage({
 }: $Props) {
   return (
     <Stack
-      spacing={2}
+      // spacing={1}
       direction="row"
       flexShrink={0}
       flexWrap="wrap"
@@ -33,7 +33,6 @@ export default function UserCardWImage({
       ) : (
         <Avatar />
       )}
-
       <Typography variant="h3" color="#fff" fontSize={'14px'} fontWeight={500}>
         {name}
       </Typography>
