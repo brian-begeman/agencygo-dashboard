@@ -14,6 +14,7 @@ interface $props {
   open: boolean;
   type: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 }
 const time = [
   {
@@ -117,13 +118,82 @@ const time = [
     label: '12:00 PM',
   },
 ];
+const dayListing = [
+  {
+    day: 'Sun',
+    value: 'sunday',
+  },
+  {
+    day: 'Mon',
+    value: 'monday',
+  },
+  {
+    day: 'Tue',
+    value: 'tuesday',
+  },
+  {
+    day: 'Wed',
+    value: 'wednesday',
+  },
+  {
+    day: 'Thu',
+    value: 'thursday',
+  },
+  {
+    day: 'Fri',
+    value: 'friday',
+  },
+  {
+    day: 'Sat',
+    value: 'saturday',
+  },
+];
+interface $dropdownlist {
+  value: string;
+  label: string;
+}
+interface $shiftData {
+  employeeId?: string;
+  creatorId?: string;
+  startTime?: string;
+  endTime?: string;
+  startDate?: string;
+  endDate?: string;
+  repeat: {
+    sunday: boolean;
+    monday: boolean;
+    tuesday: boolean;
+    wednessday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+  };
+}
 
-const AddShifts = ({ open, type, setOpen }: $props) => {
-  const [employees, setEmployees] = useState([]);
-  const [creators, setCreators] = useState([]);
-
+const AddShifts = ({ open, type, setOpen, refetch }: $props) => {
+  const [employees, setEmployees] = useState<$dropdownlist[]>([]);
+  const [creators, setCreators] = useState<$dropdownlist[]>([]);
+  const [shiftData, setShiftData] = useState<$shiftData>({
+    repeat: {
+      sunday: false,
+      monday: false,
+      tuesday: false,
+      wednessday: false, // Note the typo here, it should be "wednesday"
+      thursday: false,
+      friday: false,
+      saturday: false,
+    },
+    // Other properties here
+  });
+  const [today, setToday] = useState('');
   useEffect(() => {
-    const endPoint = 'creator';
+    getCreators();
+    getAllEmployees();
+    let now = new Date();
+    setToday(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+  }, []);
+  const getCreators = () => {
+    const endPoint = 'creators';
     const options = {
       method: 'GET' as 'GET',
       headers: {
@@ -132,18 +202,138 @@ const AddShifts = ({ open, type, setOpen }: $props) => {
       withAuth: true,
     };
     fetchReq(endPoint, options)
-      .then((responce) => responce.json)
-      .then((res) => console.log(res))
+      .then((responce) => responce.json())
+      .then((res: any) => {
+        setCreators([]);
+        res.data.map((item: any) => {
+          setCreators((previous: any) => [
+            ...previous,
+            { label: item.creatorName, value: item._id },
+          ]);
+        });
+      })
       .catch((error) => console.log(error));
-  }, []);
+  };
+  const getAllEmployees = () => {
+    const endPoint = 'shifts/employees';
+    const options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        setEmployees([]);
+        res.data.map((item: any) => {
+          setEmployees((previous: any) => [
+            ...previous,
+            { label: item.name, value: item._id },
+          ]);
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
-  const handleSubmit = () => {};
-  const addHandler = () => {};
+  const addHandler = () => {
+    if (
+      shiftData.creatorId &&
+      shiftData.employeeId &&
+      shiftData.endDate &&
+      shiftData.startDate &&
+      shiftData.startTime &&
+      shiftData.endTime
+    ) {
+      const endPoint = 'shifts';
+      const options = {
+        method: 'POST' as 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withAuth: true,
+        body: JSON.stringify(shiftData),
+      };
+      fetchReq(endPoint, options)
+        .then((responce) => responce.json())
+        .then((res) => {
+          setShiftData({
+            employeeId: '',
+            creatorId: '',
+            startTime: '',
+            endTime: '',
+            startDate: '',
+            endDate: '',
+            repeat: {
+              sunday: false,
+              monday: false,
+              tuesday: false,
+              wednessday: false,
+              thursday: false,
+              friday: false,
+              saturday: false,
+            },
+          });
+          refetch();
+          setOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
   const cancelHandler = () => {
+    setShiftData({
+      employeeId: '',
+      creatorId: '',
+      startTime: '',
+      endTime: '',
+      startDate: '',
+      endDate: '',
+      repeat: {
+        sunday: false,
+        monday: false,
+        tuesday: false,
+        wednessday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+      },
+    });
     setOpen(false);
   };
   const handleModalClose = () => {
+    setShiftData({
+      employeeId: '',
+      creatorId: '',
+      startTime: '',
+      endTime: '',
+      startDate: '',
+      endDate: '',
+      repeat: {
+        sunday: false,
+        monday: false,
+        tuesday: false,
+        wednessday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+      },
+    });
     setOpen(false);
+  };
+  const handleChange = (name: string, value: string) => {
+    setShiftData((previous: any) => ({ ...previous, [name]: value }));
+  };
+  const makeSelection = (name: string, value: any) => {
+    setShiftData((prevShiftData: any) => ({
+      ...prevShiftData,
+      repeat: {
+        ...prevShiftData.repeat,
+        [name]: !prevShiftData.repeat[name],
+      },
+    }));
   };
   return (
     <Overlay
@@ -155,35 +345,85 @@ const AddShifts = ({ open, type, setOpen }: $props) => {
         <form
           className={styles.modalBody}
           id="addEmployee"
-          onSubmit={handleSubmit}
+          onSubmit={addHandler}
         >
           <Stack>
             <div>
               <div style={{ display: 'flex', marginBottom: '5px' }}>
                 <DropdownWithLabel
                   label="Start Time"
-                  inputIdentifierName="Start Time"
+                  inputIdentifierName="startTime"
                   options={time}
+                  value={shiftData?.startTime}
+                  handleOnChange={handleChange}
                 />
 
                 <div style={{ margin: '10px' }}>
                   <label htmlFor="">Select start date</label>
 
-                  <input type="date" />
+                  <input
+                    type="date"
+                    value={shiftData?.startDate}
+                    onChange={(e) => {
+                      handleChange('startDate', e.target.value);
+                    }}
+                    min={today}
+                  />
                 </div>
               </div>
 
               <div style={{ display: 'flex', marginBottom: '5px' }}>
                 <DropdownWithLabel
                   label="End Time"
-                  inputIdentifierName="End Time"
+                  inputIdentifierName="endTime"
                   options={time}
+                  handleOnChange={handleChange}
+                  value={shiftData?.endTime}
                 />
                 <div style={{ margin: '10px' }}>
                   <label htmlFor="">Select end date</label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    onChange={(e) => {
+                      handleChange('endDate', e.target.value);
+                    }}
+                    min={shiftData.startDate}
+                    value={shiftData?.endDate}
+                  />
                 </div>
               </div>
+            </div>
+            <DropdownWithLabel
+              label="employees"
+              inputIdentifierName="employeeId"
+              options={employees}
+              handleOnChange={handleChange}
+              value={shiftData?.employeeId}
+            />
+            <DropdownWithLabel
+              label="creators"
+              inputIdentifierName="creatorId"
+              options={creators}
+              handleOnChange={handleChange}
+              value={shiftData?.creatorId}
+            />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                margin: '10px',
+              }}
+            >
+              {dayListing.map((item: { day: string; value: string }) => (
+                <div>
+                  <input
+                    type="checkbox"
+                    name="daySelection"
+                    onChange={(e) => makeSelection(item.value, e.target.value)}
+                  />
+                  <label htmlFor="">{item.day}</label>
+                </div>
+              ))}
             </div>
           </Stack>
         </form>
