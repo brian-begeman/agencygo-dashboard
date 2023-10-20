@@ -7,7 +7,7 @@ export interface ICreatorList {
   imageSrc: string;
   gender: string;
   internalNotes: string;
-  assignEmployee: string;
+  assignEmployee: string[];
   activated: boolean;
   autoRelink: boolean;
   id: string;

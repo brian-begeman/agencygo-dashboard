@@ -185,7 +185,7 @@ export default function AddEmployeeModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText="Add Employee"
+        addText={type === 'add' ? 'Add Employee' : 'Edit Employee'}
         isLoading={isLoading}
         id="addEmployee"
       />
