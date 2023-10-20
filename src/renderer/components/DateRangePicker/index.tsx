@@ -2,8 +2,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
+// import 'react-date-range/dist/styles.css';
+// import 'react-date-range/dist/theme/default.css';
 import { DateRangePicker } from 'react-date-range';
 import { addDays, subDays } from 'date-fns';
 

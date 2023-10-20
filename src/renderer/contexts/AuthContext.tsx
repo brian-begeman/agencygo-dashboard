@@ -5,12 +5,14 @@ interface AuthContextType {
   isLogin: boolean;
   login: () => void;
   logout: () => void;
+  userData: any;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   isLogin: false,
   login: () => {},
   logout: () => {},
+  userData: {},
 });
 
 interface $Props {
@@ -19,13 +21,36 @@ interface $Props {
 
 export default function AuthProvider({ children }: $Props) {
   const [isLogin, setIsLogin] = useState(false);
+  const [userData, setUserData] = useState({});
   const token = sessionStorage.getItem('Authorization');
 
   useEffect(() => {
     if (token) {
       login();
+      userDetail();
     }
   }, [token]);
+
+  const userDetail = () => {
+    let endpoint = 'verify';
+    let options = {
+      method: 'GET' as 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+    };
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.message == 'verify') {
+          setUserData(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log('Error occured: ', err);
+      });
+  };
 
   const login = () => {
     setIsLogin(true);
@@ -54,7 +79,7 @@ export default function AuthProvider({ children }: $Props) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, login, logout }}>
+    <AuthContext.Provider value={{ isLogin, login, logout, userData }}>
       {children}
     </AuthContext.Provider>
   );
