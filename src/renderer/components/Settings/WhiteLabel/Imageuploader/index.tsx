@@ -24,13 +24,6 @@ export default function ImageUpload({
   setAgencyLogo,
   handleImageChange,
 }: ImageUploadProps) {
-  // const handleChange = (e: any) => {
-  //   console.log(e, 'eeeeeeeeeeee++++++++++++++++++++');
-
-  //   if (e.target.files) {
-  //     setAgencyLogo(e.target.files[0]);
-  //   }
-  // };
   return (
     <Button
       component="label"
