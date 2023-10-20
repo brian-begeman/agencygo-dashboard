@@ -8,7 +8,7 @@ type MenuProps = {
   title?: string;
   tabData?: any;
   id?: string;
-  status?: string;
+  status?: boolean | string;
 };
 
 export default function MenuButton({ title, tabData, id, status }: MenuProps) {

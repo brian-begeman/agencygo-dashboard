@@ -3,7 +3,7 @@ import { AuthContext } from 'renderer/contexts/AuthContext';
 import useQuery from 'renderer/hooks/useQuery';
 
 export interface ISelectedWhiteLabel {
-  logo?: string;
+  agencyLogo?: FileList;
   primaryColor?: string;
   secondaryColor?: string;
   agencyName?: string;
@@ -15,7 +15,7 @@ export interface ISelectedWhiteLabel {
 const userWhiteLabel = () => {
   const { userData } = useContext(AuthContext);
   const [whiteLables, setWhiteLabels] = useState<any>({});
-  const { data, refetch } = useQuery({
+  const { data, refetch, setData, isLoading, isError } = useQuery({
     key: 'get-agencyById',
     params: { id: userData.user.agencyId },
   });
@@ -28,6 +28,10 @@ const userWhiteLabel = () => {
 
   return {
     whiteLables,
+    setData,
+    refetch,
+    isLoading,
+    isError,
   };
 };
 

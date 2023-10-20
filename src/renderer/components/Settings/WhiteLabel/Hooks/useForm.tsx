@@ -7,13 +7,14 @@ import fetchReq from 'utils/fetch';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 
 const useFormWhiteLabel = () => {
-  const { whiteLables } = userWhiteLabel();
+  const { whiteLables, setData, refetch, isError, isLoading } =
+    userWhiteLabel();
   const { userData } = useContext(AuthContext);
   const [file, setFile] = useState<string | ArrayBuffer | null>('');
   const [agencyLogo, setAgencyLogo] = useState<string | null>(null);
 
   const validationSchema = Yup.object().shape({
-    agencyLogo: Yup.string().required('Logo is required'),
+    agencyLogo: Yup.mixed(),
     primaryColor: Yup.string(),
     secondaryColor: Yup.string(),
     agencyName: Yup.string().required('Agency name is required'),
@@ -40,13 +41,12 @@ const useFormWhiteLabel = () => {
       setValue('email', whiteLables?.userId?.email);
       setValue('websiteUrl', whiteLables.websiteUrl);
       setValue('phone', whiteLables.phone);
-      // setFile(whiteLables.agencyLogo);
       setAgencyLogo(whiteLables.agencyLogo);
     }
   }, [whiteLables]);
 
   const onSubmit = (data: any) => {
-    console.log(data.logo, 'data white label----------------------');
+    console.log(data, 'data white label----------------------');
     let endpoint = `agency/update-agency/${userData?.agency?._id} `;
     let options = {
       method: 'PATCH' as 'PATCH',
@@ -54,41 +54,13 @@ const useFormWhiteLabel = () => {
         'content-type': 'application/json',
       },
       withAuth: true,
-      // body:
+      body: JSON.stringify(data),
     };
     // fetchReq(endpoint, options)
     //   .then((response) => response.json())
     //   .then((res) => {
-    //     // setData(res);
-    //     // setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     // setError(true);
-    //     // setLoading(false);
-    //   });
-  };
-
-  const handleRemoveImage = () => {
-    console.log('api called777777777777777777777777777');
-
-    // const formData = new FormData();
-    // const data = {
-    //   agencyImage: null,
-    // };
-    // // formData.append('agencyImage', data);
-    // let endpoint = `agency/update-agency/${userData?.agency?._id} `;
-    // let options = {
-    //   method: 'PATCH' as 'PATCH',
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    //   withAuth: true,
-    //   // body: formData,
-    // };
-    // fetchReq(endpoint, options)
-    //   .then((response) => response.json())
-    //   .then((res) => {
-    //     // setData(res);
+    //     setData(res);
+    //     refetch();
     //     // setLoading(false);
     //   })
     //   .catch((error) => {
@@ -105,7 +77,6 @@ const useFormWhiteLabel = () => {
     setAgencyLogo,
     agencyLogo,
     errors,
-    handleRemoveImage,
     handleSubmit: handleSubmit(onSubmit),
   };
 };

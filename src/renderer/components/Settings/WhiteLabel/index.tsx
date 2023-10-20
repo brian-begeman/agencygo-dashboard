@@ -29,7 +29,6 @@ function WhiteLabel() {
     setFile,
     agencyLogo,
     setAgencyLogo,
-    handleRemoveImage,
   } = useFormWhiteLabel();
   const [whiteLabelData, setWhiteLabelData] = useState<any>(null);
   const handleOnChange = (name: string, value: string) => {
@@ -37,14 +36,21 @@ function WhiteLabel() {
   };
   // const { whiteLables, setWhiteLabels, refetch } = userWhiteLabel();
   const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      setValue('agencyLogo', file);
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        setAgencyLogo(e.target.result);
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files) {
+      const file = e.target?.files[0];
+      if (file) {
+        const formdataConvert = new FormData();
+        formdataConvert.append('image', file);
+        setValue('agencyLogo', formdataConvert);
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          setAgencyLogo(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      setValue('agencyLogo', '');
+      setAgencyLogo('');
     }
   };
 
@@ -84,14 +90,12 @@ function WhiteLabel() {
             </Typography>
             {agencyLogo ? (
               <Box>
-                {/* <img src={agencyLogo} width={'100%'} height={'200px'} /> */}
                 <img src={agencyLogo} width={'100%'} height={'200px'} />
               </Box>
             ) : (
-              // <ImageUpload setAgencyLogo={setAgencyLogo} />
               <ImageUpload handleImageChange={handleImageChange} />
             )}
-            {/* {agencyLogo && <UploadedImage file={agencyLogo} />} */}
+            {agencyLogo && <UploadedImage file={agencyLogo} />}
             <Box
               sx={{
                 display: 'flex',
@@ -110,7 +114,7 @@ function WhiteLabel() {
               </Button>
               <ButtonEle
                 variant="contained"
-                onClick={handleRemoveImage}
+                onClick={handleImageChange}
                 className="btn"
               >
                 Remove
