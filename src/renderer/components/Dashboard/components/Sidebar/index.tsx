@@ -47,6 +47,12 @@ const sideBarMenuConst = [
     ],
   },
   {
+    name: localisation.ofbrowser,
+    icon: <CreatorSvg />,
+    menu: [],
+    link: '/of-account',
+  },
+  {
     name: localisation.growth,
     icon: <GrowthSvg />,
     menu: [
