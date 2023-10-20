@@ -53,7 +53,7 @@ const ROUTES = [
     pathName: 'Dashboard Page',
   },
   {
-    path: '/of-account',
+    path: '/of-browser',
     element: <OnlyfansAccount />,
     pathName: 'Onlyfans Account Page',
   },
@@ -235,6 +235,7 @@ function AppRoutes() {
           <Route path="/activate-account/:id" element={<SetPassword />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
+          <Route path="/of-browser" element={<OnlyfansAccount/>} />
         </>
       )}
     </Routes>

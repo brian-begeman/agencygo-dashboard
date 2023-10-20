@@ -15,6 +15,7 @@ import fetchReq from 'utils/fetch';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
+  const n = useNavigate();
   const { mutate: mutateLogin, isLoading } = useMutation({ key: 'login' });
   const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
@@ -96,6 +97,15 @@ export default function Login() {
           >
             Login
           </ButtonEle>
+
+          <ButtonEle
+            color="primary"
+            className={styles.loginBtn}
+            onClick={()=> n('/of-browser') }
+          >
+            OF Browser
+          </ButtonEle>
+
           <div className={styles.createNewContainer}>
             <p className={styles.createNewText}>Don’t have an account?</p>
             <ButtonBase

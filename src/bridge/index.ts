@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ipcMain, screen } from 'electron';
+import { BrowserView, BrowserWindow, ipcMain, screen, session } from 'electron';
 import chalk from 'chalk';
 import { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
@@ -21,9 +21,11 @@ const startIPCBridge = ({
     try {
       const ofBrowserView = new BrowserView({
         webPreferences: {
-          partition: 'ofbrowser',
+          partition: 'persist:' + arg.creatorId,
         },
       });
+
+      console.log("Partition path",session.fromPartition('persist:' + arg.creatorId).getStoragePath())
       mainWindow.addBrowserView(ofBrowserView);
       ofBrowserView.setBounds({
         x: Math.round(winDimens.width * 0.5),

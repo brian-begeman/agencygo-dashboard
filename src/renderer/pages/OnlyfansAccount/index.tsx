@@ -1,19 +1,51 @@
+import { useState } from "react";
+
+const ofusers = [{
+  email : "cheyonlyfans@yahoo.com",
+  password : "Congo212",
+  creatorId : "cheyonlyfans"
+},{
+  email : "ankur4736@gmail.com",
+  password : "Test@123",
+  creatorId : "ankur"
+}
+]
+
+
 function Main() {
-  function onclick() {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
-    window.electron.ipcRenderer.sendMessage('attempt-login', {
-      email: email.value,
-      password: password.value,
-    });
+  const [creator,setCreator] = useState({
+    email :"",
+    password: "",
+    creatorId :""
+  });
+
+  function onclick() {    
+    window.electron.ipcRenderer.sendMessage('attempt-login',  creator);
   }
 
   return (
     <div>
-      <input id="email" value="ankur4736@gmail.com" type="email" />
-      <input id="password" value="Test@123" type="password" />
+      <input id="email" value={creator.email} type="email"  />
+      <input id="password" value={creator.password} type="password"  />
+
+      <form>
+        <label>
+            <input type="radio" name="user" value="user1" onChange={() => {
+              setCreator(ofusers[0])
+            } } /> Creator Chey  
+        </label>
+        <br />
+
+        <label>
+            <input type="radio" name="user" value="user2" onChange={() => {
+              setCreator(ofusers[1])
+            } } /> Creator Ankur
+        </label>
+    </form>
+
+
       <button onClick={onclick} type="button">
-        Auto Login in Webview 1
+        Auto Login 
       </button>
     </div>
   );
