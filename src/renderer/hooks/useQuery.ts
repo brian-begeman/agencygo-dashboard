@@ -19,25 +19,6 @@ const useQuery = (props: IProps) => {
 
   const fetch = async () => {
     setLoading(true);
-    // if (key === 'get-employee') {
-    //   let endpoint = 'employee/6527ad93dedd0418c5d1dc50';
-    //   let options = {
-    //     method: 'GET' as 'GET',
-    //     headers: {
-    //       'content-type': 'application/json',
-    //     },
-    //     withAuth: true,
-    //   };
-    //   fetchReq(endpoint, options)
-    //     .then((response) => response.json())
-    //     .then((res) => {
-    //       setData(res);
-    //     })
-    //     .catch((err) => {
-    //       console.log('Error occured: ', err);
-    //     });
-    // }
-
     if (key === 'get-creator') {
       let endpoint = 'creators';
       let options = {
@@ -60,6 +41,26 @@ const useQuery = (props: IProps) => {
     }
     if (key === 'get-employee') {
       let endPoint = 'employees/' + params.id;
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endPoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
+    if(key === 'get-agencyById'){
+      let endPoint = 'agency/' + params.id;
       let options = {
         method: 'GET' as 'GET',
         headers: {

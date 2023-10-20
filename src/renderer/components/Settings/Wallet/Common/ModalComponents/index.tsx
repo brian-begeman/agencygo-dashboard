@@ -28,6 +28,7 @@ interface InputWithLabelProps {
   inputIdentifierName: string;
   placeholder: string;
   value?: string;
+  errors?: any;
   required?: boolean;
   inputStyle?: any;
   handleOnChange?: (name: string, value: string) => void;
@@ -39,6 +40,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     inputIdentifierName,
     placeholder,
     value,
+    errors,
     inputStyle,
     required = false,
     handleOnChange = () => {},
@@ -57,14 +59,20 @@ export function InputWithLabel(props: InputWithLabelProps) {
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName)}
+        aria-invalid={errors[inputIdentifierName] ? 'true' : 'false'}
       />
+      {errors && (
+        <div style={{ color: 'red', fontSize: '12px', margin: '5px 0px' }}>
+          {errors[inputIdentifierName]?.message}
+        </div>
+      )}
     </div>
   );
 }
 
 interface Option {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
 }
 
 interface DropdownWithLabelProps {
@@ -72,7 +80,7 @@ interface DropdownWithLabelProps {
   inputIdentifierName?: string;
   value?: string;
   selectStyle?: any;
-  handleOnChange?: (name: string, value: string) => void;
+  handleOnChange?: (name?: string, value?: string) => void;
   options?: Option[]; // Array of options
   placeholder?: string;
   register?: UseFormRegister<FieldValues>;
@@ -107,7 +115,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         <option value="" selected>
           {placeholder}
         </option>
-        {options.map((res, index) => (
+        {options?.map((res, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <option key={index} value={res?.value}>
             {res?.label}
