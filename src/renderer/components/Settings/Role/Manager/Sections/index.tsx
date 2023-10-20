@@ -117,6 +117,7 @@ const Sections: React.FC = () => {
     },
     ["Analytics"]: { ["Creater Report"]: { checked: false, radioValue: 'option1' }, ["Chatter Report"]: { checked: false, radioValue: 'option1' },
     ["Fans Report"]:{ checked: false, radioValue: 'option1' }  },
+    ["Accounting"]: { ["Invoicing"]: { checked: false, radioValue: 'option1' }, ["Payroll"]: { checked: false, radioValue: 'option1' }, ["Book Keeping"]:{ checked: false, radioValue: 'option1' }  },
     ["Growth"]:{
       ["Smart Tags"]:{ checked: false, radioValue: 'option1' } ,
       ["Auto Follow"]:{ checked: false, radioValue: 'option1' } ,

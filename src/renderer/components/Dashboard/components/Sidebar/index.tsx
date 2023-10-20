@@ -11,6 +11,7 @@ import BrandLogoSvg from 'renderer/assets/svg/brandLogoSvg';
 import localisation from '../../../localisation.json';
 import SidebarItem from './SidebarItem';
 import classes from './styles.module.css';
+import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 
 const sideBarMenuConst = [
   {
@@ -47,10 +48,25 @@ const sideBarMenuConst = [
     ],
   },
   {
-    name: localisation.ofbrowser,
-    icon: <CreatorSvg />,
-    menu: [],
-    link: '/of-account',
+    name: localisation.accounting,
+    icon: <AccountingSvg />,
+    menu: [
+      {
+        label: 'Invoicing',
+        value: 'invoicing',
+        link: '/accounting/invoicing',
+      },
+      {
+        label: 'Payroll',
+        value: 'payroll',
+        link: '/accounting/payroll',
+      },
+      {
+        label: 'Book Keeping',
+        value: 'book-keeping',
+        link: '/accounting/book-keeping',
+      },
+    ],
   },
   {
     name: localisation.growth,
