@@ -34,14 +34,11 @@ function WhiteLabel() {
   const handleOnChange = (name: string, value: string) => {
     setWhiteLabelData({ ...whiteLabelData, [name]: value });
   };
-  // const { whiteLables, setWhiteLabels, refetch } = userWhiteLabel();
   const handleImageChange = (e: any) => {
     if (e.target.files) {
       const file = e.target?.files[0];
       if (file) {
-        const formdataConvert = new FormData();
-        formdataConvert.append('image', file);
-        setValue('agencyLogo', formdataConvert);
+        setValue('agencyLogo', file);
         const reader = new FileReader();
         reader.onload = (e: any) => {
           setAgencyLogo(e.target.result);
@@ -62,12 +59,7 @@ function WhiteLabel() {
         alignItems: 'center',
       }}
     >
-      <form
-        style={{ width: '100%' }}
-        // className={styles.modalBody}
-        id="whiteLabel"
-        onSubmit={handleSubmit}
-      >
+      <form style={{ width: '100%' }} id="whiteLabel" onSubmit={handleSubmit}>
         <Stack
           spacing={3}
           sx={{
@@ -75,7 +67,6 @@ function WhiteLabel() {
             paddingTop: '30px',
             paddingBottom: '50px',
           }}
-          // className={styles.inputListWrapper}
         >
           <Box
             sx={{
@@ -106,11 +97,7 @@ function WhiteLabel() {
             >
               <Button component="label">
                 Change
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={handleImageChange}
-                  // {...register('logo')}
-                />
+                <VisuallyHiddenInput type="file" onChange={handleImageChange} />
               </Button>
               <ButtonEle
                 variant="contained"
@@ -122,7 +109,6 @@ function WhiteLabel() {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', gap: 2 }}>
-            {/* <InputColorPicker /> */}
             <InputWithLabel
               label="Primary Color"
               inputIdentifierName="primaryColor"
@@ -132,7 +118,6 @@ function WhiteLabel() {
                 backgroundColor: '#0C0C0C',
               }}
               register={register as any}
-              // value={roleData?.rolename}
               handleOnChange={handleOnChange}
               errors={errors}
             />
@@ -145,7 +130,6 @@ function WhiteLabel() {
                 backgroundColor: '#0C0C0C',
               }}
               register={register as any}
-              // value={roleData?.rolename}
               handleOnChange={handleOnChange}
               errors={errors}
             />
@@ -159,7 +143,6 @@ function WhiteLabel() {
               backgroundColor: '#0C0C0C',
             }}
             register={register as any}
-            // value={roleData?.rolename}
             handleOnChange={handleOnChange}
             errors={errors}
           />
@@ -172,7 +155,6 @@ function WhiteLabel() {
               backgroundColor: '#0C0C0C',
             }}
             register={register as any}
-            // value={roleData?.description}
             handleOnChange={handleOnChange}
             errors={errors}
           />
@@ -185,7 +167,6 @@ function WhiteLabel() {
               backgroundColor: '#0C0C0C',
             }}
             register={register as any}
-            // value={roleData?.description}
             handleOnChange={handleOnChange}
             errors={errors}
           />
@@ -198,7 +179,6 @@ function WhiteLabel() {
               backgroundColor: '#0C0C0C',
             }}
             register={register as any}
-            // value={roleData?.description}
             handleOnChange={handleOnChange}
             errors={errors}
           />

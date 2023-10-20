@@ -46,27 +46,31 @@ const useFormWhiteLabel = () => {
   }, [whiteLables]);
 
   const onSubmit = (data: any) => {
-    console.log(data, 'data white label----------------------');
+    const formdataConvert = new FormData();
+    formdataConvert.append('agencyLogo', data.agencyLogo);
+    formdataConvert.append('agencyName', data.agencyName);
+    formdataConvert.append('email', data.email);
+    formdataConvert.append('primaryColor', data.primaryColor);
+
+    formdataConvert.append('secondaryColor', data.secondaryColor);
+    formdataConvert.append('websiteUrl', data.websiteUrl);
     let endpoint = `agency/update-agency/${userData?.agency?._id} `;
     let options = {
       method: 'PATCH' as 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-      },
       withAuth: true,
-      body: JSON.stringify(data),
+      body: formdataConvert,
     };
-    // fetchReq(endpoint, options)
-    //   .then((response) => response.json())
-    //   .then((res) => {
-    //     setData(res);
-    //     refetch();
-    //     // setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     // setError(true);
-    //     // setLoading(false);
-    //   });
+    fetchReq(endpoint, options)
+      .then((response) => response.json())
+      .then((res) => {
+        setData(res);
+        refetch();
+        // setLoading(false);
+      })
+      .catch((error) => {
+        // setError(true);
+        // setLoading(false);
+      });
   };
 
   return {
