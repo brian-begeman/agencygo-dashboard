@@ -124,6 +124,12 @@ const sideBarMenuConst = [
     link: '/creators',
   },
   {
+    name: localisation.ofbrowser,
+    icon: <CreatorSvg />,
+    menu: [],
+    link: '/of-account',
+  },
+  {
     name: localisation.employees,
     icon: <EmployeSvg />,
     menu: [
