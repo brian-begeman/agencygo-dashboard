@@ -123,26 +123,45 @@ async function updateEmployee(data: any) {
 }
 async function activateEmployee(data: any) {
   const endPoint = 'employee/' + data.id;
-  
+
   const bodyData = {
-    status:!data.status?'active':'inactive'
-  }
+    status: !data.status ? 'active' : 'inactive',
+  };
   const options = {
-    method:'PUT' as 'PUT',
-    headers:{
-      'content-type':'application/json',
+    method: 'PUT' as 'PUT',
+    headers: {
+      'content-type': 'application/json',
     },
-    withAuth:true,
-    body:JSON.stringify(bodyData),
-  }
+    withAuth: true,
+    body: JSON.stringify(bodyData),
+  };
   let responce = await fetchReq(endPoint, options);
-  let resp = await responce.json();;
+  let resp = await responce.json();
   return resp;
-};
+}
+async function dectivateEmployee(data: any) {
+  const endPoint = 'employee/' + data.id;
+
+  const bodyData = {
+    status: 'deactivate',
+  };
+  const options = {
+    method: 'PUT' as 'PUT',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+    body: JSON.stringify(bodyData),
+  };
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();
+  return resp;
+}
 const EmpoloyeeServices = {
   // createEmployee,
   updateEmployee,
   activateEmployee,
+  dectivateEmployee,
 };
 
 export default EmpoloyeeServices;

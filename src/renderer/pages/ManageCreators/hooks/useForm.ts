@@ -18,7 +18,13 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
-  const { data: dataEmployeeRaw } = useQuery({ key: 'get-employee' });
+
+  const [selectedValues, setSelectedValues] = useState<any>([]);
+
+  const { data: dataEmployeeRaw } = useQuery({
+    key: 'get-employee',
+    params: { id: '6527ad93dedd0418c5d1dc50' },
+  });
   const { mutate: mutataCreate, isLoading: loadingCreate } = useMutation({
     key: 'create-creator',
   });
@@ -29,20 +35,22 @@ const useFormCreator = (
   const validationSchema = Yup.object().shape({
     creatorName: Yup.string().required('Name is required'),
     gender: Yup.string().required('Gender is required'),
-    assignEmployee: Yup.string().required('Assign Employee is required'),
-    internalNotes: Yup.string().required('Internal note is required'),
-    isAutoRelink: Yup.boolean(),
+    assignEmployee: Yup.array(),
+    internalNotes: Yup.string(),
+    autoRelink: Yup.boolean(),
     isAgencyProxy: Yup.boolean(),
     agency: Yup.string(),
     creator: Yup.string(),
   });
 
-  const { register, handleSubmit, reset, setValue, getValues } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  const { register, handleSubmit, reset, setValue, getValues, control } =
+    useForm({
+      resolver: yupResolver(validationSchema),
+    });
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
+      data.status = true;
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
@@ -57,6 +65,8 @@ const useFormCreator = (
         .then((res) => {
           if ((res.message = 'creator added successfully')) {
             callback();
+            setSelectedValues([]);
+            reset();
           }
         })
         .catch((err) => {
@@ -69,15 +79,36 @@ const useFormCreator = (
       //   },
       // });
     } else {
-      mutateUpdate(
-        { ...data, id: selectedCreator?.id },
-        {
-          onSuccess: () => {
+      let endpoint = `creators/${selectedCreator?.id}`;
+      let options = {
+        method: 'PUT' as 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.message == 'creator updated successfully') {
             callback();
+            setSelectedValues([]);
             reset();
-          },
-        }
-      );
+          }
+        })
+        .catch((err) => {
+          console.log('Error occured: ', err);
+        });
+      // mutateUpdate(
+      //   { ...data, id: selectedCreator?.id },
+      //   {
+      //     onSuccess: () => {
+      //       callback();
+      //       reset();
+      //     },
+      //   }
+      // );
     }
   };
 
@@ -87,10 +118,11 @@ const useFormCreator = (
       setValue('assignEmployee', selectedCreator?.assignEmployee);
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
-      setValue('isAutoRelink', selectedCreator?.autoRelink);
+      setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('agency', selectedCreator?.agency);
-      setValue('creator', selectedCreator?.creator);
+      setSelectedValues(selectedCreator?.assignEmployee.map((val) => val._id));
+      // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
     }
@@ -111,7 +143,7 @@ const useFormCreator = (
   }, [dataEmployeeRaw]);
 
   const toggleAutoRelink = () => {
-    setValue('isAutoRelink', !getValues('isAutoRelink'));
+    setValue('autoRelink', !getValues('autoRelink'));
   };
 
   return {
@@ -120,10 +152,14 @@ const useFormCreator = (
     onSubmit,
     isLoading: loadingCreate || loadingUpdate,
     employeeOptions,
+    control,
     setEmployeeOptions,
     toggleAutoRelink,
     // isAutoRelink: getValues('isAutoRelink'),
     isAutoRelink: true,
+    setValue,
+    selectedValues,
+    setSelectedValues,
   };
 };
 

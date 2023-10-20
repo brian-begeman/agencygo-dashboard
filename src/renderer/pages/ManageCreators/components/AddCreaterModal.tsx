@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   FormControlLabel,
@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
-import {
+import MultiSelectDropdown, {
   AutoRelinkSwitch,
   DropdownWithLabel,
   InputWithLabel,
@@ -87,9 +87,14 @@ export default function AddCreaterModal({
     employeeOptions,
     handleSubmit,
     register,
+    control,
     isLoading,
     isAutoRelink,
     toggleAutoRelink,
+    setEmployeeOptions,
+    setValue,
+    setSelectedValues,
+    selectedValues,
   } = useFormCreator(
     () => {
       setOpen(false);
@@ -104,16 +109,18 @@ export default function AddCreaterModal({
   };
 
   const cancelHandler = () => {
+    setSelectedValues([]);
     setOpen(false);
   };
 
   const handleModalClose = () => {
+    setSelectedValues([]);
     setOpen(false);
   };
 
   return (
     <Overlay
-      heading="Add Creators"
+      heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
       open={open}
       handleClose={handleModalClose}
       style={{
@@ -136,7 +143,9 @@ export default function AddCreaterModal({
             className={styles.inputListWrapper}
           >
             <Box>
-              <Typography>Add Headshot</Typography>
+              <Typography>{`${
+                type == 'add' ? 'Add' : 'Edit'
+              } Headshot`}</Typography>
               <Box>
                 <ImageUpload />
               </Box>
@@ -162,16 +171,16 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <DropdownWithLabel
-              selectStyle={{
-                border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+            <MultiSelectDropdown
+              options={employeeOptions}
+              selectedValues={selectedValues}
+              setSelectedValues={(selected: any) => {
+                console.log(selected, 'selectedselected');
+                setValue('assignEmployee', selected);
+                setSelectedValues(selected);
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-              options={employeeOptions}
-              placeholder="Choose employee"
-              register={register as any}
             />
             <InputWithLabel
               inputStyle={{
@@ -214,19 +223,26 @@ export default function AddCreaterModal({
             </Box>
             <Box
               sx={{
-                display: 'flex',
-                gap: '10px',
-                alignItems: 'center',
                 padding: '10px 0px',
               }}
             >
               <Typography fontSize={20}>Auto relink</Typography>
-              <AutoRelinkSwitch
-                toggleAutoRelink={toggleAutoRelink}
-                register={register as any}
-                name={'autoRelink'}
-                isAutoRelink={isAutoRelink}
-              />
+              <Box
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography fontSize={'12px'} width={'350px'}>
+                  When enabled, we'll automatically relink the OnlyFans account
+                  when they are disconnected from OnlyManager
+                </Typography>
+                <AutoRelinkSwitch
+                  toggleAutoRelink={toggleAutoRelink}
+                  register={register as any}
+                  name={'autoRelink'}
+                  isAutoRelink={isAutoRelink}
+                />
+              </Box>
             </Box>
             {/* <Box sx={{ padding: '10px 0px' }}>
               <Typography fontSize={'14px'}>Auto relink</Typography>
@@ -283,7 +299,7 @@ export default function AddCreaterModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText="Add Creator"
+        addText={`${type == 'add' ? 'Add' : 'Edit'} Creator`}
         id="addCreator"
         // isLoading={isLoading}
       />

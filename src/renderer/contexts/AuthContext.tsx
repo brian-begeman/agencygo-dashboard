@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
 import fetchReq from 'utils/fetch';
 
 interface AuthContextType {
@@ -19,6 +19,13 @@ interface $Props {
 
 export default function AuthProvider({ children }: $Props) {
   const [isLogin, setIsLogin] = useState(false);
+  const token = sessionStorage.getItem('Authorization');
+
+  useEffect(() => {
+    if (token) {
+      login();
+    }
+  }, [token]);
 
   const login = () => {
     setIsLogin(true);

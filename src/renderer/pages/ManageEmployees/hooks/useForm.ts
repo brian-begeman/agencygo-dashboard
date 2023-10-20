@@ -60,28 +60,16 @@ const useFormEmployee = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      const endPoint = 'employee/' + data.agencyId;
-      const options = {
-        method: 'POST' as 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        withAuth: true,
-        body: JSON.stringify(data),
-      };
-      fetchReq(endPoint, options)
-        .then((responce) => responce.json)
-        .then((res) => {
+      addEmployee(data);
+      mutataCreate(data, {
+        onSuccess: () => {
           callback();
           reset();
           refetch();
-        })
-        .catch((error) => {
-          console.log('there is a error: ', error);
-          callback();
-          reset();
-        });
+        },
+      });
     } else {
+      editEmployee({ ...data, id: selectedEmployee?.id });
       mutateUpdate(
         { ...data, id: selectedEmployee?.id },
         {
@@ -93,6 +81,41 @@ const useFormEmployee = (
         }
       );
     }
+  };
+
+  const addEmployee = (data: any) => {
+    const endPoint = 'employee/' + data.agencyId;
+    const options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(data),
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
+  };
+  const editEmployee = (data: any) => {
+    const endPoint = 'employee/' + data.id;
+    const options = {
+      method: 'PUT' as 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(data),
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

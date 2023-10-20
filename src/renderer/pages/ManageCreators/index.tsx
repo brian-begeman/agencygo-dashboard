@@ -39,8 +39,13 @@ const creatorsTableHeaders = [
 export default function ManageCreators() {
   const [openAddCreater, setOpenAddCreater] = useState(false);
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
-  const { creators, refetch, selectedCreator, setSelectedCreator } =
-    useDataCreators();
+  const {
+    creators,
+    refetch,
+    selectedCreator,
+    setSelectedCreator,
+    handleSearch,
+  } = useDataCreators();
 
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-creator',
@@ -135,8 +140,8 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" spacing={1} sx={{ height: '100%' }}>
-          <Filter />
+        <Stack direction="row" sx={{ height: '90%' }}>
+          <Filter handleSearch={handleSearch} refetch={refetch} />
           <FilterTable
             isEmptyContent={!creators.length}
             tableHeaders={creatorsTableHeaders}
@@ -166,7 +171,7 @@ export default function ManageCreators() {
                       }}
                       scope="row"
                     >
-                      <Stack spacing={4} direction="row" alignItems="center">
+                      <Stack spacing={1} direction="row" alignItems="center">
                         <Avatar />
                         <Typography variant="h6" fontSize="18px" color="#fff">
                           {name}
@@ -218,19 +223,21 @@ export default function ManageCreators() {
                         color: '#fff',
                       }}
                     >
-                      {assignEmployee?.map((employee: any) => {
-                        return `${employee.name},`;
-                      })}
+                      {assignEmployee
+                        ?.map((employee: any) => {
+                          return `${employee.name} `;
+                        })
+                        .join(', ')}
                     </TableCell>
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      <Typography color="#fff" fontSize="14px">
+                      <Typography color="#fff" variant="body2">
                         OnlyManager Proxy
                       </Typography>
-                      <Typography color="#fff" fontSize="11px">
+                      <Typography color="#fff" variant="caption">
                         107.175.227.145
                       </Typography>
                     </TableCell>
@@ -247,7 +254,7 @@ export default function ManageCreators() {
                       }}
                       align="right"
                     >
-                      <Stack spacing={4} direction="row" alignItems="center">
+                      <Stack spacing={2} direction="row" alignItems="center">
                         <ButtonBase
                           onClick={() => {
                             setFormType('edit');
