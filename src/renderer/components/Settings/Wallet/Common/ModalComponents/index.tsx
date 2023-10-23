@@ -59,7 +59,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName)}
-        aria-invalid={errors[inputIdentifierName] ? 'true' : 'false'}
+        // aria-invalid={errors[inputIdentifierName] ? 'true' : 'false'}
       />
       {errors && (
         <div style={{ color: 'red', fontSize: '12px', margin: '5px 0px' }}>
@@ -76,7 +76,7 @@ interface Option {
 }
 
 interface DropdownWithLabelProps {
-  label?: string;
+  label?: string | undefined;
   inputIdentifierName?: string;
   value?: string;
   selectStyle?: any;
@@ -100,7 +100,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
 
   return (
     <div className={classes.inputLabelWrapper}>
-      <LabelText label={label} />
+      {label && <LabelText label={label} />}
       <select
         style={selectStyle}
         className={classes.selectCss}
@@ -110,7 +110,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         placeholder={placeholder}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...register(inputIdentifierName)}
+        {...register(inputIdentifierName || '')}
       >
         <option value="" selected>
           {placeholder}

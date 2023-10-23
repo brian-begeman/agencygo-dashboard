@@ -23,6 +23,7 @@ export default function Input({
         {label}
       </label>
       <TextField
+      sx={{color:'#fff'}}
         InputLabelProps={{ shrink: false }}
         InputProps={{ className: styles.input }}
         size="small"

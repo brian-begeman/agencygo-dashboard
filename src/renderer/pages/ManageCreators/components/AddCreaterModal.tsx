@@ -214,9 +214,10 @@ export default function AddCreaterModal({
                     border: '1px solid #292929',
                     backgroundColor: '#0C0C0C',
                   }}
-                  label=""
+                  label=" "
                   inputIdentifierName="creator"
                   placeholder="Creator %"
+                  
                   // register={register as any}
                 />
               </Box>
@@ -299,7 +300,7 @@ export default function AddCreaterModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText={`${type == 'add' ? 'Add' : 'Edit'} Creator`}
+        addText={`${type == 'add' ? 'Add Creator' : 'Confirm'}`}
         id="addCreator"
         // isLoading={isLoading}
       />

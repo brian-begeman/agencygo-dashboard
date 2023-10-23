@@ -81,6 +81,7 @@ export default function Login() {
               register={register}
               errors={errors}
               type={field.type}
+              
             />
           ))}
           <div className={styles.forgotPasswordWrap}>
