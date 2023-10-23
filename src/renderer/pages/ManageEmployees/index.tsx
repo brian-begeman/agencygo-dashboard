@@ -6,7 +6,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
@@ -277,7 +276,6 @@ export default function ManageEmployees() {
                         scope="row"
                       >
                         <Stack spacing={1} direction="row" alignItems="center">
-                          <Avatar />
                           <Typography
                             variant="h6"
                             fontSize="18px"
