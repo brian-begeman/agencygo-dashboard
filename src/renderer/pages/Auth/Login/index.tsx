@@ -59,6 +59,9 @@ export default function Login() {
       });
   };
 
+  console.log('Logo',Logo);
+  
+
   return (
     <main className={styles.loginWrap}>
       <section className={styles.login}>
