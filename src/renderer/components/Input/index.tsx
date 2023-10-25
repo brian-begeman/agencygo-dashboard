@@ -28,6 +28,9 @@ export default function Input({
         size="small"
         type={type}
         id={name}
+        sx={{
+          color:'#ffffff'
+        }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name)}
         aria-invalid={errors[name] ? 'true' : 'false'}

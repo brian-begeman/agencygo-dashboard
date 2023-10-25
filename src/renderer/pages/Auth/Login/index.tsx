@@ -72,6 +72,7 @@ export default function Login() {
             width: '100%',
           }}
           onSubmit={handleSubmit(onSubmit)}
+          autoComplete='off'
         >
           {formUtils.loginFields.map((field) => (
             <Input
@@ -81,6 +82,7 @@ export default function Login() {
               register={register}
               errors={errors}
               type={field.type}
+              
             />
           ))}
           <div className={styles.forgotPasswordWrap}>
