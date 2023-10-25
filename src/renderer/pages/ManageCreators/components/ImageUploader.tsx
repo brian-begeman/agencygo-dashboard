@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { Box, Typography } from '@mui/material';
 import UploadHeadShot from '../../../assets/svg/UploadSvg';
+import { useState } from 'react';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -15,8 +16,10 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function ImageUpload() {
+export default function ImageUpload({handleChangeFile}:any) {
+  const [hfile, setFile] = useState<File | undefined>()
   return (
+  
     <Button
       component="label"
       variant="contained"
@@ -29,6 +32,22 @@ export default function ImageUpload() {
         },
       }}
     >
+      {hfile ?<>
+        <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          // margin: '10px auto',
+        }}
+      >
+        <img style={{
+  maxWidth: '150px',
+  maxHeight:'200px'
+}}    src={URL.createObjectURL(hfile)} alt="Displaying Image"/>
+      </Box></> :
+      <>
       <Box
         sx={{
           display: 'flex',
@@ -56,9 +75,14 @@ export default function ImageUpload() {
           SVG, PNG, JPG or GIF (max. 800x400px)
         </Typography>
       </Box>
+      </>
+      }
       <VisuallyHiddenInput
         type="file"
         accept="image/png, image/gif, image/jpeg"
+        
+        // @ts-ignore
+        onChange={(e) =>{ handleChangeFile(e.target.files[0]);setFile(e.target.files[0])}}
       />
     </Button>
   );
