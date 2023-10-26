@@ -37,6 +37,7 @@ export default function AuthProvider({ children }: $Props) {
       method: 'GET' as 'GET',
       headers: {
         'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       withAuth: true,
     };
@@ -61,7 +62,8 @@ export default function AuthProvider({ children }: $Props) {
     let options = {
       method: 'POST' as 'POST',
       headers: {
-        'content-type': 'application/json',
+        'content-type': 'application/json',Authorization: `Bearer ${token}`,
+
       },
       withAuth: true,
     };

@@ -48,6 +48,7 @@ const verifyRequest = async () => {
       method: 'GET',
       withAuth: true,
     });
+    
     const responseJson = await response.json();
     const user = responseJson?.data?.user || {};
     const agency = responseJson?.data?.agency || {};
@@ -70,15 +71,18 @@ const signupRequest = async (arg: any) => {
     });
     if (response.ok) {
       let body = await response.json();
+      
       let id = body?.data?._id || '651d1d9042f4ee8eb15d611d';
-      const createAgencyResponse = await fetch(`agency/${id}`, {
-        method: 'POST',
-        body: JSON.stringify(testAgencyConfig),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (createAgencyResponse.ok) {
+      
+      // const createAgencyResponse = await fetch(`agency/${id}`, {
+      //   method: 'POST',
+      //   body: JSON.stringify(testAgencyConfig),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     // Authorization: `Bearer ${response.toke}`,
+      //   },
+      // });
+      // if (createAgencyResponse.ok) {
         const loginResponse = await fetch('login', {
           method: 'POST',
           body: JSON.stringify({
@@ -87,22 +91,23 @@ const signupRequest = async (arg: any) => {
           }),
           headers: {
             'Content-Type': 'application/json',
+            
           },
         });
         if (loginResponse.ok) {
-          console.log(loginResponse.headers, 'in login');
           const cookie = loginResponse.headers.get('set-cookie');
           const cookieToken =
             cookie?.split(';').find((item) => item.includes('Authorization')) ||
             '';
           const token = cookieToken.split('=')[1];
-          console.log('Token ^^^^^^', token);
           // const store = new Store();
           // store.set('token', token);
-          const resp = await response.json();
+          
+          const resp =  await loginResponse.json();
+          
           return resp;
         }
-      }
+      // }
     }
   } catch (error: any) {
     throw new Error(error?.message);
