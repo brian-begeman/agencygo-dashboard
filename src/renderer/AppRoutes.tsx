@@ -39,6 +39,7 @@ import Accounting from './pages/Accounting';
 import Invoicing from './pages/Accounting/Invoicing';
 import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
+import ChatMessage from './pages/ChatScreen';
 
 const ROUTES = [
   {
@@ -226,6 +227,11 @@ const ROUTES = [
     path: '/settings',
     element: <Settings />,
     pathName: 'Settings',
+  },
+  {
+    path: '/chatmessage',
+    element: <ChatMessage />,
+    pathName: 'chatmessage',
   },
   {
     path: '*',

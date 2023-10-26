@@ -12,6 +12,7 @@ import localisation from '../../../localisation.json';
 import SidebarItem from './SidebarItem';
 import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
+import Message from 'renderer/assets/svg/messageSvg';
 
 const sideBarMenuConst = [
   {
@@ -144,6 +145,12 @@ const sideBarMenuConst = [
     icon: <CreatorSvg />,
     menu: [],
     link: '/creators',
+  },
+  {
+    name: 'Message',
+    icon:  <Message/>,
+    menu: [],
+    link: '/chatmessage',
   },
   {
     name: localisation.ofbrowser,
