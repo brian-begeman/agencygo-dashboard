@@ -278,8 +278,11 @@ function FilterByEmployeeInCreator({
               color: '#fff',
               '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select':
                 {
-                  border: ' 1px solid #ffffff33',
+                  border: ' 1px solid #ddd',
                   height: ' 20px',
+                },
+                "&:hover": {
+                  border: ' 1px solid #4a4a4a',
                 },
             }}
             labelId="demo-multiple-checkbox-label"
