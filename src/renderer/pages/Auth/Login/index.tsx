@@ -1,29 +1,29 @@
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
-import formUtils from 'renderer/utils/formUtils';
-import Input from 'renderer/components/Input';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import ButtonEle from 'renderer/components/Button';
+import { ButtonBase } from '@mui/material';
+import { useContext } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from 'renderer/assets/png/agency-go-logo.png';
-import useMutation from 'renderer/hooks/useMutation';
-import { ButtonBase } from '@mui/material';
-import styles from './styles.module.css';
-import { useContext, useEffect } from 'react';
+import ButtonEle from 'renderer/components/Button';
+import Input from 'renderer/components/Input';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+import useMutation from 'renderer/hooks/useMutation';
+import formUtils from 'renderer/utils/formUtils';
 import fetchReq from 'utils/fetch';
+import * as Yup from 'yup';
+import styles from './styles.module.css';
 
 export default function Login() {
   const { login } = useContext(AuthContext);
   const { mutate: mutateLogin, isLoading } = useMutation({ key: 'login' });
   const navigate = useNavigate();
-  const validationSchema = Yup.object().shape({
+  const validationSchema: Yup.ObjectSchema<FieldValues> = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters')
-      .max(40, 'Password must not exceed 40 characters'),
-  }) as Yup.ObjectSchema<FieldValues>;
+      .min(9, 'Password must be at least 6 characters')
+      .max(32, 'Password must not exceed 40 characters'),
+  });
 
   const {
     register,
@@ -37,9 +37,7 @@ export default function Login() {
     let endpoint = 'login';
     let options = {
       method: 'POST' as 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data),
     };
     fetchReq(endpoint, options)
