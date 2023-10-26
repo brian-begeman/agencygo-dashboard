@@ -334,7 +334,7 @@ export default function ManageEmployees() {
                           >
                             <Typography color={'#fff'}>Inactive</Typography>
                             <Typography
-                              color={'#fff'}
+                              color={'#04A1FF'}
                               sx={{ cursor: 'pointer' }}
                               onClick={() => handleResend(id)}
                             >
