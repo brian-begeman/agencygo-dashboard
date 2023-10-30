@@ -7,11 +7,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import theme from 'renderer/styles/muiTheme';
+import theme from 'renderer/styles/muiTheme'; 
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
+import CreateInvoiceModal from '../CreateModal';
 
 const PayrollTopContainer = () => {
+  const [isCreateInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
+
   const [selectData, setSelectedData] = useState('Current invoice settings');
+  const handleOpen = () => setCreateInvoiceModalOpen(true);
+  
   return (
     <Box margin={'10px 0px'}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -19,6 +24,8 @@ const PayrollTopContainer = () => {
         <Button
           variant="contained"
           sx={{ color: '#fff', textTransform: 'capitalize' }}
+          onClick={handleOpen}
+
         >
           Export
         </Button>
@@ -184,6 +191,12 @@ const PayrollTopContainer = () => {
               Unpaid
             </MenuItem>
           </Select>
+          {isCreateInvoiceModalOpen && (
+        <CreateInvoiceModal
+          open={isCreateInvoiceModalOpen}
+          setOpen={setCreateInvoiceModalOpen}
+        />
+      )}
         </Box>
       </Box>
     </Box>

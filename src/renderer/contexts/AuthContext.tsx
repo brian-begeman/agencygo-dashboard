@@ -10,7 +10,9 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   isLogin: false,
-  login: () => {},
+  login: () => {
+    
+  },
   logout: () => {},
   userData: {},
 });

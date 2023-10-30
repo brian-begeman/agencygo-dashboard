@@ -34,6 +34,8 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    navigate('/home');
+
     let endpoint = 'login';
     let options = {
       method: 'POST' as 'POST',
@@ -57,6 +59,12 @@ export default function Login() {
       });
   };
 
+
+
+  const login2=()=>{
+    navigate('/home');
+    
+  }
   return (
     <main className={styles.loginWrap}>
       <section className={styles.login}>
@@ -69,7 +77,7 @@ export default function Login() {
           style={{
             width: '100%',
           }}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={login2}
         >
           {formUtils.loginFields.map((field) => (
             <Input

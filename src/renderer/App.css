@@ -61,3 +61,42 @@ body {
 .btn {
   color: #fff !important;
 }
+
+.css-ctlopj-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day{
+  color: #fff !important;
+}
+.css-4pax7l-MuiPickersLayout-root{
+  background-color: #000000 !important;
+}
+.css-rhmlg1-MuiTypography-root-MuiDayCalendar-weekDayLabel{
+  color: #fff !important;
+}
+.css-bq0ecf-MuiButtonBase-root-MuiChip-root{
+  color: #fff!important;
+  background-color:#272626 !important;
+}
+.css-1hbyad5-MuiTypography-root{
+  color: #fff !important;
+}
+
+.css-124wamg-MuiTypography-root-MuiPickersToolbarText-root.Mui-selected{
+  color: #fff !important;
+}
+.css-124wamg-MuiTypography-root-MuiPickersToolbarText-root{
+  color: #fff !important;
+}
+.css-1vooibu-MuiSvgIcon-root{
+  color: #fff !important;
+
+}
+.css-8mbau-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day:not(.Mui-selected){
+  border: 1px solid rgb(255, 255, 255);
+}
+.css-1aj2fss-MuiTypography-root-MuiPickersToolbarText-root.Mui-selected{
+  color: #fff !important;
+
+}
+.css-1aj2fss-MuiTypography-root-MuiPickersToolbarText-root{
+  color: #fff !important;
+
+}
