@@ -24,6 +24,7 @@ function AllUserDataMessage(props: any) {
               flexShrink={0}
               flexWrap="wrap"
               className={styles.card}
+              onClick={()=>props.handleConversation(data)}
             >
               <Avatar />
 
@@ -33,7 +34,7 @@ function AllUserDataMessage(props: any) {
                 fontSize={'14px'}
                 fontWeight={500}
               >
-                {data.firstName}
+                {data.friendlyName}
               </Typography>
             </Stack>
           );

@@ -3951,7 +3951,7 @@
   "resolved" "https://registry.npmjs.org/@twilio-paste/help-text/-/help-text-13.1.0.tgz"
   "version" "13.1.0"
 
-"@twilio-paste/icons@^12.0.0", "@twilio-paste/icons@^12.2.0":
+"@twilio-paste/icons@^12.0.0":
   "integrity" "sha512-fjs8sqmKpWAOITKp9jbOFloqqrj46ysU3ge8LzALyckfmhd45Rl1YtiJyo4fRnJm8u6KUzfiQSCFFwo52pwhoA=="
   "resolved" "https://registry.npmjs.org/@twilio-paste/icons/-/icons-12.2.0.tgz"
   "version" "12.2.0"

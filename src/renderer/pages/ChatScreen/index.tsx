@@ -43,14 +43,28 @@ function ChatScreen() {
   const [searchTxt, setSearchTxt] = useState<any>('');
   const [messages, setMessages] = useState<any>([]);
   const [newMessage, setNewMessage] = useState<any>('');
+  const [sid, setSid] = useState<any>('');
   const [channel, setChannel] = useState<any>(null);
+  const token = sessionStorage.getItem('Authorization');
 
   useEffect(() => {
-    axios.get(API_URL + '/users').then(function (response) {
-      if (response?.status == 200) {
-        setUserData(response.data.data);
-      }
-    });
+    axios
+      .get(
+        'https://agencygo-server-production-7f8475c1a038de7b.elb.us-east-2.amazonaws.com/' +
+          '/chat/getallconversation',
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (response) {
+        if (response?.status == 200) {
+          console.log(response?.data?.data);
+
+          setUserData(response.data.data);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -63,6 +77,92 @@ function ChatScreen() {
       });
     }
   }, [containerRef, messages]);
+
+  const handleConversation = (sidData: any) => {
+    setMessages([]);
+    setSid(sidData?.sid);
+    console.log(sidData?.sid);
+    axios
+      .get(
+        `https://8a3f-2405-201-200c-c0e6-99bd-598f-1c5b-52fb.ngrok-free.app/chat/getallmsg/${sidData?.sid||sid}`,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      )
+      .then(function (response) {
+        if (response?.status == 200) {
+          console.log(response?.data?.data);
+          setMessages(response?.data?.data);
+          // setUserData(response.data.data);
+        }
+      });
+  };
+  const handleSendMessage = () => {
+    if (newMessage) {
+      setMessages([...messages, newMessage]);
+      setNewMessage('');
+
+      axios
+      .post(
+        `https://8a3f-2405-201-200c-c0e6-99bd-598f-1c5b-52fb.ngrok-free.app/chat/sendmsg/${sid}`,{
+          "email": "testuser001@gmail.com",
+          "msg": newMessage
+      },
+        {
+          headers: {
+            'ngrok-skip-browser-warning': '69420',
+            'Authorization': `Bearer ${token}`
+          },
+        }
+      )
+      .then(function (response) {
+        if (response?.status == 200) {
+          handleConversation(sid)
+        }
+      });
+    }
+  };
+  // const [conversation, setConversation] = useState<any>(null);
+  
+
+  // useEffect(() => {
+  //   const Twilio = require('twilio');
+  //   const client = Twilio(
+  //     'AC043ba2179c12c98863bf78d6332c3477',
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzBlMjdiZTY4ZDdmMTM1OTdjYTAyZjZlZDJhZjVmZWEwLTE2OTg2NTU1NDkiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJkZXZAYWdlbmN5Z28uYWkifSwiaWF0IjoxNjk4NjU1NTQ5LCJleHAiOjE2OTg2NTkxNDksImlzcyI6IlNLMGUyN2JlNjhkN2YxMzU5N2NhMDJmNmVkMmFmNWZlYTAiLCJzdWIiOiJBQzA0M2JhMjE3OWMxMmM5ODg2M2JmNzhkNjMzMmMzNDc3In0.td5Sxlervr3lkAeUncumkUhBg_uAlaFsbyXQ4xAV_qA'
+  //   );
+
+  //   // Create or get a conversation between two users
+  //   client.conversations.conversations
+  //     .list({ uniqueName: 'user1_user2' }) // Replace with a unique conversation name
+  //     .then((conversations: any) => {
+  //       if (conversations.length > 0) {
+  //         setConversation(conversations[0]);
+  //       } else {
+  //         return client.conversations.conversations.create({
+  //           uniqueName: 'user1_user2', // Replace with a unique conversation name
+  //           friendlyName: 'User1 and User2 Conversation', // Conversation display name
+  //         });
+  //       }
+  //     })
+  //     .then((newConversation: any) => {
+  //       setConversation(newConversation);
+  //     })
+  //     .catch((error: any) => {
+  //       console.error('Error fetching or creating conversation: ', error);
+  //     });
+  // }, []);
+
+  // // Function to send a message in the conversation
+  // const sendMessage = ( ) => {
+  //   if (conversation) {
+  //     conversation.messages.create({
+  //       body: newMessage,
+  //     });
+  //   }
+  // };
   // useEffect(() => {
   //   const initTwilioChat = async () => {
   //     try {
@@ -101,13 +201,6 @@ function ChatScreen() {
   //   setNewMessage(event.target.value);
   // };
 
-  const handleSendMessage = () => {
-    if (newMessage) {
-      setMessages([...messages, newMessage]);
-      setNewMessage('');
-    }
-  };
-
   // const onSearchTxtPress = () => {
   //   console.log('button press', searchTxt);
   // };
@@ -126,6 +219,7 @@ function ChatScreen() {
               userData={userData}
               setSearchTxt={setSearchTxt}
               searchTxt={searchTxt}
+              handleConversation={handleConversation}
             />
             <Box sx={{ width: '100%', padding: '10px 10px' }}>
               <Box
@@ -141,7 +235,13 @@ function ChatScreen() {
                     return (
                       <Box
                         key={index}
-                        style={{ display: 'flex', justifyContent: 'end' }}
+                        style={{
+                          display: 'flex',
+                          justifyContent:
+                            chat?.author === 'testuser001@gmail.com'
+                              ? 'end'
+                              : 'start',
+                        }}
                       >
                         <Typography
                           sx={{
@@ -152,7 +252,7 @@ function ChatScreen() {
                             borderRadius: '8px',
                           }}
                         >
-                          {chat}
+                          {chat?.body}
                         </Typography>
                       </Box>
                     );
@@ -176,7 +276,7 @@ function ChatScreen() {
                     onError: (e) => {
                       throw e;
                     },
-                  }}   
+                  }}
                   ariaLabel="A basic chat composer"
                   onChange={(editorState: EditorState): void => {
                     editorState.read(() => {
@@ -185,9 +285,9 @@ function ChatScreen() {
                     });
                   }}
                 >
-                    <ClearEditorPlugin />
-                    <MessagePropPlugin message={newMessage} />
-          {/* <SendButtonPlugin onClick={submitMessage} />
+                  <ClearEditorPlugin />
+                  <MessagePropPlugin message={newMessage} />
+                  {/* <SendButtonPlugin onClick={submitMessage} />
           <EnterKeySubmitPlugin onKeyDown={submitMessage} />
                   <ClearEditorPlugin />
                   <EnterKeyPlugin onEnterKeyPress={onEnterKeyPress} /> */}
@@ -200,7 +300,7 @@ function ChatScreen() {
                     height: '35px',
                     color: '#fff',
                     margin: '7px 10px',
-                  }} 
+                  }}
                   onClick={() => {
                     handleSendMessage();
                   }}
@@ -208,7 +308,6 @@ function ChatScreen() {
                   Send
                 </Button>
               </Box>
-            
             </Box>
           </Stack>
         </div>
