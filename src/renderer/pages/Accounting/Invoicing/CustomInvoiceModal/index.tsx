@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { Divider, Switch, styled } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
-
+import {useFormik} from 'formik'
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -18,10 +18,53 @@ const style = {
   boxShadow: 24,
   p: 2,
 };
-
+const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly']; 
 export default function CustomInvoiceModal({ open, setOpen }: any) {
   const handleClose = () => setOpen(false);
-  const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
+  
+  const initialValues = {
+    name: 'test',
+    amount: 30,
+    description: 'string',
+    employeeId: '653f987965bf70aa9b5df6f2',
+    status: "true",
+    userId: '653f987965bf70aa9b5df6f2',
+  };
+
+  const { values, handleChange, handleSubmit } = useFormik({
+    initialValues: initialValues,
+    onSubmit: async (values) => {
+      console.log(values);
+      await handleCreateInvoice(values);
+      handleClose();
+    },
+  });
+
+  const handleCreateInvoice = async (value:any) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(value),
+    };
+    try {
+      const response = await fetch('http://localhost:3000/invoicing', options);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error('Failed to create the invoice');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOnChange = (name:any) => {
+    console.log(name);
+  };
+
   return (
     <Modal
       sx={{ backdropFilter: 'blur(4px)' }}
@@ -30,6 +73,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
+      <form onSubmit={handleSubmit}>
       <Box sx={style}>
         <Box
           sx={{
@@ -73,24 +117,56 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
           gap={'8px'}
           margin={'12px 0px'}
         >
-          <InputWithLabel
+        <input
+  type="text"
+  name="name"
+  value={values.name}
+  placeholder="AgencyGo"
+  style={{
+    color:'white',
+
+    border: '1px solid #292929',
+    backgroundColor: '#0C0C0C',
+  }}
+  onChange={ handleChange}
+/>
+
+
+          {/* <InputWithLabel
             label="Company name"
+            value={data.name}
             inputIdentifierName="name"
             placeholder="AgencyGo"
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
             }}
+            handleOnChange={handleOnChange}
+          /> */}
+              <input
+            type="text"
+            name="amount"
+            value={values.amount}
+            placeholder="$1,203"
+            style={{
+              color:'white',
+              border: '1px solid #292929',
+              backgroundColor: '#0C0C0C',
+            }}
+            onChange={ handleChange}
+
           />
-          <InputWithLabel
+          {/* <InputWithLabel
             label="Amount"
             inputIdentifierName="amount"
+            value={data.amount}
             placeholder="$1,203"
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
             }}
-          />
+            handleOnChange={handleOnChange}
+          /> */}
         </Box>
         <Box
           display={'flex'}
@@ -162,16 +238,18 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
           }}
         >
           <Box>
-          <InputWithLabel
+          {/* <InputWithLabel
             label="Enter Number"
             inputIdentifierName="number"
+            value={data.number}
             placeholder="+1 (209) - 424- 23"
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
               width: '100%',
             }}
-          />
+            handleOnChange={handleOnChange}
+          /> */}
           </Box>
         </Box>
         <Box
@@ -189,12 +267,15 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
           </Button>
           <Button
             variant="contained"
+            type="submit" // Specify the type as "submit"
+
             sx={{ color: '#fff', textTransform: 'capitalize' }}
           >
             Create Invoice
           </Button>
         </Box>
       </Box>
+      </form>
     </Modal>
   );
 }
@@ -255,6 +336,7 @@ const FrequencySelector = ({ frequencyFilter }: any) => {
             padding: '8px 10px',
             border: '1px solid #04A1FF',
           }}
+          key={index}
           onClick={() => setSelected(index + 1)}
         >
           {data}
