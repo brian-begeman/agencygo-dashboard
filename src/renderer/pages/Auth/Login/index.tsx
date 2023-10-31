@@ -61,7 +61,7 @@ export default function Login() {
 
 
 
-  const login2=()=>{
+  const login2=()=>{     
     navigate('/home');
     
   }
