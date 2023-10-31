@@ -37,11 +37,14 @@ const useFormWhiteLabel = () => {
 
   useEffect(() => {
     if (whiteLables) {
+      setAgencyLogo(whiteLables.agencyLogo);
       setValue('agencyName', whiteLables.agencyName);
-      setValue('email', whiteLables?.userId?.email);
+      setValue('email', whiteLables?.email);
+      setValue('primaryColor', whiteLables.primaryColor);
+      setValue('secondaryColor', whiteLables.secondaryColor);
       setValue('websiteUrl', whiteLables.websiteUrl);
       setValue('phone', whiteLables.phone);
-      setAgencyLogo(whiteLables.agencyLogo);
+      setValue('agencyLogo', whiteLables.agencyLogo);
     }
   }, [whiteLables]);
 
@@ -51,9 +54,9 @@ const useFormWhiteLabel = () => {
     formdataConvert.append('agencyName', data.agencyName);
     formdataConvert.append('email', data.email);
     formdataConvert.append('primaryColor', data.primaryColor);
-
     formdataConvert.append('secondaryColor', data.secondaryColor);
     formdataConvert.append('websiteUrl', data.websiteUrl);
+    formdataConvert.append('phone', data.phone);
     let endpoint = `agency/update-agency/${userData?.agency?._id} `;
     let options = {
       method: 'PATCH' as 'PATCH',
