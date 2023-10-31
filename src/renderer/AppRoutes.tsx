@@ -35,6 +35,10 @@ import { useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import SetPassword from './pages/SetPassword/index';
 import ResetPassword from './pages/ResetPassword/index';
+import Accounting from './pages/Accounting';
+import Invoicing from './pages/Accounting/Invoicing';
+import Payroll from './pages/Accounting/Payroll';
+import BookKeeping from './pages/Accounting/BookKeeping';
 
 const ROUTES = [
   {
@@ -104,6 +108,31 @@ const ROUTES = [
         element: <FanReports />,
         pathName: 'Fan Reports',
         nestedLink: '/analytics/fan-reports',
+      },
+    ],
+  },
+  {
+    path: 'accounting',
+    element: <Accounting />,
+    pathName: 'Accounting',
+    nestedRoutes: [
+      {
+        path: 'invoicing',
+        element: <Invoicing />,
+        pathName: 'Invoicing',
+        nestedLink: '/accounting/invoicing',
+      },
+      {
+        path: 'payroll',
+        element: <Payroll />,
+        pathName: 'Payroll',
+        nestedLink: '/accounting/payroll',
+      },
+      {
+        path: 'book-keeping',
+        element: <BookKeeping />,
+        pathName: 'Book Keeping',
+        nestedLink: '/accounting/book-keeping',
       },
     ],
   },

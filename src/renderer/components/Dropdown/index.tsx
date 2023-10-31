@@ -17,17 +17,17 @@ export default function MultiSelect({
       sx={{
         m: 0,
         minWidth: '100%',
-        background: '#292929',
+        background: '#0f0f0f',
         border: '1px solid #fff',
         borderRadius: '5px',
         outline: 'none',
         color: '#fff',
-        '&:focus': {
+        '& :focus': {
           border: 'none',
           outline: 'none',
         },
         '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-          background: 'gray !important',
+          background: '#0f0f0f !important',
         },
       }}
       size="small"
@@ -35,7 +35,7 @@ export default function MultiSelect({
       <Select
         sx={{
           '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-            background: 'gray !important',
+            background: '#0f0f0f !important',
           },
           color: '#fff',
         }}
@@ -47,6 +47,9 @@ export default function MultiSelect({
         label="Select Values"
         onChange={handleChange}
       >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
         {creatorNames?.map((val: any) => {
           return <MenuItem value={val?._id}>{val?.creatorName}</MenuItem>;
         })}

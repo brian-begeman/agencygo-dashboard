@@ -34,8 +34,8 @@ interface $roleData {
 
 const statusMenu = [
   {
-    label:"All",
-    value:""
+    label: 'All',
+    value: '',
   },
   {
     label: 'Inactive',
@@ -140,7 +140,7 @@ function RoleLanding(props: TabProps) {
     };
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
-      .then((res) =>{
+      .then((res) => {
         setRoles(res.data);
         setAnchorElRoleName(null);
         setAnchorElStatus(null);
@@ -185,7 +185,7 @@ function RoleLanding(props: TabProps) {
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
       .then((res) => {
-        setRoleList([{label:"All",value:''}]);
+        setRoleList([{ label: 'All', value: '' }]);
         res.data.map((item: any) => {
           setRoleList((previousdata) => [
             ...previousdata,
