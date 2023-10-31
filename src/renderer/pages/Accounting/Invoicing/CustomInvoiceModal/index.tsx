@@ -28,7 +28,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
     description: 'string',
     employeeId: '653f987965bf70aa9b5df6f2',
     status: "true",
-    userId: '653f987965bf70aa9b5df6f2',
+    userId: '653f987965bf70aa9b5df6f2', 
   };
 
   const { values, handleChange, handleSubmit } = useFormik({
