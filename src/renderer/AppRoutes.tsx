@@ -40,11 +40,11 @@ import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
 
 const ROUTES = [
-  // {
-  //   path: '*',
-  //   element: <Login />,
-  //   pathName: 'Login',
-  // },
+    {
+      path: '*',
+      element: <Login />,
+      pathName: 'Login',
+    },
   {
     path: '/home',
     element: <HomePage />,

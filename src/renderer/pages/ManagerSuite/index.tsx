@@ -7,28 +7,31 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import {Grid} from '@mui/material'
+import { Grid } from '@mui/material';
+import useDataCreators from '../ManageCreators/hooks/useData';
 
- const ofusers = [{
-  name: 'Joan Adams',
-  email : "cheyonlyfans@yahoo.com",
-  password : "Congo212",
-  creatorId : "cheyonlyfans",
-  profileImage: '',
-  notificationCount: 3,
+const ofusers = [
+  {
+    name: 'Joan Adams',
+    email: 'cheyonlyfans@yahoo.com',
+    password: 'Congo212',
+    creatorId: 'cheyonlyfans',
+    profileImage: '',
+    notificationCount: 3,
     messageCount: 1,
-},{
-  name: 'Brad Goldborn',
-  email : "ankur4736@gmail.com",
-  password : "Test@123",
-  creatorId : "ankur",
-  profileImage: '',
-  notificationCount: 3,
+  },
+  {
+    name: 'Brad Goldborn',
+    email: 'ankur4736@gmail.com',
+    password: 'Test@123',
+    creatorId: 'ankur',
+    profileImage: '',
+    notificationCount: 3,
     messageCount: 1,
-}
-]
+  },
+];
 
-function getDivBounds(divId:string) {
+function getDivBounds(divId: string) {
   const div = document.getElementById(divId);
   if (!div) {
     console.error(`Element with id "${divId}" not found.`);
@@ -45,21 +48,30 @@ function getDivBounds(divId:string) {
   return { x, y, width, height };
 }
 
-
-
 export default function ManagerSuite() {
   const [search, setSearch] = useState('');
-  const [creators] = useState(ofusers)
+  const {
+    creators,
+    refetch,
+    selectedCreator,
+    setSelectedCreator,
+    handleSearch,
+  } = useDataCreators();
 
   const onSearch = (value: string) => {
     setSearch(value);
   };
+console.log("creators",creators);
 
-  function onclick(creator:any) {    
-    window.electron.ipcRenderer.sendMessage('attempt-login',  Object.assign(creator,{
-      bounds : getDivBounds("browser-view")
-    }));
+  function onclick(creator: any) {
+    window.electron.ipcRenderer.sendMessage(
+      'attempt-login',
+      Object.assign(creator, {
+        bounds: getDivBounds('browser-view'),
+      })
+    );
   }
+  console.log('creators', creators);
 
   return (
     <Dashboard>
@@ -70,39 +82,38 @@ export default function ManagerSuite() {
           </PageTopbar.HeaderText>
         </PageTopbar>
         <PageAside>
-         <Grid container>
-         <Grid xs={4} item>
-          <div className={styles.search}>
-            <SearchInput
-              value={search}
-              onUpdateSearch={onSearch}
-              onSearch={() => {}}
-            >
-              <SearchInput.ReloadButton onRefresh={() => {}} />
-            </SearchInput>
-          </div>
-          {creators.map(
-            (c) => (
-              <UserCardWImage
-                name={c.name}
-                profileImage={c.profileImage}
-                notificationCount={c.notificationCount}
-                messageCount={c.messageCount}
-                onClick={() => onclick(c) }
-              />
-            )
-          )}
+          <Grid container>
+            <Grid xs={4} item>
+              <div className={styles.search}>
+                <SearchInput
+                  value={search}
+                  onUpdateSearch={onSearch}
+                  onSearch={() => {refetch()}}
+                >
+                  <SearchInput.ReloadButton onRefresh={() => {}} />
+                </SearchInput>
+              </div>
+              {creators.map((c) => (
+                <UserCardWImage
+                  name={c.creatorName}
+                  profileImage={c.imageSrc}
+                  notificationCount={2}
+                  messageCount={1}
+                  onClick={() => onclick(c)}
+                />
+              ))}
+            </Grid>
+            <Grid xs={8} item>
+              <div
+                style={{
+                  width: '100%',
+                  height: '100vh',
+                  background: 'red',
+                }}
+                id="browser-view"
+              ></div>
+            </Grid>
           </Grid>
-          <Grid xs={8} item>
-          <div style={{
-          width : "100%",
-          height: "100vh",
-          background : "red"
-        }} id="browser-view">
-          
-        </div>
-          </Grid>
-         </Grid>
         </PageAside>
       </section>
     </Dashboard>

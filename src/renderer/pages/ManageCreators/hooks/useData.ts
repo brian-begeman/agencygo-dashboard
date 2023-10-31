@@ -40,8 +40,7 @@ const useDataCreators = () => {
   useEffect(() => {
     const creatorsRes =
       data?.data?.map((item: any) => ({
-        ...item,
-        // eslint-disable-next-line no-underscore-dangle
+        ...item, 
         id: item?._id,
       })) || [];
     setCreators(creatorsRes);
@@ -52,7 +51,7 @@ const useDataCreators = () => {
       .map((key) => `${key}=${encodeURIComponent(data[key])}`)
       .join('&');
 
-    let endpoint = `creators/search?${queryString}`;
+    let endpoint = `creators/search/?${queryString}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -63,6 +62,7 @@ const useDataCreators = () => {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
+        console.log('ressss', res);
         setData(res);
       })
       .catch((err) => {
