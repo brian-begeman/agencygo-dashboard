@@ -1,11 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import useMutation from 'renderer/hooks/useMutation';
 import useQuery from 'renderer/hooks/useQuery';
 import { ISelectedCreator } from './useData';
 import fetchReq from 'utils/fetch';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 const useFormCreator = (
   callback: () => void,
@@ -47,10 +48,12 @@ const useFormCreator = (
     useForm({
       resolver: yupResolver(validationSchema),
     });
-
-  const onSubmit = (data: any) => {
-    if (type === 'add') {
-      data.status = true;
+    const { userData } = useContext(AuthContext);
+    
+    const onSubmit = (data: any) => {
+      if (type === 'add') {
+        data.agencyId = userData?.agency?._id
+        data.status = true; 
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
