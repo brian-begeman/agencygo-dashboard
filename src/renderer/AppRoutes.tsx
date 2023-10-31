@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
-import OnlyfansAccount from './pages/OnlyfansAccount';
 import DashboardPage from './pages/DasboardPage';
 import ManagerSuite from './pages/ManagerSuite';
 import EmployeeShifts from './pages/EmployeeShifts';
@@ -41,11 +40,11 @@ import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
 
 const ROUTES = [
-  {
-    path: '*',
-    element: <Login />,
-    pathName: 'Login',
-  },
+  // {
+  //   path: '*',
+  //   element: <Login />,
+  //   pathName: 'Login',
+  // },
   {
     path: '/home',
     element: <HomePage />,
@@ -55,11 +54,6 @@ const ROUTES = [
     path: '/dashboard',
     element: <DashboardPage />,
     pathName: 'Dashboard Page',
-  },
-  {
-    path: '/of-browser',
-    element: <OnlyfansAccount />,
-    pathName: 'Onlyfans Account Page',
   },
   {
     path: '/manager-suite',
@@ -264,7 +258,6 @@ function AppRoutes() {
           <Route path="/activate-account/:id" element={<SetPassword />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
-          <Route path="/of-browser" element={<OnlyfansAccount/>} />
         </>
       )}
     </Routes>

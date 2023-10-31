@@ -3,8 +3,7 @@ import chalk from 'chalk';
 import { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
-import fetchReq from '../utils/fetch';
-import { error } from 'console';
+import { tr } from 'date-fns/locale';
 
 const startIPCBridge = ({
   mainWindow,
@@ -25,14 +24,16 @@ const startIPCBridge = ({
         },
       });
 
+      console.log(arg)
       console.log("Partition path",session.fromPartition('persist:' + arg.creatorId).getStoragePath())
       mainWindow.addBrowserView(ofBrowserView);
-      ofBrowserView.setBounds({
-        x: Math.round(winDimens.width * 0.5),
-        y: 26,
-        width: Math.round(winDimens.width * 0.5),
-        height: Math.round(winDimens.height),
-      });
+      ofBrowserView.setBounds(arg.bounds);
+      ofBrowserView.setAutoResize({
+        width : true,
+        height : true,
+        vertical: true,
+        horizontal: true
+      })
 
       const page = await pie.getPage(ofBrowser, ofBrowserView);
       await page.goto('https://onlyfans.com');

@@ -9,12 +9,14 @@ interface $Props {
   profileImage: string;
   notificationCount?: number;
   messageCount?: number;
+  onClick: any
 }
 export default function UserCardWImage({
   name,
   profileImage,
   notificationCount,
   messageCount,
+  onClick
 }: $Props) {
   return (
     <Stack
@@ -24,7 +26,8 @@ export default function UserCardWImage({
       flexWrap="wrap"
       className={styles.card}
     >
-      {profileImage !== '' ? (
+     <div onClick={onClick} style={{display :"flex",cursor: "pointer"}}>
+     {profileImage !== '' ? (
         <img
           src={profileImage}
           alt={name.split(' ')?.[0]}
@@ -58,6 +61,7 @@ export default function UserCardWImage({
           />
         </IconButton>
       )}
+     </div>
     </Stack>
   );
 }

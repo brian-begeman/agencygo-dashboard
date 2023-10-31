@@ -22,7 +22,7 @@ interface $Props {
 }
 
 export default function AuthProvider({ children }: $Props) {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [userData, setUserData] = useState({});
   const token = sessionStorage.getItem('Authorization');
 
