@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
-import OnlyfansAccount from './pages/OnlyfansAccount';
 import DashboardPage from './pages/DasboardPage';
 import ManagerSuite from './pages/ManagerSuite';
 import EmployeeShifts from './pages/EmployeeShifts';
@@ -42,11 +41,11 @@ import BookKeeping from './pages/Accounting/BookKeeping';
 import ChatMessage from './pages/ChatScreen';
 
 const ROUTES = [
-  {
-    path: '*',
-    element: <Login />,
-    pathName: 'Login',
-  },
+    {
+      path: '*',
+      element: <Login />,
+      pathName: 'Login',
+    },
   {
     path: '/home',
     element: <HomePage />,
@@ -56,11 +55,6 @@ const ROUTES = [
     path: '/dashboard',
     element: <DashboardPage />,
     pathName: 'Dashboard Page',
-  },
-  {
-    path: '/of-account',
-    element: <OnlyfansAccount />,
-    pathName: 'Onlyfans Account Page',
   },
   {
     path: '/manager-suite',

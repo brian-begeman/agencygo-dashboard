@@ -9,12 +9,14 @@ interface $Props {
   profileImage: string;
   notificationCount?: number;
   messageCount?: number;
+  onClick: any;
 }
 export default function UserCardWImage({
   name,
   profileImage,
   notificationCount,
   messageCount,
+  onClick,
 }: $Props) {
   return (
     <Stack
@@ -24,40 +26,55 @@ export default function UserCardWImage({
       flexWrap="wrap"
       className={styles.card}
     >
-      {profileImage !== '' ? (
-        <img
-          src={profileImage}
-          alt={name.split(' ')?.[0]}
-          className={styles.image}
-        />
-      ) : (
-        <Avatar />
-      )}
-      <Typography variant="h3" color="#fff" fontSize={'14px'} fontWeight={500}>
-        {name}
-      </Typography>
-      {notificationCount && (
-        <IconButton className={styles.icon}>
-          <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
-            {notificationCount}
-          </Typography>
-          <Message />
-        </IconButton>
-      )}
-      {messageCount && (
-        <IconButton className={styles.icon}>
-          <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
-            {messageCount}
-          </Typography>
-          <NotificationsNoneIcon
-            sx={{
-              color: '#AAAAAA',
-              width: '18px',
-              height: '18px',
-            }}
+      <div
+        onClick={onClick}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          cursor: 'pointer',
+        }}
+      >
+        {profileImage !== '' ? (
+          <img 
+            src={profileImage}
+            alt={name.split(' ')?.[0]}
+            className={styles.image}
           />
-        </IconButton>
-      )}
+        ) : (
+          <Avatar />
+        )}
+        <Typography
+          variant="h3"
+          color="#fff"
+          fontSize={'14px'}
+          fontWeight={500}
+        >
+          {name}
+        </Typography>
+        {/* {notificationCount && (
+          <IconButton className={styles.icon}>
+            <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+              {notificationCount}
+            </Typography>
+            <Message />
+          </IconButton>
+        )}
+        {messageCount && (
+          <IconButton className={styles.icon}>
+            <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+              {messageCount}
+            </Typography>
+            <NotificationsNoneIcon
+              sx={{
+                color: '#AAAAAA',
+                width: '18px',
+                height: '18px',
+              }}
+            />
+          </IconButton>
+        )} */}
+      </div>
     </Stack>
   );
 }

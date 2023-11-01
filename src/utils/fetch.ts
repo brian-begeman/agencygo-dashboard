@@ -25,6 +25,8 @@ const fetchReq = async (
       }
     }
     const urlPath = `${API_URL}/${url}`;
+    console.log("urlPath",urlPath);
+    
     const optionsFetch = {
       ...options,
     };
