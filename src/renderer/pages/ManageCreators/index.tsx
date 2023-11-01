@@ -17,7 +17,7 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
@@ -50,7 +50,9 @@ export default function ManageCreators() {
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-creator',
   // });
-
+  useEffect(() => {
+    handleSearch('');
+  }, []);
   const handleDelete = (id: string) => {
     let endpoint = `creators/${id}`;
     let options = {
@@ -103,6 +105,7 @@ export default function ManageCreators() {
     ];
     return tabData;
   };
+console.log("creators",creators);
 
   return (
     <Dashboard>

@@ -17,3 +17,9 @@
   background-color: var(--color-sub-background-border);
   border-radius: 4px;
 }
+.image{
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}

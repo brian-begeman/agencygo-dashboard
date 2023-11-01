@@ -36,7 +36,7 @@ export default function UserCardWImage({
         }}
       >
         {profileImage !== '' ? (
-          <img
+          <img 
             src={profileImage}
             alt={name.split(' ')?.[0]}
             className={styles.image}

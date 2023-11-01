@@ -40,10 +40,10 @@ const useDataCreators = () => {
   useEffect(() => {
     const creatorsRes =
       data?.data?.map((item: any) => ({
-        ...item, 
+        ...item,
         id: item?._id,
       })) || [];
-    setCreators(creatorsRes);
+    // setCreators(creatorsRes);
   }, [data]);
 
   const handleSearch = (data: any) => {
@@ -63,7 +63,8 @@ const useDataCreators = () => {
       .then((response) => response.json())
       .then((res) => {
         console.log('ressss', res);
-        setData(res);
+        setData(res?.data)
+        setCreators(res?.data);
       })
       .catch((err) => {
         console.log('Error occured: ', err);

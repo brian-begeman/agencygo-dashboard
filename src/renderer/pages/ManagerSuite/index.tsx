@@ -1,7 +1,8 @@
 import Dashboard from 'renderer/components/Dashboard';
 import SearchInput from 'renderer/components/SearchInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import managers from 'renderer/utils/managerSuiteConstant';
+import ProfilePic from 'renderer/assets/png/profile.jpg';
 import UserCardWImage from 'renderer/components/UserCardWImage';
 import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
@@ -9,6 +10,8 @@ import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import { Grid } from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
+import axios from 'axios';
+import { API_URL } from 'config';
 
 const ofusers = [
   {
@@ -57,13 +60,17 @@ export default function ManagerSuite() {
     setSelectedCreator,
     handleSearch,
   } = useDataCreators();
+  useEffect(() => {
+    handleSearch('');
+  }, []);
 
   const onSearch = (value: string) => {
     setSearch(value);
   };
-console.log("creators",creators);
+  console.log('creators', creators);
 
   function onclick(creator: any) {
+    console.log(creator);
     window.electron.ipcRenderer.sendMessage(
       'attempt-login',
       Object.assign(creator, {
@@ -72,7 +79,6 @@ console.log("creators",creators);
     );
   }
   console.log('creators', creators);
-
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -88,20 +94,24 @@ console.log("creators",creators);
                 <SearchInput
                   value={search}
                   onUpdateSearch={onSearch}
-                  onSearch={() => {refetch()}}
+                  onSearch={() => {
+                    refetch();
+                  }}
                 >
                   <SearchInput.ReloadButton onRefresh={() => {}} />
                 </SearchInput>
               </div>
-              {creators.map((c) => (
-                <UserCardWImage
-                  name={c.creatorName}
-                  profileImage={c.imageSrc}
-                  notificationCount={2}
-                  messageCount={1}
-                  onClick={() => onclick(c)}
-                />
-              ))}
+              {creators &&
+                creators.map((c) => (
+                  <UserCardWImage
+                    name={c.creatorName}
+                    profileImage={ProfilePic}
+                    // profileImage={c.imageSrc}
+                    notificationCount={2}
+                    messageCount={1}
+                    onClick={() => onclick(c)}
+                  />
+                ))}
             </Grid>
             <Grid xs={8} item>
               <div
