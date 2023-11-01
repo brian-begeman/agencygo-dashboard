@@ -273,24 +273,31 @@ function FilterByEmployeeInCreator({
       </Box>
       <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
         <FormControl sx={{ width: 230, marginBottom: '30px' }}>
+          
           <Select
             sx={{
               color: '#fff',
               '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select':
                 {
-                  border: ' 1px solid #ffffff33',
+                  border: ' 1px solid #ddd',
                   height: ' 20px',
                 },
+              '&:hover': {
+                border: ' 1px solid #4a4a4a',
+              },
             }}
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             value={employeeId.name}
             onChange={(e) => handleChange(e)}
-            renderValue={(selected) => (selected.name ? selected.name : '')}
+            // renderValue={(selected) => (selected.name ? selected.name : 'reeeteter')}
+            renderValue={(selected: any) =>
+              selected.name !== '' ? undefined : 'placeholder text'
+            }
             MenuProps={MenuProps}
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem disabled value="">
+              <em>Placeholder</em>
             </MenuItem>
             {data?.data.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
@@ -325,11 +332,14 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
   const [employeeSearch, setEmployeeSearch] = useState('');
+
   const [status, setStatus] = useState('');
   const [linkStatus, setLinkStatus] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
+
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
+  console.log('employeeId', employeeId);
 
   const location = useLocation();
   const onRemoveFilter = () => {
@@ -360,7 +370,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       }
       if (employeeId != '') {
         Object.assign(data, {
-          assignEmployee: employeeId._id,
+          employeeId: employeeId._id,
         });
       }
     } else {

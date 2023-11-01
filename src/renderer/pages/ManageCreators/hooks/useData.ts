@@ -52,7 +52,7 @@ const useDataCreators = () => {
       .map((key) => `${key}=${encodeURIComponent(data[key])}`)
       .join('&');
 
-    let endpoint = `creators/search?${queryString}`;
+    let endpoint = `creators/search/?${queryString}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -63,6 +63,7 @@ const useDataCreators = () => {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
+        console.log('ressss', res);
         setData(res);
       })
       .catch((err) => {

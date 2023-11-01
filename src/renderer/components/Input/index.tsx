@@ -23,11 +23,15 @@ export default function Input({
         {label}
       </label>
       <TextField
+      sx={{color:'#fff'}}
         InputLabelProps={{ shrink: false }}
         InputProps={{ className: styles.input }}
         size="small"
         type={type}
         id={name}
+        sx={{
+          color:'#ffffff'
+        }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name)}
         aria-invalid={errors[name] ? 'true' : 'false'}

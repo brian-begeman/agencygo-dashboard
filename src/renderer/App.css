@@ -20,7 +20,12 @@ body {
   font-family: Arimo, sans-serif;
   color: var(--color-white);
 }
-
+.css-ekzvno{
+  display: none !important;
+}
+.css-87lnyx{
+  padding: 15px !important;
+}
 .App {
   display: flex;
   justify-content: center;

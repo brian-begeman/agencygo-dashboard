@@ -107,6 +107,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
     "react-router-dom": "^6.11.2",
+    "twilio-chat": "^6.0.0",
     "uuid": "^9.0.0",
     "yup": "^1.2.0"
   },

@@ -12,6 +12,7 @@ import localisation from '../../../localisation.json';
 import SidebarItem from './SidebarItem';
 import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
+import Message from 'renderer/assets/svg/messageSvg';
 
 const sideBarMenuConst = [
   {
@@ -109,41 +110,47 @@ const sideBarMenuConst = [
       },
     ],
   },
-  {
-    name: localisation.s4s,
-    icon: <S4sSvg />,
-    menu: [
-      {
-        label: 'Discover Creators',
-        value: 'discoverCreators',
-        link: '/s4s/discover-creators',
-      },
-      {
-        label: 'Invite Link',
-        value: 'inviteLink',
-        link: '/s4s/invite-link',
-      },
-      {
-        label: 'Requests',
-        value: 'requests',
-        link: '/s4s/requests',
-      },
-      {
-        label: 'S4S Schedule',
-        value: 's4sSchedule',
-        link: '/s4s/schedule',
-      },
-      {
-        label: 'S4S Settings',
-        value: 's4sSettings',
-      },
-    ],
-  },
+  // {
+  //   name: localisation.s4s,
+  //   icon: <S4sSvg />,
+  //   menu: [
+  //     {
+  //       label: 'Discover Creators',
+  //       value: 'discoverCreators',
+  //       link: '/s4s/discover-creators',
+  //     },
+  //     {
+  //       label: 'Invite Link',
+  //       value: 'inviteLink',
+  //       link: '/s4s/invite-link',
+  //     },
+  //     {
+  //       label: 'Requests',
+  //       value: 'requests',
+  //       link: '/s4s/requests',
+  //     },
+  //     {
+  //       label: 'S4S Schedule',
+  //       value: 's4sSchedule',
+  //       link: '/s4s/schedule',
+  //     },
+  //     {
+  //       label: 'S4S Settings',
+  //       value: 's4sSettings',
+  //     },
+  //   ],
+  // },
   {
     name: localisation.creators,
     icon: <CreatorSvg />,
     menu: [],
     link: '/creators',
+  },
+  {
+    name: 'Message',
+    icon:  <Message/>,
+    menu: [],
+    link: '/chatmessage',
   },
   {
     name: localisation.ofbrowser,

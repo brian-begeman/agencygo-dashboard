@@ -158,7 +158,7 @@ export default function ManageCreators() {
                   id,
                   autoRelink,
                   imageSrc,
-                }) => (
+                }) => ( 
                   <TableRow
                     key={name}
                     sx={{

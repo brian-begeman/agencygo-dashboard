@@ -9,9 +9,14 @@
 }
 
 .input {
-  color: var(--color-white);
+  color: #fff !important;
   background: #ffffff33;
   border: 1px solid #aaaaaa;
+  
+}
+
+.input::placeholder {
+  color: var(--color-white) !important;;
 }
 
 .label {

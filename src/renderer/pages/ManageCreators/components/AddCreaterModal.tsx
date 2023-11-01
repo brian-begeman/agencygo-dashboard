@@ -118,6 +118,15 @@ export default function AddCreaterModal({
     setOpen(false);
   };
 
+  const handleChangeFile = (file:File | undefined) => {
+    console.log('file ******', file);
+    if (file) {
+      
+      console.log('file ******', URL.createObjectURL(file));
+    }
+    
+  };
+
   return (
     <Overlay
       heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
@@ -133,6 +142,7 @@ export default function AddCreaterModal({
           id="addCreator"
           className={styles.modalBody}
           onSubmit={addHandler}
+          autoComplete='off'
         >
           <Stack
             gap="10px"
@@ -147,7 +157,7 @@ export default function AddCreaterModal({
                 type == 'add' ? 'Add' : 'Edit'
               } Headshot`}</Typography>
               <Box>
-                <ImageUpload />
+                <ImageUpload handleChangeFile={handleChangeFile} />
               </Box>
             </Box>
             <InputWithLabel
@@ -186,6 +196,7 @@ export default function AddCreaterModal({
               inputStyle={{
                 border: '1px solid #292929',
                 backgroundColor: '#0C0C0C',
+                color:'#fff'
               }}
               label="Internal notes"
               inputIdentifierName="internalNotes"
@@ -214,9 +225,10 @@ export default function AddCreaterModal({
                     border: '1px solid #292929',
                     backgroundColor: '#0C0C0C',
                   }}
-                  label=""
+                  label=" "
                   inputIdentifierName="creator"
                   placeholder="Creator %"
+                  
                   // register={register as any}
                 />
               </Box>
@@ -299,7 +311,7 @@ export default function AddCreaterModal({
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
-        addText={`${type == 'add' ? 'Add' : 'Edit'} Creator`}
+        addText={`${type == 'add' ? 'Add Creator' : 'Confirm'}`}
         id="addCreator"
         // isLoading={isLoading}
       />

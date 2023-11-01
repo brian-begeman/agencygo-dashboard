@@ -35,14 +35,20 @@ export default function Register() {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // mutateRegister(data, {
-    //   onSuccess: () => {
-    //     navigate('/home');
-    //   },
-    // });
-    login();
-    navigate('/home');
+  const onSubmit: SubmitHandler<FieldValues> =  (data) => {
+    
+    mutateRegister(data, {
+      onSuccess: async (res) => {
+       await sessionStorage.setItem('Authorization', res.token.token);
+       login();
+        navigate('/home');
+      },
+      onError:(err)=>{
+        console.log('err', err)
+      }
+    });
+    // login();
+    // navigate('/home');
   };
 
   return (

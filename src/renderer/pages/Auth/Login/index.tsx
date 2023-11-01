@@ -57,6 +57,9 @@ export default function Login() {
       });
   };
 
+  console.log('Logo',Logo);
+  
+
   return (
     <main className={styles.loginWrap}>
       <section className={styles.login}>
@@ -70,6 +73,7 @@ export default function Login() {
             width: '100%',
           }}
           onSubmit={handleSubmit(onSubmit)}
+          autoComplete='off'
         >
           {formUtils.loginFields.map((field) => (
             <Input
@@ -79,6 +83,7 @@ export default function Login() {
               register={register}
               errors={errors}
               type={field.type}
+              
             />
           ))}
           <div className={styles.forgotPasswordWrap}>
