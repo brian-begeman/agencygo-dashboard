@@ -289,6 +289,7 @@ function RoleLanding(props: TabProps) {
           variant="contained"
           sx={{ color: 'white' }}
           onClick={() => {
+            setRoleData(null);
             setModalType('add');
             setIsOpen(true);
           }}

@@ -59,7 +59,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName)}
-        // aria-invalid={errors[inputIdentifierName] ? 'true' : 'false'}
+        aria-invalid={errors && errors[inputIdentifierName] ? 'true' : 'false'}
       />
       {errors && (
         <div style={{ color: 'red', fontSize: '12px', margin: '5px 0px' }}>
