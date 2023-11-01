@@ -70,6 +70,7 @@ export default function ManageCreators() {
         console.log('Error occured: ', err);
       });
   };
+console.log(creators);
 
   const handleActivate = (id: string, status: boolean) => {
     const data = {

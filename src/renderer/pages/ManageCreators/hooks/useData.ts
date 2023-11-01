@@ -62,9 +62,8 @@ const useDataCreators = () => {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log('ressss', res);
-        setData(res?.data)
-        setCreators(res?.data);
+        setData(res);
+        setCreators(res?.data)
       })
       .catch((err) => {
         console.log('Error occured: ', err);
