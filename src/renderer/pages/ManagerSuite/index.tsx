@@ -118,7 +118,7 @@ export default function ManagerSuite() {
                 style={{
                   width: '100%',
                   height: '100vh',
-                  background: 'red',
+                  background: '#000',
                 }}
                 id="browser-view"
               ></div>

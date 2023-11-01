@@ -52,11 +52,7 @@ function ChatScreen() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/chat/getallconversation?limit=2000`, {
-        headers: {
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
+      .get(`${API_URL}/chat/getallconversation?limit=2000`)
       .then(function (response) {
         if (response?.status == 200) {
           console.log(response?.data?.data);
@@ -84,11 +80,7 @@ function ChatScreen() {
     setConversationEmail(sidData);
     console.log(sidData?.sid);
     axios
-      .get(`${API_URL}/chat/getallmsg/${sidData?.sid || sid}?limit=2000`, {
-        headers: {
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
+      .get(`${API_URL}/chat/getallmsg/${sidData?.sid || sid}?limit=2000`)
       .then(function (response) {
         if (response?.status == 200) {
           console.log(response?.data?.data);

@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import PageAside from 'renderer/components/PageAside';
 import SearchInput from 'renderer/components/SearchInput';
 
-function AllUserDataMessage(props: any) {  
+function AllUserDataMessage(props: any) {
   return (
     <PageAside>
       <div className={styles.search}>
@@ -16,7 +16,7 @@ function AllUserDataMessage(props: any) {
         </SearchInput>
       </div>
       <div style={{ cursor: 'pointer' }}>
-        {props?.userData?.map((data: any, index: any) => {
+        {props?.conversationList?.map((data: any, index: any) => {
           return (
             <Stack
               key={index}
@@ -24,7 +24,7 @@ function AllUserDataMessage(props: any) {
               flexShrink={0}
               flexWrap="wrap"
               className={styles.card}
-              onClick={()=>props.handleConversation(data)}
+              onClick={() => props.handleConversation(data)}
             >
               <Avatar />
 
