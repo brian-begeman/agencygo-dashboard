@@ -44,7 +44,7 @@ const useDataCreators = () => {
         // eslint-disable-next-line no-underscore-dangle
         id: item?._id,
       })) || [];
-    setCreators(creatorsRes);
+    // setCreators(creatorsRes);
   }, [data]);
 
   const handleSearch = (data: any) => {
@@ -64,6 +64,7 @@ const useDataCreators = () => {
       .then((response) => response.json())
       .then((res) => {
         setData(res);
+        setCreators(res?.data)
       })
       .catch((err) => {
         console.log('Error occured: ', err);

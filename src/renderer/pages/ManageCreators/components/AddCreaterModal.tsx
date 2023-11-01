@@ -118,6 +118,13 @@ export default function AddCreaterModal({
     setOpen(false);
   };
 
+  const handleChangeFile = (file: File | undefined) => {
+    console.log('file ******', file);
+    if (file) {
+      console.log('file ******', URL.createObjectURL(file));
+    }
+  };
+
   return (
     <Overlay
       heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
@@ -133,6 +140,7 @@ export default function AddCreaterModal({
           id="addCreator"
           className={styles.modalBody}
           onSubmit={addHandler}
+          autoComplete="off"
         >
           <Stack
             gap="10px"
@@ -158,6 +166,26 @@ export default function AddCreaterModal({
               label="Creator's name"
               inputIdentifierName="creatorName"
               placeholder="Enter name"
+              register={register as any}
+            />
+            <InputWithLabel
+              inputStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
+              label="Email"
+              inputIdentifierName="email"
+              placeholder="Enter Email"
+              register={register as any}
+            />
+            <InputWithLabel
+              inputStyle={{
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
+              label="Password"
+              inputIdentifierName="password"
+              placeholder="Enter Password"
               register={register as any}
             />
             <DropdownWithLabel
@@ -186,6 +214,7 @@ export default function AddCreaterModal({
               inputStyle={{
                 border: '1px solid #292929',
                 backgroundColor: '#0C0C0C',
+                color: '#fff',
               }}
               label="Internal notes"
               inputIdentifierName="internalNotes"
