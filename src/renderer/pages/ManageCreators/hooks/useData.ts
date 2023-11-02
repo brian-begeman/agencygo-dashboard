@@ -28,6 +28,8 @@ export interface ISelectedCreator {
 }
 
 const useDataCreators = () => {
+
+  const agencyId = localStorage.getItem('AgencyId');
   const [creators, setCreators] = useState<ICreatorList[]>([]);
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
     null
@@ -51,7 +53,7 @@ const useDataCreators = () => {
       .map((key) => `${key}=${encodeURIComponent(data[key])}`)
       .join('&');
 
-    let endpoint = `creators/search/?${queryString}`;
+    let endpoint = `creators/search/?agencyId=${agencyId}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {

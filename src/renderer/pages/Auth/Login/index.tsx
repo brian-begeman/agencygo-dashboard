@@ -45,8 +45,14 @@ export default function Login() {
       .then((response) => response.json())
       .then((res) => {
         if (res.message == 'login successfully') {
+          console.log('res', res);
+
           const authToken = res.token?.token;
-          sessionStorage.setItem('Authorization', authToken);
+          const agencyId = res.data?.agencyId;
+          const userId = res.data?.Id;
+          localStorage.setItem('Authorization', authToken);
+          localStorage.setItem('AgencyId', agencyId);
+          localStorage.setItem('UserId', userId);
           login();
           navigate('/home');
         } else {
@@ -58,8 +64,7 @@ export default function Login() {
       });
   };
 
-  console.log('Logo',Logo);
-  
+  console.log('Logo', Logo);
 
   return (
     <main className={styles.loginWrap}>
@@ -74,7 +79,7 @@ export default function Login() {
             width: '100%',
           }}
           onSubmit={handleSubmit(onSubmit)}
-          autoComplete='off'
+          autoComplete="off"
         >
           {formUtils.loginFields.map((field) => (
             <Input
@@ -84,7 +89,6 @@ export default function Login() {
               register={register}
               errors={errors}
               type={field.type}
-              
             />
           ))}
           <div className={styles.forgotPasswordWrap}>
@@ -104,7 +108,7 @@ export default function Login() {
           <ButtonEle
             color="primary"
             className={styles.loginBtn}
-            onClick={()=> n('/of-browser') }
+            onClick={() => n('/of-browser')}
           >
             OF Browser
           </ButtonEle>

@@ -8,7 +8,7 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
 import axios from 'axios';
 import { API_URL } from 'config';
@@ -52,31 +52,34 @@ function getDivBounds(divId: string) {
 }
 
 export default function ManagerSuite() {
+  const agencyId = localStorage.getItem('AgencyId');
   const [search, setSearch] = useState('');
   const {
     creators,
+    isLoading,
     refetch,
     selectedCreator,
     setSelectedCreator,
     handleSearch,
   } = useDataCreators();
-  useEffect(() => {
-    handleSearch('');
-  }, []);
+  +useEffect(() => {
+    handleSearch(agencyId);
+  }, [agencyId]);
 
   const onSearch = (value: string) => {
     setSearch(value);
   };
   console.log('creators', creators);
 
-  function onclick(creator: any) {
-    console.log(creator);
-    window.electron.ipcRenderer.sendMessage(
-      'attempt-login',
-      Object.assign(creator, {
-        bounds: getDivBounds('browser-view'),
-      })
-    );
+  function onclick(creator: any) { 
+    if (creator?.autoRelink) {
+      window.electron.ipcRenderer.sendMessage(
+        'attempt-login',
+        Object.assign(creator, {
+          bounds: getDivBounds('browser-view'),
+        })
+      );
+    }
   }
   console.log('creators', creators);
   return (
@@ -101,17 +104,43 @@ export default function ManagerSuite() {
                   <SearchInput.ReloadButton onRefresh={() => {}} />
                 </SearchInput>
               </div>
-              {creators &&
+              {isLoading ? (
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '60vh',
+                  }}
+                >
+                  <CircularProgress />
+                </div>
+              ) : creators?.length > 0 ? (
                 creators.map((c) => (
                   <UserCardWImage
                     name={c.creatorName}
+                    autoRelink={c?.autoRelink}
                     profileImage={ProfilePic}
                     // profileImage={c.imageSrc}
                     notificationCount={2}
                     messageCount={1}
                     onClick={() => onclick(c)}
                   />
-                ))}
+                ))
+              ) : (
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '60vh',
+                  }}
+                >
+                  No chat Found Start Chatting
+                </div>
+              )}
             </Grid>
             <Grid xs={8} item>
               <div
