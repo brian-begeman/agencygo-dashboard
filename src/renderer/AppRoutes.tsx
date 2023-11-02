@@ -30,7 +30,7 @@ import Analytics from './pages/Analytics';
 import CreaterReports from './pages/Analytics/CreateReports';
 import ChatterReports from './pages/Analytics/ChatterReports';
 import FanReports from './pages/Analytics/FanReports';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import SetPassword from './pages/SetPassword/index';
 import ResetPassword from './pages/ResetPassword/index';
@@ -39,6 +39,8 @@ import Invoicing from './pages/Accounting/Invoicing';
 import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
 import ChatMessage from './pages/ChatScreen';
+import {useLocation} from 'react-router-dom'
+
 
 const ROUTES = [
     {
@@ -235,6 +237,11 @@ const ROUTES = [
 
 function AppRoutes() {
   const { isLogin } = useContext(AuthContext);
+  const location = useLocation();
+
+  useEffect(() => {
+    window.electron.ipcRenderer.sendMessage('remove-browser-view')
+  }, [location] )
 
   return (
     <Routes>

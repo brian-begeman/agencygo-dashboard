@@ -13,12 +13,13 @@ const startIPCBridge = ({
   ofBrowser: Browser;
 }) => {
   const winDimens = screen.getPrimaryDisplay().workAreaSize;
+  let ofBrowserView:any = null;
 
   // eslint-disable-next-line no-console
   console.log(chalk.bgYellow('IPC Bridge Started'));
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
     try {
-      const ofBrowserView = new BrowserView({
+      ofBrowserView = new BrowserView({
         webPreferences: {
           partition: 'persist:' + arg.creatorId,
         },
@@ -27,7 +28,8 @@ const startIPCBridge = ({
       console.log(arg)
       console.log("Partition path",session.fromPartition('persist:' + arg.creatorId).getStoragePath())
       mainWindow.addBrowserView(ofBrowserView);
-      ofBrowserView.setBounds(arg.bounds);
+      
+      ofBrowserView.setBounds(arg.bounds)
       ofBrowserView.setAutoResize({
         width : true,
         height : true,
@@ -71,6 +73,14 @@ const startIPCBridge = ({
       console.log(err);
     }
   });
+
+  ipcMain.on('remove-browser-view', () => {
+    if(ofBrowserView){
+      mainWindow.removeBrowserView(ofBrowserView);
+      ofBrowserView = null;
+    }
+  } )
+
 };
 
 export default startIPCBridge;
