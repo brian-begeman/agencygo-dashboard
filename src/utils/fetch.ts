@@ -18,7 +18,7 @@ const fetchReq = async (
     if (options.withAuth) {
       // const store = new Store();
       // token = store.get('token') as string;
-      token = sessionStorage.getItem('Authorization') as string;
+      token = localStorage.getItem('Authorization') as string;
       if (!token) {
         // ipcMain.emit('logout-request');
         throw new Error('No token');

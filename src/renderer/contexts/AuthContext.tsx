@@ -10,9 +10,7 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   isLogin: false,
-  login: () => {
-    
-  },
+  login: () => {},
   logout: () => {},
   userData: {},
 });
@@ -24,7 +22,7 @@ interface $Props {
 export default function AuthProvider({ children }: $Props) {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState({});
-  const token = sessionStorage.getItem('Authorization');
+  const token = localStorage.getItem('Authorization');
 
   useEffect(() => {
     if (token) {
@@ -64,8 +62,8 @@ export default function AuthProvider({ children }: $Props) {
     let options = {
       method: 'POST' as 'POST',
       headers: {
-        'content-type': 'application/json',Authorization: `Bearer ${token}`,
-
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       withAuth: true,
     };
@@ -73,7 +71,9 @@ export default function AuthProvider({ children }: $Props) {
       .then((response) => response.json())
       .then((res) => {
         if (res.message) {
-          sessionStorage.removeItem('Authorization');
+          localStorage.removeItem('Authorization');
+          localStorage.removeItem('AgencyId');
+          localStorage.removeItem('UserId');
           setIsLogin(false);
         }
       })

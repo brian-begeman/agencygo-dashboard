@@ -39,7 +39,10 @@ export default function Register() {
     
     mutateRegister(data, {
       onSuccess: async (res) => {
-       await sessionStorage.setItem('Authorization', res.token.token);
+       await  
+       localStorage.setItem('Authorization', res.token?.token);
+       localStorage.setItem('AgencyId', res.data?.agencyId);
+       localStorage.setItem('UserId', res.data?.Id);
        login();
         navigate('/home');
       },

@@ -24,6 +24,7 @@ import AddCreaterModal from './components/AddCreaterModal';
 import useDataCreators from './hooks/useData';
 import MenuButton from 'renderer/components/MenuButton';
 import fetchReq from 'utils/fetch';
+import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 
 const creatorsTableHeaders = [
   'Creators',
@@ -36,8 +37,26 @@ const creatorsTableHeaders = [
   'Operations',
 ];
 
+function getDivBounds(divId: string) {
+  const div = document.getElementById(divId);
+  if (!div) {
+    console.error(`Element with id "${divId}" not found.`);
+    return null;
+  }
+
+  const rect = div.getBoundingClientRect();
+
+  const x = Math.round(rect.left + window.scrollX);
+  const y = Math.round(rect.top + window.scrollY);
+  const width = Math.round(rect.width);
+  const height = Math.round(rect.height);
+
+  return { x, y, width, height };
+}
+
 export default function ManageCreators() {
   const [openAddCreater, setOpenAddCreater] = useState(false);
+  const [openLinked, setOpenLinked] = useState(false);
   const [formType, setFormType] = useState<'add' | 'edit'>('add');
   const {
     creators,
@@ -70,7 +89,7 @@ export default function ManageCreators() {
         console.log('Error occured: ', err);
       });
   };
-console.log(creators);
+  console.log(creators);
 
   const handleActivate = (id: string, status: boolean) => {
     const data = {
@@ -106,8 +125,21 @@ console.log(creators);
     ];
     return tabData;
   };
-console.log("creators",creators);
+  console.log('creators', creators);
 
+  const handleLinkedAccount = (creator: any) => {
+    setOpenLinked(true);
+    console.log('creator', creator);
+    window.electron.ipcRenderer.sendMessage(
+      'attempt-login',
+      Object.assign(creator, {
+        bounds: getDivBounds('browser-view'),
+      })
+    );
+  };
+  const handleAccountClose = () => {
+    setOpenLinked(false);
+  };
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -162,7 +194,7 @@ console.log("creators",creators);
                   id,
                   autoRelink,
                   imageSrc,
-                }) => ( 
+                }) => (
                   <TableRow
                     key={name}
                     sx={{
@@ -218,7 +250,28 @@ console.log("creators",creators);
                         color="#fff"
                         fontSize="11px"
                       >
-                        Not Linked
+                        {autoRelink ? (
+                          'Linked'
+                        ) : (
+                          <Button
+                            onClick={() =>
+                              handleLinkedAccount({
+                                creatorName: name,
+                                autoRelink,
+                                gender,
+                                id,
+                                internalNotes,
+                                activated,
+                                assignEmployee,
+                                imageSrc,
+                                status,
+                              })
+                            }
+                            size="small"
+                          >
+                            Link
+                          </Button>
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -304,6 +357,24 @@ console.log("creators",creators);
         type={formType}
         selectedCreator={selectedCreator}
       />
+      <Overlay
+        heading="Linked Account"
+        open={openLinked}
+        handleClose={handleAccountClose}
+        style={{
+          width: '700px',
+          height: '100vh',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100vh',
+            background: '#000',
+          }}
+          id="browser-view"
+        ></div>
+      </Overlay>
     </Dashboard>
   );
 }

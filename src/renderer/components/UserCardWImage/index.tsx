@@ -10,9 +10,11 @@ interface $Props {
   notificationCount?: number;
   messageCount?: number;
   onClick: any;
+  autoRelink: boolean;
 }
 export default function UserCardWImage({
   name,
+  autoRelink,
   profileImage,
   notificationCount,
   messageCount,
@@ -36,7 +38,7 @@ export default function UserCardWImage({
         }}
       >
         {profileImage !== '' ? (
-          <img 
+          <img
             src={profileImage}
             alt={name.split(' ')?.[0]}
             className={styles.image}
@@ -44,14 +46,27 @@ export default function UserCardWImage({
         ) : (
           <Avatar />
         )}
+        <div>
+
         <Typography
           variant="h3"
           color="#fff"
           fontSize={'14px'}
           fontWeight={500}
-        >
+          >
           {name}
         </Typography>
+           
+        
+          {/* <Typography
+            variant="h3"
+            color="green"
+            fontSize={'14px'}
+            fontWeight={500}
+          >
+            {autoRelink ? 'Linked' : 'Not linked'}
+          </Typography> */}
+        </div>
         {/* {notificationCount && (
           <IconButton className={styles.icon}>
             <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>

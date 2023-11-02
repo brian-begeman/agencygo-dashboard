@@ -48,12 +48,20 @@ const useFormCreator = (
     useForm({
       resolver: yupResolver(validationSchema),
     });
-    const { userData } = useContext(AuthContext);
-    
-    const onSubmit = (data: any) => {
-      if (type === 'add') {
-        data.agencyId = userData?.agency?._id
-        data.status = true; 
+  const { userData } = useContext(AuthContext);
+
+  const onSubmit = (data: any) => {
+    if (type === 'add') {
+      const ofCredsObj = {
+        email: data?.email,
+        password: data?.password,
+      };
+      
+      data.agencyId = userData?.agency?._id;
+      data.status = true;
+      data.ofcreds = ofCredsObj
+      console.log(data);
+
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',

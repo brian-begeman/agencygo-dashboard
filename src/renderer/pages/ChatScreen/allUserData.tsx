@@ -5,7 +5,7 @@ import SearchInput from 'renderer/components/SearchInput';
 
 function AllUserDataMessage(props: any) {
   return (
-    <PageAside>
+    <PageAside className={styles.pageAsideDiv}>
       <div className={styles.search}>
         <SearchInput
           value={props.searchTxt}
