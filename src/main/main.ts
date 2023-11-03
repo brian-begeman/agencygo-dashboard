@@ -23,6 +23,7 @@ import {
   BrowserView,
   screen,
   ipcMain,
+  clipboard,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -79,6 +80,16 @@ const createWindow = async () => {
     store.delete(key);
   });
 
+  ipcMain.on('download', (args, key) => {
+    console.log('download called from main', key);
+    mainWindow?.webContents.downloadURL(key.url);
+  });
+  ipcMain.on('copy-to-clipboard', (_, key) => {
+    clipboard.writeText(key.link, 'selection');
+
+    console.log('clip', clipboard.readText('selection'));
+  });
+
   /*  if (!isDebug) {
     await installExtensions();
   } */
@@ -103,6 +114,8 @@ const createWindow = async () => {
 
   const view1 = new BrowserView({
     webPreferences: {
+      webSecurity: false,
+
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
@@ -156,6 +169,24 @@ const createWindow = async () => {
       ofBrowser,
     });
   }
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+    (details, callback) => {
+      callback({
+        requestHeaders: { Origin: '*', ...details.requestHeaders },
+      });
+    }
+  );
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      callback({
+        responseHeaders: {
+          'Access-Control-Allow-Origin': ['*'],
+          ...details.responseHeaders,
+        },
+      });
+    }
+  );
 };
 
 /**
@@ -180,6 +211,6 @@ const main = async () => {
     if (mainWindow === null) createWindow();
   });
 };
-app.on('ready',createWindow)
+app.on('ready', createWindow);
 
 main();

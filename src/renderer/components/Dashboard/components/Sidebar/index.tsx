@@ -13,6 +13,7 @@ import SidebarItem from './SidebarItem';
 import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 import Message from 'renderer/assets/svg/messageSvg';
+import ContentHubSvg from 'renderer/assets/svg/ContentHubSvg';
 
 const sideBarMenuConst = [
   {
@@ -26,6 +27,12 @@ const sideBarMenuConst = [
     icon: <OnlyManagerSvg />,
     menu: [],
     link: '/manager-suite',
+  },
+   {
+    name: localisation.content,
+    icon: <ContentHubSvg />,
+    menu: [],
+    link: '/content-hub',
   },
   {
     name: localisation.analytics,

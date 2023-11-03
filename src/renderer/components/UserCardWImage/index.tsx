@@ -1,15 +1,18 @@
 import Avatar from 'renderer/assets/svg/AvatarSvg';
-import { IconButton, Stack, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import Message from 'renderer/assets/svg/messageSvg';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
+import { useEffect, useState } from 'react';
+import { bool } from 'yup';
 
 interface $Props {
   name: string;
   profileImage: string;
   notificationCount?: number;
   messageCount?: number;
-  onClick: any;
+  selected: boolean;
+  onClick: () => void;
   autoRelink: boolean;
 }
 export default function UserCardWImage({
@@ -18,78 +21,87 @@ export default function UserCardWImage({
   profileImage,
   notificationCount,
   messageCount,
+  selected,
   onClick,
 }: $Props) {
-  return (
-    <Stack
-      // spacing={1}
-      direction="row"
-      flexShrink={0}
-      flexWrap="wrap"
-      className={styles.card}
-    >
-      <div
-        onClick={onClick}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          cursor: 'pointer',
-        }}
-      >
-        {profileImage !== '' ? (
-          <img
-            src={profileImage}
-            alt={name.split(' ')?.[0]}
-            className={styles.image}
-          />
-        ) : (
-          <Avatar />
-        )}
-        <div>
+  // const [selected, setSelected] = useState(false);
+  const cardClass = selected
+    ? `${styles.card} ${styles.selected}`
+    : styles.card;
 
+  useEffect(() => {
+    console.log('inner', selected);
+  }, []);
+  return (
+    <Box
+      // spacing={1}
+      display={'flex'}
+      justifyContent={'space-between'}
+      alignItems={'center'}
+      className={cardClass}
+      onClick={onClick}
+    >
+      {profileImage !== '' ? (
+        <img
+          src={profileImage}
+          alt={name ? name.split(' ')[0] : 'No Name'}
+          className={styles.image}
+        />
+      ) : (
+        <Avatar />
+      )}
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        width={'100%'}
+      >
         <Typography
           variant="h3"
           color="#fff"
-          fontSize={'14px'}
+          fontSize={'18px'}
           fontWeight={500}
-          >
+        >
           {name}
         </Typography>
-           
-        
-          {/* <Typography
-            variant="h3"
-            color="green"
-            fontSize={'14px'}
-            fontWeight={500}
-          >
-            {autoRelink ? 'Linked' : 'Not linked'}
-          </Typography> */}
-        </div>
-        {/* {notificationCount && (
-          <IconButton className={styles.icon}>
-            <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
-              {notificationCount}
-            </Typography>
-            <Message />
-          </IconButton>
-        )}
-        {messageCount && (
-          <IconButton className={styles.icon}>
-            <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
-              {messageCount}
-            </Typography>
-            <NotificationsNoneIcon
+        <Box>
+          {notificationCount !== 0 && (
+            <IconButton
+              className={styles.icon}
               sx={{
-                color: '#AAAAAA',
-                width: '18px',
-                height: '18px',
+                backgroundColor: '#292929',
+                borderRadius: '5px',
+                marginRight: '10px',
               }}
-            />
-          </IconButton>
-        )} */}
-      </div>
-    </Stack>
+            >
+              <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+                {notificationCount}
+              </Typography>
+              <Message />
+            </IconButton>
+          )}
+          {messageCount !== 0 && (
+            <IconButton
+              className={styles.icon}
+              sx={{
+                backgroundColor: '#292929',
+                borderRadius: '5px',
+              }}
+            >
+              <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+                {messageCount}
+              </Typography>
+              <NotificationsNoneIcon
+                sx={{
+                  color: '#AAAAAA',
+                  width: '18px',
+                  height: '18px',
+                }}
+              />
+            </IconButton>
+          )}
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -80,6 +80,7 @@ export default function SidebarItem(props: any) {
               fontWeight: 600,
               marginTop: '4px',
               color: '#fff',
+              textAlign:'center'
             }}
           >
             {name}

@@ -123,8 +123,8 @@ export default function ManagerSuite() {
                     autoRelink={c?.autoRelink}
                     profileImage={ProfilePic}
                     // profileImage={c.imageSrc}
-                    notificationCount={2}
-                    messageCount={1}
+                    notificationCount={0}
+                    messageCount={0}
                     onClick={() => onclick(c)}
                   />
                 ))

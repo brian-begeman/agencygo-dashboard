@@ -32,6 +32,7 @@ const useQuery = (props: IProps) => {
         .then((response) => response.json())
         .then((res) => {
           setData(res);
+        
           setLoading(false);
         })
         .catch((error) => {

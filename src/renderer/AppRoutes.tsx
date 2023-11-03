@@ -39,6 +39,7 @@ import Invoicing from './pages/Accounting/Invoicing';
 import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
 import ChatMessage from './pages/ChatScreen';
+import ContentHub from './pages/ContentHub';
 import {useLocation} from 'react-router-dom'
 
 
@@ -62,6 +63,11 @@ const ROUTES = [
     path: '/manager-suite',
     element: <ManagerSuite />,
     pathName: 'Manager Suite',
+  },
+  {
+    path: '/content-hub',
+    element: <ContentHub />,
+    pathName: 'Content Hub',
   },
   {
     path: '/employees-manage-shifts',
