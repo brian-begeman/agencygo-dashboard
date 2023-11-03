@@ -71,15 +71,19 @@ export default function ManagerSuite() {
   };
   console.log('creators', creators);
 
-  function onclick(creator: any) { 
-    if (creator?.autoRelink) {
-      window.electron.ipcRenderer.sendMessage(
-        'attempt-login',
-        Object.assign(creator, {
-          bounds: getDivBounds('browser-view'),
-        })
-      );
-    }
+  function onclick(creator: any) {
+    console.log(creator);
+    window.electron.ipcRenderer.sendMessage('remove-browser-view');
+    window.electron.ipcRenderer.sendMessage(
+      'attempt-login',
+      Object.assign(creator, {
+        bounds: getDivBounds('browser-view'),
+        // Remove later
+        email : "ankur4736@gmail.com",
+        password: "Test@123",
+        creatorId: Math.random().toString(36).substring(2)
+      })
+    );
   }
   console.log('creators', creators);
   return (

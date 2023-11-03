@@ -106,6 +106,7 @@
     "moment": "^2.29.4",
     "puppeteer": "^21.0.3",
     "puppeteer-core": "^21.0.3",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "react": "^18.2.0",
     "react-calendar": "^4.6.0",
     "react-chartjs-2": "^5.2.0",

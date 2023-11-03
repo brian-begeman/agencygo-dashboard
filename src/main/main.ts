@@ -27,7 +27,7 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer'
 import Store from 'electron-store';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';

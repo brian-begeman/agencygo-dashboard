@@ -3,7 +3,7 @@ const API_URL =
   // 'http://localhost:3000';
  
 // 'http://ec2-18-190-107-196.us-east-2.compute.amazonaws.com:3000';
- 'http://agencygo-server-production-7f8475c1a038de7b.elb.us-east-2.amazonaws.com';
+'http://agencygo-server-production-7f8475c1a038de7b.elb.us-east-2.amazonaws.com';
 
 
 const accountSid='AC043ba2179c12c98863bf78d6332c3477' 
