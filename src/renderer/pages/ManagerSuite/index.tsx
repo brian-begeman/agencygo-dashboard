@@ -58,7 +58,8 @@ export default function ManagerSuite() {
         // Remove later
         email : creator.ofcreds.email,
         password: creator.ofcreds.password,
-        creatorId: creator._id
+        creatorId: creator._id,
+        proxy: creator.proxy.creds
       }
     );
   }

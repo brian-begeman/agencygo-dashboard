@@ -23,29 +23,23 @@ const startIPCBridge = ({
         },
       });
 
+      const proxyURL = `${arg.proxy.hostname}:${arg.proxy.port}`;
+
+      // Configure the default session to use the proxy.
+     await session.fromPartition('persist:' + arg.creatorId).setProxy({
+        proxyRules: proxyURL,
+      });
+    
       const partitionCookies = await session.fromPartition('persist:' + arg.creatorId).cookies.get({name:"auth_id"});
-      console.log("Partition cookies:",partitionCookies)
 
-
-      mainWindow.addBrowserView(ofBrowserView);  
-      // "http://AxhJ7RZrde8cL2Yj:vgari3N0N5lCn0HS@geo.iproyal.com:12321"
-      //  await session.fromPartition('persist:' + arg.creatorId).setProxy({
-      //   proxyRules : "http=geo.iproyal.com:12321;https=geo.iproyal.com:12321"
-      // })
-      // const p1 = await pie.getPage(ofBrowser, ofBrowserView);
-      // await p1.goto('https://iproyal.com/ip-lookup/');
-
-      // return;
-      
+      mainWindow.addBrowserView(ofBrowserView); 
       ofBrowserView.setBounds({
         x: -999999,
         y: -999999, 
         width: 800,
         height: 500
       })
-
-
-      const page = await pie.getPage(ofBrowser, ofBrowserView);
+    
 
       const loginOFAccount = async () => {
         await page.evaluate(() => {
@@ -86,6 +80,16 @@ const startIPCBridge = ({
         }
       }
 
+
+      const page = await pie.getPage(ofBrowser, ofBrowserView);
+      await page.authenticate({
+        username : arg.proxy.username,
+        password :arg.proxy.password
+      })
+      
+      // ofBrowserView?.setBounds(arg.bounds)
+      // return await page.goto('https://iproyal.com/ip-lookup/');
+    
       await page.goto('https://onlyfans.com');
       await page.waitForNavigation();
 
@@ -96,9 +100,9 @@ const startIPCBridge = ({
 
       if(partitionCookies.length){
         console.log("Already logged in")
-        await page.waitForSelector("nav[data-v-7cb0b044]");
+        await page.waitForSelector("nav");
          await page.evaluate(() => {
-            const nav = document.querySelector("nav[data-v-7cb0b044]");
+            const nav = document.querySelector("nav");
             if(nav){
               nav?.remove()
             }
