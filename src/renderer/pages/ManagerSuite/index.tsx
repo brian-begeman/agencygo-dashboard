@@ -8,31 +8,9 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import { CircularProgress, Grid } from '@mui/material';
+import { CircularProgress, Grid ,Typography} from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
-import axios from 'axios';
-import { API_URL } from 'config';
 
-const ofusers = [
-  {
-    name: 'Joan Adams',
-    email: 'cheyonlyfans@yahoo.com',
-    password: 'Congo212',
-    creatorId: 'cheyonlyfans',
-    profileImage: '',
-    notificationCount: 3,
-    messageCount: 1,
-  },
-  {
-    name: 'Brad Goldborn',
-    email: 'ankur4736@gmail.com',
-    password: 'Test@123',
-    creatorId: 'ankur',
-    profileImage: '',
-    notificationCount: 3,
-    messageCount: 1,
-  },
-];
 
 function getDivBounds(divId: string) {
   const div = document.getElementById(divId);
@@ -72,17 +50,16 @@ export default function ManagerSuite() {
   console.log('creators', creators);
 
   function onclick(creator: any) {
-    console.log(creator);
     window.electron.ipcRenderer.sendMessage('remove-browser-view');
     window.electron.ipcRenderer.sendMessage(
       'attempt-login',
-      Object.assign(creator, {
+      {
         bounds: getDivBounds('browser-view'),
         // Remove later
-        email : "ankur4736@gmail.com",
-        password: "Test@123",
-        creatorId: Math.random().toString(36).substring(2)
-      })
+        email : creator.ofcreds.email,
+        password: creator.ofcreds.password,
+        creatorId: creator._id
+      }
     );
   }
   console.log('creators', creators);
@@ -152,9 +129,22 @@ export default function ManagerSuite() {
                   width: '100%',
                   height: '100vh',
                   background: '#000',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems :"center"
                 }}
                 id="browser-view"
-              ></div>
+              >
+                <CircularProgress />
+                <Typography
+          variant="h3"
+          color="#fff"
+          fontSize={'18px'}
+          fontWeight={500}
+        >
+           Please wait, Logging you in...
+        </Typography>
+              </div>
             </Grid>
           </Grid>
         </PageAside>

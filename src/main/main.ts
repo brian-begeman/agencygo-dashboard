@@ -115,7 +115,6 @@ const createWindow = async () => {
   const view1 = new BrowserView({
     webPreferences: {
       webSecurity: false,
-
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
@@ -127,12 +126,12 @@ const createWindow = async () => {
 
   view1.setBounds({
     x: 0,
-    y: 26,
-    width: Math.round(winDimens.width * 1),
-    height: Math.round(winDimens.height),
+    y: 0,
+    width: winDimens.width,
+    height: winDimens.height,
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
-  view1.webContents.openDevTools();
+  // view1.webContents.openDevTools();
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

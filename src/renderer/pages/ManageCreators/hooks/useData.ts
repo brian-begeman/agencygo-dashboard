@@ -53,7 +53,7 @@ const useDataCreators = () => {
       .map((key) => `${key}=${encodeURIComponent(data[key])}`)
       .join('&');
 
-    let endpoint = `creators/search/?agencyId=${agencyId}`;
+    let endpoint = `creators/?agencyId=${agencyId}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
