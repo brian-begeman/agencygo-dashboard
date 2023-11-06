@@ -43,6 +43,20 @@ class AppUpdater {
   }
 }
 
+  autoUpdater.on('update-downloaded', () => {
+    log.info('update downloaded');
+    setImmediate(() => {
+      try {
+        log.info('installing update');
+        // app.relaunch();
+        autoUpdater.quitAndInstall();
+      } catch (err) {
+        log.error('Error installing update');
+        log.error(err);
+      }
+    });
+  });
+
 let mainWindow: BrowserWindow | null = null;
 let ofBrowser: Browser | null = null;
 
@@ -132,7 +146,7 @@ const createWindow = async () => {
     height: winDimens.height,
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
-  // view1.webContents.openDevTools();
+  view1.webContents.openDevTools();
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

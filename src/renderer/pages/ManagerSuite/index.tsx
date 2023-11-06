@@ -10,6 +10,7 @@ import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import { CircularProgress, Grid ,Typography} from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
+import { useParams } from 'react-router-dom';
 
 
 function getDivBounds(divId: string) {
@@ -43,11 +44,11 @@ export default function ManagerSuite() {
   +useEffect(() => {
     handleSearch(agencyId);
   }, [agencyId]);
+  const {page} = useParams();
 
   const onSearch = (value: string) => {
     setSearch(value);
   };
-  console.log('creators', creators);
 
   function onclick(creator: any) {
     window.electron.ipcRenderer.sendMessage('remove-browser-view');
@@ -59,7 +60,8 @@ export default function ManagerSuite() {
         email : creator.ofcreds.email,
         password: creator.ofcreds.password,
         creatorId: creator._id,
-        proxy: creator.proxy.creds
+        proxy: creator.proxy.creds,
+        page
       }
     );
   }
@@ -69,7 +71,7 @@ export default function ManagerSuite() {
       <section className={styles.wrapper}>
         <PageTopbar>
           <PageTopbar.HeaderText>
-            {localisation.onlyFansManagerSuite}
+            {localisation.onlyFansManagerSuite}  <span style={{textTransform:"capitalize"}}>{page}</span>
           </PageTopbar.HeaderText>
         </PageTopbar>
         <PageAside>

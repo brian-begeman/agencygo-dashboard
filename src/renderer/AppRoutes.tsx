@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
 import DashboardPage from './pages/DasboardPage';
-import ManagerSuite from './pages/ManagerSuite';
+import ManagerSuite from './pages/ManagerSuite/index';
 import EmployeeShifts from './pages/EmployeeShifts';
 import ManageCreators from './pages/ManageCreators';
 import Notification from './pages/Notification';
@@ -60,7 +60,7 @@ const ROUTES = [
     pathName: 'Dashboard Page',
   },
   {
-    path: '/manager-suite',
+    path: '/manager-suite/:page',
     element: <ManagerSuite />,
     pathName: 'Manager Suite',
   },

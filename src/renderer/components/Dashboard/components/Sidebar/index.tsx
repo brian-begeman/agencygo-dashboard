@@ -25,10 +25,55 @@ const sideBarMenuConst = [
   {
     name: localisation.manager,
     icon: <OnlyManagerSvg />,
-    menu: [],
-    link: '/manager-suite',
+    menu: [
+      {
+        label: 'Notifications',
+        value: 'notifications',
+        link: '/manager-suite/notifications',
+      },
+      {
+        label: 'Messages',
+        value: 'messages',
+        link: '/manager-suite/messages',
+      },
+      {
+        label: 'Collections',
+        value: 'collections',
+        link: '/manager-suite/collections',
+      },
+      {
+        label: 'Vault',
+        value: 'vault',
+        link: '/manager-suite/vault',
+      },
+      {
+        label: 'Queue',
+        value: 'queue',
+        link: '/manager-suite/queue',
+      },
+      {
+        label: 'Statements',
+        value: 'statements',
+        link: '/manager-suite/statements',
+      },
+      {
+        label: 'Statistics',
+        value: 'statistics',
+        link: '/manager-suite/statistics',
+      },
+      {
+        label: 'My Profile',
+        value: 'myprofile',
+        link: '/manager-suite/myprofile',
+      },
+      {
+        label: 'New Post',
+        value: 'newpost',
+        link: '/manager-suite/newpost',
+      },
+    ],
   },
-   {
+  {
     name: localisation.content,
     icon: <ContentHubSvg />,
     menu: [],
@@ -155,7 +200,7 @@ const sideBarMenuConst = [
   },
   {
     name: 'Message',
-    icon:  <Message/>,
+    icon: <Message />,
     menu: [],
     link: '/chatmessage',
   },
