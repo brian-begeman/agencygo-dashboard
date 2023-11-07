@@ -52,53 +52,6 @@ for (const item of urls) {
 }
 }
 
-const getPageUrl = (page:any) => {
-const urls =  [
-    {
-        "key": "notifications",
-        "url": "https://onlyfans.com/my/notifications"
-    },
-    {
-        "key": "messages",
-        "url": "https://onlyfans.com/my/chats/"
-    },
-    {
-        "key": "collections",
-        "url": "https://onlyfans.com/my/collections/user-lists/recent"
-    },
-    {
-        "key": "vault",
-        "url": "https://onlyfans.com/my/vault/list/all"
-    },
-    {
-        "key": "queue",
-        "url": "https://onlyfans.com/my/queue"
-    },
-    {
-        "key": "statements",
-        "url": "https://onlyfans.com/my/statements/earnings"
-    },
-    {
-        "key": "statistics",
-        "url": "https://onlyfans.com/my/statistics/statements/earnings"
-    },
-    {
-        "key": "myprofile",
-        "url": "https://onlyfans.com/piinkangelbby"
-    },
-    {
-        "key": "newpost",
-        "url": "https://onlyfans.com/posts/create"
-    }
-]
-
-for (const item of urls) {
-  if (item.key === page) {
-      return item.url;
-  }
-}
-}
-
 const startIPCBridge = ({
   mainWindow,
   ofBrowser,
