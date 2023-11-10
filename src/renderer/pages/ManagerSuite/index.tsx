@@ -33,6 +33,7 @@ function getDivBounds(divId: string) {
 export default function ManagerSuite() {
   const agencyId = localStorage.getItem('AgencyId');
   const [search, setSearch] = useState('');
+// const [ selectedCreator,setSelectedCreator]=useState()
   const {
     creators,
     isLoading,
@@ -41,7 +42,7 @@ export default function ManagerSuite() {
     setSelectedCreator,
     handleSearch,
   } = useDataCreators();
-  +useEffect(() => {
+  useEffect(() => {
     handleSearch(agencyId);
   }, [agencyId]);
   const {page} = useParams();
@@ -51,6 +52,7 @@ export default function ManagerSuite() {
   };
 
   function onclick(creator: any) {
+     setSelectedCreator(creator._id)
     window.electron.ipcRenderer.sendMessage('remove-browser-view');
     window.electron.ipcRenderer.sendMessage(
       'attempt-login',
@@ -109,6 +111,7 @@ export default function ManagerSuite() {
                     // profileImage={c.imageSrc}
                     notificationCount={0}
                     messageCount={0}
+                    selected={selectedCreator === c._id}
                     onClick={() => onclick(c)}
                   />
                 ))
@@ -143,6 +146,7 @@ export default function ManagerSuite() {
           variant="h3"
           color="#fff"
           fontSize={'18px'}
+          marginLeft={'20px'}
           fontWeight={500}
         >
            Please wait, Logging you in...

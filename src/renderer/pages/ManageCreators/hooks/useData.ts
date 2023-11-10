@@ -66,6 +66,7 @@ const useDataCreators = () => {
       .then((res) => {
         setData(res);
         setCreators(res?.data)
+        setSelectedCreator(res?.data[0]._id)
       })
       .catch((err) => {
         console.log('Error occured: ', err);
