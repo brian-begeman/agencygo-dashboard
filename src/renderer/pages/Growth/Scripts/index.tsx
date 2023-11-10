@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { Add } from '@mui/icons-material';
 import FileNotFound from 'renderer/assets/svg/FileNotFound';
@@ -14,7 +14,7 @@ const headTags = ['Name', 'Text', 'Tags', 'Statistics', 'Operations'];
 
 function Scripts() {
   const [search, setSearch] = useState('');
-
+const theme = useTheme();
   const onSearch = (value: string) => {
     setSearch(value);
   };

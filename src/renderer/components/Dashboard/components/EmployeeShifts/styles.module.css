@@ -13,7 +13,7 @@
 
 .dateBoxItem {
   padding: 4px 8px 20px 8px;
-  border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+  
   font-size: 20px;
 }
 
@@ -32,6 +32,7 @@
 .leftSideWrapper {
   display: flex;
   flex-direction: column;
+  
 }
 .timeBoxItem {
   padding: 16px;
@@ -68,3 +69,4 @@
   align-items: center;
   gap: 8px;
 }
+

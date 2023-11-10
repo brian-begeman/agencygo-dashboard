@@ -1,5 +1,5 @@
 import { KeyboardArrowUp } from '@mui/icons-material';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import OnlyFansCircleBlue from 'renderer/assets/svg/OnlyFansCircleBlueSvg';
 import theme from 'renderer/styles/muiTheme';
@@ -54,8 +54,13 @@ const timeButton = [
 
 export default function Earnings() {
   const [activeButton, setActiveButton] = useState(1);
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Box
+     
       padding="16px"
       sx={{
         borderRadius: '16px',
@@ -63,7 +68,7 @@ export default function Earnings() {
       }}
     >
       <Box marginBottom="10px" display="flex" justifyContent="space-between">
-        <Typography color="#AAAAAA" fontWeight="600" fontSize="22px">
+        <Typography  fontWeight="600" fontSize="22px">
           Creators Earnings Overview
         </Typography>
         <ButtonGroup
@@ -87,7 +92,7 @@ export default function Earnings() {
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
           <Stack flexDirection="row" alignItems="center">
-            <Typography color="#fff">Total Earnings</Typography>
+            <Typography >Total Earnings</Typography>
             <KeyboardArrowUp
               sx={{
                 color: theme.palette.primary.light,
@@ -95,7 +100,7 @@ export default function Earnings() {
                 fontSize: '14px',
               }}
             />
-            <Typography color={theme.palette.primary.light} fontSize="14px">
+            <Typography color={theme.palette.info.main} fontSize="14px">
               12.7%
             </Typography>
           </Stack>
@@ -103,7 +108,7 @@ export default function Earnings() {
             variant="h3"
             fontWeight="700"
             fontSize={'36px'}
-            color={theme.palette.secondary.contrastText}
+           
           >
             $473.44
           </Typography>

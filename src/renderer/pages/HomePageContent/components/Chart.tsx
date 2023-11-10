@@ -11,7 +11,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 ChartJS.register(
   CategoryScale,
@@ -52,10 +52,12 @@ export const data = {
 };
 
 export function ChartLine() {
+  const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor:isDarkTheme ? '#0F0F0F':'#fff',
         maxHeight: '200px',
         borderRadius: '16px',
       }}

@@ -87,20 +87,20 @@ export default function FilterTable() {
             }}
           >
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Creators</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell >Creators</TableCell>
+              <TableCell  align="right">
                 Gender
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell  align="right">
                 Internal Notes
               </TableCell>
-              <TableCell sx={{ color: '#fff' }}>Platform</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell >Platform</TableCell>
+              <TableCell  align="right">
                 Employees
               </TableCell>
-              <TableCell sx={{ color: '#fff' }}>Proxy</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Status</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Operations</TableCell>
+              <TableCell >Proxy</TableCell>
+              <TableCell >Status</TableCell>
+              <TableCell >Operations</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

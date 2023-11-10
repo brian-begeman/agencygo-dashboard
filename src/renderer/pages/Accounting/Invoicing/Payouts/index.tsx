@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import DownloadSvgIcon from 'renderer/assets/svg/downloadSvg';
@@ -82,43 +83,49 @@ const payoutData = [
 ];
 const Payouts = () => {
   const [selectedStatus, setSelectedStatus] = useState('Filter');
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Stack
       borderRadius="16px"
       gap="15px"
+      bgcolor={isDarkTheme ? '#000' : '#fff'}
       sx={{
-        padding: '10px',
-        border: `1px solid ${theme.palette.primary.contrastText}`,
+        paddingTop: '10px',
+        paddingBottom:'10px',
+        border: `2px solid ${theme.palette.primary.contrastText}`,
       }}
     >
-      <Box display={'flex'} justifyContent={'space-between'}>
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        paddingTop={'10px'}
+        paddingLeft={'15px'}
+      >
         <Typography fontSize="22px">Invoicing</Typography>
-        <Box>
+        <Box sx={ {paddingRight:'16px'}}>
           <Select
             id="filter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
-              width: 'fit-content',
-              '.MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.light,
-              },
+           
+              width: '150px',
+              
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
-                {
-                  padding: '4px 8px',
-                },
+              ' & .MuiOutlinedInput-input': {
+                padding: '4px  8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -126,38 +133,43 @@ const Payouts = () => {
           >
             <MenuItem
               value={'Filter'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500,  }}
             >
               Filter
             </MenuItem>
-            <MenuItem value={'paid'} sx={{ fontWeight: 500, fontSize: '11px' }}>
+            <MenuItem value={'paid'} sx={{ fontWeight: 500, }}>
               Paid invoice
             </MenuItem>
             <MenuItem
               value={'unpaid'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500,  }}
             >
               Pending invoice
             </MenuItem>
           </Select>
         </Box>
       </Box>
-      <TableContainer>
+      <TableContainer
+        sx={{
+          border: `1px solid ${theme.palette.primary.contrastText}`,
+         width:'100%'
+        }}
+      >
         <Table
-          sx={{
-            minWidth: 650,
-            borderRadius: 16,
-            border: '1px solid #292929',
-          }}
+          
           aria-label="simple table"
         >
-          <TableHead sx={{ bgcolor: '#292929' }}>
+          <TableHead
+            sx={{
+              background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
+            }}
+          >
             <TableRow>
-              <TableCell sx={{ color: '#FFFFFF' }}>Amount</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Status</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Status</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Actions</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -175,7 +187,7 @@ const Payouts = () => {
               >
                 <TableCell
                   scope="row"
-                  sx={{ color: '#FFFFFF', padding: '25px 10px' }}
+                  sx={{  padding: '25px 10px' }}
                 >
                   {row.amount}
                 </TableCell>
@@ -198,7 +210,7 @@ const Payouts = () => {
                     {row.status}
                   </Typography>
                 </TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>{row.date}</TableCell>
+                <TableCell >{row.date}</TableCell>
                 <TableCell
                   sx={{
                     color:

@@ -14,6 +14,7 @@ import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 import Message from 'renderer/assets/svg/messageSvg';
 import ContentHubSvg from 'renderer/assets/svg/ContentHubSvg';
+import { useTheme } from '@mui/material';
 
 const sideBarMenuConst = [
   {
@@ -123,7 +124,7 @@ const sideBarMenuConst = [
   },
   {
     name: localisation.growth,
-    icon: <GrowthSvg />,
+    icon: <GrowthSvg  />,
     menu: [
       {
         label: 'Smart Tags',
@@ -248,9 +249,17 @@ function SideBar() {
   const handlePopoverClose = () => {
     setCurrentNavItemHovered(-1);
   };
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+// Determine the class based on the theme
+const mode = isDarkTheme ? classes.darkTheme : classes.lightTheme;
 
   return (
-    <div className={classes.sidebar}>
+    <div
+      className={`${classes.sidebar} ${mode}`}
+     
+    >
       <BrandLogo />
       <div className={classes.sidebarNavWrapper}>
         {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {

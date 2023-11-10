@@ -11,7 +11,7 @@ export default function CreatorPerformance() {
       <Stack>
         <SearchUsers />
       </Stack>
-      <Stack display="flex" gap="10px">
+      <Stack display="flex" gap="10px" width={'100%'}>
         <Earnings />
         <EaringDistribution />
         <DayHourEarnings />

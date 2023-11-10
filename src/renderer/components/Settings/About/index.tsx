@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 function AboutGo() {
   return (
     <Box sx={{ textAlign: 'center', marginTop: '150px' }}>
-      <Typography fontWeight={700} fontSize="53px" sx={{ color: '#fff' }}>
+      <Typography fontWeight={700} fontSize="53px" >
         Trusted Partners
       </Typography>
      

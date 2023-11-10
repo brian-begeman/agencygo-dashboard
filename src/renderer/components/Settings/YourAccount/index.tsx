@@ -4,7 +4,7 @@ import ChangepictureSvg from 'renderer/assets/svg/ChangePictureSvg';
 
 import ProfilePic from 'renderer/assets/png/profile.jpg';
 import EditSvg from 'renderer/assets/svg/EditSvg';
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, useTheme } from '@mui/material';
 import classes from './styles.module.css';
 
 interface InputProps {
@@ -15,6 +15,10 @@ interface InputProps {
 }
 function Input(props: InputProps) {
   const { placeholder, name, handleOnChange, value } = props;
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <input
       type="text"
@@ -22,6 +26,7 @@ function Input(props: InputProps) {
       onChange={(e) => handleOnChange(e.target.value, name)}
       className={classes.inputWrap}
       value={value}
+      style={{ color: isDarkTheme ? '#fff' : '#000' }}
     />
   );
 }
@@ -69,6 +74,7 @@ function YourAccount() {
             name="prevPassword"
             handleOnChange={handleOnChange}
             value={password.prevPassword}
+    
           />
           <Input
             placeholder="New password"
@@ -87,7 +93,6 @@ function YourAccount() {
           <Button
             variant="contained"
             fullWidth
-            disabled={!enableButton}
             sx={{
               backgroundColor: 'your-desired-color-here',
               '&.Mui-disabled': {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Overlay from '../../Wallet/Common/Modal';
 import classes from '../../Wallet/Common/Modal/styles.module.css';
 import {
@@ -41,9 +41,13 @@ export default function SettingBilling() {
   const handleModalClose = () => {
     setOpen(false);
   };
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Overlay heading="Setting" open={open} handleClose={handleModalClose}>
-      <Box sx={{ backgroundColor: '#4B4B4B' }}>
+      <Box sx={{ backgroundColor: isDarkTheme ? '#4B4B4B' : '#fff' }}>
         <div className={classes.modalBody}>
           <Box
             sx={{

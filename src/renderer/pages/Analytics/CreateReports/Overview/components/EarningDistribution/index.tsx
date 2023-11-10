@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import faker from 'faker';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 
@@ -139,18 +139,26 @@ export function EaringDistribution() {
     { color: '#E0218A', title: 'Streams', percentage: -4.1, dollar: '$133 ' },
   ];
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       borderRadius="16px"
-      bgcolor="black"
+      bgcolor={isDarkTheme ? '#000' : '#fff'}
       padding="20px"
       display="flex"
       flexDirection="column"
       gap="20px"
     >
-      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+      <Typography
+        fontSize="22px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+        color={isDarkTheme ? '#fff' : '#000'}
+      >
         Earning Distribution
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
       <Box display="flex">
         <Box width={'70%'}>
@@ -168,14 +176,25 @@ export function EaringDistribution() {
                     borderRadius={'50%'}
                     bgcolor={val.color}
                   ></Box>
-                  <Typography width="150px">{val.title}</Typography>
+                  <Typography
+                    width="150px"
+                    color={isDarkTheme ? '#fff' : '#000'}
+                  >
+                    {val.title}
+                  </Typography>
                   <Typography
                     width="100px"
                     color={Number(val.percentage) > 0 ? '#37DE8F' : '#FF0000'}
                   >
                     {val.percentage}%
                   </Typography>
-                  <Typography width="100px">{val.dollar}</Typography>
+                  <Typography
+                    width="100px"
+                    color={isDarkTheme ? '#fff' : '#000'}
+                  >
+                    {' '}
+                    {val.dollar}
+                  </Typography>
                 </Box>
                 <Divider />
               </>

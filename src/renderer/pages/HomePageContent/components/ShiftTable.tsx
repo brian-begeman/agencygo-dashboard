@@ -8,13 +8,14 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import OnlyFansSvg from 'renderer/assets/svg/OnlyFansSvg';
-
+import styles from './styles.module.css';
 const rows = [
   {
     name: 'Joan Adams',
@@ -70,8 +71,16 @@ const rows = [
 ];
 
 export default function ShiftTable() {
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  // Determine the class based on the theme
+  const mode = isDarkTheme ? styles.darkTheme : styles.lightTheme;
+
   return (
     <Box
+      className={mode}
       padding="16px"
       sx={{ backgroundColor: theme.palette.secondary.main }}
       borderRadius="16px"
@@ -93,14 +102,14 @@ export default function ShiftTable() {
             }}
           >
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Creators</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Gender</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Internal Notes</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Platform</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Employees</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Proxy</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Status</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Operations</TableCell>
+              <TableCell >Creators</TableCell>
+              <TableCell >Gender</TableCell>
+              <TableCell>Internal Notes</TableCell>
+              <TableCell >Platform</TableCell>
+              <TableCell >Employees</TableCell>
+              <TableCell >Proxy</TableCell>
+              <TableCell >Status</TableCell>
+              <TableCell >Operations</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -128,7 +137,7 @@ export default function ShiftTable() {
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
                       <Avatar />
-                      <Typography variant="h6" fontSize="14px" color="#fff">
+                      <Typography variant="h6" fontSize="14px">
                         {name}
                       </Typography>
                     </Stack>
@@ -136,7 +145,7 @@ export default function ShiftTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                     
                     }}
                   >
                     {gender}
@@ -144,7 +153,7 @@ export default function ShiftTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                      
                     }}
                   >
                     {internalNotes}
@@ -158,19 +167,19 @@ export default function ShiftTable() {
                       alignItems="center"
                       flexDirection="row"
                       spacing={2}
-                      color="#fff"
+                      
                     >
                       {platform.icon}
                       {platform.name}
                     </Stack>
-                    <Typography component="small" color="#fff" fontSize="11px">
+                    <Typography component="small"  fontSize="11px">
                       {platform.linked ? 'Linked' : 'Not Linked'}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                     
                     }}
                   >
                     {employees}
@@ -180,10 +189,10 @@ export default function ShiftTable() {
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Typography color="#fff" fontSize="12px">
+                    <Typography  fontSize="12px">
                       {proxy.name}
                     </Typography>
-                    <Typography color="#fff" fontSize="10px">
+                    <Typography  fontSize="10px">
                       {proxy.ipAddress}
                     </Typography>
                   </TableCell>
@@ -203,14 +212,14 @@ export default function ShiftTable() {
                     <Stack spacing={4} direction="row" alignItems="center">
                       <Typography
                         variant="body1"
-                        color="#fff"
+                        
                         fontSize={'14px'}
                       >
                         Edit
                       </Typography>
                       <Typography
                         variant="body1"
-                        color="#fff"
+                       
                         fontSize={'14px'}
                       >
                         More

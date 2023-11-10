@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 
 ChartJS.register(
@@ -62,18 +62,27 @@ export const data = {
 };
 
 export default function CreatorEarnings() {
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+      <Typography
+        color={isDarkTheme ? '#fff' : '#000'}
+        fontSize="22px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+      >
         Creator Earnings
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/> 
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
       <Box
         sx={{

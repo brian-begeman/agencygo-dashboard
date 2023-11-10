@@ -9,7 +9,7 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Switch,
+  Switch, useTheme
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import LensIcon from '@mui/icons-material/Lens';
@@ -46,11 +46,20 @@ export function InputWithLabel(props: InputWithLabelProps) {
     handleOnChange = () => {},
     register = () => ({}),
   } = props;
+
+
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <div className={classes.inputLabelWrapper}>
       <LabelText label={label} />
       <input
-        style={inputStyle}
+        style={{
+          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          color: isDarkTheme ? '#fff' : '#000',
+        }}
         className={classes.inputCss}
         name={inputIdentifierName}
         placeholder={placeholder}
@@ -98,11 +107,18 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     register = () => ({}),
   } = props;
 
+
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <div className={classes.inputLabelWrapper}>
       {label && <LabelText label={label} />}
       <select
-        style={selectStyle}
+        style={{
+          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          color: isDarkTheme ? '#fff' : '#000',
+        }}
         className={classes.selectCss}
         name={inputIdentifierName}
         id={inputIdentifierName}
@@ -144,12 +160,19 @@ export function ModalFooter(props: ModalFooterProps) {
     isLoading,
     id = '',
   } = props;
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
-    <div className={classes.modalFooter}>
+    <div
+      className={classes.modalFooter}
+      style={{ backgroundColor: isDarkTheme ? '#000' : '#EAF1FF' }}
+    >
       <button
         className={classes.cancelButtonCss}
         onClick={cancelHandler}
         type="button"
+        style={{ color: isDarkTheme ? '#fff' : '#000' }}
       >
         {cancelText}
       </button>
@@ -223,6 +246,8 @@ any) {
   const handleOnChange = (event: any) => {
     setSelectedValues(event.target.value as typeof selectedValues);
   };
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <>
@@ -231,7 +256,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          background: '#292929',
+          backgroundColor: isDarkTheme? '#0C0C0C':'#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',

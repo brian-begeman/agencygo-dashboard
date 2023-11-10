@@ -5,6 +5,7 @@ import { useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 import MultiSelect from 'renderer/components/Dropdown';
 import fetchReq from 'utils/fetch';
+import { useTheme } from '@mui/material';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -47,6 +48,9 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
       handleClose()
   }
 
+  const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <div>
       <Modal
@@ -60,7 +64,8 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
             sx={{
               padding: '20px',
               borderRadius: '10px 10px 0px 0px',
-              color:'#fff'
+              color: isDarkTheme ? '#fff' : '#000',
+              background: isDarkTheme ? '#000' : '#EAF1FF',
             }}
           >
             Assign Creators for {name}
@@ -68,10 +73,16 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
           <Box
             sx={{
               padding: '20px',
-              background: '#4B4B4B',
+
+              background: isDarkTheme ? '#4B4B4B' : '#fff',
             }}
           >
-            <MultiSelect multiple={true} creatorNames={data?.data} selectedValues={selectedValues} setSelectedValues={setSelectedValues}/>
+            <MultiSelect
+              multiple={true}
+              creatorNames={data?.data}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
           </Box>
           <Box
             display={'flex'}
@@ -80,10 +91,19 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
             sx={{
               padding: '10px 20px',
               borderRadius: '0px 0px 10px 10px',
+              background: isDarkTheme ? '#000' : '#EAF1FF',
             }}
           >
-            <PageTopbar.Button text="Cancel" color="secondary" onClick={handleClose} />
-            <PageTopbar.Button color="primary" text="Confirm" onClick={()=>handleAssignCreator(id)}/>
+            <PageTopbar.Button
+              text="Cancel"
+              color="secondary"
+              onClick={handleClose}
+            />
+            <PageTopbar.Button
+              color="primary"
+              text="Confirm"
+              onClick={() => handleAssignCreator(id)}
+            />
           </Box>
         </Box>
       </Modal>

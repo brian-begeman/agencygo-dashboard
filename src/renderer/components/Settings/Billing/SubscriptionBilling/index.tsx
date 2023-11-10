@@ -1,5 +1,5 @@
 import FilterTable from 'renderer/components/Filter/FilterTable';
-import { Button, TableCell, TableRow, Typography } from '@mui/material';
+import { Button, TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import ChevronSettingNav from 'renderer/assets/svg/ChevronSettingNav';
 import classes from './styles.module.css';
@@ -23,17 +23,15 @@ function SubscriptionBilling(props: TabProps) {
     },
   ];
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <div className={classes.wrapper}>
       <div className={classes.prefernceWrapper}>
         <div className={classes.inputListWrapper}>
           <div className={classes.billingheader}>
             <Button onClick={() => handleTabChange('Billing')}>
-              <Typography
-                fontWeight={500}
-                fontSize="14px"
-                sx={{ color: '#fff' }}
-              >
+              <Typography fontWeight={500} fontSize="14px">
                 Billing
               </Typography>
             </Button>
@@ -52,12 +50,24 @@ function SubscriptionBilling(props: TabProps) {
           <div>
             <h3 className={classes.labellist}>Estimated Monthly Earnings </h3>
             <div className={classes.select_box}>
-              <select className={classes.optionlist}>
+              <select
+                className={classes.optionlist}
+                style={{
+                  backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                  color: isDarkTheme ? '#fff' : '#121212',
+                }}
+              >
                 <option>$2000 - $5000</option>
                 <option>Test This Select</option>
               </select>
             </div>
-            <div className={classes.card}>
+            <div
+              className={classes.card}
+              style={{
+                backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                color: isDarkTheme ? '#fff' : '#121212',
+              }}
+            >
               <div className={classes.monthlysubscriptioncard}>
                 <h1 className={classes.paidplancard}>$60</h1>
                 <p className={classes.permonth}>Per Month</p>
@@ -103,14 +113,13 @@ function SubscriptionBilling(props: TabProps) {
                           }}
                           scope="row"
                         >
-                          <Typography variant="h6" fontSize="18px" color="#fff">
+                          <Typography variant="h6" fontSize="18px">
                             {GrossMonthlyEarnings}
                           </Typography>
                         </TableCell>
                         <TableCell
                           sx={{
                             borderColor: theme.palette.primary.contrastText,
-                            color: '#fff',
                           }}
                         >
                           {SubscriptionFee}

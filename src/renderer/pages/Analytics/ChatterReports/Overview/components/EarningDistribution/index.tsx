@@ -1,5 +1,5 @@
 import { ErrorOutline } from '@mui/icons-material';
-import { Box, Checkbox, Divider, Typography } from '@mui/material';
+import { Box, Checkbox, Divider, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import {
   Chart as ChartJS,
@@ -81,6 +81,9 @@ export function EaringDistributionChart() {
 }
 
 const EaringDistribution = () => {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   const dummyData = [
     { name: 'admin@diamondlifestyle.com', dollar: '$1332.63' },
     { name: 'Peter', dollar: '$1096.00' },
@@ -94,13 +97,19 @@ const EaringDistribution = () => {
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="18px" display="flex" alignItems="center" gap="3px">
+      <Typography
+        color={isDarkTheme ? '#fff' : '#000'}
+        fontSize="18px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+      >
         Earing Distribution
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
@@ -123,10 +132,14 @@ const EaringDistribution = () => {
                       },
                     }}
                   />
-                  <Typography width="200px" fontSize={14}>
+                  <Typography
+                    width="200px"
+                    fontSize={14}
+                    color={isDarkTheme ? '#fff' : '#000'}
+                  >
                     {val.name}
                   </Typography>
-                  <Typography width="50px" fontSize={14}>
+                  <Typography width="50px" fontSize={14} color={isDarkTheme ? '#fff' : '#000'}>
                     {val.dollar}
                   </Typography>
                 </Box>

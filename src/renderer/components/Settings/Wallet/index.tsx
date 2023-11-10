@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TableCell, TableRow, Typography, Button, Stack } from '@mui/material';
+import { TableCell, TableRow, Typography, Button, Stack, useTheme } from '@mui/material';
 
 import FilterTable from 'renderer/components/Filter/FilterTable';
 import theme from 'renderer/styles/muiTheme';
@@ -17,16 +17,27 @@ interface TabProps {
 
 function WalletTab(props: TabProps) {
   const { handleTabChange } = props;
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  
   return (
     <div className={classes.billing}>
       <div className={classes.billingHeader}>
         <div className={classes.buttonWrapper}>
           <Button
             variant="contained"
-            color="secondary"
+            sx={{
+              backgroundColor: isDarkTheme ? '#121212' : '#EAF1FF',
+            }}
             onClick={() => handleTabChange('withdrawalRequest')}
           >
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
+            <Typography
+              fontWeight={500}
+              fontSize="14px"
+              sx={{ color: isDarkTheme ? '#fff' : '#000' }}
+            >
               Withdraw Requests
             </Typography>
           </Button>
@@ -62,14 +73,13 @@ function WalletTab(props: TabProps) {
                     }}
                     scope="row"
                   >
-                    <Typography variant="h6" fontSize="18px" color="#fff">
+                    <Typography variant="h6" fontSize="18px">
                       {category}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {amount}
@@ -77,7 +87,6 @@ function WalletTab(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {type}
@@ -93,7 +102,6 @@ function WalletTab(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {date}
@@ -105,7 +113,8 @@ function WalletTab(props: TabProps) {
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
                       <EyeViewSvg />
-                      <DownloadSvg />
+
+                      <DownloadSvg  />
                     </Stack>
                   </TableCell>
                 </TableRow>

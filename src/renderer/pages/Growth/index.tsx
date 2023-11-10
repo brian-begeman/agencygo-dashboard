@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
@@ -21,6 +21,9 @@ export default function Growth() {
 
   const isScriptsPage = path.includes('scripts');
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -37,7 +40,7 @@ export default function Growth() {
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
             {links.map(({ link, text }) => (
-              <PageTopbar.Button
+              <PageTopbar.TabButton
                 key={text}
                 color="secondary"
                 text={text}
@@ -53,6 +56,7 @@ export default function Growth() {
             display: 'grid',
             gridTemplateColumns: 'minmax(min-content, 380px) 1fr',
             height: '100%',
+            backgroundColor: isDarkTheme ? '#000' : '#fff',
           }}
         >
           <Outlet />

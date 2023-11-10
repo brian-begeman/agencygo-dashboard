@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 
@@ -47,12 +47,25 @@ const data = {
 };
 
 export default function ChargeBacks() {
+
+     const theme = useTheme();
+     const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <>
-      <Box borderRadius="16px" padding="20px" bgcolor="var(--color-background)">
-        <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+      <Box
+        borderRadius="16px"
+        padding="20px"
+        bgcolor={isDarkTheme ? '#000' : '#fff'}
+      >
+        <Typography
+          fontSize="22px"
+          display="flex"
+          alignItems="center"
+          gap="3px"
+          color={isDarkTheme ? '#fff' : '#000'}
+        >
           Chargebacks
-          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
         </Typography>
 
         <Box display="flex" flexDirection="column" gap="20px" maxHeight="300px">

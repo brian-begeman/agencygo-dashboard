@@ -9,6 +9,7 @@ import {
   Stack,
   TableCell,
   TableRow,
+  useTheme,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -47,17 +48,20 @@ const statusMenu = [
   },
 ];
 
+
+
+
+
 const CustomButton = styled(Button)(() => ({
+
+  
   borderRadius: '8px', // Adjust the border radius,
   padding: '8px 16px',
-  color: 'white', // Set the text color
-  backgroundColor: '#0F0F0F', // Set the background color
-  '&:hover': {
-    backgroundColor: '#292929', // Set the hover background color
-  },
+ 
+ 
   textTransform: 'none', // Prevent text from being uppercase,
   boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
-  border: '1px solid #292929',
+ 
 }));
 
 const CustomIconButton = styled(IconButton)(() => ({
@@ -92,6 +96,10 @@ interface TabProps {
 }
 
 function RoleLanding(props: TabProps) {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
   function Options(props: any) {
     const { menu, handlePopoverClose, type } = props;
     return (
@@ -306,6 +314,15 @@ function RoleLanding(props: TabProps) {
               variant="contained"
               onClick={handleRoleNameClick}
               endIcon={<KeyboardArrowDownIcon />}
+              sx={{
+                backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
+                '&:hover': {
+                  backgroundColor: '#292929',
+                },
+                color: isDarkTheme ? '#fff' : '#000',
+                border: '1px solid ',
+                borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+              }}
             >
               Role Name
             </CustomButton>
@@ -330,6 +347,15 @@ function RoleLanding(props: TabProps) {
               variant="contained"
               onClick={handleStatusClick}
               endIcon={<KeyboardArrowDownIcon />}
+              sx={{
+                backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
+                '&:hover': {
+                  backgroundColor: '#292929',
+                },
+                color: isDarkTheme ? '#fff' : '#000',
+                border: '1px solid ',
+                borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+              }}
             >
               Status
             </CustomButton>
@@ -354,6 +380,15 @@ function RoleLanding(props: TabProps) {
               variant="contained"
               //   onClick={handleClick}
               startIcon={<FilterListIcon />}
+              sx={{
+                backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
+                '&:hover': {
+                  backgroundColor: '#292929',
+                },
+                color: isDarkTheme ? '#fff' : '#000',
+                border: '1px solid ',
+                borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+              }}
             >
               Filters
             </CustomButton>

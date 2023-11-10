@@ -4,6 +4,8 @@ import RightChevronSquareSvg from 'renderer/assets/svg/rightChevronSquareSvg';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
 import classes from './styles.module.css';
 import fetchReq from 'utils/fetch';
+import { useTheme } from '@mui/material';
+
 
 interface DateBoxProps {
   date: string;
@@ -82,8 +84,15 @@ function AvatarWithName(props: AvatarProps) {
 
 function DateBox(props: any) {
   const { date } = props;
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
-    <div className={classes.dateBoxItem} style={{ width: '130px' }}>
+    <div className={classes.dateBoxItem} 
+    
+    style={{ width: '130px' ,borderBottom: '4px solid'}}>
       {date.day} <br /> {date.date}
     </div>
   );

@@ -1,5 +1,5 @@
 import { ErrorOutline } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 
 import {
@@ -96,16 +96,24 @@ export function ChatterSalesChart() {
 }
 
 const ChatterSales = () => {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        background: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="18px" display="flex" alignItems="center" gap="3px">
+      <Typography
+        fontSize="18px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+        color={isDarkTheme ? '#fff' : '#000'}
+      >
         Chatter Sales
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>

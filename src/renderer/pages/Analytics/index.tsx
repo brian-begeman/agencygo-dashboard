@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -21,6 +21,9 @@ export default function ShareForShare() {
     setActiveTab(val.id);
   };
 
+ const theme = useTheme();
+ const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -35,27 +38,32 @@ export default function ShareForShare() {
         >
           <Box
             sx={{
-              bgcolor: 'black',
+              bgcolor: isDarkTheme ? '#000' : '#fff',
               position: 'absolute',
               top: 0,
               height: '100vh',
-              width: 200,
+              width: 223,
               zIndex: 10,
               padding: '10px',
             }}
           >
-            <Typography sx={{ padding: '20px 0px ' }}>Analytics</Typography>
-            {links.map(({text,link}) => {
+            <Typography
+              sx={{ padding: '20px 0px ' }}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
+              Analytics
+            </Typography>
+            {links.map(({ text, link }) => {
               return (
                 <PageTopbar.Button
-                tabButton={true}
-                key={text}
-                color="secondary"
-                text={text}
-                isActiveLink={path.includes(link)}
-                isLink
-                onClick={() => navigate(`/analytics/${link}`)}
-              />
+                  tabButton={true}
+                  key={text}
+                  color="secondary"
+                  text={text}
+                  isActiveLink={path.includes(link)}
+                  isLink
+                  onClick={() => navigate(`/analytics/${link}`)}
+                />
               );
             })}
           </Box>
@@ -63,7 +71,7 @@ export default function ShareForShare() {
             sx={{
               position: 'absolute',
               left: 315,
-              background: '#292929',
+              background: isDarkTheme ? '#292929' : '#EAF1FF',
               height: 'fit-content',
               borderRadius: '16px',
               width: 'calc(100vw - 355px)',

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import { Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
+
+
 
 function Options(props: any) {
   const { menu, handlePopoverClose } = props;
@@ -49,38 +51,95 @@ export default function SidebarItem(props: any) {
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
-      handlePopoverOpen(index);
+   handlePopoverOpen(index);
+   
+     
     } else {
       handlePopoverOpen(-1);
     }
   };
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
+   
+  // Determine the class based on the theme
+  const activeClass = isDarkTheme
+    ? classes.sidebarItemWrapperActiveDark
+    : classes.sidebarItemWrapperActiveLight;
+
+     const wrapperClass = isDarkTheme
+       ? classes.sidebarItemWrapperDark
+       : classes.sidebarItemWrapperLight;
+
+          const getImageColor =()=> {
+            let color=''
+            if (open && !isDarkTheme){
+              color =
+                'brightness(0) saturate(100%) invert(45%) sepia(77%) saturate(1638%) hue-rotate(176deg) brightness(99%) contrast(105%);';
+
+            }
+            return color
+           
+          };
+
+
+           const getTextColor =()=> {
+            let color='#fff'
+            if(open && !isDarkTheme){
+             color = '#04a1ff';
+
+            }else if (isActive && !isDarkTheme) {
+
+                color = '#04a1ff';
+            }
+            return color
+            
+           };
+
   return (
-    <div
-      className={
-        open || isActive
-          ? classes.sidebarItemWrapperActive
-          : classes.sidebarItemWrapper
-      }
-    >
+    <div className={open || isActive ? activeClass : wrapperClass}>
       <NavLink to={link || '#'} className={classes.sidebarItemNav}>
         <Stack
           alignItems="center"
-          sx={{ '&:hover': { filter: 'brightness(0.5)' }, cursor: 'pointer' }}
+          sx={
+            isDarkTheme
+              ? {
+                  '&:hover': {
+                    filter:
+                      'brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(307deg) brightness(103%) contrast(101%)',
+                  },
+                }
+              : {
+                  '&:hover': {
+                    filter:
+                      'brightness(0) saturate(100%) invert(45%) sepia(77%) saturate(1638%) hue-rotate(176deg) brightness(99%) contrast(105%)',
+                  },
+                  cursor: 'pointer',
+                }
+          }
           aria-owns={open ? 'mouse-over-popover' : undefined}
           aria-haspopup="true"
           onMouseEnter={openPopOver}
           ref={currentElem}
           onMouseLeave={handlePopoverClose}
         >
-          <div>{icon}</div>
+          <Box
+            className={
+              isActive && !isDarkTheme ? classes.iconLight : classes.iconDark
+            }
+            sx={{ filter: getImageColor() }}
+          >
+            {icon}
+          </Box>
           <Typography
             sx={{
               fontSize: '11px',
               fontWeight: 600,
               marginTop: '4px',
-              color: '#fff',
-              textAlign:'center'
+              color: getTextColor(),
+              textAlign: 'center',
             }}
           >
             {name}
