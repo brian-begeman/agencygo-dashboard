@@ -1,6 +1,5 @@
-
-import { Box } from '@mui/material'
-import React from 'react'
+import { Box } from '@mui/material';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import LinearProgress, {
   linearProgressClasses,
@@ -19,11 +18,16 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-export default function ContentHubStorageBar() {
+interface ContentHubStorageBarProps {
+  percentage: number;
+}
+
+export default function ContentHubStorageBar(props: ContentHubStorageBarProps) {
+  const { percentage } = props;
+
   return (
     <Box>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={percentage} />
     </Box>
   );
 }
-
