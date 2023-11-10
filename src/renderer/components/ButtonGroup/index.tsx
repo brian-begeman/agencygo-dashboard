@@ -1,19 +1,24 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 
 interface $Props {
   tabButton: any;
   setActiveButton?: any;
   activeButton?: number;
 }
+
 export default function ButtonGroup({
   tabButton,
   setActiveButton,
   activeButton,
 }: $Props) {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
       display="flex"
-      border="1px solid #292929"
+      border="1px solid "
+      borderColor="primary.contrastText"
       width="fit-content"
       borderRadius="6px"
       sx={{   cursor:'pointer'}}
@@ -22,20 +27,19 @@ export default function ButtonGroup({
         return (
           <Stack
             sx={
-              val.id == activeButton
+              val.id === activeButton
                 ? {
                     padding: '8px 12px',
-                    background: '#292929',
+                    background: isDarkTheme ? '#292929' : '#EAF1FF',
+                    color:isDarkTheme ? '#fff' : '#000',
                     borderRadius: '4px',
                    
                   }
-                : { padding: '8px 12px', borderRadius: '4px' }
+                : { padding: '8px 12px',color:isDarkTheme ? '#fff' : '#000', borderRadius: '4px' }
             }
             onClick={() => setActiveButton(val.id)}
           >
-            <Typography color="#FFFFFF" fontSize="14px">
-              {val.title}
-            </Typography>
+            <Typography fontSize="14px">{val.title}</Typography>
           </Stack>
         );
       })}

@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { ReactNode } from 'react';
@@ -25,6 +26,9 @@ export default function FilterTable({
   tableHeaders,
   children,
 }: $Props) {
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box sx={{ width: '100%', padding: '10px 10px', overflow: 'auto' }}>
       {!isEmptyContent ? (
@@ -37,15 +41,13 @@ export default function FilterTable({
           <Table aria-label="manage creators table">
             <TableHead
               sx={{
-                background: theme.palette.primary.contrastText,
+                background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
                 color: '#fff',
               }}
             >
               <TableRow>
                 {tableHeaders.map((header) => (
-                  <TableCell key={header} sx={{ color: '#fff' }}>
-                    {header}
-                  </TableCell>
+                  <TableCell key={header}>{header}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
@@ -65,7 +67,7 @@ export default function FilterTable({
             direction="row"
             justifyContent="space-between"
             sx={{
-              backgroundColor: theme.palette.primary.contrastText,
+              backgroundColor: isDarkTheme? '#292929':theme.palette.primary.contrastText,
             }}
             className={styles.campaign}
             paddingTop="30px"

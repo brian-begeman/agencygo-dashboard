@@ -1,5 +1,5 @@
 import Avatar from 'renderer/assets/svg/AvatarSvg';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import Message from 'renderer/assets/svg/messageSvg';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
@@ -32,6 +32,9 @@ export default function UserCardWImage({
   useEffect(() => {
     console.log('inner', selected);
   }, []);
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       // spacing={1}
@@ -58,7 +61,7 @@ export default function UserCardWImage({
       >
         <Typography
           variant="h3"
-          color="#fff"
+          color={isDarkTheme ? '#fff' : '#000'}
           fontSize={'18px'}
           fontWeight={500}
         >
@@ -69,12 +72,12 @@ export default function UserCardWImage({
             <IconButton
               className={styles.icon}
               sx={{
-                backgroundColor: '#292929',
+                // backgroundColor: '#292929',
                 borderRadius: '5px',
                 marginRight: '10px',
               }}
             >
-              <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+              <Typography fontSize={'14px'} fontWeight={400}>
                 {notificationCount}
               </Typography>
               <Message />
@@ -84,11 +87,11 @@ export default function UserCardWImage({
             <IconButton
               className={styles.icon}
               sx={{
-                backgroundColor: '#292929',
+                background: isDarkTheme ? '#292929' : '#EAF1FF',
                 borderRadius: '5px',
               }}
             >
-              <Typography color={'#fff'} fontSize={'14px'} fontWeight={400}>
+              <Typography fontSize={'14px'} fontWeight={400}>
                 {messageCount}
               </Typography>
               <NotificationsNoneIcon

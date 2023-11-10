@@ -2,6 +2,7 @@ import classes from './styles.module.css';
 import PageTopbar from 'renderer/components/PageTopbar';
 import {
   Box,
+  Button,
   ButtonBase,
   Stack,
   TableCell,
@@ -39,7 +40,26 @@ function SectionHeader(props: Props) {
               gap: '15px',
             }}
           >
-            <PageTopbar.Button
+            <Button
+              variant="contained"
+              onClick={() => openModal(true)}
+              endIcon={
+                <AddIcon
+                  sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
+                />
+              }
+            >
+              <Typography
+                style={{
+                  textTransform: 'none',
+                  color: '#fff',
+                  fontSize: '14px',
+                }}
+              >
+                Add Employee
+              </Typography>
+            </Button>
+            {/* <PageTopbar.Button
               color="primary"
               text="Add Shift"
               onClick={() => openModal(true)}
@@ -48,7 +68,7 @@ function SectionHeader(props: Props) {
                   sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
                 />
               }
-            />
+            /> */}
           </Box>
         </Stack>
       </PageTopbar>

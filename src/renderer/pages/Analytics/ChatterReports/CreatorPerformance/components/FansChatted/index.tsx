@@ -1,5 +1,5 @@
 import { ErrorOutline } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import {
   Chart as ChartJS,
@@ -95,16 +95,26 @@ export function FansChattedChart() {
 }
 
 const FansChatted = () => {
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="18px" display="flex" alignItems="center" gap="3px">
+      <Typography
+        color={isDarkTheme ? '#fff' : '#000'}
+        fontSize="18px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+      >
         Fans Chatted
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>

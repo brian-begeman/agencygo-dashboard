@@ -11,11 +11,17 @@
 .end {
   display: flex;
   flex-direction: row;
+  
 }
 
 .navIcon {
   margin-left: 10px;
   margin-top: 3px;
+  
+}
+
+.navIconLight {
+filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(130deg) brightness(99%) contrast(103%);
 }
 .navItem {
   display: flex;
@@ -39,6 +45,8 @@
   flex-direction: row;
   align-items: center;
   gap: 32px;
+ 
+ 
 }
 
 .popoverUser {

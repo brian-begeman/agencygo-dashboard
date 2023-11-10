@@ -8,17 +8,23 @@ import LeftChevronSvg from 'renderer/assets/svg/leftChevronSvg';
 import RightChevronSvg from 'renderer/assets/svg/rightChevronSvg';
 import { NavLink } from 'react-router-dom';
 import {
+  Box,
   ButtonBase,
   Divider,
   List,
   ListItem,
   Popover,
+  Switch,
+  ThemeProvider,
   Typography,
+  useTheme,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import localisation from '../../../localisation.json';
 import classes from './styles.module.css';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+import darkTheme from 'renderer/styles/MuiThemeDark';
+import lightTheme from 'renderer/styles/muiTheme';
 
 const navigationItemsConst = [
   {
@@ -29,10 +35,10 @@ const navigationItemsConst = [
     name: localisation.utc,
     icon: <InfoSvg />,
   },
-  {
-    name: localisation.affiliates,
-    icon: <AffiliateSvg />,
-  },
+  // {
+  //   name: localisation.affiliates,
+  //   icon: <AffiliateSvg />,
+  // },
   {
     name: localisation.networkReport,
     icon: <NetworkSvg />,
@@ -50,12 +56,21 @@ const navigationItemsConst = [
 ];
 
 function NavigationItem(props: any) {
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   const { name, icon, link } = props;
   const renderNavItem = () => (
     <div className={classes.navItem}>
-      <div className={classes.navItemText}>{name}</div>
+      {/* <div className={classes.navItemText}>{name}</div> */}
+      <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
+        {name}
+      </Typography>
 
-      <div className={classes.navIcon}>{icon}</div>
+      <div className={isDarkTheme ? classes.navIcon : `${classes.navIcon} ${classes.navIconLight}`}>
+        {icon}
+      </div>
     </div>
   );
 
@@ -73,13 +88,24 @@ function Header() {
   const currentElem = React.useRef(null);
   const [show, setShow] = React.useState(false);
   const { logout } = useContext(AuthContext);
+  const [toggleDarkMode, setToggleDarkMode] = useState(false);
+
+
+
 
   const handleLogout: () => void = () => {
     logout();
   };
 
+  // function to toggle the dark mode as true or false
+  const toggleDarkTheme = () => {
+    const theme = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+    setToggleDarkMode(!toggleDarkMode);
+    localStorage.setItem("theme", theme);
+    window.dispatchEvent(new Event("storage",));
+  };
   return (
-    <div className={classes.navbar}>
+    <div className={classes.navbar} >
       <div className={classes.start}>
         <LeftChevronSvg />
         <RightChevronSvg />
@@ -94,6 +120,21 @@ function Header() {
             );
           })}
           <div className={classes.navItem}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '10px',
+              }}
+            >
+              <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
+                Dark
+              </Typography>
+              <Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />
+              <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
+                Light
+              </Typography>
+            </Box>
             <ButtonBase
               type="button"
               onClick={() => setShow(!show)}
@@ -108,6 +149,7 @@ function Header() {
                 <AvatarSvg />
               </div>
             </ButtonBase>
+
             <Popover
               id="user-menu-popover"
               open={show}

@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import ButtonGroup from 'renderer/components/ButtonGroup';
 import { useState } from 'react';
 import { ErrorOutline } from '@mui/icons-material';
@@ -75,12 +75,14 @@ export const data = {
 
 export default function Earnings() {
   const [activeButton, setActiveButton] = useState(1);
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        background: isDarkTheme ? '#000' : '#fff',
         maxHeight: '500px',
-        width: '100vh',
         borderRadius: '16px',
         padding: '16px',
         gap: '30px',
@@ -92,9 +94,15 @@ export default function Earnings() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+        <Typography
+          fontSize="22px"
+          display="flex"
+          alignItems="center"
+          gap="3px"
+          color={isDarkTheme ? '#fff' : '#000'}
+        >
           Earnings
-          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
         </Typography>
         <ButtonGroup
           tabButton={tabButtonData}

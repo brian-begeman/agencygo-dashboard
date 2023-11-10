@@ -6,7 +6,7 @@ import {
   FormGroup,
   Link,
   Switch,
-  Typography,
+  Typography, useTheme
 } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
@@ -124,7 +124,8 @@ export default function AddCreaterModal({
       console.log('file ******', URL.createObjectURL(file));
     }
   };
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Overlay
       heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
@@ -133,9 +134,10 @@ export default function AddCreaterModal({
       style={{
         width: '700px',
         height: '100vh',
+
       }}
     >
-      <Box sx={{ backgroundColor: '#0C0C0C', padding: '0px 20px' }}>
+      <Box sx={{ backgroundColor: isDarkTheme? '#0C0C0C':'#fff', padding: '0px 20px' }}>
         <form
           id="addCreator"
           className={styles.modalBody}
@@ -161,7 +163,7 @@ export default function AddCreaterModal({
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+                backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
               }}
               label="Creator's name"
               inputIdentifierName="creatorName"
@@ -171,7 +173,7 @@ export default function AddCreaterModal({
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+                backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
               }}
               label="Email"
               inputIdentifierName="email"
@@ -181,7 +183,7 @@ export default function AddCreaterModal({
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+                backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
               }}
               label="Password"
               inputIdentifierName="password"
@@ -191,7 +193,7 @@ export default function AddCreaterModal({
             <DropdownWithLabel
               selectStyle={{
                 border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+                backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
               }}
               label="Gender"
               inputIdentifierName="gender"
@@ -213,8 +215,7 @@ export default function AddCreaterModal({
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
-                color: '#fff',
+                backgroundColor: isDarkTheme? '#0C0C0C':'#fff',
               }}
               label="Internal notes"
               inputIdentifierName="internalNotes"
@@ -231,7 +232,7 @@ export default function AddCreaterModal({
                 <InputWithLabel
                   inputStyle={{
                     border: '1px solid #292929',
-                    backgroundColor: '#0C0C0C',
+                    backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
                   }}
                   label=""
                   inputIdentifierName="agency"
@@ -241,12 +242,12 @@ export default function AddCreaterModal({
                 <InputWithLabel
                   inputStyle={{
                     border: '1px solid #292929',
-                    backgroundColor: '#0C0C0C',
+                    backgroundColor: isDarkTheme? '#0C0C0C':'#fff'
                   }}
                   label=" "
                   inputIdentifierName="creator"
                   placeholder="Creator %"
-                  
+
                   // register={register as any}
                 />
               </Box>
@@ -331,7 +332,7 @@ export default function AddCreaterModal({
         cancelHandler={cancelHandler}
         addText={`${type == 'add' ? 'Add Creator' : 'Confirm'}`}
         id="addCreator"
-        // isLoading={isLoading}
+
       />
     </Overlay>
   );

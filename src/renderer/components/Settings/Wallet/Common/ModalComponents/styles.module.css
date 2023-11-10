@@ -10,10 +10,10 @@
 .inputCss {
   border-radius: 3px;
   border: 1px solid #aaa;
-  background: #292929;
+ 
   padding: 12px;
   width: 100%;
-  color: white !important;
+ 
   margin-top: 2px;
   box-sizing: border-box;
 }
@@ -21,10 +21,10 @@
 .selectCss {
   border-radius: 3px;
   border: 1px solid #aaa;
-  background: #292929;
+ 
   padding: 12px;
   width: 100%;
-  color: white;
+ 
   margin-top: 2px;
 }
 
@@ -36,7 +36,7 @@
   align-items: flex-end;
   gap: 10px;
   align-self: stretch;
-  background: #292929;
+  
 }
 
 .addButtonCss {
@@ -59,6 +59,6 @@
   border-radius: 3px;
   background: transparent;
   border: 1px solid #292929;
-  color: white;
+  
   cursor: pointer;
 }

@@ -1,4 +1,4 @@
-import { Modal } from '@mui/material';
+import { Modal, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 import classes from './styles.module.css';
 import { Box } from '@mui/system';
@@ -12,6 +12,8 @@ interface OverlayProps {
 }
 
 function Overlay(props: OverlayProps) {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   const { heading, children, open, handleClose, style } = props;
   return (
     <Modal
@@ -26,7 +28,6 @@ function Overlay(props: OverlayProps) {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        background: 'rgba(0, 0, 0, 0.5)',
       }}
     >
       <div className={classes.innerWrapper} style={style}>
@@ -35,6 +36,7 @@ function Overlay(props: OverlayProps) {
           sx={{
             borderTopLeftRadius: '10px',
             borderTopRightRadius: '10px',
+            backgroundColor: isDarkTheme ? '#0C0C0C' : '#EAF1FF',
           }}
         >
           {heading}

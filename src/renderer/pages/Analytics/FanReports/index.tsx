@@ -1,3 +1,3 @@
 export default function FanReports() {
-  return <div>FanReports</div>;
+  return <div></div>;
 }

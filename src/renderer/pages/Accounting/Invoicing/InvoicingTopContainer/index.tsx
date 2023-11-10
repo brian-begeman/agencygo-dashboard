@@ -5,6 +5,7 @@ import {
   Select,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import theme from 'renderer/styles/muiTheme';
@@ -21,11 +22,18 @@ const InvoicingTopContainer = () => {
   const [isCustomInvoiceModalOpen, setCustomInvoiceModalOpen] = useState(false);
   const [selectData, setSelectedData] = useState('Current invoice settings');
   const handleOpen = () => setCreateInvoiceModalOpen(true);
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
+
   return (
     <Box margin={'10px 0px'}>
-      <Box display={'flex'} justifyContent={'space-between'}>
-        <Typography fontSize="22px">Invoicing</Typography>
-        <Box gap={'10px'} display={'flex'}>
+      <Box display={'flex'} justifyContent={'space-between'} >
+        <Typography fontSize="22px" paddingLeft={'10px'}>Invoicing</Typography>
+
+        
+        <Box gap={'10px'} display={'flex'} >
           <Button
             variant="contained"
             sx={{ color: '#fff', textTransform: 'capitalize' }}
@@ -38,16 +46,14 @@ const InvoicingTopContainer = () => {
             value={selectData}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
+             
               width: 'fit-content',
-              '.MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.light,
-              },
+              
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+              ' & .MuiOutlinedInput-input':
                 {
-                  padding: '4px 8px',
+                  padding: '8px 8px',
                 },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
@@ -55,9 +61,7 @@ const InvoicingTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+             
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -105,20 +109,17 @@ const InvoicingTopContainer = () => {
               gap="15px"
               alignItems="center"
               height="90px"
+              bgcolor={isDarkTheme ? '#000' : '#fff'}
               sx={{
                 padding: '10px 20px',
                 border: `1px solid ${theme.palette.primary.contrastText}`,
               }}
             >
               <Stack minWidth="130px">
-                <Typography
-                  color={theme.palette.secondary.contrastText}
-                  fontWeight="600"
-                  fontSize="12px"
-                >
+                <Typography fontWeight="600" fontSize="12px">
                   {data.title}
                 </Typography>
-                <Typography color="#fff" fontSize="30px" fontWeight={700}>
+                <Typography fontSize="30px" fontWeight={700}>
                   {data.value.split('.')[0]}
                   {data.value.split('.')[1] && <span>.</span>}
                   <span style={{ fontSize: '20px' }}>

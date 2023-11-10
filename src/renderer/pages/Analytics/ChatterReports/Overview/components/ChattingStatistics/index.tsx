@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import theme from 'renderer/styles/muiTheme';
@@ -71,74 +72,71 @@ const statisticsSampleData = [
 ];
 
 const ChattingStatistics = () => {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="18px" display="flex" alignItems="center" gap="3px">
+      <Typography
+        color={isDarkTheme ? '#fff' : '#000'}
+        fontSize="18px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+      >
         Chatting Statistics
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
-      <Box width="fit-content" display={'flex'} flexWrap={'wrap'} margin={'20px 0px'} gap={'20px'}>
-          {statisticsSampleData.map((item) => (
-            <StatisticsCard
-              key={item.title}
-              icon={item.icon}
-              title={item.title}
-              amount={item.amount}
-            />
-          ))}
-        </Box>
-      <TableContainer>
-        <Table
-          sx={{
-            minWidth: 650,
-            borderRadius: '16px !important',
-            border: '1px solid #292929',
-          }}
-          aria-label="simple table"
-        >
-          <TableHead sx={{ bgcolor: '#292929' }}>
+      <Box
+        width="fit-content"
+        display={'flex'}
+        flexWrap={'wrap'}
+        margin={'20px 0px'}
+        gap={'20px'}
+        
+      >
+        {statisticsSampleData.map((item) => (
+          <StatisticsCard
+            key={item.title}
+            icon={item.icon}
+            title={item.title}
+            amount={item.amount}
+          />
+        ))}
+      </Box>
+      <TableContainer
+        sx={{
+          border: `1px solid ${theme.palette.primary.contrastText}`,
+          borderRadius: '16px',
+        }}
+      >
+        <Table aria-label="simple table">
+          <TableHead
+            sx={{
+              background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
+              
+            }}
+          >
             <TableRow>
-              <TableCell sx={{ color: '#FFFFFF' }}>Employee</TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Group
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Sales
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Messages Sent
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                PPVs Sent
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                PPVs Unlocked
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Golden Ratio
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Unlock Ratio
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Fans Chatted
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Words
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Reply Time
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Scheduled Hours
-              </TableCell>
+              <TableCell>Employee</TableCell>
+              <TableCell align="right">Group</TableCell>
+              <TableCell align="right">Sales</TableCell>
+              <TableCell align="right">Messages Sent</TableCell>
+              <TableCell align="right">PPVs Sent</TableCell>
+              <TableCell align="right">PPVs Unlocked</TableCell>
+              <TableCell align="right">Golden Ratio</TableCell>
+              <TableCell align="right">Unlock Ratio</TableCell>
+              <TableCell align="right">Fans Chatted</TableCell>
+              <TableCell align="right">Words</TableCell>
+              <TableCell align="right">Reply Time</TableCell>
+              <TableCell align="right">Scheduled Hours</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -150,38 +148,38 @@ const ChattingStatistics = () => {
                 <TableCell
                   component="th"
                   scope="row"
-                  sx={{ color: '#FFFFFF', fontSize: 14, padding: '20px 10px' }}
+                  sx={{ fontSize: 14, padding: '20px 10px' }}
                 >
                   {row.employee}
                 </TableCell>
                 <TableCell
                   component="th"
                   scope="row"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.group}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.sales}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.messagesSent}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.PPVsSent}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{ fontSize: 12 }}
                 >
                   {row.PPVsUnlocked}
                 </TableCell>
@@ -199,25 +197,25 @@ const ChattingStatistics = () => {
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.fansChatted}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.words}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{  fontSize: 12 }}
                 >
                   {row.replyTime}
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ color: '#FFFFFF', fontSize: 12 }}
+                  sx={{ fontSize: 12 }}
                 >
                   {row.scheduledHours}
                 </TableCell>

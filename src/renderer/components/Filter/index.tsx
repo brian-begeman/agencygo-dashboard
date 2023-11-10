@@ -16,6 +16,7 @@ import {
   SelectChangeEvent,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
@@ -34,14 +35,20 @@ import useQuery from 'renderer/hooks/useQuery';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
+  
 }
 
 function FilterByManageEmployeeCreator({
   label = 'By Creator',
+
 }: $ByManageEmployeeCreatorProps) {
   const [collapse, setCollapse] = useState(false);
   const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
 
   return (
     <div>
@@ -52,6 +59,7 @@ function FilterByManageEmployeeCreator({
           justifyContent: 'space-between',
           cursor: 'pointer',
           marginBottom: '12px',
+         
         }}
         onClick={() => setCollapse(!collapse)}
       >

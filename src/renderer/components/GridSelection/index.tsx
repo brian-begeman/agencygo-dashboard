@@ -23,9 +23,9 @@ export default function GridSelectionItem() {
     <div>
       <Stack direction="row" alignItems="center">
         <IconButton onClick={handleMenuClick}>
-          <GridViewOutlinedIcon sx={{ color: 'white' }} />
+          <GridViewOutlinedIcon  />
           <KeyboardArrowDownOutlinedIcon
-            sx={{ fontSize: 18, color: 'white' }}
+            sx={{ fontSize: 18 }}
           />
         </IconButton>
       </Stack>
@@ -37,8 +37,7 @@ export default function GridSelectionItem() {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           '& .MuiPaper-root': {
-            backgroundColor: '#1a1a1a',
-            color: 'white',
+          
             width:'190px'
           },
         }}

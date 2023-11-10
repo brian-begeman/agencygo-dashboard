@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, Switch, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Switch, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 import SettingSvg from 'renderer/assets/svg/SettingSvg';
@@ -11,13 +11,17 @@ function AutoFollow() {
 
   const onOpenScanDetails = () => navigate('/growth/auto-follow-scan-details');
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <>
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" gap="16px" alignItems="center">
-            <Typography color="#fff" fontWeight={700} fontSize="22px">
+            <Typography fontWeight={700} fontSize="22px">
               Expired Fans Overview
             </Typography>
             <ErrorOutline
@@ -33,7 +37,7 @@ function AutoFollow() {
           marginY="32px"
           justifyContent="space-between"
         >
-          <Typography color="#fff" fontWeight={600} fontSize="14px">
+          <Typography fontWeight={600} fontSize="14px">
             Followed 0 expired fans for Joan Adams
           </Typography>
           <Button variant="text" onClick={onOpenScanDetails}>
@@ -52,7 +56,7 @@ function AutoFollow() {
           alignItems="center"
           padding="16px"
           borderRadius="4px"
-          sx={{ background: theme.palette.primary.dark }}
+          bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}
         >
           <Stack gap="16px" alignItems="start">
             <Stack
@@ -68,7 +72,7 @@ function AutoFollow() {
                 sx={{ color: theme.palette.secondary.contrastText }}
               />
             </Stack>
-            <Typography color="#fff" fontWeight={600} fontSize="14px">
+            <Typography fontWeight={600} fontSize="14px">
               Automatically follow expired fans every day without any additional
               effort. (Recommended)
             </Typography>
@@ -82,25 +86,20 @@ function AutoFollow() {
           marginTop="32px"
           sx={{ border: `1px solid ${theme.palette.primary.contrastText}` }}
         >
-          <Typography color="#fff" fontWeight={600} fontSize="18px">
+          <Typography fontWeight={600} fontSize="18px">
             Manually Follow Expired Fans
           </Typography>
-          <Typography color="#fff" fontWeight={600} fontSize="14px">
+          <Typography fontWeight={600} fontSize="14px">
             Search for expired fans and select which fans you wish to subscribe
             to.
           </Typography>
           <Stack direction="row" marginY="16px">
             <Button
               variant="contained"
-              sx={{ background: theme.palette.primary.main }}
+              sx={{ background: theme.palette.primary.main,color:'#fff' }}
               startIcon={<UserCircleAddSvg />}
             >
-              <Typography
-                fontWeight={600}
-                fontSize="14px"
-                color="#fff"
-                padding="5px 10px"
-              >
+              <Typography fontWeight={600} fontSize="14px" padding="5px 10px">
                 Search Expired Fans
               </Typography>
             </Button>
@@ -115,12 +114,10 @@ function AutoFollow() {
               </Typography>
             </Button>
           </Stack>
-          <Typography fontWeight={400} fontSize="11px" color="#fff">
+          <Typography fontWeight={400} fontSize="11px">
             Last scanned on Aug 26 2023, 06:30 am
           </Typography>
-          <Divider
-            sx={{ background: '#fff', height: '1px', marginTop: '32px' }}
-          />
+          <Divider sx={{ height: '1px', marginTop: '32px' }} />
         </Stack>
       </Box>
     </>

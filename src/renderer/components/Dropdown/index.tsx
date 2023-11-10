@@ -1,6 +1,7 @@
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useTheme } from '@mui/material';
 
 export default function MultiSelect({
   creatorNames,
@@ -11,33 +12,24 @@ export default function MultiSelect({
   const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
     setSelectedValues(event.target.value as typeof selectedValues);
   };
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <FormControl
       sx={{
-        m: 0,
         minWidth: '100%',
-        background: '#0f0f0f',
-        border: '1px solid #fff',
         borderRadius: '5px',
         outline: 'none',
         color: '#fff',
-        '& :focus': {
-          border: 'none',
-          outline: 'none',
-        },
-        '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-          background: '#0f0f0f !important',
-        },
+        background: isDarkTheme ? '#0f0f0f' : '#fff',
       }}
-      size="small"
     >
       <Select
         sx={{
           '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
             background: '#0f0f0f !important',
           },
-          color: '#fff',
         }}
         fullWidth
         labelId="demo-multi-select-label"

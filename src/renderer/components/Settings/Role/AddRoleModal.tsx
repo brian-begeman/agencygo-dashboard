@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
 import {
@@ -49,13 +49,21 @@ const AddRoleModal = ({
     });
   }, [value]);
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Overlay
       heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
       open={open}
       handleClose={handleModalClose}
     >
-      <Box className={styles.modal}>
+      <Box
+        className={styles.modal}
+        sx={{
+         
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
+        }}
+      >
         <form
           className={styles.modalBody}
           id="addEmployee"
@@ -67,6 +75,7 @@ const AddRoleModal = ({
               marginInline: '30px',
               paddingTop: '30px',
               paddingBottom: '50px',
+              backgroundColor: isDarkTheme ? '#292929' : '#fff',
             }}
             className={styles.inputListWrapper}
           >

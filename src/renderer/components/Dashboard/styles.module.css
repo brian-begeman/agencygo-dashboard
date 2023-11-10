@@ -8,3 +8,10 @@
   grid-template-rows: 80px 1fr;
   overflow: hidden;
 }
+.darkTheme {
+  
+  background-color: #0F0F0F; /* Dark mode background color */
+ 
+  
+}
+

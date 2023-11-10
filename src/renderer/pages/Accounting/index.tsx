@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -15,21 +15,26 @@ export default function Accounting() {
   const path = location.pathname;
   const navigate = useNavigate();
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
+
+        
         <Box
           sx={{
             display: 'grid',
             gridTemplateColumns: '200px 1fr',
-            color: '#fff',
+            color:isDarkTheme ? '#fff' : '#000',
             height: '100%',
             zIndex: 30,
           }}
         >
           <Box
             sx={{
-              bgcolor: 'black',
+             
               position: 'absolute',
               top: 0,
               height: '100vh',

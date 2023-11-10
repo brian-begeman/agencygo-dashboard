@@ -23,14 +23,14 @@ function WithdrawalTable() {
               }}
               scope="row"
             >
-              <Typography variant="h6" fontSize="18px" color="#fff">
+              <Typography variant="h6" fontSize="18px" >
                 {initiator}
               </Typography>
             </TableCell>
             <TableCell
               sx={{
                 borderColor: theme.palette.primary.contrastText,
-                color: '#fff',
+               
               }}
             >
               {medium}
@@ -38,7 +38,7 @@ function WithdrawalTable() {
             <TableCell
               sx={{
                 borderColor: theme.palette.primary.contrastText,
-                color: '#fff',
+                
               }}
             >
               {date}

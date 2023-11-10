@@ -1,5 +1,5 @@
 import { ErrorOutline } from '@mui/icons-material';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import {
   Chart as ChartJS,
@@ -122,21 +122,29 @@ const MessageCount = () => {
     { color: '#D9DCFD', title: 'PPVs Sent' },
     { color: '#6E1B4E', title: 'PPVs Unlocked' },
   ];
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
         borderRadius: '16px',
         padding: '20px',
         gap: '20px',
       }}
     >
-      <Typography fontSize="18px" display="flex" alignItems="center" gap="3px">
+      <Typography
+        color={isDarkTheme ? '#fff' : '#000'}
+        fontSize="18px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+      >
         Message Count
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
-      <Box display={'flex'} gap={'20px'} marginTop={"20px"}>
+      <Box display={'flex'} gap={'20px'} marginTop={'20px'}>
         <Box sx={{ width: '75%', height: 300 }}>
           <MessageCountChart />
         </Box>
@@ -152,7 +160,13 @@ const MessageCount = () => {
                     borderRadius={'50%'}
                     bgcolor={val.color}
                   ></Box>
-                  <Typography width="150px" fontSize={14}>{val.title}</Typography>
+                  <Typography
+                    width="150px"
+                    fontSize={14}
+                    color={isDarkTheme ? '#fff' : '#000'}
+                  >
+                    {val.title}
+                  </Typography>
                 </Box>
                 <Divider />
               </>

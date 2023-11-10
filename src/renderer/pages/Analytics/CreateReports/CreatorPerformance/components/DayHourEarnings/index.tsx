@@ -8,7 +8,7 @@ import {
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
 import faker from 'faker';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { ErrorOutline } from '@mui/icons-material';
 
@@ -36,18 +36,27 @@ export const data = {
 };
 
 export default function DayHourEarnings() {
+
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       borderRadius="16px"
-      bgcolor="var(--color-background)"
+      bgcolor={isDarkTheme ? '#000' : '#fff'}
       padding="20px"
       display="flex"
       flexDirection="column"
       gap="20px"
     >
-      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+      <Typography
+        fontSize="22px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+        color={isDarkTheme ? '#fff' : '#000'}
+      >
         Day - Hour Earnings
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
       <Scatter options={options} data={data} />
     </Box>

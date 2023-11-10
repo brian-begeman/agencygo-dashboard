@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { formatDate, calculateFolderSize } from 'renderer/utils';
-import { Box, Button, Icon, Stack, Typography } from '@mui/material';
+import { Box, Button, Icon, Stack, Typography, useTheme } from '@mui/material';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import Link from '@mui/material/Link';
@@ -196,6 +196,10 @@ export default function ContentHub() {
     showDeleteConfirmationDialog();
   };
 
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
+
   const columns: GridColDef[] = [
     {
       field: 'foldername',
@@ -216,7 +220,7 @@ export default function ContentHub() {
             justifyContent={'center'}
             alignItems={'center'}
             borderRadius={10}
-            bgcolor="#002942"
+            bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}
           >
             <FolderOpenIcon style={{ height: 20, width: 20 }} />
           </Box>
@@ -229,7 +233,7 @@ export default function ContentHub() {
             <Typography fontSize="16px" fontWeight={700} paddingLeft={'15px'}>
               {params.row.foldername}
             </Typography>
-            <Typography fontSize="16px" color="#AAAAAA" paddingLeft={'15px'}>
+            <Typography fontSize="16px" color="#7B7E85" paddingLeft={'15px'}>
               {params.row.itemCount > 0 ? `${params.row.itemCount} Items` : ''}
             </Typography>
           </Box>
@@ -248,7 +252,7 @@ export default function ContentHub() {
           justifyContent={'space-between'}
           alignItems={'center'}
         >
-          <Typography fontSize="16px" color="#AAAAAA">
+          <Typography fontSize="16px" color="#7B7E85">
             {params.row.folderSize}
           </Typography>
         </Box>
@@ -266,7 +270,7 @@ export default function ContentHub() {
           justifyContent={'space-between'}
           alignItems={'center'}
         >
-          <Typography fontSize="16px" color="#AAAAAA">
+          <Typography fontSize="16px" color="#7B7E85">
             {params.row.lastUpdated}
           </Typography>
         </Box>
@@ -286,7 +290,7 @@ export default function ContentHub() {
           justifyContent={'space-between'}
           alignItems={'center'}
         >
-          <Typography fontSize="16px" color="#AAAAAA">
+          <Typography fontSize="16px" color="#7B7E85">
             {params.row.lastUpdated}
           </Typography>
         </Box>
@@ -419,7 +423,7 @@ export default function ContentHub() {
       //////////////////////////////////////////////////
     } catch (error) {
       console.error('Error creating folder in S3:', error);
-      f;
+      
     }
   };
 
@@ -525,17 +529,17 @@ export default function ContentHub() {
     return (
       <div>
         <IconButton onClick={handleMenuClick}>
-          <MoreVert sx={{ color: '#fff' }} />
+          <MoreVert  />
         </IconButton>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
           sx={{
-            '& .MuiPaper-root': {
-              backgroundColor: '#1a1a1a',
-              color: 'white',
-            },
+            // '& .MuiPaper-root': {
+            //   backgroundColor: '#1a1a1a',
+            //   color: 'white',
+            // },
           }}
         >
           <MenuItem onClick={handleDownloadFolder}>
@@ -709,7 +713,9 @@ export default function ContentHub() {
     <Dashboard>
       <section className={styles.wrapper}>
         <PageTopbar>
-          <PageTopbar.HeaderText>{localisation.content}</PageTopbar.HeaderText>
+          <PageTopbar.HeaderText  >
+            {localisation.content}
+          </PageTopbar.HeaderText>
           <Box
             gap={'10px'}
             marginRight={'10px'}
@@ -861,7 +867,7 @@ export default function ContentHub() {
               justifyContent={'space-between'}
               alignItems={'center'}
             >
-              <Typography fontSize="22px" paddingLeft={'15px'}>
+              <Typography fontSize="22px" paddingLeft={'15px'} >
                 {headerText}
               </Typography>
               {renderActions()}
@@ -887,17 +893,19 @@ export default function ContentHub() {
                   components={{
                     Pagination: () => null, // Hide the pagination component
                   }}
-                  sx={{
-                    minWidth: '100%',
-                    color: '#fff',
-                    '& .MuiDataGrid-columnHeadersInner': {
-                      backgroundColor: '#292929',
-                    },
-                    '& .MuiSvgIcon-root': {
-                      color: 'white',
-                    },
-                    border: '1px solid #292929',
-                  }}
+                  sx={
+                    {
+                      // minWidth: '100%',
+                      // color: '#fff',
+                      // '& .MuiDataGrid-columnHeadersInner': {
+                      //   backgroundColor: '#292929',
+                      // },
+                      // '& .MuiSvgIcon-root': {
+                      //   color: 'white',
+                      // },
+                      // border: '1px solid #292929',
+                    }
+                  }
                 />
               )}
               {!showGrid && (

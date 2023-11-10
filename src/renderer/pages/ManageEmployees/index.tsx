@@ -1,10 +1,12 @@
 import {
   Box,
+  Button,
   ButtonBase,
   Stack,
   TableCell,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
@@ -189,6 +191,10 @@ export default function ManageEmployees() {
     setOpen(!open);
   };
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -209,7 +215,45 @@ export default function ManageEmployees() {
                 gap: '15px',
               }}
             >
-              <PageTopbar.Button
+              <Button
+                variant="contained"
+                endIcon={
+                  <KeyboardArrowDown
+                    sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
+                  />
+                }
+              >
+                <Typography
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    fontSize: '14px',
+                  }}
+                >
+                  Batch Operations
+                </Typography>
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={() => setOpenAddEmployee(true)}
+                endIcon={
+                  <AddIcon
+                    sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
+                  />
+                }
+              >
+                <Typography
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    fontSize: '14px',
+                  }}
+                >
+                  Add Employee
+                </Typography>
+              </Button>
+              {/* <PageTopbar.Button
                 color="secondary"
                 text="Batch Operations"
                 endIcon={
@@ -217,8 +261,8 @@ export default function ManageEmployees() {
                     sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
                   />
                 }
-              />
-              <PageTopbar.Button
+              /> */}
+              {/* <PageTopbar.Button
                 color="primary"
                 text="Add Employee"
                 onClick={() => setOpenAddEmployee(true)}
@@ -227,12 +271,12 @@ export default function ManageEmployees() {
                     sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
                   />
                 }
-              />
+              /> */}
             </Box>
           </Stack>
           <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
             {group?.map((link: any, index: number) => (
-              <PageTopbar.Button
+              <PageTopbar.TabButton
                 key={index}
                 color="secondary"
                 text={link.agencyName}
@@ -245,7 +289,7 @@ export default function ManageEmployees() {
             ))}
           </Stack>
         </PageTopbar>
-        <Stack direction="row" spacing={5} sx={{ height: '100%' }}>
+        <Stack direction="row" sx={{ height: '100%' }}>
           <Filter handleSearch={handleSearch} refetch={refetch} />
           <FilterTable
             isEmptyContent={!employees.length}
@@ -279,7 +323,13 @@ export default function ManageEmployees() {
                           <Typography
                             variant="h6"
                             fontSize="18px"
-                            color={activated === 'deactivate' ? 'gray' : '#fff'}
+                            color={
+                              activated === 'deactivate'
+                                ? 'gray'
+                                : isDarkTheme
+                                ? '#fff'
+                                : '#000'
+                            }
                           >
                             {name}
                           </Typography>
@@ -302,7 +352,13 @@ export default function ManageEmployees() {
                         }}
                       >
                         <Typography
-                          color={activated === 'deactivate' ? 'gray' : '#fff'}
+                          color={
+                            activated === 'deactivate'
+                              ? 'gray'
+                              : isDarkTheme
+                              ? '#fff'
+                              : '#000'
+                          }
                         >
                           {assignedCreators}
                         </Typography>
@@ -314,7 +370,13 @@ export default function ManageEmployees() {
                         }}
                       >
                         <Typography
-                          color={activated === 'deactivate' ? 'gray' : '#fff'}
+                          color={
+                            activated === 'deactivate'
+                              ? 'gray'
+                              : isDarkTheme
+                              ? '#fff'
+                              : '#000'
+                          }
                         >
                           {role}
                         </Typography>
@@ -332,7 +394,7 @@ export default function ManageEmployees() {
                             gap={'10px'}
                             alignItems={'center'}
                           >
-                            <Typography color={'#fff'}>Inactive</Typography>
+                            <Typography>Inactive</Typography>
                             <Typography
                               color={'#04A1FF'}
                               sx={{ cursor: 'pointer' }}
@@ -364,12 +426,10 @@ export default function ManageEmployees() {
                                   setOpenAddEmployee(true);
                                 }}
                               >
-                                <Typography variant="body1" color="#fff">
-                                  Edit
-                                </Typography>
+                                <Typography variant="body1">Edit</Typography>
                               </ButtonBase>
                               <ButtonBase>
-                                <Typography variant="body1" color="#fff">
+                                <Typography variant="body1">
                                   <Box onClick={() => handleClick(id, email)}>
                                     <MenuButton
                                       title="More"
@@ -389,7 +449,11 @@ export default function ManageEmployees() {
                                 <Typography
                                   variant="body1"
                                   color={
-                                    activated === 'deactivate' ? 'gray' : '#fff'
+                                    activated === 'deactivate'
+                                      ? 'gray'
+                                      : isDarkTheme
+                                      ? '#fff'
+                                      : '#000'
                                   }
                                 >
                                   Delete

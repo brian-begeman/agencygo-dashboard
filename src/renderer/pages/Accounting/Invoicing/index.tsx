@@ -1,17 +1,32 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import SearchUsers from 'renderer/components/SearchUsers';
 import InvoicingTopContainer from './InvoicingTopContainer';
 import Payouts from './Payouts';
 
 export default function Invoicing() {
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
-    <Box display="flex" gap="5px" padding={"6px"} sx={{background:'#121212'}}>
+    <Box
+      display="flex"
+      gap="5px"
+      padding={'6px'}
+      bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}
+    >
       <Stack width={'25%'}>
         <SearchUsers />
       </Stack>
-      <Stack width={"75%"} display="flex" gap="10px" padding={"10px"} sx={{background:'#0c0c0c'}}>
+      <Stack
+        width={'75%'}
+        display="flex"
+        gap="10px"
+        padding={'10px'}
+        
+      >
         <InvoicingTopContainer />
-        <Payouts/>
+        <Payouts />
       </Stack>
     </Box>
   );

@@ -3,7 +3,7 @@ import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import Refresh from 'renderer/assets/svg/refreshSvg';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './styles.module.css';
-
+import theme from 'renderer/styles/muiTheme';
 interface $Props {
   value: string;
   onUpdateSearch: (v: string) => void;
@@ -65,7 +65,7 @@ function ReloadButton({ onRefresh }: $ReloadProps) {
       onMouseDown={onRefresh}
       edge="end"
     >
-      <Refresh />
+      <Refresh style={{ color: theme.palette.secondary.contrastText }} />
     </IconButton>
   );
 }

@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import EarningsRecordCard from '../Earnings/EarningCard';
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
@@ -83,18 +84,26 @@ const earningsInitJson = [
 ];
 
 export default function CreatorStatistics() {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       display="flex"
       flexDirection="column"
-      bgcolor="black"
+      bgcolor={isDarkTheme ? '#000' : '#fff'}
       padding="20px"
       borderRadius="16px"
       gap="15px"
     >
-      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
+      <Typography
+        fontSize="22px"
+        display="flex"
+        alignItems="center"
+        gap="3px"
+        color={isDarkTheme ? '#fff' : '#000'}
+      >
         Creator Statistics
-      <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
       <Box display="flex" width="fit-content" gap="10px">
         {earningsInitJson.map((item) => (
@@ -106,33 +115,27 @@ export default function CreatorStatistics() {
           />
         ))}
       </Box>
-      <TableContainer>
-        <Table
-          sx={{
-            minWidth: 650,
-            borderRadius: 16,
-            border: '1px solid #292929',
-          }}
-          aria-label="simple table"
-        >
-          <TableHead sx={{ bgcolor: '#292929' }}>
+      <TableContainer
+        sx={{
+          minWidth: 650,
+          border: `1px solid ${theme.palette.primary.contrastText}`,
+          borderRadius: '16px',
+        }}
+      >
+        <Table >
+          <TableHead
+            sx={{
+              background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
+              color: '#fff',
+            }}
+          >
             <TableRow>
-              <TableCell sx={{ color: '#FFFFFF' }}>Creator</TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Active Fans
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Expired Fans
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                New Fans
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Message Earnings
-              </TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Total Earnings
-              </TableCell>
+              <TableCell>Creator</TableCell>
+              <TableCell align="right">Active Fans</TableCell>
+              <TableCell align="right">Expired Fans</TableCell>
+              <TableCell align="right">New Fans</TableCell>
+              <TableCell align="right">Message Earnings</TableCell>
+              <TableCell align="right">Total Earnings</TableCell>
               <TableCell align="right" sx={{ color: '#FFFFFF' }}>
                 Refunded
               </TableCell>
@@ -147,28 +150,18 @@ export default function CreatorStatistics() {
                 <TableCell
                   component="th"
                   scope="row"
-                  sx={{ color: '#FFFFFF', padding: '25px 10px' }}
+                  sx={{ padding: '25px 10px' }}
                 >
                   {row.creator}
                 </TableCell>
-                <TableCell component="th" scope="row" sx={{ color: '#FFFFFF' }}>
+                <TableCell component="th" scope="row">
                   {row.activeFans}
                 </TableCell>
-                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                  {row.expiredFans}
-                </TableCell>
-                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                  {row.newFans}
-                </TableCell>
-                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                  {row.messageEarnings}
-                </TableCell>
-                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                  {row.totalEarnings}
-                </TableCell>
-                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                  {row.refunded}
-                </TableCell>
+                <TableCell align="right">{row.expiredFans}</TableCell>
+                <TableCell align="right">{row.newFans}</TableCell>
+                <TableCell align="right">{row.messageEarnings}</TableCell>
+                <TableCell align="right">{row.totalEarnings}</TableCell>
+                <TableCell align="right">{row.refunded}</TableCell>
               </TableRow>
             ))}
           </TableBody>

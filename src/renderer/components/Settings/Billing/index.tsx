@@ -1,5 +1,5 @@
 import FilterTable from 'renderer/components/Filter/FilterTable';
-import { Box, Button, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, Button, TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import ChevronSettingNav from 'renderer/assets/svg/ChevronSettingNav';
 import classes from './styles.module.css';
@@ -52,15 +52,25 @@ function Billing(props: TabProps) {
       Operations: 'More',
     },
   ];
+  
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.prefernceWrapper}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            paddingBottom: '20px',
+          }}
+        >
           <Button
             sx={{
-              backgroundColor: '#292929',
-              color: 'white',
+              backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+              color: isDarkTheme ? '#fff' : '#000',
               marginRight: '6px',
             }}
             onClick={() => handleTabChange('SettingBilling')}
@@ -74,6 +84,7 @@ function Billing(props: TabProps) {
             Subscription
           </Button>
         </Box>
+
         <FilterTable tableHeaders={billingTableHeaders}>
           <>
             {billingData.map(
@@ -101,14 +112,13 @@ function Billing(props: TabProps) {
                     }}
                     scope="row"
                   >
-                    <Typography variant="h6" fontSize="18px" color="#fff">
+                    <Typography variant="h6" fontSize="18px">
                       {InvoiceID}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {Period}
@@ -116,7 +126,6 @@ function Billing(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {ChargeFee}
@@ -124,7 +133,6 @@ function Billing(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {Discount}
@@ -132,7 +140,6 @@ function Billing(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {WalletPayment}
@@ -140,7 +147,6 @@ function Billing(props: TabProps) {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
                     }}
                   >
                     {NetGain}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { Add } from '@mui/icons-material';
 import SearchUsers from 'renderer/components/SearchUsers';
@@ -12,6 +12,8 @@ function TrialLinks() {
   const onSearch = (value: string) => {
     setSearch(value);
   };
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <>

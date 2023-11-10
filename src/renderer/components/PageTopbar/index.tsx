@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import styles from './styles.module.css';
 
@@ -8,8 +8,13 @@ interface $Props {
 }
 
 function PageTopbar({ children }: $Props) {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
-    <Box component={'header'} className={styles.header}>
+    <Box component={'header'} className={styles.header}
+    sx={{
+      backgroundColor:isDarkTheme ? '#292929' : '#EAF1FF'
+    }}>
       {children}
     </Box>
   );
@@ -19,8 +24,8 @@ function HeaderText({ children }: $Props) {
   return (
     <Typography
       variant="h1"
-      color={'#fff'}
-      fontSize={'22px'}
+
+      fontSize={'34px'}
       fontWeight={600}
       margin={0}
     >
@@ -55,13 +60,28 @@ function ButtonElement({
     }
     return width
   }
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
+  const getColor = () => {
+    let color = isDarkTheme ? '#fff' : '#000';
+
+    if (isActiveLink) {
+      color = isDarkTheme ? '#fff !important' : '#fff !important';
+    }
+
+    return color;
+  };
   const getBackgroundColor = () => {
     let backgroundColor = '';
     if (isLink) {
       backgroundColor = 'transparent !important';
     }
     if (isActiveLink) {
-      backgroundColor = '#0f0f0f !important';
+      backgroundColor = isDarkTheme ? '#fff !important' : '#000 !important';
+
     }
     if(isActiveLink && tabButton){
       backgroundColor = `${theme.palette.primary.main}`
@@ -99,7 +119,7 @@ function ButtonElement({
   return (
     <Button
       variant="contained"
-      color={color}
+      disableElevation={true}
       sx={{
         width: getWidth(),
         height: '32px',
@@ -111,6 +131,9 @@ function ButtonElement({
         backgroundColor: getBackgroundColor(),
         position: 'relative',
         ...getActiveBorder(),
+        '&.MuiButtonBase-root:hover': {
+          bgcolor: '#04A1FF',
+        },
       }}
       endIcon={endIcon}
       onClick={onClick}
@@ -119,8 +142,116 @@ function ButtonElement({
         sx={{
           fontSize: '10px',
           fontWeight: 500,
-          color: '#fff',
+          color: getColor(),
           marginTop: '2px',
+          borderRadius: '6px',
+          textTransform: 'unset',
+        }}
+      >
+        {text}
+      </Typography>
+    </Button>
+  );
+}
+function ButtonTabElement({
+  onClick,
+  tabButton = false,
+  text,
+  
+  endIcon,
+  isLink = false,
+  isActiveLink = false,
+}: $ButtonProps) {
+  const getWidth = () => {
+    let width = 'max-content';
+    if (tabButton) {
+      width = '200px';
+    }
+    return width;
+  };
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  const getColor = () => {
+    let color = isDarkTheme ? '#fff' : '#000';
+
+    if (isActiveLink) {
+      color = isDarkTheme ? '#fff !important' : '#000 !important';
+    }
+
+    return color;
+  };
+  const getTabBackgroundColor = () => {
+    let backgroundColor = '';
+    if (isLink) {
+      backgroundColor = 'transparent !important';
+    }
+    if (isActiveLink) {
+      backgroundColor = isDarkTheme ? '#000!important' : '#fff!important';
+    }
+    if (isActiveLink && tabButton) {
+      backgroundColor = `${theme.palette.primary.main}`;
+    }
+    return backgroundColor;
+  };
+
+  const getTabBorderRadius = () => {
+    let borderRadius = '3px';
+    if (isLink) {
+      borderRadius = '0 !important';
+    }
+    if (isActiveLink) {
+      borderRadius = '3px 3px 0px 0px !important';
+    }
+    return borderRadius;
+  };
+
+  const getTabActiveBorder = () => {
+    if (isActiveLink && !tabButton) {
+      return {
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          border: `2px solid ${theme.palette.primary.main}`,
+        },
+      };
+    }
+    return {};
+  };
+
+  return (
+    <Button
+      variant="contained"
+      disableElevation={true}
+      sx={{
+        width: getWidth(),
+        height: '32px',
+        borderRadius: getTabBorderRadius(),
+        boxShadow: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        backgroundColor: getTabBackgroundColor(),
+        position: 'relative',
+        ...getTabActiveBorder(),
+        '&.MuiButtonBase-root:hover': {
+          bgcolor: '#04A1FF',
+        },
+      }}
+      endIcon={endIcon}
+      onClick={onClick}
+    >
+      <Typography
+        sx={{
+          fontSize: '10px',
+          fontWeight: 500,
+          color: getColor(),
+          marginTop: '2px',
+          borderRadius: '6px',
           textTransform: 'unset',
         }}
       >
@@ -130,7 +261,9 @@ function ButtonElement({
   );
 }
 
+
 PageTopbar.HeaderText = HeaderText;
 PageTopbar.Button = ButtonElement;
+PageTopbar.TabButton = ButtonTabElement;
 
 export default PageTopbar;

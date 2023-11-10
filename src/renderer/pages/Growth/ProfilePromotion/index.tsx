@@ -6,6 +6,7 @@ import {
   Stack,
   Switch,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
@@ -13,6 +14,8 @@ import styles from './styles.module.css';
 import SearchUsers from 'renderer/components/SearchUsers';
 
 function ProfilePromotion() {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <>
       <SearchUsers />
@@ -45,20 +48,15 @@ function ProfilePromotion() {
             paddingBottom="32px"
           >
             <Stack gap="10px">
-              <Typography color="#fff" fontSize="18px" fontWeight={700}>
+              <Typography fontSize="18px" fontWeight={700}>
                 Auto-activate campaign
               </Typography>
-              <Typography color="#fff" fontSize="12px">
+              <Typography fontSize="12px">
                 Enable to automatically reactivate your promotions when they
                 expire
               </Typography>
               <Box marginTop="10px">
-                <Typography
-                  color="#fff"
-                  fontWeight={400}
-                  fontSize="12px"
-                  marginBottom="5px"
-                >
+                <Typography fontWeight={400} fontSize="12px" marginBottom="5px">
                   Offer Expiration
                 </Typography>
                 <Select
@@ -66,8 +64,9 @@ function ProfilePromotion() {
                   value={7}
                   onChange={() => {}}
                   sx={{
-                    color: theme.palette.secondary.contrastText,
-                    width: '200px',
+                    backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                    width: '300px',
+                    height: '42px',
                     '.MuiOutlinedInput-notchedOutline': {
                       borderColor: theme.palette.secondary.contrastText,
                     },
@@ -77,9 +76,7 @@ function ProfilePromotion() {
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                       borderColor: theme.palette.secondary.contrastText,
                     },
-                    '.MuiSvgIcon-root': {
-                      fill: 'white !important',
-                    },
+
                     input: {
                       backgroundColor: theme.palette.secondary.contrastText,
                     },
@@ -105,12 +102,7 @@ function ProfilePromotion() {
           >
             <Stack gap="10px">
               <Box marginTop="10px">
-                <Typography
-                  color="#fff"
-                  fontWeight={400}
-                  fontSize="12px"
-                  marginBottom="5px"
-                >
+                <Typography fontWeight={400} fontSize="12px" marginBottom="5px">
                   Add Fans To List
                 </Typography>
                 <Select
@@ -118,8 +110,9 @@ function ProfilePromotion() {
                   value={7}
                   onChange={() => {}}
                   sx={{
-                    color: theme.palette.secondary.contrastText,
-                    width: '200px',
+                    backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                    width: '300px',
+                    height: '42px',
                     '.MuiOutlinedInput-notchedOutline': {
                       borderColor: theme.palette.secondary.contrastText,
                     },
@@ -128,9 +121,6 @@ function ProfilePromotion() {
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                       borderColor: theme.palette.secondary.contrastText,
-                    },
-                    '.MuiSvgIcon-root ': {
-                      fill: 'white !important',
                     },
                   }}
                 >

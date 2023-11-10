@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import EditIconSvg from 'renderer/assets/svg/EditIconSvg';
 import TableAccordion from '../TableAccordion';
@@ -85,80 +86,103 @@ const BookkeepingTable = () => {
 export default BookkeepingTable;
 
 const TableData = ()=>{
-  return(
-    <TableContainer>
-    <Table
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+  return (
+    <TableContainer
       sx={{
-        minWidth: 650,
-        borderRadius: 16,
-        border: '1px solid #292929',
+        
+        background: isDarkTheme ? '#000' : '#fff',
       }}
-      aria-label="simple table"
     >
-      <TableHead sx={{ bgcolor: '#121212' }}>
-        <TableRow>
-          <TableCell sx={{ color: '#AAAAAA' }}>Employee</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Role</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Hourly Pay</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Commission earned</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Bonuses</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Date paid</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Status</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Total Hours</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Total Compensation</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {tableData.map((row) => (
-          <TableRow
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell sx={{ color: '#FFFFFF' }}> {row.employee} </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>{row.role}</TableCell>
-            <TableCell sx={{ color: '#FFFFFF'  }}>
-              <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-              <Typography>{row.hourlyPay}</Typography>
-              <EditIconSvg />
-              </Box>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>
-            <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-              <Typography>{row.commissionEarned}</Typography>
-              <EditIconSvg />
-              </Box>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF'  }}>
-            <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-              <Typography>{row.bonuses}</Typography>
-              <EditIconSvg />
-              </Box>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>{row.datePaid}</TableCell>
-            <TableCell
-              sx={{
-                color: row.status === 'Unpaid' ? '#FEC84A' : '#37DE8F',
-              }}
+      <Table
+        sx={{
+          minWidth: 650,
+          borderRadius: 16,
+          border: '1px solid #292929',
+        }}
+        aria-label="simple table"
+      >
+        <TableHead sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
+          <TableRow>
+            <TableCell>Employee</TableCell>
+            <TableCell>Role</TableCell>
+            <TableCell>Hourly Pay</TableCell>
+            <TableCell>Commission earned</TableCell>
+            <TableCell>Bonuses</TableCell>
+            <TableCell>Date paid</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Total Hours</TableCell>
+            <TableCell>Total Compensation</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tableData.map((row) => (
+            <TableRow
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <Typography
+              <TableCell> {row.employee} </TableCell>
+              <TableCell>{row.role}</TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  <Typography>{row.hourlyPay}</Typography>
+                  <EditIconSvg />
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  <Typography>{row.commissionEarned}</Typography>
+                  <EditIconSvg />
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  <Typography>{row.bonuses}</Typography>
+                  <EditIconSvg />
+                </Box>
+              </TableCell>
+              <TableCell>{row.datePaid}</TableCell>
+              <TableCell
                 sx={{
-                  width: 'fit-content',
-                  padding: '4px 10px',
-                  borderRadius: '14px',
-                  fontSize: '12px',
-                  background: row.status === 'Unpaid' ? '#473200' : '#072718',
+                  color: row.status === 'Unpaid' ? '#FEC84A' : '#37DE8F',
                 }}
               >
-                {row.status}
-              </Typography>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>{row.totalHours}</TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>
-              {row.totalCompensation}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-  )
+                <Typography
+                  sx={{
+                    width: 'fit-content',
+                    padding: '4px 10px',
+                    borderRadius: '14px',
+                    fontSize: '12px',
+                    background: row.status === 'Unpaid' ? '#473200' : '#072718',
+                  }}
+                >
+                  {row.status}
+                </Typography>
+              </TableCell>
+              <TableCell>{row.totalHours}</TableCell>
+              <TableCell>{row.totalCompensation}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }

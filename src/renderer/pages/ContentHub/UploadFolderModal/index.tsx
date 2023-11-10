@@ -275,7 +275,7 @@ export default function UploadFolderModal({
               />
             </Box>
           )}
-          <Dropzone onDrop={onDrop}>
+          <Dropzone maxSize={104857600} onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (
               <section>
                 <div {...getRootProps()}>
@@ -299,7 +299,7 @@ export default function UploadFolderModal({
                     <BackupOutlinedIcon
                       style={{ fontSize: '36px', color: '#fff' }}
                     />
-                    <Typography variant="body1" sx={{ color: '#fff' }}>
+                    <Typography variant="body1">
                       {selectedFiles.length === 0
                         ? 'Click to upload file from your computer or drag your file here'
                         : `${selectedFiles.length} image selected`}
@@ -316,18 +316,18 @@ export default function UploadFolderModal({
             gap={'8px'}
             padding={'20px 10px'}
           >
-            <Button
-              sx={{ color: '#fff', textTransform: 'capitalize' }}
-              onClick={handleClose}
-            >
+            <Button sx={{ textTransform: 'capitalize' }} onClick={handleClose}>
               Cancel
             </Button>
             <Button
               variant="contained"
-              sx={{ color: '#fff', textTransform: 'capitalize' }}
+              sx={{ textTransform: 'capitalize' }}
               onClick={handleUpload}
             >
-              Upload
+              <Typography sx={{ color:'#fff' }}>
+                {' '}
+                Upload
+              </Typography>
             </Button>
           </Box>
         </Box>

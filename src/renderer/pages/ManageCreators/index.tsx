@@ -203,13 +203,13 @@ export default function ManageCreators() {
                   >
                     <TableCell
                       sx={{
-                        borderColor: theme.palette.primary.contrastText,
+                        borderColor:theme.palette.primary.contrastText,
                       }}
                       scope="row"
                     >
                       <Stack spacing={1} direction="row" alignItems="center">
                         <Avatar />
-                        <Typography variant="h6" fontSize="18px" color="#fff">
+                        <Typography variant="h6" fontSize="18px" >
                           {name}
                         </Typography>
                       </Stack>
@@ -217,7 +217,7 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
+                       
                       }}
                       align="right"
                     >
@@ -226,7 +226,7 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
+                       
                       }}
                     >
                       {internalNotes}
@@ -240,14 +240,14 @@ export default function ManageCreators() {
                         alignItems="center"
                         flexDirection="row"
                         spacing={2}
-                        color="#fff"
+                        
                       >
                         OnlyFans
                         <OnlyFansSvg />
                       </Stack>
                       <Typography
                         component="small"
-                        color="#fff"
+                       
                         fontSize="11px"
                       >
                         {autoRelink ? (
@@ -277,7 +277,7 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                        color: '#fff',
+                       
                       }}
                     >
                       {assignEmployee
@@ -291,10 +291,10 @@ export default function ManageCreators() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      <Typography color="#fff" variant="body2">
+                      <Typography variant="body2">
                         OnlyManager Proxy
                       </Typography>
-                      <Typography color="#fff" variant="caption">
+                      <Typography variant="caption">
                         107.175.227.145
                       </Typography>
                     </TableCell>
@@ -329,7 +329,7 @@ export default function ManageCreators() {
                             setOpenAddCreater(true);
                           }}
                         >
-                          <Typography variant="body1" color="#04A1FF">
+                          <Typography variant="body1" >
                             Edit
                           </Typography>
                         </ButtonBase>

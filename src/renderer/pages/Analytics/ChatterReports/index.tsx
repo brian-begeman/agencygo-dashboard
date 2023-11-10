@@ -1,4 +1,4 @@
-import { Box, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Box, MenuItem, Select, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import Overview from './Overview';
 import ButtonGroup from 'renderer/components/ButtonGroup';
@@ -25,12 +25,15 @@ function ChatterReports() {
     setStartDate(moment(ranges.startDate).format('yyyy-MM-DD'));
     setEndDate(moment(ranges.endDate).format('yyyy-MM-DD'));
   };
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box
       sx={{ padding: '10px ' }}
       gap="10px"
       display="flex"
+
       flexDirection="column"
     >
       <Stack
@@ -40,7 +43,7 @@ function ChatterReports() {
         sx={{
           borderRadius: '16px',
           padding: '15px',
-          background: 'black',
+          background: isDarkTheme ? '#000' : '#fff',
         }}
       >
         <ButtonGroup
@@ -54,14 +57,20 @@ function ChatterReports() {
             flexDirection="row"
             alignItems="center"
             gap="5px"
-            border="2px solid #292929"
+            border="2px solid "
+            borderColor="primary.contrastText"
             padding="6px 8px"
             borderRadius="4px"
             onClick={() => setOpen(!open)}
           >
-            <Typography> {startDate} </Typography>
-            <Typography> to </Typography>
-            <Typography>{endDate}</Typography>
+            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+              {' '}
+              {startDate}{' '}
+            </Typography>
+            <Typography color={isDarkTheme ? '#fff' : '#000'}> to </Typography>
+            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+              {endDate}
+            </Typography>
             <DatePickerSvg />
           </Box>
           <Select
@@ -72,14 +81,13 @@ function ChatterReports() {
               color: theme.palette.secondary.contrastText,
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.light,
+                borderColor: theme.palette.primary.contrastText,
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
-                {
-                  padding: '4px 8px',
-                },
+              ' & .MuiOutlinedInput-input': {
+                padding: '4px 8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
@@ -96,7 +104,7 @@ function ChatterReports() {
           >
             <MenuItem
               value={'All Creators'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               All Creators
             </MenuItem>

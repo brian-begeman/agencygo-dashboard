@@ -1,5 +1,5 @@
 import { KeyboardArrowUp } from '@mui/icons-material';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import OnlyFansCircleBlue from 'renderer/assets/svg/OnlyFansCircleBlueSvg';
 import theme from 'renderer/styles/muiTheme';
@@ -43,12 +43,17 @@ const earningsInitJson = [
 ];
 
 export default function Earnings() {
+
+  const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Box
       padding="10px"
       sx={{
         borderRadius: '16px',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#000' : '#fff',
       }}
     >
       <Stack flexDirection="row" gap="10px">
@@ -67,7 +72,9 @@ export default function Earnings() {
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
           <Stack flexDirection="row" alignItems="center" gap="20px">
-            <Typography color="#fff">Total Earnings</Typography>
+            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+              Total Earnings
+            </Typography>
             <KeyboardArrowUp
               sx={{
                 color: theme.palette.primary.light,
@@ -82,7 +89,7 @@ export default function Earnings() {
           <Typography
             variant="h3"
             fontWeight="700"
-            color={theme.palette.secondary.contrastText}
+            color={isDarkTheme ? '#fff' : '#000'}
           >
             $473.44
           </Typography>

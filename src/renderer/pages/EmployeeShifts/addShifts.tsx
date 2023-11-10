@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
 import {
@@ -335,13 +335,19 @@ const AddShifts = ({ open, type, setOpen, refetch }: $props) => {
       },
     }));
   };
+
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Overlay
       heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
       open={open}
       handleClose={handleModalClose}
     >
-      <Box>
+      <Box bgcolor={isDarkTheme ? '#292929' : '#fff'}>
         <form
           className={styles.modalBody}
           id="addEmployee"
@@ -349,7 +355,13 @@ const AddShifts = ({ open, type, setOpen, refetch }: $props) => {
         >
           <Stack>
             <div>
-              <div style={{ display: 'flex', marginBottom: '5px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  marginBottom: '5px',
+                  marginLeft: '10px',
+                }}
+              >
                 <DropdownWithLabel
                   label="Start Time"
                   inputIdentifierName="startTime"
@@ -358,21 +370,49 @@ const AddShifts = ({ open, type, setOpen, refetch }: $props) => {
                   handleOnChange={handleChange}
                 />
 
-                <div style={{ margin: '10px' }}>
-                  <label htmlFor="">Select start date</label>
-
-                  <input
-                    type="date"
-                    value={shiftData?.startDate}
-                    onChange={(e) => {
-                      handleChange('startDate', e.target.value);
+                <div>
+                  <label
+                    htmlFor=""
+                    style={{
+                      marginTop: '3px',
+                      marginLeft: '7px',
                     }}
-                    min={today}
-                  />
+                  >
+                    Select start date
+                  </label>
+                  <div
+                    style={{
+                      marginTop: '3px',
+                      marginLeft: '11px',
+                      marginRight: '10px',
+                    }}
+                  >
+                    <input
+                      type="date"
+                      value={shiftData?.startDate}
+                      onChange={(e) => {
+                        handleChange('startDate', e.target.value);
+                      }}
+                      min={today}
+                      style={{
+                        backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+                        color: isDarkTheme ? '#fff' : '#000',
+                        marginLeft: '5px',
+                        height: '45px',
+                        paddingLeft: '5px',
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', marginBottom: '5px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  marginBottom: '5px',
+                  marginLeft: '10px',
+                }}
+              >
                 <DropdownWithLabel
                   label="End Time"
                   inputIdentifierName="endTime"
@@ -380,33 +420,76 @@ const AddShifts = ({ open, type, setOpen, refetch }: $props) => {
                   handleOnChange={handleChange}
                   value={shiftData?.endTime}
                 />
-                <div style={{ margin: '10px' }}>
-                  <label htmlFor="">Select end date</label>
-                  <input
-                    type="date"
-                    onChange={(e) => {
-                      handleChange('endDate', e.target.value);
+                <div>
+                  <label
+                    htmlFor=""
+                    style={{
+                      marginTop: '3px',
+                      marginLeft: '11px',
                     }}
-                    min={shiftData.startDate}
-                    value={shiftData?.endDate}
-                  />
+                  >
+                    Select end date
+                  </label>
+                  <div
+                    style={{
+                      marginTop: '3px',
+                      marginLeft: '7px',
+                      marginRight: '10px',
+                    }}
+                  >
+                    <input
+                      type="date"
+                      onChange={(e) => {
+                        handleChange('endDate', e.target.value);
+                      }}
+                      min={shiftData.startDate}
+                      value={shiftData?.endDate}
+                      style={{
+                        backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+                        color: isDarkTheme ? '#fff' : '#000',
+                        marginLeft: '5px',
+                        height: '45px',
+                        paddingLeft: '5px',
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <DropdownWithLabel
-              label="employees"
-              inputIdentifierName="employeeId"
-              options={employees}
-              handleOnChange={handleChange}
-              value={shiftData?.employeeId}
-            />
-            <DropdownWithLabel
-              label="creators"
-              inputIdentifierName="creatorId"
-              options={creators}
-              handleOnChange={handleChange}
-              value={shiftData?.creatorId}
-            />
+            <div
+              style={{
+                display: 'flex',
+                marginBottom: '5px',
+                width: '96%',
+                marginLeft: '10px',
+              }}
+            >
+              <DropdownWithLabel
+                label="employees"
+                inputIdentifierName="employeeId"
+                options={employees}
+                handleOnChange={handleChange}
+                value={shiftData?.employeeId}
+              />
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                marginBottom: '5px',
+                width: '96%',
+                marginLeft: '10px',
+              }}
+            >
+              <DropdownWithLabel
+                label="creators"
+                inputIdentifierName="creatorId"
+                options={creators}
+                handleOnChange={handleChange}
+                value={shiftData?.creatorId}
+              />
+            </div>
+
             <div
               style={{
                 display: 'flex',
