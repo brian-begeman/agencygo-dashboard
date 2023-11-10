@@ -8,7 +8,13 @@ import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import { formatDate, calculateFolderSize } from 'renderer/utils';
+import {
+  formatDate,
+  calculateFolderSizeTotal,
+  convertToKB,
+  calculatePercentage,
+  calculateFolderSize,
+} from 'renderer/utils';
 import { Box, Button, Icon, Stack, Typography, useTheme } from '@mui/material';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -69,13 +75,10 @@ export default function ContentHub() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]); // Or specify the appropriate type
   const [showDownloadButton, setShowDownloadButton] = useState(true);
   const [showDeleteButton, setShowDeleteButton] = useState(true);
-  const [creators, setCreators] = useState({
-    id: '',
-    name: '',
-    profileImage: '',
-    notificationCount: '',
-    messageCount: '',
-  });
+  const [totalStorageUsedInPercent, setTotalStorageUsedInPercent] = useState(0);
+  const [maxSizeLimit, setMaxSizeLimit] = useState(25);
+  const [sizeUsed, setSizeUsed] = useState(0);
+  const [sizeUsedUnit, setSizeUsedUnit] = useState('B');
 
   // Function to toggle image selection
   const handleToggleImageSelection = (imageKey: string) => {
@@ -381,6 +384,10 @@ export default function ContentHub() {
       ////////////////internal detail///////////////////
 
       const newData = [];
+      let totalFileSize = 0;
+      let _sizeUsed = 0;
+      let accumulatedTotal = 0;
+
       if (folder.CommonPrefixes) {
         // const newRows1 = folder.CommonPrefixes.filter(
         //   (item: { Prefix: string }) => item.Prefix !== '/'
@@ -397,7 +404,12 @@ export default function ContentHub() {
             new ListObjectsV2Command(prefixParams)
           );
           ////// get size of s3 objects ////////////
-          let size = calculateFolderSize(prefixData.Contents);
+          let size = calculateFolderSizeTotal(prefixData.Contents);
+
+          accumulatedTotal += size.totalSize;
+
+          let _percentage = calculatePercentage(size.formattedSize, 25, 'GB');
+          totalFileSize += _percentage;
 
           const lastUpdated = prefixData.Contents.reduce((prev, current) =>
             prev.LastModified > current.LastModified ? prev : current
@@ -410,20 +422,21 @@ export default function ContentHub() {
             foldername: prefix.Prefix.split('/')[1].replace(/\//g, ''),
             lastUpdated: formattedDate,
             itemCount: itemCount,
-            folderSize: size,
+            folderSize: size.formattedSize,
           });
         }
         setRows([]);
         if (newData.length > 0) {
           setRows(newData);
+          console.log('percentage', totalFileSize);
+          setTotalStorageUsedInPercent(totalFileSize);
+          setSizeUsed(accumulatedTotal.toFixed(2));
         }
-        console.log(newData);
       }
 
       //////////////////////////////////////////////////
     } catch (error) {
       console.error('Error creating folder in S3:', error);
-      
     }
   };
 
@@ -584,7 +597,7 @@ export default function ContentHub() {
   };
   const handleOpen = () => setOpen(true);
   const handleUploadOpen = () => setUploadOpen(true);
-    const handleRegeneratedialogOpen = () => setRegenerateModalOpen(true);
+  const handleRegeneratedialogOpen = () => setRegenerateModalOpen(true);
 
   const [selectedStatus, setSelectedStatus] = useState('Filter');
 
@@ -746,10 +759,11 @@ export default function ContentHub() {
                 </Link>
               </Box>
 
-              <ContentHubStorageBar />
+              <ContentHubStorageBar percentage={totalStorageUsedInPercent} />
 
               <Typography fontSize="14px" sx={{ marginTop: '4px' }}>
-                <span style={{ color: '##04A1FF' }}>439.54 GB</span> of 2TB
+                <span style={{ color: '#04A1FF' }}>{sizeUsed} MB </span> of{' '}
+                {maxSizeLimit} GB
               </Typography>
             </Box>
             {showGrid && (
