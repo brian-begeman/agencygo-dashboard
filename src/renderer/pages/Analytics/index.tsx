@@ -38,7 +38,7 @@ export default function ShareForShare() {
         >
           <Box
             sx={{
-              bgcolor: isDarkTheme ? '#000' : '#fff',
+              bgcolor: isDarkTheme ? '#0C0C0C' : '#fff',
               position: 'absolute',
               top: 0,
               height: '100vh',
@@ -50,6 +50,7 @@ export default function ShareForShare() {
             <Typography
               sx={{ padding: '20px 0px ' }}
               color={isDarkTheme ? '#fff' : '#000'}
+            
             >
               Analytics
             </Typography>

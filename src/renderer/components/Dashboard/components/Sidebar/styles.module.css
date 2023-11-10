@@ -3,7 +3,7 @@
   min-height: 100vh;
 }
 .brandLogo {
-  border-bottom: 1px solid #04A1FF;
+  border-bottom: 1px solid #04a1ff;
   padding-bottom: 30px;
   padding-top: 30px;
   margin-left: 16px;
@@ -28,20 +28,21 @@
 .sidebarNavWrapper {
   padding-top: 28px;
   background-color: '#d3d3d3';
+ 
 }
 
 .optionWrapper {
   display: flex;
-  padding: 16px 0px;
+  /* padding: 16px 0px; */
   flex-direction: column;
-  align-items: flex-start;
-
+  align-items: center;
+  justify-content: center;
   border: 8px;
 }
 
 .optionItem {
   padding: 16px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
   color: #aaa;
   font-size: 13px;
   font-weight: 600;
@@ -104,7 +105,7 @@
     hue-rotate(176deg) brightness(99%) contrast(105%);
 }
 .darkTheme {
-  background-color: #0f0f0f; /* Dark mode background color */
+  background-color: #0C0C0C; /* Dark mode background color */
 }
 
 .lightTheme {

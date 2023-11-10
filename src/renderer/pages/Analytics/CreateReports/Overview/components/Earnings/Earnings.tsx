@@ -8,45 +8,45 @@ import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import styles from '../../styles.module.css';
 import EarningsRecordCard from './EarningCard';
+import NewMessageSvg from 'renderer/assets/svg/NewMessageSvg';
+import ChatSvg from 'renderer/assets/svg/chatSvg';
 
 const earningsInitJson = [
   {
     title: 'Subscriptions ($)',
     amount: '44.44',
-    icon: <ArchiveAddSvg />,
+    icon: <ChatSvg />,
   },
   {
     title: 'Post ($)',
     amount: '0.00',
-    icon: <ArchiveAddSvg />,
+    icon: <ChatSvg />,
   },
   {
     title: 'Messages ($)',
     amount: '432.00',
-    icon: <ArchiveAddSvg />,
+    icon: <NewMessageSvg />,
   },
   {
     title: 'Tips ($)',
     amount: '6.00',
-    icon: <WalletAddSvg />,
+    icon: <ChatSvg />,
   },
   {
     title: 'Referrals ($)',
     amount: '0.00',
-    icon: <UserAdd />,
+    icon: <ChatSvg />,
   },
   {
     title: 'Streams ($)',
     amount: '0.00',
-    icon: <SubtitleSvg />,
+    icon: <ChatSvg />,
   },
 ];
 
 export default function Earnings() {
-
   const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box
@@ -64,21 +64,20 @@ const isDarkTheme = theme.palette.mode === 'dark';
             padding: '30px',
             height: 'fit-content',
             border: `1px solid ${theme.palette.primary.contrastText}`,
-            minWidth: '200px',
+            minWidth: '270px',
           }}
         >
           <OnlyFansCircleBlue />
           <Divider
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
-          <Stack flexDirection="row" alignItems="center" gap="20px">
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+          <Stack flexDirection="row" alignItems="center" gap="17px">
+            <Typography color={isDarkTheme ? '#fff' : '#000'} fontSize={14}>
               Total Earnings
             </Typography>
             <KeyboardArrowUp
               sx={{
                 color: theme.palette.primary.light,
-                marginLeft: '20px',
                 fontSize: '14px',
               }}
             />

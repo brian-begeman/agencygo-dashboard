@@ -37,8 +37,8 @@ const theme = useTheme();
 const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
-      sx={{ padding: '10px ' }}
-      gap="10px"
+      sx={{ padding: '16px ' }}
+      gap="8px"
       display="flex"
       flexDirection="column"
     >

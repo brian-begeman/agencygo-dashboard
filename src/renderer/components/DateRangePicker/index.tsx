@@ -2,9 +2,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-// import 'react-date-range/dist/styles.css';
-// import 'react-date-range/dist/theme/default.css';
-import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRange, DateRangePicker } from 'react-date-range';
 import { addDays, subDays } from 'date-fns';
 
 const style = {
@@ -12,9 +12,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  boxShadow: 24,
-  p: 4,
+  border:'none'
 };
 
 type CalendarProps = {
@@ -40,13 +38,22 @@ const DatePicker = ({ onChange }: any) => {
 
   return (
     <div>
-      <DateRangePicker
+      {/* <DateRangePicker
         maxDate={new Date()}
         onChange={handleOnChange}
         moveRangeOnFirstSelection={false}
         months={2}
         ranges={state}
         direction="horizontal"
+      /> */}
+
+      <DateRange
+        editableDateInputs={true}
+        onChange={handleOnChange}
+        moveRangeOnFirstSelection={false}
+        ranges={state}
+        className='classNameText'
+       
       />
     </div>
   );
@@ -68,9 +75,10 @@ export default function Calendar({
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{ backdropFilter: 'blur(4px)' }}
     >
       <Box sx={style}>
-        <DatePicker onChange={onChange} />
+        <DatePicker onChange={onChange}/>
       </Box>
     </Modal>
   );

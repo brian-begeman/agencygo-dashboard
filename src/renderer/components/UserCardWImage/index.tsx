@@ -1,6 +1,6 @@
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
-import Message from 'renderer/assets/svg/messageSvg';
+
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';

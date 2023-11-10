@@ -60,15 +60,14 @@ export default function Earnings() {
 
   return (
     <Box
-     
       padding="16px"
       sx={{
         borderRadius: '16px',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
       }}
     >
       <Box marginBottom="10px" display="flex" justifyContent="space-between">
-        <Typography  fontWeight="600" fontSize="22px">
+        <Typography fontWeight="600" fontSize="22px">
           Creators Earnings Overview
         </Typography>
         <ButtonGroup
@@ -92,7 +91,7 @@ export default function Earnings() {
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
           <Stack flexDirection="row" alignItems="center">
-            <Typography >Total Earnings</Typography>
+            <Typography>Total Earnings</Typography>
             <KeyboardArrowUp
               sx={{
                 color: theme.palette.primary.light,
@@ -104,12 +103,7 @@ export default function Earnings() {
               12.7%
             </Typography>
           </Stack>
-          <Typography
-            variant="h3"
-            fontWeight="700"
-            fontSize={'36px'}
-           
-          >
+          <Typography variant="h3" fontWeight="700" fontSize={'36px'}>
             $473.44
           </Typography>
         </Stack>

@@ -105,7 +105,12 @@ export default function CreatorStatistics() {
         Creator Statistics
         <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
       </Typography>
-      <Box display="flex" width="fit-content" gap="10px">
+      <Box
+        display="flex"
+        width="fit-content"
+        gap="10px"
+       
+      >
         {earningsInitJson.map((item) => (
           <EarningsRecordCard
             key={item.title}
@@ -115,58 +120,64 @@ export default function CreatorStatistics() {
           />
         ))}
       </Box>
-      <TableContainer
+      <Box
         sx={{
-          minWidth: 650,
-          border: `1px solid ${theme.palette.primary.contrastText}`,
-          borderRadius: '16px',
+          minWidth: 60,
         }}
       >
-        <Table >
-          <TableHead
-            sx={{
-              background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
-              color: '#fff',
-            }}
-          >
-            <TableRow>
-              <TableCell>Creator</TableCell>
-              <TableCell align="right">Active Fans</TableCell>
-              <TableCell align="right">Expired Fans</TableCell>
-              <TableCell align="right">New Fans</TableCell>
-              <TableCell align="right">Message Earnings</TableCell>
-              <TableCell align="right">Total Earnings</TableCell>
-              <TableCell align="right" sx={{ color: '#FFFFFF' }}>
-                Refunded
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tabledata.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  sx={{ padding: '25px 10px' }}
-                >
-                  {row.creator}
+        <TableContainer
+          sx={{
+            minWidth: 650,
+            border: `1px solid ${theme.palette.primary.contrastText}`,
+            borderRadius: '16px',
+          }}
+        >
+          <Table>
+            <TableHead
+              sx={{
+                background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
+                color: '#fff',
+              }}
+            >
+              <TableRow>
+                <TableCell>Creator</TableCell>
+                <TableCell align="right">Active Fans</TableCell>
+                <TableCell align="right">Expired Fans</TableCell>
+                <TableCell align="right">New Fans</TableCell>
+                <TableCell align="right">Message Earnings</TableCell>
+                <TableCell align="right">Total Earnings</TableCell>
+                <TableCell align="right" sx={{ color: '#FFFFFF' }}>
+                  Refunded
                 </TableCell>
-                <TableCell component="th" scope="row">
-                  {row.activeFans}
-                </TableCell>
-                <TableCell align="right">{row.expiredFans}</TableCell>
-                <TableCell align="right">{row.newFans}</TableCell>
-                <TableCell align="right">{row.messageEarnings}</TableCell>
-                <TableCell align="right">{row.totalEarnings}</TableCell>
-                <TableCell align="right">{row.refunded}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {tabledata.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{ padding: '25px 10px' }}
+                  >
+                    {row.creator}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {row.activeFans}
+                  </TableCell>
+                  <TableCell align="right">{row.expiredFans}</TableCell>
+                  <TableCell align="right">{row.newFans}</TableCell>
+                  <TableCell align="right">{row.messageEarnings}</TableCell>
+                  <TableCell align="right">{row.totalEarnings}</TableCell>
+                  <TableCell align="right">{row.refunded}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 }

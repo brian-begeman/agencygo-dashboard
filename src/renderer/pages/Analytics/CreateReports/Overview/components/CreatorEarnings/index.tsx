@@ -86,8 +86,9 @@ export default function CreatorEarnings() {
       </Typography>
       <Box
         sx={{
-          height: '450px',
+          height: '550px',
           width: '100%',
+         
         }}
       >
         <Bar options={options} data={data} />
