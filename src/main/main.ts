@@ -35,6 +35,9 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import * as pie from '../packages/electron-puppeteer';
 
+let mainWindow: BrowserWindow | null = null;
+let ofBrowser: Browser | null = null;
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -57,8 +60,6 @@ class AppUpdater {
     });
   });
 
-let mainWindow: BrowserWindow | null = null;
-let ofBrowser: Browser | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -228,3 +229,6 @@ const main = async () => {
 app.on('ready', createWindow);
 
 main();
+
+
+export default mainWindow;

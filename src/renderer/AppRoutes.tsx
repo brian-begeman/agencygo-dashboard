@@ -40,6 +40,7 @@ import Payroll from './pages/Accounting/Payroll';
 import BookKeeping from './pages/Accounting/BookKeeping';
 import ChatMessage from './pages/ChatScreen';
 import ContentHub from './pages/ContentHub';
+import Browser from './pages/Browser';
 import {useLocation} from 'react-router-dom'
 
 
@@ -63,6 +64,11 @@ const ROUTES = [
     path: '/manager-suite/:page',
     element: <ManagerSuite />,
     pathName: 'Manager Suite',
+  },
+  {
+    path : '/browser',
+    element: <Browser/>,
+    pathName: "Anty Browser"
   },
   {
     path: '/content-hub',
