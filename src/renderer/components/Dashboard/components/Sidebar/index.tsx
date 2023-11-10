@@ -81,6 +81,12 @@ const sideBarMenuConst = [
     link: '/content-hub',
   },
   {
+    name: localisation.browser,
+    icon: <ContentHubSvg />,
+    menu: [],
+    link: '/browser',
+  },
+  {
     name: localisation.analytics,
     icon: <AnalyticsSvg />,
     menu: [
@@ -204,12 +210,6 @@ const sideBarMenuConst = [
     icon: <Message />,
     menu: [],
     link: '/chatmessage',
-  },
-  {
-    name: localisation.ofbrowser,
-    icon: <CreatorSvg />,
-    menu: [],
-    link: '/of-account',
   },
   {
     name: localisation.employees,

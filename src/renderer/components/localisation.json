@@ -5,7 +5,7 @@
   "networkReport": "Network Report",
   "home": "Home",
   "manager": "Manager",
-  "content":"Content Hub",
+  "content": "Content Hub",
   "analytics": "Analytics",
   "accounting": "Accounting",
   "growth": "Growth",
@@ -16,5 +16,5 @@
   "employeeShifts": "Employee Shifts",
   "notification": "Notification",
   "settings": "Settings",
-  "ofbrowser": "Of Browser"
+  "browser": "Anty Browser"
 }

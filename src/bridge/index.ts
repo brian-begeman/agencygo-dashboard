@@ -3,7 +3,9 @@ import chalk from 'chalk';
 import { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
-import { emit } from 'process';
+import AntyBrowser from '../packages/anty-browser'
+import path from 'path';
+import fileurl from 'file-url'
 
 const getPageUrl = (page:any) => {
 const urls =  [
@@ -60,6 +62,19 @@ const startIPCBridge = ({
   ofBrowser: Browser;
 }) => {
   let ofBrowserView:BrowserView | null = null;
+
+  ipcMain.on('b', (e, arg) => {    
+     new AntyBrowser({
+      controlPanel: fileurl(path.join(__dirname, '../browser-controller/control.html')),
+      controlHeight: 100,
+      startPage: 'https://google.com',
+      blankTitle: 'New tab',
+      debug: true,
+      mainWindow,
+      bounds: arg.bounds
+    });
+    
+  } )
 
   // eslint-disable-next-line no-console
   console.log(chalk.bgYellow('IPC Bridge Started'));

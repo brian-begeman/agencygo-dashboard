@@ -35,7 +35,7 @@ const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
-    assignCreator: Yup.string().required('AssignCreator is required'),
+    assignCreator: Yup.string(),
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
