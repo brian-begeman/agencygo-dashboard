@@ -62,7 +62,7 @@ export default function Earnings() {
         backgroundColor: theme.palette.secondary.main,
       }}
     >
-      <Box marginBottom="10px" display="flex" justifyContent="space-between">
+      <Box marginBottom="15px" display="flex" justifyContent="space-between">
         <Typography color="#AAAAAA" fontWeight="600" fontSize="22px">
           Creators Earnings Overview
         </Typography>
@@ -87,7 +87,7 @@ export default function Earnings() {
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
           <Stack flexDirection="row" alignItems="center">
-            <Typography color="#fff">Total Earnings</Typography>
+            <Typography color="#fff" >Total Earnings</Typography>
             <KeyboardArrowUp
               sx={{
                 color: theme.palette.primary.light,

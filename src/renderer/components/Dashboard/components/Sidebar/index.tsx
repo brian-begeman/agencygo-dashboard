@@ -251,6 +251,7 @@ function SideBar() {
 
   return (
     <div className={classes.sidebar}>
+      
       <BrandLogo />
       <div className={classes.sidebarNavWrapper}>
         {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {

@@ -16,6 +16,7 @@ export default function ButtonGroup({
       border="1px solid #292929"
       width="fit-content"
       borderRadius="6px"
+      sx={{   cursor:'pointer'}}
     >
       {tabButton.map((val: any) => {
         return (
@@ -26,6 +27,7 @@ export default function ButtonGroup({
                     padding: '8px 12px',
                     background: '#292929',
                     borderRadius: '4px',
+                   
                   }
                 : { padding: '8px 12px', borderRadius: '4px' }
             }
