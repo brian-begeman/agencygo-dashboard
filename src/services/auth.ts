@@ -62,7 +62,7 @@ const verifyRequest = async () => {
 
 const signupRequest = async (arg: any) => {
   try {
-    const response = await fetch('users', {
+    const response = await fetch('signup', {
       method: 'POST',
       body: JSON.stringify({ ...arg, ...testSignUpConfig }),
       headers: {
