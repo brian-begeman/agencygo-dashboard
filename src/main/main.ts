@@ -147,7 +147,7 @@ const createWindow = async () => {
     height: winDimens.height,
   });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
-  view1.webContents.openDevTools();
+  // view1.webContents.openDevTools();
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
