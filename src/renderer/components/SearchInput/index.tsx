@@ -4,6 +4,7 @@ import Refresh from 'renderer/assets/svg/refreshSvg';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './styles.module.css';
 import theme from 'renderer/styles/muiTheme';
+import AddIcon from '@mui/icons-material/Add';
 interface $Props {
   value: string;
   onUpdateSearch: (v: string) => void;
@@ -71,5 +72,24 @@ function ReloadButton({ onRefresh }: $ReloadProps) {
 }
 
 SearchInput.ReloadButton = ReloadButton;
+
+interface $NewConvProps {
+  onClick: () => void;
+}
+
+function NewConvButton({ onClick }: $NewConvProps) {
+  return (
+    <IconButton
+      aria-label="new conversation"
+      onClick={onClick}
+      onMouseDown={onClick}
+      edge="end"
+    >
+      <AddIcon sx={{ color: theme.palette.secondary.contrastText, fontSize: '28px' }} />
+    </IconButton>
+  );
+}
+
+SearchInput.NewConvButton = NewConvButton;
 
 export default SearchInput;
