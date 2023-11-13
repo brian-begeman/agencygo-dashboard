@@ -28,3 +28,7 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 /.env
+
+Agency Go Anti Detect Browser.app
+
+!src/packages/merge-deep/node_modules

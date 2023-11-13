@@ -1,58 +1,57 @@
-import { BrowserView, BrowserWindow, ipcMain, screen, session } from 'electron';
+import { BrowserView, BrowserWindow, ipcMain, session } from 'electron';
 import chalk from 'chalk';
-import { Browser } from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
-import AntyBrowser from '../packages/anty-browser'
-import path from 'path';
-import fileurl from 'file-url'
+import locateChrome from 'locate-chrome';
+import log from 'electron-log';
 
-const getPageUrl = (page:any) => {
-const urls =  [
+const getPageUrl = (page: any) => {
+  const urls = [
     {
-        "key": "notifications",
-        "url": "https://onlyfans.com/my/notifications"
+      key: 'notifications',
+      url: 'https://onlyfans.com/my/notifications',
     },
     {
-        "key": "messages",
-        "url": "https://onlyfans.com/my/chats/"
+      key: 'messages',
+      url: 'https://onlyfans.com/my/chats/',
     },
     {
-        "key": "collections",
-        "url": "https://onlyfans.com/my/collections/user-lists/recent"
+      key: 'collections',
+      url: 'https://onlyfans.com/my/collections/user-lists/recent',
     },
     {
-        "key": "vault",
-        "url": "https://onlyfans.com/my/vault/list/all"
+      key: 'vault',
+      url: 'https://onlyfans.com/my/vault/list/all',
     },
     {
-        "key": "queue",
-        "url": "https://onlyfans.com/my/queue"
+      key: 'queue',
+      url: 'https://onlyfans.com/my/queue',
     },
     {
-        "key": "statements",
-        "url": "https://onlyfans.com/my/statements/earnings"
+      key: 'statements',
+      url: 'https://onlyfans.com/my/statements/earnings',
     },
     {
-        "key": "statistics",
-        "url": "https://onlyfans.com/my/statistics/statements/earnings"
+      key: 'statistics',
+      url: 'https://onlyfans.com/my/statistics/statements/earnings',
     },
     {
-        "key": "myprofile",
-        "url": "https://onlyfans.com/"
+      key: 'myprofile',
+      url: 'https://onlyfans.com/',
     },
     {
-        "key": "newpost",
-        "url": "https://onlyfans.com/posts/create"
-    }
-]
+      key: 'newpost',
+      url: 'https://onlyfans.com/posts/create',
+    },
+  ];
 
-for (const item of urls) {
-  if (item.key === page) {
+  for (const item of urls) {
+    if (item.key === page) {
       return item.url;
+    }
   }
-}
-}
+};
 
 const startIPCBridge = ({
   mainWindow,
@@ -61,26 +60,60 @@ const startIPCBridge = ({
   mainWindow: BrowserWindow;
   ofBrowser: Browser;
 }) => {
-  let ofBrowserView:BrowserView | null = null;
-
-  ipcMain.on('b', (e, arg) => {    
-     new AntyBrowser({
-      controlPanel: fileurl(path.join(__dirname, '../browser-controller/control.html')),
-      controlHeight: 100,
-      startPage: 'https://google.com',
-      blankTitle: 'New tab',
-      debug: true,
-      mainWindow,
-      bounds: arg.bounds
-    });
-    
-  } )
-
+  let ofBrowserView: BrowserView | null = null;
   // eslint-disable-next-line no-console
   console.log(chalk.bgYellow('IPC Bridge Started'));
+
+  ipcMain.on('launch-anty-browser', async (e, arg) => {
+    try {
+      const proxyConfig = {
+        address: 'geo.iproyal.com',
+        port: 12321,
+        credentials: {
+          username: 'ryb6AD',
+          password: 'ryb6AD',
+        },
+      };
+
+      const browser = await puppeteer.launch({
+        headless: false,
+        defaultViewport: null,
+        ignoreDefaultArgs: ['--enable-automation'],
+        args: [
+          '--start-maximized',
+          `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
+        ],
+        executablePath: await locateChrome(),
+      });
+
+      browser.on('targetcreated', async (target) => {
+        if (target.type() === 'page') {
+          const newPage = await target.page();
+          // Set the geolocation for the new page
+          await newPage?.setGeolocation({
+            latitude: 59.95,
+            longitude: 30.31667,
+          });
+        }
+      });
+
+      const page = await browser.newPage();
+
+      page.setDefaultNavigationTimeout(60000);
+      await page.authenticate({
+        username: proxyConfig.credentials.username,
+        password: proxyConfig.credentials.password,
+      });
+      await page.setGeolocation({ latitude: 59.95, longitude: 30.31667 });
+      await page.goto('https://iproyal.com/ip-lookup/');
+    } catch (err) {
+      log.error(err);
+    }
+  });
+
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
     try {
-      console.log(arg)
+      console.log(arg);
       ofBrowserView = new BrowserView({
         webPreferences: {
           partition: 'persist:' + arg.creatorId,
@@ -88,102 +121,105 @@ const startIPCBridge = ({
       });
 
       const proxyURL = `${arg.proxy.hostname}:${arg.proxy.port}`;
-      
-      mainWindow.addBrowserView(ofBrowserView); 
+
+      mainWindow.addBrowserView(ofBrowserView);
       /* ofBrowserView.setBounds({
         x: -999999,
         y: -999999, 
         width: 894,
         height: 789
       }) */
-      ofBrowserView.setBounds(arg.bounds)
+      ofBrowserView.setBounds(arg.bounds);
 
       const [_, partitionCookies, page] = await Promise.all([
         session.fromPartition('persist:' + arg.creatorId).setProxy({
           proxyRules: proxyURL,
         }),
-        session.fromPartition('persist:' + arg.creatorId).cookies.get({ name: "auth_id" }),
+        session
+          .fromPartition('persist:' + arg.creatorId)
+          .cookies.get({ name: 'auth_id' }),
         pie.getPage(ofBrowser, ofBrowserView),
       ]);
 
       const isLogged = partitionCookies.length;
 
-      isLogged && ofBrowserView?.setBounds(arg.bounds)
-      
+      isLogged && ofBrowserView?.setBounds(arg.bounds);
+
       await page.authenticate({
-        username : arg.proxy.username,
-        password :arg.proxy.password
-      })
-      
+        username: arg.proxy.username,
+        password: arg.proxy.password,
+      });
+
       // ofBrowserView?.setBounds(arg.bounds)
       // return await page.goto('https://iproyal.com/ip-lookup/');
 
-      const pageUrl = getPageUrl(arg.page);    
+      const pageUrl = getPageUrl(arg.page);
       await page.goto(pageUrl as string);
-      await page.waitForNavigation({waitUntil:'load'});
+      await page.waitForNavigation({ waitUntil: 'load' });
       await page.addStyleTag({
         content: `
           header { display: none !important; }
           .v-input__append-outer { display: none !important; }
-        `
+        `,
       });
 
       const loginOFAccount = async () => {
-        console.log("Need to login")
-    
+        console.log('Need to login');
+
         await Promise.all([
           page.waitForSelector('input[at-attr="input"][name="email"]', {
-            timeout: 5000
+            timeout: 5000,
           }),
-          page.waitForSelector('input[at-attr="input"][name="password"]',{
-            timeout: 5000
+          page.waitForSelector('input[at-attr="input"][name="password"]', {
+            timeout: 5000,
           }),
-          page.waitForSelector('button[at-attr="submit"][type="submit"]',{
-            timeout: 5000
+          page.waitForSelector('button[at-attr="submit"][type="submit"]', {
+            timeout: 5000,
           }),
         ]);
-              
+
         await page.type('input[at-attr="input"][name="email"]', arg.email);
-        await page.type('input[at-attr="input"][name="password"]', arg.password);
+        await page.type(
+          'input[at-attr="input"][name="password"]',
+          arg.password
+        );
         await page.click('button[at-attr="submit"][type="submit"]');
-        
+
         // Check if the captcha element is present
         await page.waitForSelector('iframe[title="reCAPTCHA"]', {
-          timeout: 10000
+          timeout: 10000,
         });
 
         const captcha = await page.$('iframe[title="reCAPTCHA"]');
-    
+
         if (captcha) {
-          console.log("Captcha is there", captcha);
+          console.log('Captcha is there', captcha);
         } else {
           await page.waitForSelector('input[at-attr="input"][name="email"]', {
-            timeout: 5000
+            timeout: 5000,
           }),
-          console.log("Captcha is not there");
+            console.log('Captcha is not there');
         }
-      }
-        
-      if(!partitionCookies.length){
-        ofBrowserView?.setBounds(arg.bounds)
+      };
+
+      if (!partitionCookies.length) {
+        ofBrowserView?.setBounds(arg.bounds);
         await loginOFAccount();
         return;
       }
 
-      console.log("Already logged in")
-
+      console.log('Already logged in');
     } catch (err) {
       console.log(err);
     }
   });
 
   ipcMain.on('remove-browser-view', () => {
-    if(ofBrowserView){
+    if (ofBrowserView) {
       mainWindow.removeBrowserView(ofBrowserView);
       ofBrowserView = null;
     }
-  } )
-
+  });
 };
 
 export default startIPCBridge;

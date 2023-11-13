@@ -109,6 +109,7 @@
     "formik": "^2.4.5",
     "get-port": "^5.1.1",
     "jszip": "^3.10.1",
+    "locate-chrome": "^0.1.1",
     "moment": "^2.29.4",
     "puppeteer": "^21.0.3",
     "puppeteer-core": "^21.0.3",
@@ -203,7 +204,8 @@
     "files": [
       "dist",
       "node_modules",
-      "package.json"
+      "package.json",
+      "assets"
     ],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {

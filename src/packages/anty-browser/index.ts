@@ -16,14 +16,12 @@ class BrowserLikeWindow extends EventEmitter {
       height = 800,
       winOptions = {},
       controlPanel,
-      controlReferences
+      controlReferences,
+      mainWindow,
+      bounds
     } = options;
 
-    this.win = new BrowserWindow({
-      ...winOptions,
-      width,
-      height
-    });
+    this.win = mainWindow;
 
     this.defCurrentViewId = null;
     this.defTabConfigs = {};
@@ -159,8 +157,8 @@ class BrowserLikeWindow extends EventEmitter {
   getControlBounds() {
     const contentBounds = this.win.getContentBounds();
     return {
-      x: 0,
-      y: 0,
+      x: this.options.bounds.x,
+      y: this.options.bounds.y,
       width: contentBounds.width,
       height: this.options.controlHeight || 130
     };
@@ -175,10 +173,10 @@ class BrowserLikeWindow extends EventEmitter {
     const controlBounds = this.getControlBounds();
     if (this.currentView) {
       this.currentView.setBounds({
-        x: 0,
+        x: this.options.bounds.x,
         y: controlBounds.y + controlBounds.height,
-        width: contentWidth,
-        height: contentHeight - controlBounds.height
+        width: this.options.bounds.width,
+        height: this.options.bounds.height
       });
     }
   }
@@ -350,8 +348,8 @@ class BrowserLikeWindow extends EventEmitter {
         // Set sandbox to support window.opener
         // See: https://github.com/electron/electron/issues/1865#issuecomment-249989894
         sandbox: true,
-        ...(references || this.options.viewReferences)
-      }
+        ...(references || this.options.viewReferences),
+      },
     });
 
     view.id = view.webContents.id;
