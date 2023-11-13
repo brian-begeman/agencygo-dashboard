@@ -24,11 +24,11 @@ import {
   screen,
   ipcMain,
   clipboard,
-  session
+  session,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import puppeteer, { Browser } from 'puppeteer'
+import puppeteer, { Browser } from 'puppeteer';
 import Store from 'electron-store';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
@@ -46,20 +46,19 @@ class AppUpdater {
   }
 }
 
-  autoUpdater.on('update-downloaded', () => {
-    log.info('update downloaded');
-    setImmediate(() => {
-      try {
-        log.info('installing update');
-        // app.relaunch();
-        autoUpdater.quitAndInstall();
-      } catch (err) {
-        log.error('Error installing update');
-        log.error(err);
-      }
-    });
+autoUpdater.on('update-downloaded', () => {
+  log.info('update downloaded');
+  setImmediate(() => {
+    try {
+      log.info('installing update');
+      // app.relaunch();
+      autoUpdater.quitAndInstall();
+    } catch (err) {
+      log.error('Error installing update');
+      log.error(err);
+    }
   });
-
+});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -217,18 +216,21 @@ app.on('window-all-closed', () => {
 });
 
 const main = async () => {
-  await pie.initialize(app);
-  ofBrowser = await pie.connect(app, puppeteer as any);
-  await app.whenReady();
-  app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) createWindow();
-  });
+  try {
+    await pie.initialize(app);
+    ofBrowser = await pie.connect(app, puppeteer as any);
+    await app.whenReady();
+    app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (mainWindow === null) createWindow();
+    });
+  } catch (err) {
+    console.error('Eeeefaaaaaa', err);
+  }
 };
 app.on('ready', createWindow);
 
 main();
-
 
 export default mainWindow;

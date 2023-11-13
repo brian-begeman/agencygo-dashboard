@@ -30,3 +30,5 @@ npm-debug.log.*
 /.env
 
 Agency Go Anti Detect Browser.app
+
+!src/packages/merge-deep/node_modules

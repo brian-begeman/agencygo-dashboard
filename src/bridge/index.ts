@@ -1,15 +1,10 @@
 import { BrowserView, BrowserWindow, ipcMain, session } from 'electron';
 import chalk from 'chalk';
-import { Browser } from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
-import path from 'path';
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import ProxyPlugin from 'puppeteer-extra-plugin-proxy';
-import AnonymizeUserAgentPlugin from 'puppeteer-extra-plugin-anonymize-ua';
-import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker';
-import PuppeteerGeolocationPlugin from '../packages/puppeteer-geolocation';
+import locateChrome from 'locate-chrome';
+import log from 'electron-log';
 
 const getPageUrl = (page: any) => {
   const urls = [
@@ -70,47 +65,50 @@ const startIPCBridge = ({
   console.log(chalk.bgYellow('IPC Bridge Started'));
 
   ipcMain.on('launch-anty-browser', async (e, arg) => {
-    // Init Plugins
-    puppeteer.use(StealthPlugin());
-    puppeteer.use(AnonymizeUserAgentPlugin());
-    puppeteer.use(AdblockerPlugin());
-    puppeteer.use(
-      PuppeteerGeolocationPlugin({
-        latitude: 59.95,
-        longitude: 30.31667,
-      })
-    );
-    /* puppeteer.use(
-      ProxyPlugin({
+    try {
+      const proxyConfig = {
         address: 'geo.iproyal.com',
         port: 12321,
         credentials: {
           username: 'ryb6AD',
           password: 'ryb6AD',
         },
-      })
-    ); */
+      };
 
-    const executablePath = path.join(
-      __dirname,
-      '../packages/anty-browser/Agency Go Anti Detect Browser.app/Contents/MacOS/Google Chrome'
-    );
-    const browser = await puppeteer.launch({
-      headless: false,
-      defaultViewport: null,
-      ignoreDefaultArgs: ['--enable-automation'],
-      args: ['--start-maximized'],
-      executablePath,
-    });
+      const browser = await puppeteer.launch({
+        headless: false,
+        defaultViewport: null,
+        ignoreDefaultArgs: ['--enable-automation'],
+        args: [
+          '--start-maximized',
+          `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
+        ],
+        executablePath: await locateChrome(),
+      });
 
-    const page = await browser.newPage();
+      browser.on('targetcreated', async (target) => {
+        if (target.type() === 'page') {
+          const newPage = await target.page();
+          // Set the geolocation for the new page
+          await newPage?.setGeolocation({
+            latitude: 59.95,
+            longitude: 30.31667,
+          });
+        }
+      });
 
-    await Promise.all([
-      await page.setGeolocation({ latitude: 59.95, longitude: 30.31667 }),
-    ]);
+      const page = await browser.newPage();
 
-    // Navigate the page to a URL
-    await page.goto('https://iproyal.com/ip-lookup/');
+      page.setDefaultNavigationTimeout(60000);
+      await page.authenticate({
+        username: proxyConfig.credentials.username,
+        password: proxyConfig.credentials.password,
+      });
+      await page.setGeolocation({ latitude: 59.95, longitude: 30.31667 });
+      await page.goto('https://iproyal.com/ip-lookup/');
+    } catch (err) {
+      log.error(err);
+    }
   });
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
