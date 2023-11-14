@@ -159,9 +159,9 @@ export function EaringDistribution() {
         gap="6px"
         color={isDarkTheme ? '#fff' : '#000'}
       >
-        Earning Distribution
+        Subscribers
         <ErrorOutline
-          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '18px' }}
         />
       </Typography>
       <Box display="flex">

@@ -74,7 +74,7 @@ const statisticsSampleData = [
  
 ];
 
-const ChattingStatistics = () => {
+const TopFans = () => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
@@ -98,7 +98,7 @@ const ChattingStatistics = () => {
             alignItems="center"
             gap="10px"
           >
-            Chatting Statistics
+          Top Fans
             <ErrorOutline
               sx={{
                 color: theme.palette.secondary.contrastText,
@@ -106,52 +106,16 @@ const ChattingStatistics = () => {
               }}
             />
           </Typography>
-
-          <Checkbox defaultChecked sx={{ marginLeft: '10px' }} />
-          <Typography
-            color={isDarkTheme ? '#fff' : '#000'}
-            fontSize="14px"
-            display="flex"
-            alignItems="center"
-            gap="14px"
-          >
-            Show only employees with Chatter role
-          </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          endIcon={<SimCardDownloadOutlinedIcon />}
-          sx={{
-            height: '36px',
-            color: '#fff',
-            textTransform: 'capitalize',
-          }}
-        >
-          Export
-        </Button>
       </Box>
 
-      <Box
-        width="fit-content"
-        display={'flex'}
-        flexWrap={'wrap'}
-        margin={'20px 0px'}
-        gap={'20px'}
-      >
-        {statisticsSampleData.map((item) => (
-          <StatisticsCard
-            key={item.title}
-            icon={item.icon}
-            title={item.title}
-            amount={item.amount}
-          />
-        ))}
-      </Box>
+    
       <TableContainer
         sx={{
           border: `1px solid ${theme.palette.primary.contrastText}`,
           borderRadius: '16px',
+          marginTop:'32px'
         }}
       >
         <Table aria-label="simple table">
@@ -161,18 +125,13 @@ const ChattingStatistics = () => {
             }}
           >
             <TableRow>
-              <TableCell>Employee</TableCell>
-              <TableCell align="right">Group</TableCell>
-              <TableCell align="right">Sales</TableCell>
+              <TableCell>Fan Name</TableCell>
+              <TableCell align="right">Total Spend</TableCell>
+              <TableCell align="right">Tips</TableCell>
               <TableCell align="right">Messages Sent</TableCell>
-              <TableCell align="right">PPVs Sent</TableCell>
-              <TableCell align="right">PPVs Unlocked</TableCell>
-              <TableCell align="right">Golden Ratio</TableCell>
-              <TableCell align="right">Unlock Ratio</TableCell>
-              <TableCell align="right">Fans Chatted</TableCell>
-              <TableCell align="right">Words</TableCell>
-              <TableCell align="right">Reply Time</TableCell>
-              <TableCell align="right">Scheduled Hours</TableCell>
+              <TableCell align="right">PPVSales</TableCell>
+              <TableCell align="right">SubscriptionLength</TableCell>
+              
             </TableRow>
           </TableHead>
           <TableBody>
@@ -203,30 +162,7 @@ const ChattingStatistics = () => {
                 <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.PPVsUnlocked}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: '#37DE8F', fontSize: 12 }}
-                >
-                  {row.goldenRatio}
-                </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: '#37DE8F', fontSize: 12 }}
-                >
-                  {row.unlockRatio}
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 12 }}>
-                  {row.fansChatted}
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 12 }}>
-                  {row.words}
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 12 }}>
-                  {row.replyTime}
-                </TableCell>
-                <TableCell align="right" sx={{ fontSize: 12 }}>
-                  {row.scheduledHours}
-                </TableCell>
+              
               </TableRow>
             ))}
           </TableBody>
@@ -236,4 +172,4 @@ const ChattingStatistics = () => {
   );
 };
 
-export default ChattingStatistics;
+export default TopFans;

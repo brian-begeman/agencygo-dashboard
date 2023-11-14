@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +18,12 @@ import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
+import SubscriptionSvg from 'renderer/assets/svg/subscription';
+import WalletSvg from 'renderer/assets/svg/WalletSvg';
+import PersonSvg from 'renderer/assets/svg/Person';
+import StreamSvg from 'renderer/assets/svg/Stream';
+import SimCardDownloadOutlinedIcon from '@mui/icons-material/SimCardDownloadOutlined';
+import StatisticsCard from 'renderer/pages/Analytics/ChatterReports/Overview/components/ChattingStatistics/StatisticsCard';
 
 const tabledata = [
   {
@@ -64,22 +72,22 @@ const earningsInitJson = [
   {
     title: 'Subscriptions ($)',
     amount: '44.44',
-    icon: <ArchiveAddSvg />,
+    icon: <SubscriptionSvg />,
   },
   {
     title: 'Tips ($)',
     amount: '6.00',
-    icon: <WalletAddSvg />,
+    icon: <WalletSvg />,
   },
   {
     title: 'Referrals ($)',
     amount: '0.00',
-    icon: <UserAdd />,
+    icon: <PersonSvg />,
   },
   {
     title: 'Streams ($)',
     amount: '0.00',
-    icon: <SubtitleSvg />,
+    icon: <StreamSvg />,
   },
 ];
 
@@ -95,26 +103,55 @@ export default function CreatorStatistics() {
       borderRadius="16px"
       gap="15px"
     >
-      <Typography
-        fontSize="22px"
-        display="flex"
-        alignItems="center"
-        gap="3px"
-        color={isDarkTheme ? '#fff' : '#000'}
-      >
-        Creator Statistics
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
-      </Typography>
-      <Box
-        display="flex"
-        width="fit-content"
-        gap="10px"
-       
-      >
+      <Box display="flex" justifyContent={'space-between'}>
+        <Box display="flex">
+          <Typography
+            color={isDarkTheme ? '#fff' : '#000'}
+            fontFamily="Arimo"
+            fontSize="20px"
+            fontWeight="600"
+            display="flex"
+            alignItems="center"
+            gap="10px"
+          >
+            Chatting Statistics
+            <ErrorOutline
+              sx={{
+                color: theme.palette.secondary.contrastText,
+                fontSize: '16px',
+              }}
+            />
+          </Typography>
+
+          <Checkbox defaultChecked sx={{ marginLeft: '10px' }} />
+          <Typography
+            color={isDarkTheme ? '#fff' : '#000'}
+            fontSize="14px"
+            display="flex"
+            alignItems="center"
+            gap="14px"
+          >
+            Show only employees with Chatter role
+          </Typography>
+        </Box>
+
+        <Button
+          variant="contained"
+          endIcon={<SimCardDownloadOutlinedIcon />}
+          sx={{
+            height: '36px',
+            color: '#fff',
+            textTransform: 'capitalize',
+          }}
+        >
+          Export
+        </Button>
+      </Box>
+      <Box display="flex" width="100%" gap="10px">
         {earningsInitJson.map((item) => (
-          <EarningsRecordCard
+          <StatisticsCard
             key={item.title}
-            icon={item.icon}
+           
             title={item.title}
             amount={item.amount}
           />

@@ -24,7 +24,7 @@ export default function EarningsRecordCard({ title, amount, icon }: $Props) {
         border: `1px solid ${theme.palette.primary.contrastText}`,
       }}
     >
-      <Stack spacing="10px" minWidth="130px">
+      <Stack spacing="10px" minWidth="140px">
         <Typography
           color={isDarkTheme ? '#fff' : '#000'}
           fontWeight="600"

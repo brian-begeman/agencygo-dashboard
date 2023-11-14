@@ -38,7 +38,7 @@ export default function StatisticsCard({ title, amount, icon }: $Props) {
           <ErrorOutline
             sx={{
               color: theme.palette.secondary.contrastText,
-              fontSize: '16px',
+              fontSize: '18px',
             }}
           />
         </Typography>
