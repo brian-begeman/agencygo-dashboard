@@ -74,7 +74,9 @@ export default function AuthProvider({ children }: $Props) {
           localStorage.removeItem('Authorization');
           localStorage.removeItem('AgencyId');
           localStorage.removeItem('UserId');
+          localStorage.removeItem('TwilioToken');
           setIsLogin(false);
+          setUserData({});
         }
       })
       .catch((err) => {

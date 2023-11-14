@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+
 import {
   Avatar,
   Box,
@@ -6,6 +7,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 // import { Send } from "@mui/material";
 import axios from 'axios';
@@ -17,6 +19,7 @@ import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AllconversationListMessage from './allUserData';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+// import { socket } from 'renderer/hooks/commonHooks';
 
 function ChatScreen() {
   const containerRef = useRef(null);
@@ -24,24 +27,34 @@ function ChatScreen() {
   const [searchTxt, setSearchTxt] = useState<any>('');
   const [messages, setMessages] = useState<any>([]);
   const [newMessage, setNewMessage] = useState<any>('');
-  const [sid, setSid] = useState<any>('');
-  const [channel, setChannel] = useState<any>(null);
+  const [cid, setCid] = useState<any>('');
   const [isMessage, setIsMessage] = useState(false);
+  const [roomId, setRoomId] = useState('');
   const [conversationEmail, setConversationEmail] = useState<any>({});
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   const token = localStorage.getItem('Authorization');
   const { userData } = useContext(AuthContext);
+  
+  const getAllConversationList = async() =>{
+    try{
+       const response = await axios.get(`${API_URL}/chat/getallconversation?limit=2000`,{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+       })
+       if (response?.status == 200) {
+        setConversationList(response?.data?.arr);
+      }
+    }
+    catch(error){
+      console.log('Error while fetching the conversation list',error)
+    }
+    
+  }
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/chat/getallconversation?limit=2000`)
-      .then(function (response) {
-        if (response?.status == 200) {
-          console.log(response?.data?.data);
-
-          setConversationList(response.data.data);
-        }
-      });
+    getAllConversationList()
   }, []);
 
   useEffect(() => {
@@ -55,34 +68,34 @@ function ChatScreen() {
     }
   }, [containerRef, messages]);
 
-  const getAllMessage = (sid: any) => {
+  const getAllMessage = (cid: any) => {
     axios
-      .get(`${API_URL}/chat/getallmsg/${sid}?limit=2000`)
+      .get(`${API_URL}/chat/getmessage/${cid}?limit=2000`)
       .then(function (response) {
         if (response?.status == 200) {
-          console.log(response?.data?.data);
-          setMessages(response?.data?.data);
+          setMessages(response?.data);
           setIsMessage(false);
           // setConversationList(response.data.data);
         }
       });
-  };
+  };  
 
   const handleConversation = (sidData: any) => {
     setIsMessage(true);
     setMessages([]);
-    setSid(sidData?.sid || sid);
+    setCid(sidData?.cID || cid);
     setConversationEmail(sidData);
-    getAllMessage(sidData?.sid);
+    getAllMessage(sidData?.cID);
+    setRoomId(sidData?.cID);
   };
-
+  
   const handleSendMessage = () => {
     if (newMessage) {
       setMessages([...messages, newMessage]);
       setNewMessage('');
       axios
         .post(
-          `${API_URL}/chat/sendmsg/${sid}`,
+          `${API_URL}/chat/sendmsg/${cid}`,
           {
             email: userData?.user?.email,
             msg: newMessage,
@@ -95,9 +108,8 @@ function ChatScreen() {
           }
         )
         .then((response) => {
-          console.log(response?.data?.data);
           if (response?.status == 200) {
-            getAllMessage(sid);
+            getAllMessage(cid);
           }
         });
     }
@@ -116,9 +128,10 @@ function ChatScreen() {
               setSearchTxt={setSearchTxt}
               searchTxt={searchTxt}
               handleConversation={handleConversation}
+              getAllConversationList={getAllConversationList}
             />
             <Box sx={{ width: '100%', padding: '10px 10px' }}>
-              {sid && (
+              {cid && (
                 <>
                   <Box>
                     <div
@@ -203,7 +216,7 @@ function ChatScreen() {
                     sx={{
                       display: 'flex',
                       border: '1px solid white',
-                      background: 'white',
+                      background: isDarkTheme ? '#000' : 'white',
                       color: '#000',
                       marginTop: '10px',
                       padding: '10px',

@@ -85,6 +85,7 @@ const useFormEmployee = (
 
   const addEmployee = (data: any) => {
     const endPoint = 'employee/' + data.agencyId;
+    const twilioEndPoint = 'chat/user'
     const options = {
       method: 'POST' as 'POST',
       headers: {
@@ -93,10 +94,25 @@ const useFormEmployee = (
       withAuth: true,
       body: JSON.stringify(data),
     };
+    const twilioOptions = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify({
+        email: data.email
+      }),
+    };
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
       .then((res) => {
-        refetch();
+        fetchReq(twilioEndPoint,twilioOptions)
+        .then(response=> response.json())
+        .then((res)=>{
+          refetch();
+        })
+        .catch(err=> console.log(err))
       })
       .catch((err) => console.log(err));
   };
