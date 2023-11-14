@@ -67,7 +67,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   return (
     <Box
-      bgcolor={isDarkTheme ? '#292929' : '#fff'}
+      bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}
       display={'flex'}
       flexDirection={'column'}
       gap={'20px'}
@@ -77,7 +77,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           marginInline: '5px',
           justifyContent: 'space-between',
           display: 'flex',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '20px',
           width: '940px',
         }}
@@ -103,7 +103,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         sx={{
           marginInline: '5px',
           display: 'flex',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '20px',
         }}
       >
@@ -118,7 +118,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '14px',
         }}
       >
@@ -175,7 +175,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '14px',
         }}
       >
@@ -218,7 +218,10 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
                   }}
                 >
                   <BackupOutlinedIcon
-                    style={{ fontSize: '36px', color: '#fff' }}
+                    style={{
+                      fontSize: '36px',
+                      color: isDarkTheme ? '#fff' : '#000',
+                    }}
                   />
                   <Typography variant="body1">
                     {selectedFiles.length === 0
@@ -236,7 +239,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           marginInline: '5px',
           justifyContent: 'space-between',
           display: 'flex',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '20px',
         }}
       >
@@ -257,7 +260,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           marginInline: '5px',
           justifyContent: 'space-between',
           display: 'flex',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '20px',
         }}
       >
@@ -272,7 +275,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          color: '#fff',
+          color: isDarkTheme ? '#fff' : '#000',
           gap: '14px',
         }}
       >
@@ -520,7 +523,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      <Box sx={{ color: '#fff' }}>
+      <Box sx={{ color: isDarkTheme ? '#fff' : '#000' }}>
         <FormControlLabel
           value="start"
           control={<Switch color="primary" />}
@@ -528,7 +531,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           labelPlacement="start"
         />
       </Box>
-      <Box sx={{ color: '#fff' }}>
+      <Box sx={{ color: isDarkTheme ? '#fff' : '#000' }}>
         <FormControlLabel
           value="start"
           control={<Switch color="primary" />}
@@ -539,7 +542,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
       <Box>
         <Typography
           sx={{
-            color: '#fff',
+            color: isDarkTheme ? '#fff' : '#000',
             fontSize: '14px',
             fontWeight: '500',
             marginBottom: '10px',

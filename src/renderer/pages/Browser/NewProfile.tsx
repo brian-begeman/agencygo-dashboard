@@ -10,6 +10,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import General from './General';
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -163,7 +164,10 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
             </Box>
           </Box>
 
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box
+            sx={{ borderBottom: 1, borderColor: 'divider' }}
+            bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}
+          >
             <Tabs
               variant="fullWidth"
               value={value}
@@ -175,17 +179,19 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
               <Tab label="User data" {...a11yProps(2)} />
             </Tabs>
           </Box>
-          <CustomTabPanel value={value} index={0}>
-            <Box>
-              <General />
-            </Box>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            Item Two
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            Item Three
-          </CustomTabPanel>
+          <Box bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
+            <CustomTabPanel value={value} index={0}>
+              <Box>
+                <General />
+              </Box>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              Item Two
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+              Item Three
+            </CustomTabPanel>{' '}
+          </Box>
 
           <Box
             display={'flex'}
