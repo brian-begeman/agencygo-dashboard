@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import Dashboard from '../../components/Dashboard';
+import styles from './styles.modules.css';
+import { useTheme } from '@mui/material';
+import EnhancedTable from './Table';
 
 function getDivBounds(divId: string) {
   const div = document.getElementById(divId);
@@ -20,15 +23,24 @@ function getDivBounds(divId: string) {
 }
 
 function Browser() {
+
+  
   useEffect(() => {
-    window.electron.ipcRenderer.sendMessage('launch-anty-browser', {
-      bounds: getDivBounds('qw'),
-    });
+    // window.electron.ipcRenderer.sendMessage('launch-anty-browser', {
+    //   bounds: getDivBounds('qw'),
+    // });
   }, []);
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  // Determine the class based on the theme
+  const mode = isDarkTheme ? styles.darkTheme : styles.lightTheme;
   return (
     <Dashboard>
-      <div id="qw" style={{ background: 'red', height: '80vh' }}></div>
+      <section className={`${styles.wrapper}  ${mode}`}>
+        <EnhancedTable />
+      </section>
     </Dashboard>
   );
 }
