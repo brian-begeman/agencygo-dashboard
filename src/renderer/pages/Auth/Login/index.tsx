@@ -46,15 +46,33 @@ export default function Login() {
       .then((res) => {
         if (res.message == 'login successfully') {
           console.log('res', res);
-
+          
+          const twilionUrl = 'chat/chattoken'
           const authToken = res.token?.token;
           const agencyId = res.data?.agencyId;
           const userId = res.data?.Id;
           localStorage.setItem('Authorization', authToken);
           localStorage.setItem('AgencyId', agencyId);
           localStorage.setItem('UserId', userId);
-          login();
-          navigate('/home');
+          const twilioOptions = {
+            withAuth: true,
+            method: 'POST' as 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              email: data?.email
+            }),
+          };
+          fetchReq(twilionUrl, twilioOptions)
+           .then((response) => response.json())
+           .then((res) =>{
+             localStorage.setItem('TwilioToken',res.data)
+             login();
+             navigate('/home');
+             
+            }).catch((e)=>{
+              console.log('chat token error occoured',e);
+              
+            })
         } else {
           console.log('login error occoured: ', res.message);
         }

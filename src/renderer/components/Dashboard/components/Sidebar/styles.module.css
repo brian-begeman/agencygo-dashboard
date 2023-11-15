@@ -1,6 +1,7 @@
 .sidebar {
   margin: 0px 8px;
   min-height: 100vh;
+ 
 }
 .brandLogo {
   border-bottom: 1px solid white;
@@ -27,6 +28,7 @@
 .sidebarNavWrapper {
   padding-top: 40px;
   background-color: '#d3d3d3';
+  
 }
 
 .optionWrapper {

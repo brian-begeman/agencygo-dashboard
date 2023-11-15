@@ -2,9 +2,13 @@ import { Avatar, Stack, Typography } from '@mui/material';
 import styles from './styles.module.css';
 import PageAside from 'renderer/components/PageAside';
 import SearchInput from 'renderer/components/SearchInput';
+import { useState } from 'react';
+import CreateConversationModal from './components/CreateConversationModal';
 
 function AllUserDataMessage(props: any) {
+  const [isOpenNewConvModal, setIsOpenNewConvModal] = useState(false)
   return (
+    <>
     <PageAside className={styles.pageAsideDiv}>
       <div className={styles.search}>
         <SearchInput
@@ -12,7 +16,8 @@ function AllUserDataMessage(props: any) {
           onUpdateSearch={() => props.setSearchTxt()}
           onSearch={() => {}}
         >
-          <SearchInput.ReloadButton onRefresh={() => {}} />
+          <SearchInput.ReloadButton onRefresh={() => props.getAllConversationList()} />
+          <SearchInput.NewConvButton onClick={() => setIsOpenNewConvModal((prevOpen)=> !prevOpen)} />
         </SearchInput>
       </div>
       <div style={{ cursor: 'pointer' }}>
@@ -41,6 +46,10 @@ function AllUserDataMessage(props: any) {
         })}
       </div>
     </PageAside>
+    {
+      isOpenNewConvModal && <CreateConversationModal open={isOpenNewConvModal} setOpen={setIsOpenNewConvModal} getAllConversationList ={props.getAllConversationList}/>
+    }
+    </>
   );
 }
 

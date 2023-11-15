@@ -9,23 +9,18 @@ interface $Props {
 }
 
 function Dashboard({ children }: $Props) {
-
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
   // Determine the class based on the theme
   const mode = isDarkTheme ? classes.darkTheme : classes.lightTheme;
- 
+
   return (
-    <div
-      className={`${classes.dashboardWrapper} ${mode}`}
-     
-     
-    >
+    <div className={`${classes.dashboardWrapper} ${mode}`}>
       <SideBar />
-      <div className={classes.secondChild}>
+      <div className={classes.secondChild}  >
         <Header />
-        {children}
+        <div style={{ marginTop: '100px' }}> {children}</div>
       </div>
     </div>
   );

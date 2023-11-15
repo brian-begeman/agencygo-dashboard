@@ -21,8 +21,8 @@ export default function ShareForShare() {
     setActiveTab(val.id);
   };
 
- const theme = useTheme();
- const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Dashboard>
@@ -33,17 +33,16 @@ export default function ShareForShare() {
             gridTemplateColumns: '200px 1fr',
             color: '#fff',
             height: '100%',
-            zIndex: 30,
           }}
         >
           <Box
             sx={{
-              bgcolor: isDarkTheme ? '#000' : '#fff',
+              bgcolor: isDarkTheme ? '#0C0C0C' : '#fff',
               position: 'absolute',
               top: 0,
               height: '100vh',
               width: 223,
-              zIndex: 10,
+              marginTop: '60px',
               padding: '10px',
             }}
           >

@@ -252,10 +252,10 @@ function FilterByEmployeeInCreator({
     },
   };
   const [collapse, setCollapse] = useState(false);
-
+  const [agencyId] = useState(localStorage.getItem('AgencyId') || '')
   const { isLoading, data } = useQuery({
     key: 'get-employee',
-    params: { id: '6527ad93dedd0418c5d1dc50' },
+    params: { id: agencyId },
   });
 
   const handleChange = (event: SelectChangeEvent<typeof employeeId>) => {
@@ -304,9 +304,6 @@ function FilterByEmployeeInCreator({
             }
             MenuProps={MenuProps}
           >
-            <MenuItem disabled value="">
-              <em>Placeholder</em>
-            </MenuItem>
             {data?.data.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
                 <Checkbox checked={employeeId._id === name._id} />
@@ -347,8 +344,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
 
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
-  console.log('employeeId', employeeId);
-
+  
   const location = useLocation();
   const onRemoveFilter = () => {
     setCreatorSearch('');
@@ -357,7 +353,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     setStatus('');
     setSelectedValues([]);
     setEmployeeSearch('');
-    refetch();
+    refetch('');
 
     // setFilters(filters.filter((filter) => filter.label !== id));
   };
@@ -366,7 +362,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     const data = {};
     if (location.pathname === '/creators') {
       if (creatorSearch != '') {
-        Object.assign(data, { assignedCreators: creatorSearch });
+        Object.assign(data, { creator: creatorSearch });
       }
       if (status != '') {
         Object.assign(data, { status: status == 'Activated' ? true : false });
@@ -376,7 +372,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           plateformlink: linkStatus == 'Linked' ? true : false,
         });
       }
-      if (employeeId != '') {
+      if (employeeId && Object.values(employeeId).length) {
         Object.assign(data, {
           employeeId: employeeId._id,
         });
