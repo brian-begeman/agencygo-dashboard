@@ -24,8 +24,19 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
   const [alignment, setAlignment] = React.useState('web');
   const [alignment2, setAlignment2] = React.useState('web');
   const [alignment3, setAlignment3] = React.useState('web');
-const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [alignment4, setAlignment4] = React.useState('web');
+  const [alignment5, setAlignment5] = React.useState('web');
+  const [alignment6, setAlignment6] = React.useState('web');
+  const [alignment7, setAlignment7] = React.useState('web');
+  const [alignment8, setAlignment8] = React.useState('web');
+  const [alignment9, setAlignment9] = React.useState('web');
+  const [alignment10, setAlignment10] = React.useState('web');
+  const [alignment11, setAlignment11] = React.useState('web');
+  const [alignment12, setAlignment12] = React.useState('web');
+const [alignment13, setAlignment13] = React.useState('web');
+const [alignment14, setAlignment14] = React.useState('web');
+  const [alignment15, setAlignment15] = React.useState('web');
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -54,6 +65,95 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   ) => {
     setAlignment4(newAlignment);
   };
+
+const handleChange4 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment5(newAlignment);
+};
+
+const handleChange5 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment6(newAlignment);
+};
+
+
+const handleChange6 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment7(newAlignment);
+};
+
+
+const handleChange7 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment8(newAlignment);
+};
+
+
+const handleChange8 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment9(newAlignment);
+};
+
+
+const handleChange9 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment10(newAlignment);
+};
+
+
+const handleChange10 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment11(newAlignment);
+};
+
+
+const handleChange11 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment12(newAlignment);
+};
+
+
+const handleChange12 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment13(newAlignment);
+};
+
+
+const handleChange13 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment14(newAlignment);
+};
+
+
+const handleChange14 = (
+  event: React.MouseEvent<HTMLElement>,
+  newAlignment: string
+) => {
+  setAlignment15(newAlignment);
+};
+
+
+
   const onDrop = (acceptedFiles: File[]) => {
     setSelectedFiles(acceptedFiles);
     console.log('Selected Files:', acceptedFiles);
@@ -94,7 +194,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         >
           <DropdownWithLabel
             label="Status"
-            inputIdentifierName="agencyId"
+            inputIdentifierName="status"
             placeholder="status"
           />
         </Box>
@@ -109,7 +209,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
       >
         <DropdownWithLabel
           label="Tags"
-          inputIdentifierName="agencyId"
+          inputIdentifierName="Tags"
           placeholder="Tags"
         />
       </Box>
@@ -133,7 +233,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           <ToggleButton value="android">MACOS</ToggleButton>
           <ToggleButton value="ios">LINUX</ToggleButton>
         </ToggleButtonGroup>
-        <ToggleButtonGroup
+        {/* <ToggleButtonGroup
           color="primary"
           value={alignment2}
           exclusive
@@ -143,7 +243,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           <ToggleButton value="web">NONE</ToggleButton>
           <ToggleButton value="android">FACEBOOK</ToggleButton>
           <ToggleButton value="ios">GOOGLE</ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> */}
         <ToggleButtonGroup
           color="primary"
           value={alignment3}
@@ -166,7 +266,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           <ToggleButton value="web">HTTP</ToggleButton>
           <ToggleButton value="android">SOCKS4</ToggleButton>
           <ToggleButton value="ios">SOCKS5</ToggleButton>
-          <ToggleButton value="ios">SSH</ToggleButton>
+          <ToggleButton value="ssh">SSH</ToggleButton>
         </ToggleButtonGroup>
       </Box>
 
@@ -195,7 +295,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           placeholder="Proxy Name"
         />
       </Box>
-      <Box>
+      {/* <Box>
         <Dropzone maxSize={104857600} onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <section>
@@ -208,7 +308,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
                 />
                 <Box
                   sx={{
-                    border: '1px solid #0C0C0C',
+                    border: '1px solid #292929',
                     borderRadius: '5px',
                     padding: '10px',
                     textAlign: 'center',
@@ -223,7 +323,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
                       color: isDarkTheme ? '#fff' : '#000',
                     }}
                   />
-                  <Typography variant="body1">
+                  <Typography color={ isDarkTheme ? '#fff' : '#000'}>
                     {selectedFiles.length === 0
                       ? 'Click to upload file from your computer or drag your file here'
                       : `${selectedFiles.length} image selected`}
@@ -233,7 +333,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
             </section>
           )}
         </Dropzone>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           marginInline: '5px',
@@ -243,7 +343,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           gap: '20px',
         }}
       >
-        <InputWithLabel
+        {/* <InputWithLabel
           label="Login"
           inputIdentifierName="Login"
           placeholder="Login"
@@ -253,7 +353,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           inputIdentifierName="Password"
           placeholder="Password"
           type="password"
-        />
+        /> */}
       </Box>
       <Box
         sx={{
@@ -270,7 +370,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           placeholder="User Agent"
         />
       </Box>
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -285,9 +385,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment}
+          value={alignment5}
           exclusive
-          onChange={handleChange}
+          onChange={handleChange4}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -300,7 +400,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           <ToggleButton value="ios" sx={{ fontSize: '12px' }}>
             ALTERED
           </ToggleButton>
-          <ToggleButton value="ios" sx={{ fontSize: '12px' }}>
+          <ToggleButton value="manual" sx={{ fontSize: '12px' }}>
             MANUAL
           </ToggleButton>
         </ToggleButtonGroup>
@@ -310,9 +410,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment2}
+          value={alignment6}
           exclusive
-          onChange={handleChange1}
+          onChange={handleChange5}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -332,9 +432,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment3}
+          value={alignment7}
           exclusive
-          onChange={handleChange2}
+          onChange={handleChange6}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px', fontSize: '10px' }}
         >
@@ -354,9 +454,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment9}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange8}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -373,9 +473,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment10}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange9}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -392,9 +492,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment11}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange10}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -411,9 +511,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment12}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange11}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -433,9 +533,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment13}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange12}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -452,9 +552,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment14}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange13}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -471,9 +571,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment15}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange14}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -490,9 +590,9 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
         </Typography>
         <ToggleButtonGroup
           color="primary"
-          value={alignment4}
+          value={alignment13}
           exclusive
-          onChange={handleChange3}
+          onChange={handleChange14}
           aria-label="Platform"
           sx={{ height: '31px', borderRadius: '8px' }}
         >
@@ -557,7 +657,7 @@ const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
           maxRows={8}
           rows={4}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };
