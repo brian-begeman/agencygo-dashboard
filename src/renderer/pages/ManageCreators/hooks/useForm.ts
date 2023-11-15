@@ -24,7 +24,7 @@ const useFormCreator = (
 
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
-    params: { id: '6527ad93dedd0418c5d1dc50' },
+    params: { id: localStorage.getItem('AgencyId') },
   });
   const { mutate: mutataCreate, isLoading: loadingCreate } = useMutation({
     key: 'create-creator',
@@ -56,10 +56,10 @@ const useFormCreator = (
         email: data?.email,
         password: data?.password,
       };
-      
+
       data.agencyId = userData?.agency?._id;
       data.status = true;
-      data.ofcreds = ofCredsObj
+      data.ofcreds = ofCredsObj;
       console.log(data);
 
       let endpoint = 'creators';
@@ -83,12 +83,6 @@ const useFormCreator = (
         .catch((err) => {
           console.log('Error occured: ', err);
         });
-      // mutataCreate(data, {
-      //   onSuccess: () => {
-      //     callback();
-      //     reset();
-      //   },
-      // });
     } else {
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {

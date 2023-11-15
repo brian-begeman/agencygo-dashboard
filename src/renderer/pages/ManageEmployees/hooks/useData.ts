@@ -41,7 +41,7 @@ const useDataEmployees = () => {
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
-    id: '6527ad93dedd0418c5d1dc50',
+    id: localStorage.getItem('AgencyId') ?? '',
   });
   const { isLoading, data, refetch, setData } = useQuery({
     key: 'get-employee',
