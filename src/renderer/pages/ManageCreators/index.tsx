@@ -177,7 +177,7 @@ export default function ManageCreators() {
           </Button>
         </PageTopbar>
         <Stack direction="row" sx={{ height: '90%' }}>
-          <Filter handleSearch={handleSearch} refetch={refetch} />
+          <Filter handleSearch={handleSearch} refetch={handleSearch} />
           <FilterTable
             isEmptyContent={!creators.length}
             tableHeaders={creatorsTableHeaders}
