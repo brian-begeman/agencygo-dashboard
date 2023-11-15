@@ -75,7 +75,7 @@ jobs:
           AWS_DEFAULT_REGION: us-east-2
       - name: Print Download URL for MacOS
         run: |
-          echo "S3 URL: https://agencygo-app-releases.s3.us-east-2.amazonaws.com/macos/Only+Manage-$VERSION"
+          echo "S3 URL: https://agencygo-app-releases.s3.us-east-2.amazonaws.com/macos/Only+Manage-$VERSION.dmg"
 
   build_on_win:
     runs-on: windows-latest
