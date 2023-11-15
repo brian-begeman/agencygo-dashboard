@@ -121,8 +121,10 @@ const createWindow = async () => {
     show: true,
     width: winDimens.width,
     height: winDimens.height,
+    minWidth: 1281,
+    minHeight: 800,
     icon: getAssetPath('icon.png'),
-    resizable: false,
+    resizable: true,
     roundedCorners: true,
     frame: true,
   });
