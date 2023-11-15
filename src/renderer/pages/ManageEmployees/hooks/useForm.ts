@@ -61,13 +61,6 @@ const useFormEmployee = (
   const onSubmit = (data: any) => {
     if (type === 'add') {
       addEmployee(data);
-      mutataCreate(data, {
-        onSuccess: () => {
-          callback();
-          reset();
-          refetch();
-        },
-      });
     } else {
       editEmployee({ ...data, id: selectedEmployee?.id });
       mutateUpdate(
@@ -85,7 +78,7 @@ const useFormEmployee = (
 
   const addEmployee = (data: any) => {
     const endPoint = 'employee/' + data.agencyId;
-    const twilioEndPoint = 'chat/user'
+    const twilioEndPoint = 'chat/user';
     const options = {
       method: 'POST' as 'POST',
       headers: {
@@ -101,18 +94,19 @@ const useFormEmployee = (
       },
       withAuth: true,
       body: JSON.stringify({
-        email: data.email
+        email: data.email,
       }),
     };
     fetchReq(endPoint, options)
-      .then((responce) => responce.json())
-      .then((res) => {
-        fetchReq(twilioEndPoint,twilioOptions)
-        .then(response=> response.json())
-        .then((res)=>{
-          refetch();
-        })
-        .catch(err=> console.log(err))
+      .then((response) => {
+        response.json();
+        callback();
+        reset();
+      })
+      .then((_res) => {
+        fetchReq(twilioEndPoint, twilioOptions)
+          .then((response) => response.json())
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };

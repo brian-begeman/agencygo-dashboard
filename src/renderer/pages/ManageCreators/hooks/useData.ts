@@ -28,7 +28,6 @@ export interface ISelectedCreator {
 }
 
 const useDataCreators = () => {
-
   const agencyId = localStorage.getItem('AgencyId');
   const [creators, setCreators] = useState<ICreatorList[]>([]);
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
@@ -36,7 +35,7 @@ const useDataCreators = () => {
   );
   const { data, isLoading, refetch, setData } = useQuery({
     key: 'get-creator',
-    params: '6527ad93dedd0418c5d1dc50',
+    params: agencyId,
   });
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const useDataCreators = () => {
         ...item,
         id: item?._id,
       })) || [];
-    // setCreators(creatorsRes);
+    setCreators(creatorsRes);
   }, [data]);
 
   const handleSearch = (data: any) => {
@@ -65,8 +64,8 @@ const useDataCreators = () => {
       .then((response) => response.json())
       .then((res) => {
         setData(res);
-        setCreators(res?.data)
-        setSelectedCreator(res?.data[0]._id)
+        setCreators(res?.data);
+        setSelectedCreator(res?.data[0]._id);
       })
       .catch((err) => {
         console.log('Error occured: ', err);
