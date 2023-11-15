@@ -12,7 +12,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  border:'none'
+  border: 'none',
+  
 };
 
 type CalendarProps = {
@@ -52,8 +53,7 @@ const DatePicker = ({ onChange }: any) => {
         onChange={handleOnChange}
         moveRangeOnFirstSelection={false}
         ranges={state}
-        className='classNameText'
-       
+        className="customDatePicker"
       />
     </div>
   );
@@ -78,7 +78,10 @@ export default function Calendar({
       sx={{ backdropFilter: 'blur(4px)' }}
     >
       <Box sx={style}>
-        <DatePicker onChange={onChange}/>
+        <DatePicker
+          onChange={onChange}
+          
+        />
       </Box>
     </Modal>
   );

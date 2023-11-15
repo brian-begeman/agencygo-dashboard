@@ -10,12 +10,12 @@ function SmartTags() {
   return (
     <>
       <SearchUsers />
-      <Box marginLeft="32px" marginRight="16px" marginTop="16px">
+      <Box marginLeft="32px" marginRight="16px" marginTop="16px" height='100px'>
         <UpdateButtons />
         <FilterTag />
         <FilterGrid />
         <TriggerButtons />
-        <SmartBar />
+       <SmartBar /> 
       </Box>
     </>
   );

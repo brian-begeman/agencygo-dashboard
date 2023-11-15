@@ -81,7 +81,8 @@ const theme = useTheme();
             >
               <Typography
                 fontWeight={600}
-                fontSize="12px"
+                fontSize="14px"
+                fontFamily={'Arimo'}
                 color={theme.palette.primary.main}
                 textTransform="unset"
               >
@@ -91,7 +92,7 @@ const theme = useTheme();
             {tags.map((tag) => (
               <Typography
                 fontWeight={600}
-                fontSize="12px"
+                fontSize="11px"
                 color="#fff"
                 textTransform="unset"
                 padding="5px 7px"

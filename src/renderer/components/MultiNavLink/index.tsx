@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
 
@@ -10,6 +10,8 @@ interface $Props {
 }
 
 export default function MultiNavLink({ steps }: $Props) {
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Stack
       direction="row"
@@ -22,7 +24,7 @@ export default function MultiNavLink({ steps }: $Props) {
         <Stack key={label} flexDirection="row" alignItems="center" spacing={2}>
           <Link to={link}>
             <Typography
-              color="#fff"
+              color={isDarkTheme?'#fff':'#000'}
               fontSize="10px"
               fontWeight={500}
               sx={{

@@ -98,7 +98,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
           </Select>
         </Box>
       </Box>
-      <Box display={'flex'} gap={'10px'} margin={'10px 0px'}>
+      <Box display={'flex'} gap={'10px'} margin={'16px 0px'}>
         {cardData.map((data) => {
           return (
             <Stack

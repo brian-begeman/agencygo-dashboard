@@ -33,6 +33,7 @@ export default function FilterTag() {
               fontWeight={600}
               fontSize="12px"
               color={isDarkTheme ? '#fff' : '#000'}
+              fontFamily={'Arimo'}
             >
               Total Spent
             </Typography>
@@ -42,13 +43,14 @@ export default function FilterTag() {
               fontWeight={600}
               fontSize="12px"
               color={isDarkTheme ? '#fff' : '#000'}
+              fontFamily={'Arimo'}
             >
               Last 30 days spend
             </Typography>
           </Button>
         </Box>
         <ErrorOutline
-          sx={{ fontSize: '18px', color: theme.palette.secondary.contrastText }}
+          sx={{ fontSize: '24px', color: theme.palette.secondary.contrastText }}
         />
       </Stack>
       <FormGroup>

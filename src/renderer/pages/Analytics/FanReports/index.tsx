@@ -128,6 +128,16 @@ function FanReports() {
           </MenuItem>
         </Select>
       </Stack>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+         
+        }}
+      >
+        {open && <Calendar onChange={onChange} open={open} setOpen={setOpen} />}
+      </Box>
       <Box display="flex" flexDirection="column" gap="16px">
         <EaringDistribution />
 

@@ -20,13 +20,16 @@ const isDarkTheme = theme.palette.mode === 'dark';
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
-          <Stack direction="row" justifyContent="space-between">
-            <SearchInput
-              value={search}
-              onUpdateSearch={onSearch}
-              onSearch={() => {}}
-              placeholder="Search by Campaign Name"
-            />
+          <Stack direction="row" justifyContent="space-between" >
+          
+              <SearchInput
+                value={search}
+                onUpdateSearch={onSearch}
+                onSearch={() => {}}
+                placeholder="Search by Campaign Name"
+                
+              />
+            
             <Button
               variant="contained"
               sx={{
@@ -48,7 +51,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
             </Button>
           </Stack>
           <Stack gap="10px">
-            <Typography fontWeight={600} fontSize="16px">
+            <Typography fontWeight={600} fontSize="14px">
               Campaign Insights
             </Typography>
             <Stack

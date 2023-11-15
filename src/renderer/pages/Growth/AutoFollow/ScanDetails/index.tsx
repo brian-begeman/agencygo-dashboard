@@ -24,7 +24,9 @@ function Aside() {
         }}
       >
         <CandleSvg />
-        <Typography variant="h5">Filters</Typography>
+        <Typography fontWeight={600} fontSize="20px" textTransform={'none'}>
+          Filters
+        </Typography>
       </Box>
       <Box padding="32px 16px 21px 16px">
         <Filter.FilterByCreator
@@ -109,7 +111,6 @@ function ScanDetails() {
           {earningsInitJson.map((item) => (
             <EarningsCard
               key={item.title}
-              icon={item.icon}
               title={item.title}
               amount={item.amount}
             />

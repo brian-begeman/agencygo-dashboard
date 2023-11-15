@@ -25,7 +25,13 @@ export default function FilterGrid() {
     const theme = useTheme();
     const isDarkTheme = theme.palette.mode === 'dark';
   return (
-    <Grid container spacing={2} marginTop="48px">
+    <Grid
+      container
+      spacing={2}
+      marginTop="48px"
+      marginLeft={'20px'}
+
+    >
       {arrGenerator(3).map(() =>
         gridData.map((item) => (
           <Grid item xs={3} alignItems="center" key={item.title}>

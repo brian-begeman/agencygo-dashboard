@@ -11,11 +11,11 @@ const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       display="flex"
-      gap="5px"
-      padding={'6px'}
+      
+     
       bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}
     >
-      <Stack width={'25%'}>
+      <Stack width={'25%'}  >
         <SearchUsers />
       </Stack>
       <Stack

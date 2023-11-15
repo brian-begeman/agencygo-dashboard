@@ -48,15 +48,15 @@ function ProfilePromotion() {
             paddingBottom="32px"
           >
             <Stack gap="10px">
-              <Typography fontSize="18px" fontWeight={700}>
+              <Typography fontSize="22px" fontWeight={700} fontFamily={'Arimo'}>
                 Auto-activate campaign
               </Typography>
-              <Typography fontSize="12px">
+              <Typography fontSize="14px" fontWeight={600} fontFamily={'Arimo'}>
                 Enable to automatically reactivate your promotions when they
                 expire
               </Typography>
               <Box marginTop="10px">
-                <Typography fontWeight={400} fontSize="12px" marginBottom="5px">
+                <Typography fontWeight={400} fontSize="14px" marginBottom="5px">
                   Offer Expiration
                 </Typography>
                 <Select
@@ -102,7 +102,7 @@ function ProfilePromotion() {
           >
             <Stack gap="10px">
               <Box marginTop="10px">
-                <Typography fontWeight={400} fontSize="12px" marginBottom="5px">
+                <Typography fontWeight={400} fontSize="14px" marginBottom="5px">
                   Add Fans To List
                 </Typography>
                 <Select

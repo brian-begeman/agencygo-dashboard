@@ -46,7 +46,7 @@ const theme = useTheme();
             </Button>
           </Stack>
           <Stack gap="10px">
-            <Typography fontWeight={600} fontSize="16px">
+            <Typography fontWeight={600} fontSize="14px">
               Campaign Insights
             </Typography>
             <Stack

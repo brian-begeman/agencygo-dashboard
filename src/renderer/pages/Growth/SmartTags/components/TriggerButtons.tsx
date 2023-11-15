@@ -10,10 +10,22 @@ export default function TriggerButtons() {
       alignItems="center"
       justifyContent="end"
     >
-      <Button sx={{ color: '#fff', background: theme.palette.secondary.light }}>
+      <Button
+        sx={{
+          color: '#fff',
+          background: theme.palette.secondary.light,
+          fontSize: '14px',
+        }}
+      >
         Cancel
       </Button>
-      <Button sx={{ color: '#fff', background: theme.palette.primary.main }}>
+      <Button
+        sx={{
+          color: '#fff',
+          background: theme.palette.primary.main,
+          fontSize: '14px',
+        }}
+      >
         Save
       </Button>
     </Stack>
