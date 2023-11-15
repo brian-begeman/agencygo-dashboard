@@ -2,6 +2,29 @@ import { useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
+export interface IOfManagerCred {
+  email: string;
+  password: string;
+}
+
+export interface IProxyCreds {
+  hostname: string;
+  password: string;
+  port: number;
+  protocol: string;
+  username: string;
+}
+
+export interface IProxyUser {
+  user_pass: string;
+  username: string;
+}
+
+export interface ICreatorProxy {
+  creds: IProxyCreds;
+  proxyUser: IProxyUser;
+}
+
 export interface ICreatorList {
   creatorName: string;
   imageSrc: string;
@@ -12,6 +35,8 @@ export interface ICreatorList {
   autoRelink: boolean;
   id: string;
   status: boolean;
+  ofcreds: IOfManagerCred;
+  proxy: ICreatorProxy;
 }
 
 export interface ISelectedCreator {
@@ -28,7 +53,6 @@ export interface ISelectedCreator {
 }
 
 const useDataCreators = () => {
-
   const agencyId = localStorage.getItem('AgencyId');
   const [creators, setCreators] = useState<ICreatorList[]>([]);
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
@@ -36,7 +60,7 @@ const useDataCreators = () => {
   );
   const { data, isLoading, refetch, setData } = useQuery({
     key: 'get-creator',
-    params: '6527ad93dedd0418c5d1dc50',
+    params: agencyId,
   });
 
   useEffect(() => {
@@ -45,7 +69,7 @@ const useDataCreators = () => {
         ...item,
         id: item?._id,
       })) || [];
-    // setCreators(creatorsRes);
+    setCreators(creatorsRes);
   }, [data]);
 
   const handleSearch = (data: any) => {
@@ -66,8 +90,8 @@ const useDataCreators = () => {
       .then((response) => response.json())
       .then((res) => {
         setData(res);
-        setCreators(res?.data)
-        setSelectedCreator(res?.data[0]._id)
+        setCreators(res?.data);
+        setSelectedCreator(res?.data[0]._id);
       })
       .catch((err) => {
         console.log('Error occured: ', err);
