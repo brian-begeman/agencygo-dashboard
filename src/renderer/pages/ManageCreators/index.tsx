@@ -127,6 +127,42 @@ export default function ManageCreators() {
   };
   console.log('creators', creators);
 
+  const handleInitiateLink = (creator: any) => {
+    const payload = {
+      email: creator?.ofcreds?.email,
+      password: creator?.ofcreds?.password,
+    };
+    const queryParams = {
+      creatorId: creator?.id,
+      attemptLogin: false,
+    };
+    const queryString = Object.keys(queryParams)
+      .map(
+        (key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(
+            queryParams[key as keyof typeof queryParams]
+          )}`
+      )
+      .join('&');
+    const endPoint = `creators/login-onlyfans/?${queryString}`;
+    const options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(payload),
+    };
+
+    fetchReq(endPoint, options)
+      .then((response) => {
+        response.json();
+      })
+      .then((_res) => {
+        console.log('creator session uploaded');
+      })
+      .catch((err) => console.log(err));
+  };
   const handleLinkedAccount = (creator: any) => {
     setOpenLinked(true);
     console.log('creator', creator);
@@ -194,6 +230,8 @@ export default function ManageCreators() {
                   id,
                   autoRelink,
                   imageSrc,
+                  ofcreds,
+                  proxy,
                 }) => (
                   <TableRow
                     key={name}
@@ -203,13 +241,13 @@ export default function ManageCreators() {
                   >
                     <TableCell
                       sx={{
-                        borderColor:theme.palette.primary.contrastText,
+                        borderColor: theme.palette.primary.contrastText,
                       }}
                       scope="row"
                     >
                       <Stack spacing={1} direction="row" alignItems="center">
                         <Avatar />
-                        <Typography variant="h6" fontSize="18px" >
+                        <Typography variant="h6" fontSize="18px">
                           {name}
                         </Typography>
                       </Stack>
@@ -217,7 +255,6 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                       
                       }}
                       align="right"
                     >
@@ -226,7 +263,6 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                       
                       }}
                     >
                       {internalNotes}
@@ -240,22 +276,19 @@ export default function ManageCreators() {
                         alignItems="center"
                         flexDirection="row"
                         spacing={2}
-                        
                       >
                         OnlyFans
                         <OnlyFansSvg />
                       </Stack>
-                      <Typography
-                        component="small"
-                       
-                        fontSize="11px"
-                      >
-                        {autoRelink ? (
+                      <Typography component="small" fontSize="11px">
+                        {proxy !== null &&
+                        proxy.hasOwnProperty('creds') &&
+                        proxy.hasOwnProperty('proxyUser') ? (
                           'Linked'
                         ) : (
                           <Button
                             onClick={() =>
-                              handleLinkedAccount({
+                              handleInitiateLink({
                                 creatorName: name,
                                 autoRelink,
                                 gender,
@@ -265,6 +298,7 @@ export default function ManageCreators() {
                                 assignEmployee,
                                 imageSrc,
                                 status,
+                                ofcreds,
                               })
                             }
                             size="small"
@@ -277,7 +311,6 @@ export default function ManageCreators() {
                     <TableCell
                       sx={{
                         borderColor: theme.palette.primary.contrastText,
-                       
                       }}
                     >
                       {assignEmployee
@@ -291,12 +324,8 @@ export default function ManageCreators() {
                         borderColor: theme.palette.primary.contrastText,
                       }}
                     >
-                      <Typography variant="body2">
-                        OnlyManager Proxy
-                      </Typography>
-                      <Typography variant="caption">
-                        107.175.227.145
-                      </Typography>
+                      <Typography variant="body2">OnlyManager Proxy</Typography>
+                      <Typography variant="caption">107.175.227.145</Typography>
                     </TableCell>
                     <TableCell
                       sx={{
@@ -325,13 +354,13 @@ export default function ManageCreators() {
                               assignEmployee,
                               imageSrc,
                               status,
+                              ofcreds,
+                              proxy,
                             });
                             setOpenAddCreater(true);
                           }}
                         >
-                          <Typography variant="body1" >
-                            Edit
-                          </Typography>
+                          <Typography variant="body1">Edit</Typography>
                         </ButtonBase>
                         <ButtonBase>
                           <MenuButton

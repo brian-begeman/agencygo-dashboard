@@ -2,6 +2,29 @@ import { useEffect, useState } from 'react';
 import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
+export interface IOfManagerCred {
+  email: string;
+  password: string;
+}
+
+export interface IProxyCreds {
+  hostname: string;
+  password: string;
+  port: number;
+  protocol: string;
+  username: string;
+}
+
+export interface IProxyUser {
+  user_pass: string;
+  username: string;
+}
+
+export interface ICreatorProxy {
+  creds: IProxyCreds;
+  proxyUser: IProxyUser;
+}
+
 export interface ICreatorList {
   creatorName: string;
   imageSrc: string;
@@ -12,6 +35,8 @@ export interface ICreatorList {
   autoRelink: boolean;
   id: string;
   status: boolean;
+  ofcreds: IOfManagerCred;
+  proxy: ICreatorProxy;
 }
 
 export interface ISelectedCreator {
