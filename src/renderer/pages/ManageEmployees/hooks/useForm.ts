@@ -36,6 +36,11 @@ const useFormEmployee = (
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
     assignCreator: Yup.string(),
+    payRate: Yup.number().required('Pay rate is required'),
+    payInterval: Yup.string().required('Pay Interval is required'),
+    commission: Yup.number().min(0).max(100),
+    shiftSchedular: Yup.string(),
+    
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
