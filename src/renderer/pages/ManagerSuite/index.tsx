@@ -8,10 +8,9 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import { CircularProgress, Grid ,Typography} from '@mui/material';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
 import { useParams } from 'react-router-dom';
-
 
 function getDivBounds(divId: string) {
   const div = document.getElementById(divId);
@@ -33,7 +32,7 @@ function getDivBounds(divId: string) {
 export default function ManagerSuite() {
   const agencyId = localStorage.getItem('AgencyId');
   const [search, setSearch] = useState('');
-// const [ selectedCreator,setSelectedCreator]=useState()
+  // const [ selectedCreator,setSelectedCreator]=useState()
   const {
     creators,
     isLoading,
@@ -45,27 +44,24 @@ export default function ManagerSuite() {
   useEffect(() => {
     handleSearch(agencyId);
   }, [agencyId]);
-  const {page} = useParams();
+  const { page } = useParams();
 
   const onSearch = (value: string) => {
     setSearch(value);
   };
 
   function onclick(creator: any) {
-     setSelectedCreator(creator._id)
+    setSelectedCreator(creator._id);
     window.electron.ipcRenderer.sendMessage('remove-browser-view');
-    window.electron.ipcRenderer.sendMessage(
-      'attempt-login',
-      {
-        bounds: getDivBounds('browser-view'),
-        // Remove later
-        email : creator.ofcreds.email,
-        password: creator.ofcreds.password,
-        creatorId: creator._id,
-        proxy: creator.proxy.creds,
-        page
-      }
-    );
+    window.electron.ipcRenderer.sendMessage('attempt-login', {
+      bounds: getDivBounds('browser-view'),
+      // Remove later
+      email: creator.ofcreds.email,
+      password: creator.ofcreds.password,
+      creatorId: creator._id,
+      proxy: creator.proxy.creds,
+      page,
+    });
   }
   console.log('creators', creators);
   return (
@@ -73,7 +69,8 @@ export default function ManagerSuite() {
       <section className={styles.wrapper}>
         <PageTopbar>
           <PageTopbar.HeaderText>
-            {localisation.onlyFansManagerSuite}  <span style={{textTransform:"capitalize"}}>{page}</span>
+            {localisation.onlyFansManagerSuite}{' '}
+            <span style={{ textTransform: 'capitalize' }}>{page}</span>
           </PageTopbar.HeaderText>
         </PageTopbar>
         <PageAside>
@@ -103,18 +100,25 @@ export default function ManagerSuite() {
                   <CircularProgress />
                 </div>
               ) : creators?.length > 0 ? (
-                creators.map((c) => (
-                  <UserCardWImage
-                    name={c.creatorName}
-                    autoRelink={c?.autoRelink}
-                    profileImage={ProfilePic}
-                    // profileImage={c.imageSrc}
-                    notificationCount={0}
-                    messageCount={0}
-                    selected={selectedCreator === c._id}
-                    onClick={() => onclick(c)}
-                  />
-                ))
+                creators
+                  .filter(
+                    (c) =>
+                      c.proxy !== null &&
+                      c?.proxy?.hasOwnProperty('creds') &&
+                      c?.proxy?.hasOwnProperty('proxyUser')
+                  )
+                  .map((c) => (
+                    <UserCardWImage
+                      name={c.creatorName}
+                      autoRelink={c?.autoRelink}
+                      profileImage={ProfilePic}
+                      // profileImage={c.imageSrc}
+                      notificationCount={0}
+                      messageCount={0}
+                      selected={selectedCreator === c._id}
+                      onClick={() => onclick(c)}
+                    />
+                  ))
               ) : (
                 <div
                   style={{
@@ -135,22 +139,22 @@ export default function ManagerSuite() {
                   width: '100%',
                   height: '100vh',
                   background: '#000',
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems :"center"
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
                 id="browser-view"
               >
                 <CircularProgress />
                 <Typography
-          variant="h3"
-          color="#fff"
-          fontSize={'18px'}
-          marginLeft={'20px'}
-          fontWeight={500}
-        >
-           Please wait, Logging you in...
-        </Typography>
+                  variant="h3"
+                  color="#fff"
+                  fontSize={'18px'}
+                  marginLeft={'20px'}
+                  fontWeight={500}
+                >
+                  Please wait, Logging you in...
+                </Typography>
               </div>
             </Grid>
           </Grid>

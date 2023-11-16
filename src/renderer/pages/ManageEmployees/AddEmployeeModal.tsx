@@ -5,10 +5,11 @@ import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.modu
 import {
   DropdownWithLabel,
   InputWithLabel,
+  LabelText,
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { roleList,groupList } from './constant';
+import { roleList,groupList, frequencyList, scheduleList } from './constant';
 import useFormEmployee from './hooks/useForm';
 import fetchReq from 'utils/fetch';
 
@@ -180,6 +181,42 @@ const isDarkTheme = theme.palette.mode === 'dark';
               options={roleList}
               register={register as any}
             />
+
+            <Box>
+            <LabelText label={'Pay Rate'} />
+             <Box sx={{display:'flex', gap:'10px', alignItems:'center'}}>
+             <InputWithLabel
+              label=""
+              inputIdentifierName="payRate"
+              placeholder="Enter Rate"
+              register={register as any}
+            />
+            <DropdownWithLabel
+              label=''
+              inputIdentifierName="payInterval"
+              options={frequencyList}
+              register={register as any}
+            />
+             </Box>
+            </Box>
+
+            <Box>
+             <InputWithLabel
+              label="Commission"
+              inputIdentifierName="commission"
+              placeholder="Commission"
+              register={register as any}
+            />
+            <LabelText label={'0.10%'} />
+            </Box>
+
+            <DropdownWithLabel
+              label='Shift Schedule'
+              inputIdentifierName="shiftSchedular"
+              options={scheduleList}
+              register={register as any}
+            />
+
             <DropdownWithLabel
               label="Assign Creator"
               inputIdentifierName="assignCreator"

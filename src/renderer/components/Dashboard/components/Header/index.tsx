@@ -104,8 +104,10 @@ function Header() {
     localStorage.setItem("theme", theme);
     window.dispatchEvent(new Event("storage",));
   };
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
-    <div className={classes.navbar} >
+    <div className={classes.navbar}  style={{backgroundColor:isDarkTheme?'#0C0C0C':'#fff'}}>
       <div className={classes.start}>
         <LeftChevronSvg />
         <RightChevronSvg />
@@ -124,7 +126,7 @@ function Header() {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                marginRight: '10px',
+                marginRight: '20px',
               }}
             >
               <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
