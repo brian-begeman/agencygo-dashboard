@@ -151,6 +151,8 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
                   variant="text"
                   startIcon={<AddIcon />}
                   sx={{ color: '#fff' }}
+
+                  
                 >
                   Create
                 </Button>
