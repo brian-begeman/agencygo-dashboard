@@ -39,7 +39,6 @@ const useFormCreator = (
     assignEmployee: Yup.array(),
     internalNotes: Yup.string(),
     autoRelink: Yup.boolean(),
-    isAgencyProxy: Yup.boolean(),
     agency: Yup.string(),
     creator: Yup.string(),
   });
