@@ -91,6 +91,10 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  
+  const handleFormSubmit = (data) => {
+   
+  };
   return (
     <div>
       <Modal
@@ -151,6 +155,7 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
                   variant="text"
                   startIcon={<AddIcon />}
                   sx={{ color: '#fff' }}
+                  onClick={handleFormSubmit}
                 >
                   Create
                 </Button>
@@ -182,7 +187,7 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
           <Box bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
             <CustomTabPanel value={value} index={0}>
               <Box>
-                <General />
+                <General getData={handleFormSubmit} />
               </Box>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
@@ -191,28 +196,6 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
             <CustomTabPanel value={value} index={2}>
               Item Three
             </CustomTabPanel>{' '}
-          </Box>
-
-          <Box
-            display={'flex'}
-            justifyContent={'end'}
-            gap={'10px'}
-            sx={{
-              padding: '10px 20px',
-              borderRadius: '0px 0px 10px 10px',
-              background: isDarkTheme ? '#000' : '#EAF1FF',
-            }}
-          >
-            <PageTopbar.Button
-              text="Cancel"
-              color="secondary"
-              onClick={handleClose}
-            />
-            <PageTopbar.Button
-              color="primary"
-              text="Confirm"
-              onClick={() => handleAssignCreator(id)}
-            />
           </Box>
         </Box>
       </Modal>

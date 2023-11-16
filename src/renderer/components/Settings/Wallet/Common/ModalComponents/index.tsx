@@ -259,7 +259,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          backgroundColor: isDarkTheme? '#0C0C0C':'#fff',
+          backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',
@@ -288,6 +288,7 @@ any) {
           value={selectedValues}
           placeholder="add"
           label="Select Values"
+         
           onChange={handleOnChange}
         >
           {options?.map((val: any) => {
