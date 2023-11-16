@@ -9,10 +9,12 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Switch, useTheme
+  Switch,
+  useTheme,
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import LensIcon from '@mui/icons-material/Lens';
+import { ReactNode, useState } from 'react';
 
 interface LabelTextProps {
   label: string;
@@ -31,7 +33,7 @@ interface InputWithLabelProps {
   errors?: any;
   required?: boolean;
   inputStyle?: any;
-  type?:string;
+  type?: string;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -43,16 +45,14 @@ export function InputWithLabel(props: InputWithLabelProps) {
     value,
     errors,
     inputStyle,
-    type='text',
+    type = 'text',
     required = false,
     handleOnChange = () => {},
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -110,9 +110,8 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -145,6 +144,49 @@ const isDarkTheme = theme.palette.mode === 'dark';
   );
 }
 
+interface DropdownWithTreeLabelProps {
+  label?: string | undefined;
+  inputIdentifierName?: string;
+  value?: string;
+  selectStyle?: any;
+  handleOnChange?: (name?: string, value?: string) => void;
+  options?: ReactNode; // Array of options
+  placeholder?: string;
+  register?: UseFormRegister<FieldValues>;
+}
+export function DropdownWithTreeLabel(props: DropdownWithTreeLabelProps) {
+  const {
+    label,
+    inputIdentifierName,
+    value,
+    selectStyle,
+    handleOnChange = () => {},
+    options,
+    placeholder,
+    register = () => ({}),
+  } = props;
+  const [showTreeSelectBox, setShowTreeSelectBox] = useState(false);
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+  return (
+    <div className={classes.inputLabelWrapper}>
+      {/* {label && <LabelText label={label} />} */}
+      <div onClick={() => setShowTreeSelectBox(true)}>
+        <InputWithLabel
+          label={label}
+          // inputIdentifierName="agencyId"
+          placeholder={value?value:"Enter group name"}
+          // register={register as any}
+        />
+      </div>
+      {showTreeSelectBox && (
+        <div style={{ borderRadius: '5px', width: '100%', background: 'gray' }}>
+          {options}
+        </div>
+      )}
+    </div>
+  );
+}
 interface ModalFooterProps {
   addHandler: () => void;
   cancelHandler: () => void;
@@ -259,7 +301,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          backgroundColor: isDarkTheme? '#0C0C0C':'#fff',
+          backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',
