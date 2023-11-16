@@ -13,13 +13,15 @@ interface ISelectedAgency {
 interface IEmployeeList {
   name: string;
   imageSrc: string;
-  assignedCreators: ReactNode;
+  assignedCreatorsText: ReactNode;
   role: string;
   activated: string;
   // activated: boolean;
   email: string;
   roleRaw: string;
   id: string;
+  agencyId: string;
+  assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
 const ROLE = {
@@ -28,11 +30,18 @@ const ROLE = {
   chatter: 'Chatter',
 };
 
+export interface IAssignedCreatorsToEmployee {
+  id: string;
+  name: string;
+}
+
 export interface ISelectedEmployee {
   name: string;
   email: string;
   role: string;
   id: string;
+  agencyId: string;
+  assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
 const useDataEmployees = () => {
@@ -88,11 +97,13 @@ const useDataEmployees = () => {
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
+        const tempAssignedCreators = Array.from(item.assignedCreators);
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreators: item.assignedCreators.length
-            ? item.assignedCreators.join(', ')
+          assignedCreatorsForDropdown: item.assignedCreators,
+          assignedCreatorsText: tempAssignedCreators.length
+            ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
             : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
@@ -102,11 +113,12 @@ const useDataEmployees = () => {
           roleRaw: item?.role || '',
           // eslint-disable-next-line no-underscore-dangle
           id: item?._id || '',
+          agencyId: item?.agencyId,
         };
       });
       setEmployees(employeesRes || []);
     }
-  }, [data]);
+  }, [data, data?.data]);
 
   return {
     isLoading,

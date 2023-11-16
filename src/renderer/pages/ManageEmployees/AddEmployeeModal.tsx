@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
-import {
+import MultiSelectDropdown, {
   DropdownWithLabel,
   InputWithLabel,
   LabelText,
@@ -28,15 +28,22 @@ export default function AddEmployeeModal({
   type,
   selectedEmployee,
 }: $Props) {
-  const {assignCreator, handleSubmit, register, isLoading } =
-    useFormEmployee(
-      () => {
-        setOpen(false);
-        refetch();
-      },
-      type,
-      selectedEmployee
-    );
+  const {
+    assignCreator,
+    handleSubmit,
+    register,
+    isLoading,
+    selectedValues,
+    setSelectedValues,
+    setValue,
+  } = useFormEmployee(
+    () => {
+      setOpen(false);
+      refetch();
+    },
+    type,
+    selectedEmployee
+  );
   const [agencies, setagencies] = useState<
     {
       label: string;
@@ -74,7 +81,7 @@ export default function AddEmployeeModal({
   useEffect(() => {
     getAgencie();
     getCreators();
-  },[])
+  }, []);
 
   const getAgencie = () => {
     const endpoint = 'agency';
@@ -83,7 +90,7 @@ export default function AddEmployeeModal({
       headers: {
         'content-type': 'application/json',
       },
-      withAuth:true,
+      withAuth: true,
     };
     fetchReq(endpoint, options)
       .then((response) => response.json())
@@ -128,15 +135,14 @@ export default function AddEmployeeModal({
         console.log(err);
       });
   };
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Overlay
       heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
       open={open}
       handleClose={handleModalClose}
-      
     >
       <Box
         sx={{
@@ -183,45 +189,49 @@ const isDarkTheme = theme.palette.mode === 'dark';
             />
 
             <Box>
-            <LabelText label={'Pay Rate'} />
-             <Box sx={{display:'flex', gap:'10px', alignItems:'center'}}>
-             <InputWithLabel
-              label=""
-              inputIdentifierName="payRate"
-              placeholder="Enter Rate"
-              register={register as any}
-            />
-            <DropdownWithLabel
-              label=''
-              inputIdentifierName="payInterval"
-              options={frequencyList}
-              register={register as any}
-            />
-             </Box>
+              <LabelText label={'Pay Rate'} />
+              <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <InputWithLabel
+                  label=""
+                  inputIdentifierName="payRate"
+                  placeholder="Enter Rate"
+                  register={register as any}
+                />
+                <DropdownWithLabel
+                  label=""
+                  inputIdentifierName="payInterval"
+                  options={frequencyList}
+                  register={register as any}
+                />
+              </Box>
             </Box>
 
             <Box>
-             <InputWithLabel
-              label="Commission"
-              inputIdentifierName="commission"
-              placeholder="Commission"
-              register={register as any}
-            />
-            <LabelText label={'0.10%'} />
+              <InputWithLabel
+                label="Commission"
+                inputIdentifierName="commission"
+                placeholder="Commission"
+                register={register as any}
+              />
+              <LabelText label={'0.10%'} />
             </Box>
 
             <DropdownWithLabel
-              label='Shift Schedule'
+              label="Shift Schedule"
               inputIdentifierName="shiftSchedular"
               options={scheduleList}
               register={register as any}
             />
 
-            <DropdownWithLabel
+            <MultiSelectDropdown
               label="Assign Creator"
               inputIdentifierName="assignCreator"
               options={creators}
-              register={register as any}
+              selectedValues={selectedValues}
+              setSelectedValues={(selected: any) => {
+                setValue('assignCreator', selected);
+                setSelectedValues(selected);
+              }}
             />
           </Stack>
         </form>

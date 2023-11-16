@@ -11,6 +11,7 @@ export const useFormEmployee = (
   type: 'add' | 'edit',
   selectedEmployee: ISelectedEmployee
 ) => {
+  const [selectedValues, setSelectedValues] = useState<any>([]);
   const [groupOptions, setGroupOptions] = useState<
     {
       label: string;
@@ -35,7 +36,7 @@ export const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
-    assignCreator: Yup.string(),
+    assignCreator: Yup.array(),
     payRate: Yup.number().required('Pay rate is required'),
     payInterval: Yup.string().required('Pay Interval is required'),
     commission: Yup.number().min(0).max(100),
@@ -106,6 +107,7 @@ export const useFormEmployee = (
         response.json();
         callback();
         reset();
+        setSelectedValues([]);
       })
       .then((_res) => {
         fetchReq(twilioEndPoint, twilioOptions)
@@ -128,6 +130,7 @@ export const useFormEmployee = (
       .then((responce) => responce.json())
       .then((res) => {
         refetch();
+        setSelectedValues([]);
       })
       .catch((err) => console.log(err));
   };
@@ -137,6 +140,12 @@ export const useFormEmployee = (
       setValue('name', selectedEmployee?.name);
       setValue('email', selectedEmployee?.email);
       setValue('role', selectedEmployee?.role);
+      setValue('agencyId', selectedEmployee?.agencyId);
+      setSelectedValues(
+        selectedEmployee?.assignedCreatorsForDropdown.map((val) => val.id)
+      );
+    } else {
+      setSelectedValues([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmployee, type]);
@@ -147,6 +156,9 @@ export const useFormEmployee = (
     groupOptions,
     assignCreator,
     isLoading: loadingCreate || loadingUpdate,
+    selectedValues,
+    setSelectedValues,
+    setValue,
   };
 };
 

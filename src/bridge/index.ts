@@ -5,6 +5,7 @@ import { IPCChannels } from '../types';
 import * as pie from '../packages/electron-puppeteer';
 import locateChrome from 'locate-chrome';
 import log from 'electron-log';
+import UserAgent from 'user-agents';
 
 const getPageUrl = (page: any) => {
   const urls = [
@@ -64,6 +65,9 @@ const startIPCBridge = ({
   // eslint-disable-next-line no-console
   console.log(chalk.bgYellow('IPC Bridge Started'));
 
+  const fingerprintUrl = 'https://bot.sannysoft.com/';
+  // https://antoinevastel.com/bots/
+
   ipcMain.on('launch-anty-browser', async (e, arg) => {
     try {
       const proxyConfig = {
@@ -81,31 +85,45 @@ const startIPCBridge = ({
         ignoreDefaultArgs: ['--enable-automation'],
         args: [
           '--start-maximized',
-          `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
+          '--disable-blink-features=AutomationControlled',
+          // `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
         ],
         executablePath: await locateChrome(),
       });
 
+      const ua = new UserAgent({
+        deviceCategory: 'desktop',
+      });
+
       browser.on('targetcreated', async (target) => {
         if (target.type() === 'page') {
+          const randomizedUserAgent = ua.random();
           const newPage = await target.page();
-          // Set the geolocation for the new page
-          await newPage?.setGeolocation({
-            latitude: 59.95,
-            longitude: 30.31667,
-          });
+          await Promise.all([
+            await page.setJavaScriptEnabled(false),
+            // Set the geolocation for the new page
+            await newPage?.setGeolocation({
+              latitude: 59.95,
+              longitude: 30.31667,
+            }),
+            await newPage?.setUserAgent(randomizedUserAgent.data.userAgent),
+            await page.evaluateOnNewDocument(() => {
+              if (navigator.webdriver) {
+                delete Object.getPrototypeOf(navigator).webdriver;
+              }
+            }),
+          ]);
         }
       });
 
       const page = await browser.newPage();
 
       page.setDefaultNavigationTimeout(60000);
-      await page.authenticate({
-        username: proxyConfig.credentials.username,
-        password: proxyConfig.credentials.password,
-      });
-      await page.setGeolocation({ latitude: 59.95, longitude: 30.31667 });
-      await page.goto('https://iproyal.com/ip-lookup/');
+      // await page.authenticate({
+      //   username: proxyConfig.credentials.username,
+      //   password: proxyConfig.credentials.password,
+      // });
+      await page.goto('https://bot.sannysoft.com/');
     } catch (err) {
       log.error(err);
     }

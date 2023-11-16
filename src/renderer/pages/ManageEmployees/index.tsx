@@ -243,7 +243,6 @@ export default function ManageEmployees() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -285,7 +284,10 @@ export default function ManageEmployees() {
 
               <Button
                 variant="contained"
-                onClick={() => setOpenAddEmployee(true)}
+                onClick={() => {
+                  setFormType('add');
+                  setOpenAddEmployee(true);
+                }}
                 endIcon={
                   <AddIcon
                     sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
@@ -396,12 +398,14 @@ export default function ManageEmployees() {
               {employees.map(
                 ({
                   name,
-                  assignedCreators,
+                  assignedCreatorsText,
                   role,
                   activated,
                   email,
                   roleRaw,
                   id,
+                  agencyId,
+                  assignedCreatorsForDropdown,
                 }) => {
                   return (
                     <TableRow
@@ -457,7 +461,7 @@ export default function ManageEmployees() {
                               : '#000'
                           }
                         >
-                          {assignedCreators}
+                          {assignedCreatorsText}
                         </Typography>
                       </TableCell>
                       <TableCell
@@ -518,6 +522,8 @@ export default function ManageEmployees() {
                                     role: roleRaw,
                                     email,
                                     id,
+                                    agencyId,
+                                    assignedCreatorsForDropdown,
                                   });
                                   setFormType('edit');
                                   setOpenAddEmployee(true);
@@ -579,6 +585,7 @@ export default function ManageEmployees() {
               name={assigneeName}
               open={openAssignCreatorModal}
               setOpen={setOpenAssignCreatorModal}
+              refetch={refetch}
               id={id}
             />
           )}
