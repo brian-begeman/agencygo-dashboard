@@ -31,9 +31,15 @@ interface $props {
   type: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
+  getData:any
 }
 
-const General = ({ open, type, setOpen, refetch }: $props) => {
+const General = ({
+  open,
+  type,
+  setOpen,
+  refetch,getData
+}: $props) => {
   const [alignment, setAlignment] = React.useState('web');
   const [alignment2, setAlignment2] = React.useState('web');
   const [alignment3, setAlignment3] = React.useState('web');
@@ -50,18 +56,19 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
   const [alignment13, setAlignment13] = React.useState('web');
   const [alignment14, setAlignment14] = React.useState('web');
   const [alignment15, setAlignment15] = React.useState('web');
-   const [newData, setNewData] = useState({
+  const [newData, setNewData] = useState({
     name: '',
     status: '',
     tags: '',
     proxy: '',
-    changeIPURL: '', 
-    proxyName: '', 
+    changeIPURL: '',
+    proxyName: '',
   });
- const [errors, setErrors] = useState({
-   name: '',
-   status: '',
- });
+  const [errors, setErrors] = useState({
+    name: '',
+    status: '',
+  });
+
   const handleNameChange = (name: string, value: string) => {
     setNewData((prevData) => ({
       ...prevData,
@@ -69,40 +76,33 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
     }));
   };
 
+  const handleProxyChange = (proxy: string, value: string) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      [proxy]: value,
+    }));
+  };
 
-   const handleProxyChange = (proxy: string, value: string) => {
-     setNewData((prevData) => ({
-       ...prevData,
-       [proxy]: value,
-     }));
-   };
+  const handlechangeIPURLChange = (changeIPURL: any, value: any) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      [changeIPURL]: value,
+    }));
+  };
 
-    const handlechangeIPURLChange = (changeIPURL: any, value: any) => {
-      setNewData((prevData) => ({
-        ...prevData,
-        [changeIPURL]: value,
-      }));
-    };
+  const handleTagsChange = (tags: any, value: any) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      [tags]: value,
+    }));
+  };
 
-
-      const handleTagsChange = (tags: any, value: any) => {
-        setNewData((prevData) => ({
-          ...prevData,
-          [tags]: value,
-        }));
-      };
-
- 
-
-        const handleproxyNameChange = (proxyName: any, value: any) => {
-          setNewData((prevData) => ({
-            ...prevData,
-            [proxyName]: value,
-          }));
-        };
-
- 
- 
+  const handleproxyNameChange = (proxyName: any, value: any) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      [proxyName]: value,
+    }));
+  };
 
   const handleStatusChange = (status: any, value: any) => {
     setNewData((prevData) => ({
@@ -111,11 +111,7 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
     }));
   };
 
-
- 
-
   const validateFields = () => {
-  
     let isValid = true;
     const newErrors = { ...errors };
 
@@ -139,25 +135,26 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
     return isValid;
   };
 
-   const handleFormSubmit = (event) => {
-     event.preventDefault(); // Prevents default form submission behavior
+  const handleFormSubmit = (event) => {
+    event.preventDefault(); // Prevents default form submission behavior
 
-     // Validate fields before submission
-     const isValid = validateFields();
+    // Validate fields before submission
+    const isValid = validateFields();
 
-     // Display form data in the console
-     console.log('Form Data:', newData);
+    // Display form data in the console
+    console.log('Form Data:', newData);
 
-     // Clear form data after submission (if needed)
-     setNewData({
-       name: '',
-       status: '',
-       tags: '',
-       proxy: '',
-       changeIPURL: '',
-       proxyName: '',
-     });
-   };
+    // Clear form data after submission (if needed)
+    setNewData({
+      name: '',
+      status: '',
+      tags: '',
+      proxy: '',
+      changeIPURL: '',
+      proxyName: '',
+    });
+     getData(newData);
+  };
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -275,8 +272,6 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-
-   
   return (
     <form onSubmit={handleFormSubmit}>
       <Box
@@ -795,7 +790,6 @@ const General = ({ open, type, setOpen, refetch }: $props) => {
           rows={4}
         />
       </Box> */}
-        <button type="submit">Submit</button>
       </Box>
     </form>
   );
