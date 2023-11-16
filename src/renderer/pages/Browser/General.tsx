@@ -25,20 +25,28 @@ import useFormEmployee from '../ManageEmployees/hooks/useForm';
 import Dropzone from 'react-dropzone';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 import { roleList } from '../ManageEmployees/constant';
+import NewProfile from './NewProfile';
 
 interface $props {
   open: boolean;
   type: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
-  getData:any
+  onFormSubmit: (data: any) => void;
+  handleCreate: (data: any) => void;
+  dataRef: (data: any) => void;
+  handleFormSubmitRef: any;
 }
 
 const General = ({
   open,
   type,
   setOpen,
-  refetch,getData
+  refetch,
+  onFormSubmit,
+  handleCreate,
+  dataRef,
+  handleFormSubmitRef,
 }: $props) => {
   const [alignment, setAlignment] = React.useState('web');
   const [alignment2, setAlignment2] = React.useState('web');
@@ -68,6 +76,12 @@ const General = ({
     name: '',
     status: '',
   });
+
+  useEffect(() => {
+    if (newData.name) {
+      dataRef(newData);
+    }
+  }, [newData]);
 
   const handleNameChange = (name: string, value: string) => {
     setNewData((prevData) => ({
@@ -136,7 +150,7 @@ const General = ({
   };
 
   const handleFormSubmit = (event) => {
-    event.preventDefault(); // Prevents default form submission behavior
+   // event.preventDefault(); // Prevents default form submission behavior
 
     // Validate fields before submission
     const isValid = validateFields();
@@ -144,6 +158,7 @@ const General = ({
     // Display form data in the console
     console.log('Form Data:', newData);
 
+    // onFormSubmit(newData);
     // Clear form data after submission (if needed)
     setNewData({
       name: '',
@@ -153,8 +168,10 @@ const General = ({
       changeIPURL: '',
       proxyName: '',
     });
-     getData(newData);
+    // handleCreate(newData);
   };
+
+  handleFormSubmitRef.current = { handleFormSubmit: handleFormSubmit };
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
