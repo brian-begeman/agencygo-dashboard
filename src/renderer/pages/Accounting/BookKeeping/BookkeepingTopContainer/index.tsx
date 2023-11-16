@@ -52,25 +52,25 @@ const isDarkTheme = theme.palette.mode === 'dark';
           >
             <MenuItem
               value={'Weekly'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Weekly
             </MenuItem>
             <MenuItem
               value={'Biweekly'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Biweekly
             </MenuItem>
             <MenuItem
               value={'Monthly'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Monthly
             </MenuItem>
             <MenuItem
               value={'Annually'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Annually
             </MenuItem>
@@ -104,25 +104,25 @@ const isDarkTheme = theme.palette.mode === 'dark';
           >
             <MenuItem
               value={'Roles'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Roles
             </MenuItem>
             <MenuItem
               value={'Admin'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Admin
             </MenuItem>
             <MenuItem
               value={'Manager'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Manager
             </MenuItem>
             <MenuItem
               value={'Employee'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Employee
             </MenuItem>
@@ -156,16 +156,16 @@ const isDarkTheme = theme.palette.mode === 'dark';
           >
             <MenuItem
               value={'Status'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Status
             </MenuItem>
-            <MenuItem value={'Paid'} sx={{ fontWeight: 500, fontSize: '11px' }}>
+            <MenuItem value={'Paid'} sx={{ fontWeight: 500 }}>
               Paid
             </MenuItem>
             <MenuItem
               value={'Unpaid'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
+              sx={{ fontWeight: 500 }}
             >
               Unpaid
             </MenuItem>

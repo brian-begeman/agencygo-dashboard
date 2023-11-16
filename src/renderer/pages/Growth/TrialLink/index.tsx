@@ -20,16 +20,16 @@ const isDarkTheme = theme.palette.mode === 'dark';
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
-          <Stack direction="row" justifyContent="space-between" >
-          
+          <Stack direction="row" justifyContent="space-between">
+           
               <SearchInput
                 value={search}
                 onUpdateSearch={onSearch}
                 onSearch={() => {}}
                 placeholder="Search by Campaign Name"
-                
               />
-            
+          
+
             <Button
               variant="contained"
               sx={{
