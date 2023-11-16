@@ -36,6 +36,11 @@ const useFormEmployee = (
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
     assignCreator: Yup.string(),
+    payRate: Yup.number().required('Pay rate is required'),
+    payInterval: Yup.string().required('Pay Interval is required'),
+    commission: Yup.number().min(0).max(100),
+    shiftSchedular: Yup.string(),
+    
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
@@ -61,13 +66,6 @@ const useFormEmployee = (
   const onSubmit = (data: any) => {
     if (type === 'add') {
       addEmployee(data);
-      mutataCreate(data, {
-        onSuccess: () => {
-          callback();
-          reset();
-          refetch();
-        },
-      });
     } else {
       editEmployee({ ...data, id: selectedEmployee?.id });
       mutateUpdate(
@@ -85,7 +83,7 @@ const useFormEmployee = (
 
   const addEmployee = (data: any) => {
     const endPoint = 'employee/' + data.agencyId;
-    const twilioEndPoint = 'chat/user'
+    const twilioEndPoint = 'chat/user';
     const options = {
       method: 'POST' as 'POST',
       headers: {
@@ -101,18 +99,19 @@ const useFormEmployee = (
       },
       withAuth: true,
       body: JSON.stringify({
-        email: data.email
+        email: data.email,
       }),
     };
     fetchReq(endPoint, options)
-      .then((responce) => responce.json())
-      .then((res) => {
-        fetchReq(twilioEndPoint,twilioOptions)
-        .then(response=> response.json())
-        .then((res)=>{
-          refetch();
-        })
-        .catch(err=> console.log(err))
+      .then((response) => {
+        response.json();
+        callback();
+        reset();
+      })
+      .then((_res) => {
+        fetchReq(twilioEndPoint, twilioOptions)
+          .then((response) => response.json())
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };

@@ -31,6 +31,7 @@ interface InputWithLabelProps {
   errors?: any;
   required?: boolean;
   inputStyle?: any;
+  type?:string;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -42,6 +43,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
     value,
     errors,
     inputStyle,
+    type='text',
     required = false,
     handleOnChange = () => {},
     register = () => ({}),
@@ -65,6 +67,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
         placeholder={placeholder}
         required={required}
         value={value}
+        type={type}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName)}

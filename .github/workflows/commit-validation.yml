@@ -1,0 +1,20 @@
+# name of your github action
+name: Validate commit
+on:
+  push:
+    branches: ['*']
+
+jobs:
+  lint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: production
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'npm'
+      - run: npm install
+      - name: Build
+        run: npm run package --verbose
