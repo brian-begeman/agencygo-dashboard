@@ -22,21 +22,20 @@ const InvoicingTopContainer = () => {
   const [isCustomInvoiceModalOpen, setCustomInvoiceModalOpen] = useState(false);
   const [selectData, setSelectedData] = useState('Current invoice settings');
   const handleOpen = () => setCreateInvoiceModalOpen(true);
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box margin={'10px 0px'}>
-      <Box display={'flex'} justifyContent={'space-between'} >
-        <Typography fontSize="22px" paddingLeft={'10px'}>Invoicing</Typography>
+      <Box display={'flex'} justifyContent={'space-between'}>
+        <Typography fontSize="22px" paddingLeft={'10px'}>
+          Invoicing
+        </Typography>
 
-        
-        <Box gap={'10px'} display={'flex'} >
+        <Box gap={'10px'} display={'flex'} alignItems={'center'}>
           <Button
             variant="contained"
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
+            sx={{ color: '#fff', textTransform: 'capitalize', height: '40px' }}
             onClick={handleOpen}
           >
             Create Invoice{' '}
@@ -46,22 +45,24 @@ const isDarkTheme = theme.palette.mode === 'dark';
             value={selectData}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-             
               width: 'fit-content',
-              
+
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
-                {
-                  padding: '8px 8px',
-                },
+              ' & .MuiOutlinedInput-input': {
+                padding: '8px 8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-             
+              '& .MuiSelect-select': {
+                display: 'flex',
+                gap: '5px',
+                alignItems: 'center',
+              },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },

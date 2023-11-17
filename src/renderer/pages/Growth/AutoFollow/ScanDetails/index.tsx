@@ -8,6 +8,8 @@ import EarningsCard from 'renderer/components/EarningsCard';
 import MultiNavLink from 'renderer/components/MultiNavLink';
 import styles from './styles.module.css';
 import ScanDetailsTable from './ScanDetailsTable';
+import StatisticsCard from 'renderer/pages/Analytics/ChatterReports/Overview/components/ChattingStatistics/StatisticsCard';
+import AutoFollowCard from './AutoFollowCard';
 
 function Aside() {
   const [creatorSearch, setCreatorSearch] = useState('');
@@ -24,7 +26,7 @@ function Aside() {
         }}
       >
         <CandleSvg />
-        <Typography fontWeight={600} fontSize="20px" textTransform={'none'}>
+        <Typography fontWeight={600} fontSize="22px" textTransform={'none'} fontFamily={'Arimo'}>
           Filters
         </Typography>
       </Box>
@@ -68,31 +70,28 @@ const steps = [
 
 const earningsInitJson = [
   {
-    title: 'Subscriptions ($)',
-    amount: '44.44',
-    icon: <ArchiveAddSvg />,
+    title: 'Expired Fans',
+    amount: '0',
   },
   {
-    title: 'Post ($)',
-    amount: '0.00',
-    icon: <ArchiveAddSvg />,
+    title: 'Expired Fans Followed',
+    amount: '0',
   },
   {
-    title: 'Messages ($)',
-    amount: '432.00',
-    icon: <ArchiveAddSvg />,
+    title: 'Expired Fans Not Followed',
+    amount: '4',
   },
   {
-    title: 'Tips ($)',
-    amount: '6.00',
+    title: 'No-Subscribe Fans',
+    amount: '6',
   },
   {
-    title: 'Referrals ($)',
-    amount: '0.00',
+    title: 'Fans With Paid Subscription',
+    amount: '0',
   },
   {
-    title: 'Streams ($)',
-    amount: '0.00',
+    title: 'Freeloader Fans',
+    amount: '0',
   },
 ];
 
@@ -109,7 +108,7 @@ function ScanDetails() {
           marginBottom="16px"
         >
           {earningsInitJson.map((item) => (
-            <EarningsCard
+            <AutoFollowCard
               key={item.title}
               title={item.title}
               amount={item.amount}

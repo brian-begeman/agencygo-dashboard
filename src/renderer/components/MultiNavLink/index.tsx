@@ -10,8 +10,8 @@ interface $Props {
 }
 
 export default function MultiNavLink({ steps }: $Props) {
-   const theme = useTheme();
-   const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Stack
       direction="row"
@@ -22,14 +22,14 @@ export default function MultiNavLink({ steps }: $Props) {
     >
       {steps.map(({ label, link }, index) => (
         <Stack key={label} flexDirection="row" alignItems="center" spacing={2}>
-          <Link to={link}>
+          <Link to={link} style={{ textDecoration: 'none' }}>
             <Typography
-              color={isDarkTheme?'#fff':'#000'}
-              fontSize="10px"
+              color={isDarkTheme ? '#fff' : '#000'}
+              fontSize="11px"
               fontWeight={500}
               sx={{
                 textDecoration:
-                  steps.length - 1 !== index ? 'underline' : 'auto',
+                  steps.length - 1 !== index ? 'underline' : 'inherit',
               }}
             >
               {label}

@@ -13,7 +13,7 @@ export default function UpdateButtons() {
       alignItems="center"
       justifyContent="start"
     >
-      <Box >
+      <Box>
         <Button
           variant="text"
           startIcon={
@@ -39,29 +39,30 @@ export default function UpdateButtons() {
           </Typography>
         </Button>
       </Box>
-
-      <Button
-        variant="text"
-        startIcon={
-          <EditNoteIcon
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              color: '#fff',
-            }}
-          />
-        }
-      >
-        <Typography
-          fontWeight={500}
-          fontSize="14px"
-          fontFamily={'Arimo'}
-          sx={{ color: isDarkTheme ? '#ffff' : '#000' }}
-          textTransform={'none'}
+      <Box>
+        <Button
+          variant="text"
+          startIcon={
+            <EditNoteIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                color: isDarkTheme ? '#ffff' : '#000',
+              }}
+            />
+          }
         >
-          Edit
-        </Typography>
-      </Button>
+          <Typography
+            fontWeight={500}
+            fontSize="14px"
+            fontFamily={'Arimo'}
+            sx={{ color: isDarkTheme ? '#ffff' : '#000' }}
+            textTransform={'none'}
+          >
+            Edit
+          </Typography>
+        </Button>
+      </Box>
     </Stack>
   );
 }

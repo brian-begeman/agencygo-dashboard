@@ -21,6 +21,7 @@ import AutoRenewTrend from './AutoRenewTrend';
 import TrafficSource from './TrafficSource';
 import FanRetenrion from './FanRetention';
 import TopFans from './TopFans';
+import { fontGrid } from '@mui/material/styles/cssUtils';
 
 
 
@@ -74,16 +75,31 @@ function FanReports() {
             gap="5px"
             border="2px solid "
             borderColor="primary.contrastText"
-            padding="6px 8px"
+            padding="2px 8px"
             borderRadius="4px"
             onClick={() => setOpen(!open)}
           >
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
               {' '}
               {startDate}{' '}
             </Typography>
-            <Typography color={isDarkTheme ? '#fff' : '#000'}> to </Typography>
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
+              {' '}
+              to{' '}
+            </Typography>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
               {endDate}
             </Typography>
             <DatePickerSvg />
@@ -133,7 +149,6 @@ function FanReports() {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-         
         }}
       >
         {open && <Calendar onChange={onChange} open={open} setOpen={setOpen} />}

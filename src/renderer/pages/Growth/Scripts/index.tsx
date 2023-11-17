@@ -24,7 +24,7 @@ const theme = useTheme();
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between" alignItems={'center'}>
             <SearchInput
               value={search}
               onUpdateSearch={onSearch}
@@ -42,7 +42,7 @@ const theme = useTheme();
               >
                 <Typography
                   fontWeight={600}
-                  fontSize="12px"
+                  fontSize="14px"
                   color={theme.palette.primary.main}
                   textTransform="unset"
                 >
@@ -60,7 +60,7 @@ const theme = useTheme();
               >
                 <Typography
                   fontWeight={600}
-                  fontSize="12px"
+                  fontSize="14px"
                   color="#fff"
                   textTransform="unset"
                 >
@@ -94,6 +94,7 @@ const theme = useTheme();
                 fontWeight={600}
                 fontSize="11px"
                 color="#fff"
+                fontFamily={'Arimo'}
                 textTransform="unset"
                 padding="5px 7px"
                 borderRadius="16px"

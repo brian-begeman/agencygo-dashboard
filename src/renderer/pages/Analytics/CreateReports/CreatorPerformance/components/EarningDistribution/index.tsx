@@ -59,7 +59,9 @@ export function EaringDistribution() {
         color={isDarkTheme ? '#fff' : '#000'}
       >
         Earning Distribution
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Box display="flex">
         <Box width={'70%'}>

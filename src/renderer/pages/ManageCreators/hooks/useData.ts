@@ -3,6 +3,7 @@ import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
 export interface ICreatorList {
+  _id: ICreatorList | null;
   creatorName: string;
   imageSrc: string;
   gender: string;

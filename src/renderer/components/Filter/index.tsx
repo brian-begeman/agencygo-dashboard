@@ -2,11 +2,13 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Collapse,
   Divider,
   FormControl,
   FormControlLabel,
   InputLabel,
+  ListItem,
   ListItemText,
   MenuItem,
   OutlinedInput,
@@ -397,6 +399,16 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     handleSearch(data);
   };
 
+  const handleDelete = (chipToDelete: ChipData) => () => {
+    setChipData((chips) =>
+      chips.filter((chip) => chip.key !== chipToDelete.key)
+    );
+  };
+    const [chipData, setChipData] = React.useState<readonly ChipData[]>([
+      { key: 0, label: 'Status' },
+      { key: 1, label: 'Employee' },
+      { key: 2, label: 'Creator' },
+    ]);
   return (
     <PageAside>
       <Box
@@ -410,16 +422,23 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <CandleSvg />
         <Typography font-size="22px">Filters</Typography>
       </Box>
-      <Box
-        sx={{
-          borderTop: `1px solid ${theme.palette.primary.contrastText}`,
-          borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
-          padding: '21px 32px',
-          display: 'flex',
-          gap: '10px',
-        }}
-      >
-        <Button variant="outlined" onClick={onRemoveFilter}>
+
+      <Box>
+        <Typography> Applied Filters</Typography>
+        <Box
+          sx={{
+            borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
+
+            gap: '10px',
+            display: 'flex',
+            padding: '20px 0px 20px 20px ',
+          }}
+        >
+          {chipData.map((data) => {
+            return <Chip label={data.label} onDelete={handleDelete(data)} />;
+          })}
+        </Box>
+        {/* <Button variant="outlined" onClick={onRemoveFilter}>
           Reset
         </Button>
         <Button
@@ -428,7 +447,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           onClick={handleFilterData}
         >
           Search
-        </Button>
+        </Button> */}
         {/* <Stack
           justifyContent="space-between"
           flexDirection="row"
@@ -539,8 +558,24 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           />
         </Box>
       )}
+      {location.pathname === '/creators' && (
+        <Box padding="12px 16px 12px 16px">
+          <FilterByStatus
+            title="By Employee"
+            status={linkStatus}
+            options={['Isaac', 'Gregory']}
+            setStatus={setLinkStatus}
+          />
+          <Divider
+            sx={{
+              background: theme.palette.primary.contrastText,
+              marginTop: '11px',
+            }}
+          />
+        </Box>
+      )}
 
-      {location.pathname == '/creators' && (
+      {/* {location.pathname == '/creators' && (
         <Box padding="12px 16px 12px 16px">
           <FilterByEmployeeInCreator
             title="By Employee name"
@@ -554,7 +589,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             }}
           />
         </Box>
-      )}
+      )} */}
     </PageAside>
   );
 }

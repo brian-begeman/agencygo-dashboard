@@ -116,7 +116,9 @@ const FansChatted = () => {
         gap="3px"
       >
         Fans Chatted
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Box sx={{ height: '400px', width: '100%' }}>
         <FansChattedChart />

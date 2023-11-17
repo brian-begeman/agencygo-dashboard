@@ -9,7 +9,8 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Switch, useTheme
+  Switch,
+  useTheme,
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import LensIcon from '@mui/icons-material/Lens';
@@ -47,10 +48,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -107,9 +106,8 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -226,7 +224,7 @@ export function RadioButton({ title }: RadioProps) {
             checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
           />
         }
-        label=""
+        label={title}
         // label={`${title.title}`}
       />
     </FormGroup>
@@ -256,7 +254,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          backgroundColor: isDarkTheme? '#0C0C0C':'#fff',
+          backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',
@@ -273,7 +271,7 @@ any) {
       >
         <Select
           sx={{
-            '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+            '&.MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
               background: 'gray !important',
             },
             color: 'white',

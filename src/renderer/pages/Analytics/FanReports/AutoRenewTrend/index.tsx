@@ -82,7 +82,7 @@ export default function   AutoRenewTrend() {
     <Box
       sx={{
         background: isDarkTheme ? '#000' : '#fff',
-        maxHeight: '500px',
+        maxHeight: '700px',
         borderRadius: '16px',
         padding: '16px',
         gap: '30px',
@@ -106,11 +106,7 @@ export default function   AutoRenewTrend() {
           Auto Renew Trend
           <ErrorOutline sx={{ color: theme.palette.secondary.contrastText,fontSize:'18px' }} />
         </Typography>
-        <ButtonGroup
-          tabButton={tabButtonData}
-          activeButton={activeButton}
-          setActiveButton={setActiveButton}
-        />
+       
       </Stack>
       <Bar options={options} data={data} />
     </Box>

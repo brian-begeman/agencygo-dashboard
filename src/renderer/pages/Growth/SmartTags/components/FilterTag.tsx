@@ -55,7 +55,7 @@ export default function FilterTag() {
       </Stack>
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox sx={{ color: '#fff' }} />}
+          control={<Checkbox />}
           sx={{ '& .MuiFormControlLabel-label': { fontSize: '12px' } }}
           label="Add expired fans"
         />

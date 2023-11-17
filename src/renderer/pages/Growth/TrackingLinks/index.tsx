@@ -18,7 +18,7 @@ const theme = useTheme();
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between" alignItems={'center'}>
             <SearchInput
               value={search}
               onUpdateSearch={onSearch}

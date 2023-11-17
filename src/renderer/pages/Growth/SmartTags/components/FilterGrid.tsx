@@ -46,7 +46,7 @@ export default function FilterGrid() {
                   sx={{
                     maxWidth: '160px',
                     height: '40px',
-                    border: `1px solid ${theme.palette.secondary.contrastText}`,
+                  
                     input: { color: isDarkTheme ? '#fff' : '#000' },
                     backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
                   }}

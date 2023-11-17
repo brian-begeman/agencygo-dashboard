@@ -33,7 +33,7 @@ function ProfilePromotion() {
           >
             <Typography
               fontWeight={600}
-              fontSize="12px"
+              fontSize="14px"
               color="#fff"
               textTransform="unset"
             >
@@ -47,7 +47,7 @@ function ProfilePromotion() {
             borderBottom={`1px solid ${theme.palette.primary.contrastText}`}
             paddingBottom="32px"
           >
-            <Stack gap="10px">
+            <Stack gap="8px">
               <Typography fontSize="22px" fontWeight={700} fontFamily={'Arimo'}>
                 Auto-activate campaign
               </Typography>
@@ -100,7 +100,7 @@ function ProfilePromotion() {
             borderBottom={`1px solid ${theme.palette.primary.contrastText}`}
             paddingBottom="32px"
           >
-            <Stack gap="10px">
+            <Stack gap="10px" >
               <Box marginTop="10px">
                 <Typography fontWeight={400} fontSize="14px" marginBottom="5px">
                   Add Fans To List
@@ -135,8 +135,8 @@ function ProfilePromotion() {
             </Stack>
             <Switch />
           </Stack>
-          <Stack gap="10px">
-            <Typography fontWeight={600} fontSize="16px">
+          <Stack gap="16px" marginTop={'16px'}>
+            <Typography fontWeight={600} fontSize="14px">
               Campaign Insights
             </Typography>
             <Stack
