@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import PageTopbar from 'renderer/components/PageTopbar';
@@ -25,10 +26,14 @@ const style = {
 
 export default function NewProfile({ open, setOpen, name, id }: any) {
   const [selectedValues, setSelectedValues] = useState([]);
+  const [formData, setFormData] = useState(null);
+  const [newData, setNewData] = useState(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
+
+  const handleFormSubmitRef = useRef(null);
 
   const handleAssignCreator = (id: string) => {
     const payload = selectedValues;
@@ -50,6 +55,22 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
         console.log('Error occured: ', err);
       });
     handleClose();
+  };
+
+  // Function to handle form submission triggered from NewProfile component
+  const handleFormSubmitFromNewProfile = (data) => {
+    // Handle form submission or send the form data wherever needed
+    console.log('Form Data from NewProfile:', data);
+    setFormData(data); // Update state with form data if needed
+  };
+
+  const handleCreate = () => {
+    // Call handleFormSubmit in General component from NewProfile
+    // handleFormSubmitFromNewProfile(formData);
+    console.log('--handleFormSubmitRef.current--', handleFormSubmitRef.current);
+    if (handleFormSubmitRef.current) {
+      handleFormSubmitRef.current?.handleFormSubmit();
+    }
   };
 
   const theme = useTheme();
@@ -91,6 +112,13 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const dataRef = (newData) => {
+    // setNewData(newData);
+  };
+
+  // console.log('--newData--', newData);
+
   return (
     <div>
       <Modal
@@ -151,6 +179,7 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
                   variant="text"
                   startIcon={<AddIcon />}
                   sx={{ color: '#fff' }}
+                  onClick={handleCreate}
                 >
                   Create
                 </Button>
@@ -182,7 +211,10 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
           <Box bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
             <CustomTabPanel value={value} index={0}>
               <Box>
-                <General />
+                <General
+                
+                  handleFormSubmitRef={handleFormSubmitRef}
+                />
               </Box>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
@@ -191,28 +223,6 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
             <CustomTabPanel value={value} index={2}>
               Item Three
             </CustomTabPanel>{' '}
-          </Box>
-
-          <Box
-            display={'flex'}
-            justifyContent={'end'}
-            gap={'10px'}
-            sx={{
-              padding: '10px 20px',
-              borderRadius: '0px 0px 10px 10px',
-              background: isDarkTheme ? '#000' : '#EAF1FF',
-            }}
-          >
-            <PageTopbar.Button
-              text="Cancel"
-              color="secondary"
-              onClick={handleClose}
-            />
-            <PageTopbar.Button
-              color="primary"
-              text="Confirm"
-              onClick={() => handleAssignCreator(id)}
-            />
           </Box>
         </Box>
       </Modal>
