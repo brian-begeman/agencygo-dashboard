@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Auth/Login';
+import OnlyfansAccount from './pages/OnlyfansAccount';
 import DashboardPage from './pages/DasboardPage';
 import ManagerSuite from './pages/ManagerSuite/index';
 import EmployeeShifts from './pages/EmployeeShifts';
@@ -41,15 +42,14 @@ import BookKeeping from './pages/Accounting/BookKeeping';
 import ChatMessage from './pages/ChatScreen';
 import ContentHub from './pages/ContentHub';
 import Browser from './pages/Browser';
-import {useLocation} from 'react-router-dom'
-
+import { useLocation } from 'react-router-dom';
 
 const ROUTES = [
-    {
-      path: '*',
-      element: <Login />,
-      pathName: 'Login',
-    },
+  {
+    path: '*',
+    element: <Login />,
+    pathName: 'Login',
+  },
   {
     path: '/home',
     element: <HomePage />,
@@ -66,9 +66,14 @@ const ROUTES = [
     pathName: 'Manager Suite',
   },
   {
-    path : '/browser',
-    element: <Browser/>,
-    pathName: "Anty Browser"
+    path: '/of-account',
+    element: <OnlyfansAccount />,
+    pathName: 'Onlyfans Account Page',
+  },
+  {
+    path: '/browser',
+    element: <Browser />,
+    pathName: 'Anty Browser',
   },
   {
     path: '/content-hub',
@@ -252,14 +257,17 @@ function AppRoutes() {
   const location = useLocation();
 
   useEffect(() => {
-    window.electron.ipcRenderer.sendMessage('remove-browser-view')
-  }, [location] )
+    window.electron.ipcRenderer.sendMessage('remove-browser-view');
+  }, [location]);
 
   return (
     <Routes>
       {isLogin ? (
         <>
-          <Route path="/" element={<Navigate to="/manager-suite/notifications" />} />
+          <Route
+            path="/"
+            element={<Navigate to="/manager-suite/notifications" />}
+          />
           {ROUTES.map(({ path, element, nestedRoutes }) =>
             nestedRoutes ? (
               <Route key={path} path={path} element={element}>

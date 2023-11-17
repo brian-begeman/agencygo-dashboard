@@ -5,7 +5,6 @@ import {
   Select,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import theme from 'renderer/styles/muiTheme'; 
@@ -17,35 +16,35 @@ const PayrollTopContainer = () => {
 
   const [selectData, setSelectedData] = useState('Current invoice settings');
   const handleOpen = () => setCreateInvoiceModalOpen(true);
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
-
-
+  
   return (
-    <Box margin={'10px 0px'} >
+    <Box margin={'10px 0px'}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography fontSize="22px">Payroll</Typography>
+        <Typography fontSize="22px">Invoicing</Typography>
         <Button
           variant="contained"
           sx={{ color: '#fff', textTransform: 'capitalize' }}
           onClick={handleOpen}
+
         >
           Export
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'end', margin: '20px 0px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'end',margin:'20px 0px' }}>
         <Box display={'flex'} gap={'10px'}>
           <Select
             id="current-invoice-settings"
             value={'Weekly'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-             
+              color: theme.palette.secondary.contrastText,
               width: 'fit-content',
-             
+              '.MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.light,
+              },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -55,7 +54,9 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-             
+              '.MuiSvgIcon-root': {
+                fill: 'white !important',
+              },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -91,12 +92,14 @@ const PayrollTopContainer = () => {
             value={'Roles'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-          
+              color: theme.palette.secondary.contrastText,
               width: 'fit-content',
-             
+              '.MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.light,
+              },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -106,7 +109,9 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              
+              '.MuiSvgIcon-root': {
+                fill: 'white !important',
+              },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -142,12 +147,14 @@ const PayrollTopContainer = () => {
             value={'Status'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              
+              color: theme.palette.secondary.contrastText,
               width: 'fit-content',
-             
+              '.MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.light,
+              },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -157,7 +164,9 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-    
+              '.MuiSvgIcon-root': {
+                fill: 'white !important',
+              },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -169,7 +178,10 @@ const PayrollTopContainer = () => {
             >
               Status
             </MenuItem>
-            <MenuItem value={'Paid'} sx={{ fontWeight: 500, fontSize: '11px' }}>
+            <MenuItem
+              value={'Paid'}
+              sx={{ fontWeight: 500, fontSize: '11px' }}
+            >
               Paid
             </MenuItem>
             <MenuItem
@@ -180,11 +192,11 @@ const PayrollTopContainer = () => {
             </MenuItem>
           </Select>
           {isCreateInvoiceModalOpen && (
-            <CreateInvoiceModal
-              open={isCreateInvoiceModalOpen}
-              setOpen={setCreateInvoiceModalOpen}
-            />
-          )}
+        <CreateInvoiceModal
+          open={isCreateInvoiceModalOpen}
+          setOpen={setCreateInvoiceModalOpen}
+        />
+      )}
         </Box>
       </Box>
     </Box>

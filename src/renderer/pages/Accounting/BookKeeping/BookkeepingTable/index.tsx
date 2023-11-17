@@ -1,5 +1,9 @@
 import {
   Box,
+  Button,
+  MenuItem,
+  Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -7,182 +11,203 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useTheme,
 } from '@mui/material';
-import EditIconSvg from 'renderer/assets/svg/EditIconSvg';
-import TableAccordion from '../TableAccordion';
+import { useEffect, useState } from 'react';
+import EditSvg from 'renderer/assets/svg/downloadSvg';
+import theme from 'renderer/styles/muiTheme';
+import AddLeder from './AddLeder';
 
-const tableData = [
+const payoutData = [
   {
-    id: 1,
-    employee: 'Joan Adams',
-    role: 'Admin',
-    hourlyPay: '$14',
-    commissionEarned: '$134',
-    bonuses: '$14',
-    datePaid: '',
-    status: 'Unpaid',
-    totalHours: '58 hrs',
-    totalCompensation: '$1,435.05',
+    id: '1',
+    amount: '$1,024',
+    status: 'Pending',
+    date: 'Oct 4, 2023',
+    invoiceStatus: 'Unpaid',
   },
-  {
-    id: 2,
-    employee: 'Zain',
-    role: 'Admin',
-    hourlyPay: '$12',
-    commissionEarned: '$145',
-    bonuses: '$13',
-    datePaid: '',
-    status: 'Unpaid',
-    totalHours: '53 hrs',
-    totalCompensation: '$1,435.05',
-  },
-  {
-    id: 3,
-    employee: 'Shah',
-    role: 'Manager',
-    hourlyPay: '$14',
-    commissionEarned: '$142',
-    bonuses: '$16',
-    datePaid: 'Sep 24, 2023',
-    status: 'Paid',
-    totalHours: '56 hrs',
-    totalCompensation: '$1,435.05',
-  },
-  {
-    id: 4,
-    employee: 'Damilare',
-    role: 'Manager',
-    hourlyPay: '$17',
-    commissionEarned: '$101',
-    bonuses: '$14',
-    datePaid: 'Sep 24, 2023',
-    status: 'Paid',
-    totalHours: '50 hrs',
-    totalCompensation: '$1,435.05',
-  },
-  {
-    id: 5,
-    employee: 'Eloghosa',
-    role: 'Employee',
-    hourlyPay: '$10',
-    commissionEarned: '$146',
-    bonuses: '$34',
-    datePaid: 'Sep 24, 2023',
-    status: 'Paid',
-    totalHours: '49 hrs',
-    totalCompensation: '$1,435.05',
-  },
+
+
 ];
-
 const BookkeepingTable = () => {
+  const [selectedStatus, setSelectedStatus] = useState('Filter');
+
+
+const [allInvoice,setAllInvoice]=useState<any>([]);
+
+const[isOpen,setOpen]=useState<any>(false)
+
+  const getInvoice = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      
+    };
+    try {
+      const response = await fetch('http://localhost:3000/invoicing', options);
+      if (response.ok) {
+        const data = await response.json();
+        setAllInvoice(data?.data)
+        console.log(data, 'getData');
+      } else {
+        console.error('Failed to create the invoice');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(()=>{
+    getInvoice()
+  },[])
   return (
-    <TableAccordion>
-      <TableData/>
-    </TableAccordion>
+    <>
+    <Stack
+      borderRadius="16px"
+      gap="15px"
+      sx={{
+        padding: '10px',
+        border: `1px solid ${theme.palette.primary.contrastText}`,
+      }}
+    >
+      <Box display={'flex'} justifyContent={'space-between'}>
+        <Box display={'flex'}  gap={'10px'}>
+
+      <Button
+            variant="contained"
+            sx={{ color: '#fff', textTransform: 'capitalize' }}
+            onClick={()=>setOpen(true)}
+            >
+            Add Ledger{' '}
+          </Button>
+        <Typography fontSize="22px">Ledger</Typography>
+            </Box>
+        <Box>
+          <Select
+            id="filter"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            sx={{
+              color: theme.palette.secondary.contrastText,
+              width: 'fit-content',
+              '.MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.light,
+              },
+              height: 'fit-content',
+              padding: '0px 0px',
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+                {
+                  padding: '4px 8px',
+                },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.contrastText,
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.contrastText,
+              },
+              '.MuiSvgIcon-root': {
+                fill: 'white !important',
+              },
+              input: {
+                backgroundColor: theme.palette.secondary.contrastText,
+              },
+            }}
+          >
+            <MenuItem
+              value={'Filter'}
+              sx={{ fontWeight: 500, fontSize: '11px' }}
+            >
+              Filter
+            </MenuItem>
+            <MenuItem value={'paid'} sx={{ fontWeight: 500, fontSize: '11px' }}>
+              Paid invoice
+            </MenuItem>
+            <MenuItem
+              value={'unpaid'}
+              sx={{ fontWeight: 500, fontSize: '11px' }}
+            >
+              Pending invoice
+            </MenuItem>
+          </Select>
+        </Box>
+      </Box>
+      <TableContainer>
+        <Table
+          sx={{
+            minWidth: 650,
+            borderRadius: 16,
+            border: '1px solid #292929',
+          }}
+          aria-label="simple table"
+        >
+          <TableHead sx={{ bgcolor: '#292929' }}>
+            <TableRow>
+              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Description</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Category</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Reference</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Debit</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Credit</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
+
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+            // (
+            //   selectedStatus == 'Filter'
+            //   ? payoutData
+            //   : payoutData.filter(
+            //       (d) =>
+            //         d.invoiceStatus.toLowerCase() ===
+            //         selectedStatus.toLowerCase()
+            //     )
+            // )
+            allInvoice.map((row:any,index:any) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell sx={{ color: '#FFFFFF' }}>23/04/2023</TableCell>
+
+                <TableCell
+                  scope="column"
+                  sx={{  color: '#FFFFFF', padding: '25px 10px' }}
+                >
+                  Cash
+                </TableCell>
+              
+                <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>100</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>1090</TableCell>
+
+
+            
+                <TableCell sx={{ color: '#04A1FF' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    
+                    <Box sx={{ cursor: 'pointer' }}>
+                      <EditSvg />
+                    </Box>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
+    <AddLeder open={isOpen} setOpen={setOpen}/>
+    </>
+
   );
 };
 
 export default BookkeepingTable;
-
-const TableData = ()=>{
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
-  return (
-    <TableContainer
-      sx={{
-        
-        background: isDarkTheme ? '#000' : '#fff',
-      }}
-    >
-      <Table
-        sx={{
-          minWidth: 650,
-          borderRadius: 16,
-          border: '1px solid #292929',
-        }}
-        aria-label="simple table"
-      >
-        <TableHead sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
-          <TableRow>
-            <TableCell>Employee</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Hourly Pay</TableCell>
-            <TableCell>Commission earned</TableCell>
-            <TableCell>Bonuses</TableCell>
-            <TableCell>Date paid</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Total Hours</TableCell>
-            <TableCell>Total Compensation</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableData.map((row) => (
-            <TableRow
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell> {row.employee} </TableCell>
-              <TableCell>{row.role}</TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '14px',
-                  }}
-                >
-                  <Typography>{row.hourlyPay}</Typography>
-                  <EditIconSvg />
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '14px',
-                  }}
-                >
-                  <Typography>{row.commissionEarned}</Typography>
-                  <EditIconSvg />
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '14px',
-                  }}
-                >
-                  <Typography>{row.bonuses}</Typography>
-                  <EditIconSvg />
-                </Box>
-              </TableCell>
-              <TableCell>{row.datePaid}</TableCell>
-              <TableCell
-                sx={{
-                  color: row.status === 'Unpaid' ? '#FEC84A' : '#37DE8F',
-                }}
-              >
-                <Typography
-                  sx={{
-                    width: 'fit-content',
-                    padding: '4px 10px',
-                    borderRadius: '14px',
-                    fontSize: '12px',
-                    background: row.status === 'Unpaid' ? '#473200' : '#072718',
-                  }}
-                >
-                  {row.status}
-                </Typography>
-              </TableCell>
-              <TableCell>{row.totalHours}</TableCell>
-              <TableCell>{row.totalCompensation}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}

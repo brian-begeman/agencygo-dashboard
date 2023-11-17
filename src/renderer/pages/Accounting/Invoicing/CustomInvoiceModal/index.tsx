@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { Divider, Switch, styled } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
-import {useFormik} from 'formik'
+import { useFormik } from 'formik';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -18,17 +18,18 @@ const style = {
   boxShadow: 24,
   p: 2,
 };
-const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly']; 
-export default function CustomInvoiceModal({ open, setOpen }: any) {
+const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
+export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
   const handleClose = () => setOpen(false);
-  
+
   const initialValues = {
-    name: 'test',
+    name: `${userData?.firstName} ${userData?.lastName}`,
     amount: 30,
     description: 'string',
-    employeeId: '653f987965bf70aa9b5df6f2',
-    status: "true",
-    userId: '653f987965bf70aa9b5df6f2', 
+    employeeId: userData?._id,
+    status: 'true',
+    userId: userData?._id,
+    date: new Date(),
   };
 
   const { values, handleChange, handleSubmit } = useFormik({
@@ -40,7 +41,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
     },
   });
 
-  const handleCreateInvoice = async (value:any) => {
+  const handleCreateInvoice = async (value: any) => {
     const options = {
       method: 'POST',
       headers: {
@@ -61,7 +62,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
     }
   };
 
-  const handleOnChange = (name:any) => {
+  const handleOnChange = (name: any) => {
     console.log(name);
   };
 
@@ -74,65 +75,64 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
       aria-describedby="modal-modal-description"
     >
       <form onSubmit={handleSubmit}>
-      <Box sx={style}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            margin: '10px 0px',
-          }}
-        >
-          <Typography> Create Invoice </Typography>
-          <Typography onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            X
-          </Typography>
-        </Box>
-        <Divider sx={{ bgcolor: '#292929' }} />
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'end'}
-        >
-          <Box>
-            <Typography fontSize={'18px'}>To</Typography>
-            <Typography sx={{ fontSize: '14px' }}>
-              Client name
-              <br />
-              Address here
-              <br />
-              client@email.com
+        <Box sx={style}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              margin: '10px 0px',
+            }}
+          >
+            <Typography> Create Invoice </Typography>
+            <Typography onClick={handleClose} sx={{ cursor: 'pointer' }}>
+              X
             </Typography>
           </Box>
-          <Box>
-            <Typography sx={{ fontSize: '14px' }}>
-              Invoice No. 001 <br />
-              04, Sep 2023
-            </Typography>
+          <Divider sx={{ bgcolor: '#292929' }} />
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignItems={'end'}
+          >
+            <Box>
+              <Typography fontSize={'18px'}>To</Typography>
+              <Typography sx={{ fontSize: '14px' }}>
+                {`${userData?.firstName} ${userData?.lastName}`}
+                <br />
+                Address here
+                <br />
+                {`${userData?.email} `}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography sx={{ fontSize: '14px' }}>
+                Invoice No. 001 <br />
+                04, Sep 2023
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          gap={'8px'}
-          margin={'12px 0px'}
-        >
-        <input
-  type="text"
-  name="name"
-  value={values.name}
-  placeholder="AgencyGo"
-  style={{
-    color:'white',
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            gap={'8px'}
+            margin={'12px 0px'}
+          >
+            <input
+              type="text"
+              name="name"
+              value={values.name}
+              placeholder="AgencyGo"
+              style={{
+                color: 'white',
 
-    border: '1px solid #292929',
-    backgroundColor: '#0C0C0C',
-  }}
-  onChange={ handleChange}
-/>
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
+              onChange={handleChange}
+            />
 
-
-          {/* <InputWithLabel
+            {/* <InputWithLabel
             label="Company name"
             value={data.name}
             inputIdentifierName="name"
@@ -143,20 +143,19 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
             }}
             handleOnChange={handleOnChange}
           /> */}
-              <input
-            type="text"
-            name="amount"
-            value={values.amount}
-            placeholder="$1,203"
-            style={{
-              color:'white',
-              border: '1px solid #292929',
-              backgroundColor: '#0C0C0C',
-            }}
-            onChange={ handleChange}
-
-          />
-          {/* <InputWithLabel
+            <input
+              type="number"
+              name="amount"
+              value={values.amount}
+              placeholder="$1,203"
+              style={{
+                color: 'white',
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+              }}
+              onChange={handleChange}
+            />
+            {/* <InputWithLabel
             label="Amount"
             inputIdentifierName="amount"
             value={data.amount}
@@ -167,78 +166,78 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
             }}
             handleOnChange={handleOnChange}
           /> */}
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          margin={'8px 0px'}
-        >
-          <Typography>Recurring invoice</Typography>
-          <AntSwitch
-            defaultChecked
-            inputProps={{ 'aria-label': 'ant design' }}
-          />
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          margin={'8px 0px'}
-        >
-          <Typography>Recurring Timeline</Typography>
-          <AntSwitch
-            defaultChecked
-            inputProps={{ 'aria-label': 'ant design' }}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            margin: '12px 0px',
-          }}
-        >
-          <Box>
-            <Typography>Pick frequency</Typography>
-            <Box sx={{ borderRadius: '10px' }}>
-              <FrequencySelector frequencyFilter={frequencyFilter} />
+          </Box>
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            margin={'8px 0px'}
+          >
+            <Typography>Recurring invoice</Typography>
+            <AntSwitch
+              defaultChecked
+              inputProps={{ 'aria-label': 'ant design' }}
+            />
+          </Box>
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            margin={'8px 0px'}
+          >
+            <Typography>Recurring Timeline</Typography>
+            <AntSwitch
+              defaultChecked
+              inputProps={{ 'aria-label': 'ant design' }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              margin: '12px 0px',
+            }}
+          >
+            <Box>
+              <Typography>Pick frequency</Typography>
+              <Box sx={{ borderRadius: '10px' }}>
+                <FrequencySelector frequencyFilter={frequencyFilter} />
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          margin={'8px 0px'}
-        >
-          <Typography>Automatic Email notification</Typography>
-          <AntSwitch
-            defaultChecked
-            inputProps={{ 'aria-label': 'ant design' }}
-          />
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-          margin={'8px 0px'}
-        >
-          <Typography>Automatic Text notification</Typography>
-          <AntSwitch
-            defaultChecked
-            inputProps={{ 'aria-label': 'ant design' }}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end !important',
-            margin: '12px 0px',
-          }}
-        >
-          <Box>
-          {/* <InputWithLabel
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            margin={'8px 0px'}
+          >
+            <Typography>Automatic Email notification</Typography>
+            <AntSwitch
+              defaultChecked
+              inputProps={{ 'aria-label': 'ant design' }}
+            />
+          </Box>
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            margin={'8px 0px'}
+          >
+            <Typography>Automatic Text notification</Typography>
+            <AntSwitch
+              defaultChecked
+              inputProps={{ 'aria-label': 'ant design' }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end !important',
+              margin: '12px 0px',
+            }}
+          >
+            <Box>
+              {/* <InputWithLabel
             label="Enter Number"
             inputIdentifierName="number"
             value={data.number}
@@ -250,31 +249,30 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
             }}
             handleOnChange={handleOnChange}
           /> */}
+            </Box>
+          </Box>
+          <Box
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'flex-end'}
+            gap={'8px'}
+            padding={'50px 10px 10px'}
+          >
+            <Button
+              sx={{ color: '#fff', textTransform: 'capitalize' }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              type="submit" // Specify the type as "submit"
+              sx={{ color: '#fff', textTransform: 'capitalize' }}
+            >
+              Create Invoice
+            </Button>
           </Box>
         </Box>
-        <Box
-          display={'flex'}
-          alignItems={'center'}
-          justifyContent={'flex-end'}
-          gap={'8px'}
-          padding={'50px 10px 10px'}
-        >
-          <Button
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            type="submit" // Specify the type as "submit"
-
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
-          >
-            Create Invoice
-          </Button>
-        </Box>
-      </Box>
       </form>
     </Modal>
   );
@@ -327,7 +325,15 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 const FrequencySelector = ({ frequencyFilter }: any) => {
   const [selected, setSelected] = useState(1);
   return (
-    <Box sx={{ display: 'flex',border:"1px solid #04A1FF", width: 'fit-content',borderRadius:"10px",overflow:"hidden" }}>
+    <Box
+      sx={{
+        display: 'flex',
+        border: '1px solid #04A1FF',
+        width: 'fit-content',
+        borderRadius: '10px',
+        overflow: 'hidden',
+      }}
+    >
       {frequencyFilter.map((data: string, index: number) => (
         <Box
           sx={{

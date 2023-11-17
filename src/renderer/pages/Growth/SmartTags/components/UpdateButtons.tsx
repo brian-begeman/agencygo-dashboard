@@ -2,8 +2,11 @@ import { Button, Stack, Typography } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import theme from 'renderer/styles/muiTheme';
+import { useContext } from 'react';
+import { MyContext } from '../context/context';
 
 export default function UpdateButtons() {
+  const {getTags}=useContext(MyContext)
   return (
     <Stack
       direction="row"
@@ -43,7 +46,9 @@ export default function UpdateButtons() {
           />
         }
       >
-        <Typography variant="h5">Edit</Typography>
+        <Typography variant="h5"
+        onClick={()=>getTags()}
+        >Edit</Typography>
       </Button>
     </Stack>
   );
