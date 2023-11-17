@@ -23,12 +23,8 @@ function getDivBounds(divId: string) {
 }
 
 function Browser() {
-
-  
   useEffect(() => {
-    // window.electron.ipcRenderer.sendMessage('launch-anty-browser', {
-    //   bounds: getDivBounds('qw'),
-    // });
+    window.electron.ipcRenderer.sendMessage('launch-anty-browser');
   }, []);
 
   const theme = useTheme();
