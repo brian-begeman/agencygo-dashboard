@@ -1,6 +1,6 @@
 .loginWrap {
   max-width: 424px;
-  height: 523.59px;
+  height: 573.59px;
   margin: 0 auto;
   margin-top:63px;
   display: flex;
@@ -18,7 +18,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
+  
 }
 
 .logo {
