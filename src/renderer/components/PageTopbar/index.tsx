@@ -382,7 +382,7 @@ function ButtonTabWithIconsElement({
     >
       <div
         onClick={startIconClick}
-        style={{ marginTop: '10px', marginRight: '10px' }}
+        style={{ marginTop: '7px', marginRight: '10px' }}
         id="start-icon"
         aria-controls={openDropIcon ? 'menu' : undefined}
         aria-haspopup="true"
@@ -421,7 +421,7 @@ function ButtonTabWithIconsElement({
         </Typography>
       </div>
       <div
-        style={{ marginLeft: '20px' }}
+        style={{ marginLeft: '20px',marginTop:"5px" }}
         onClick={handleClick}
         id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
@@ -450,9 +450,6 @@ function ButtonTabWithIconsElement({
             <MenuItem onClick={() => val.function()}>{val.title}</MenuItem>
           );
         })}
-        {/* <MenuItem onClick={handleClose}>Add Sub Group</MenuItem>
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem> */}
       </Menu>
     </Button>
   );

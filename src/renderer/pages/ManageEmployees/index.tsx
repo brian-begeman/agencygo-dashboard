@@ -18,7 +18,6 @@ import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
 import Filter from 'renderer/components/Filter';
 import FilterTable from 'renderer/components/Filter/FilterTable';
-import theme from 'renderer/styles/muiTheme';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import MenuButton from 'renderer/components/MenuButton';
@@ -31,6 +30,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useFormAgencyGroup } from './hooks/useForm';
 import GroupTreeData from './components/GroupTreeData';
+import EditSubGroupModal from './components/EditSubGroupModal';
+import DeleteSubGroupModal from './components/DeleteSubGroupModal';
+import AddGroupToAgencyModal from './components/AddGroupToAgencyModal';
 
 const employeesTableHeaders = [
   'Employees',
@@ -42,7 +44,10 @@ const employeesTableHeaders = [
 
 export default function ManageEmployees() {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
-  const [openSubGroupModal, setOpenSubGroupModal] = useState(false);
+  const [openAddSubGroupModal, setOpenAddSubGroupModal] = useState(false);
+  const [openGroupToAgencyModal, setOpenGroupToAgencyModal] = useState(false);
+  const [openEditSubGroupModal, setOpenEditSubGroupModal] = useState(false);
+  const [openDeleteSubGroupModal, setOpenDeleteSubGroupModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState<string>('');
   const [id, setId] = useState('');
@@ -78,18 +83,30 @@ export default function ManageEmployees() {
 
   const getSubGroupOptions = () => {
     const subGroupData = [
-      { title: 'Add Sub Group', function: handleAddSubGroup },
-      { title: 'Edit', function: handleEditSubGroup },
-      { title: 'Delete', function: handleDeleteSubGroup },
+      { title: 'Add Sub Group', function: handleGroupToAgency },
+      // { title: 'Edit', function: handleEditSubGroup },
+      // { title: 'Delete', function: handleDeleteSubGroup },
     ];
     return subGroupData;
   };
+
+  const handleGroupToAgency = () => {
+    showSubGroups();
+    setSelectedGroup('');
+    setOpenGroupToAgencyModal(true);
+  };
   const handleAddSubGroup = () => {
     showSubGroups();
-    setOpenSubGroupModal(true);
+    setOpenAddSubGroupModal(true);
   };
-  const handleEditSubGroup = () => {};
-  const handleDeleteSubGroup = () => {};
+  const handleEditSubGroup = () => {
+    showSubGroups();
+    setOpenEditSubGroupModal(true);
+  };
+  const handleDeleteSubGroup = () => {
+    showSubGroups();
+    setOpenDeleteSubGroupModal(true);
+  };
   const getOptions = (status: string) => {
     const tabData = [
       {
@@ -325,25 +342,13 @@ export default function ManageEmployees() {
               /> */}
             </Box>
           </Stack>
-          <Stack flexDirection="row" sx={{ position: 'absolute', bottom: 0 }}>
+          <Stack
+            flexDirection="row"
+            gap="8px"
+            sx={{ position: 'absolute', bottom: 0 }}
+          >
             {group?.map((link: any, index: number) => (
               <>
-                {/* {link.isSubGroup && (
-                  <button
-                    style={{
-                      textTransform: 'none',
-                      color: '#fff',
-                      fontSize: '14px',
-                      padding: '5px',
-                      background:'transparent',
-                      outline:"none",
-                      border:'none'
-                    }}
-                    onClick={()=>setOpenSubGroupModal(true)}
-                  >
-                    +
-                  </button>
-                )} */}
                 <PageTopbar.TabButtonWithIcon
                   key={index}
                   color="secondary"
@@ -363,6 +368,8 @@ export default function ManageEmployees() {
                       subGroups={subGroups}
                       selectedAgency={selectedAgency}
                       handleAddSubGroupFunction={handleAddSubGroup}
+                      handleEditSubGroupFunction={handleEditSubGroup}
+                      handleDeleteSubGroupFunction={handleDeleteSubGroup}
                     />
                   }
                   startIcon={
@@ -598,17 +605,45 @@ export default function ManageEmployees() {
         type={formType}
         selectedEmployee={selectedEmployee}
       />
+      <AddGroupToAgencyModal
+        setSubGroups={setSubGroups}
+        selectedGroup={selectedGroup}
+        setSelectedGroup={setSelectedGroup}
+        groupName={groupName}
+        setGroupName={setGroupName}
+        subGroups={subGroups}
+        open={openGroupToAgencyModal}
+        setOpen={setOpenGroupToAgencyModal}
+        selectedAgency={selectedAgency}
+        selectedGroupId={selectedGroupId}
+        setSelectedGroupId={setSelectedGroupId}
+        showSubGroups={showSubGroups}
+      />
       <AddSubGroupModal
         selectedGroup={selectedGroup}
         setSelectedGroup={setSelectedGroup}
         groupName={groupName}
         setGroupName={setGroupName}
         subGroups={subGroups}
-        open={openSubGroupModal}
-        setOpen={setOpenSubGroupModal}
+        open={openAddSubGroupModal}
+        setOpen={setOpenAddSubGroupModal}
         selectedAgency={selectedAgency}
         selectedGroupId={selectedGroupId}
         setSelectedGroupId={setSelectedGroupId}
+        showSubGroups={showSubGroups}
+        setSubGroups={setSubGroups}
+      />
+      <EditSubGroupModal
+        open={openEditSubGroupModal}
+        setOpen={setOpenEditSubGroupModal}
+        selectedGroupId={selectedGroupId}
+        showSubGroups={showSubGroups}
+        selectedGroup={selectedGroup}
+      />
+      <DeleteSubGroupModal
+        open={openDeleteSubGroupModal}
+        setOpen={setOpenDeleteSubGroupModal}
+        selectedGroupId={selectedGroupId}
         showSubGroups={showSubGroups}
       />
     </Dashboard>

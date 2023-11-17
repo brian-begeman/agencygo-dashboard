@@ -11,7 +11,7 @@ import {
 import { Stack } from '@mui/system';
 import fetchReq from 'utils/fetch';
 import { useFormAgencyGroup } from '../hooks/useForm';
-import GroupTreeData from './GroupTreeData';
+import AgencyTreeData from './AgencyTreeData';
 
 interface $Props {
   open: boolean;
@@ -28,7 +28,7 @@ interface $Props {
   setSubGroups?: any;
 }
 
-export default function AddSubGroupModal({
+export default function AddGroupToAgencyModal({
   open,
   setOpen,
   selectedAgency,
@@ -42,7 +42,18 @@ export default function AddSubGroupModal({
   showSubGroups,
   setSubGroups,
 }: $Props) {
-  const { reset } = useFormAgencyGroup();
+  const { handleSubmit, register, reset } = useFormAgencyGroup();
+  const [selectedAgencyGroup, setSelectedAgencyGroup] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([
+    {
+      label: '',
+      value: '',
+    },
+  ]);
   const [agencies, setagencies] = useState<
     {
       label: string;
@@ -93,7 +104,7 @@ export default function AddSubGroupModal({
 
   useEffect(() => {
     getAgencie();
-  }, []);
+  }, [selectedAgency]);
 
   const getAgencie = () => {
     const endpoint = 'agency';
@@ -108,13 +119,21 @@ export default function AddSubGroupModal({
       .then((response) => response.json())
       .then((res) => {
         setagencies([]);
-        console.log(res);
+        setSelectedAgencyGroup([]);
         res.data.map((item: any) => {
           let tempdata = {
             value: item._id,
             label: item.agencyName,
           };
           setagencies((previousdata) => [...previousdata, tempdata]);
+          const data = res?.data?.filter(
+            (val: any) => val._id === selectedAgency.id
+          );
+          let temp = {
+            value: data[0]._id,
+            label: data[0].agencyName,
+          };
+          setSelectedAgencyGroup([temp]);
         });
       })
       .catch((err) => {
@@ -127,7 +146,9 @@ export default function AddSubGroupModal({
 
   useEffect(() => {
     const data = agencies.filter((val) => val.value == selectedAgency?.id);
-    setagencies(data);
+    if (data) {
+      setagencies(data);
+    }
   }, [selectedAgency]);
   return (
     <Overlay heading={'Add Group'} open={open} handleClose={handleModalClose}>
@@ -178,12 +199,13 @@ export default function AddSubGroupModal({
               label="Parent Group"
               inputIdentifierName="agencyId"
               options={
-                <GroupTreeData
+                <AgencyTreeData
+                  setSubGroups={setSubGroups}
+                  showSubGroups={showSubGroups}
                   groupData={subGroups}
+                  agencies={selectedAgencyGroup}
                   setSelectedGroup={setSelectedGroup}
                   setSelectedGroupId={setSelectedGroupId}
-                  showSubGroups={showSubGroups}
-                  setSubGroups={setSubGroups}
                 />
               }
               value={selectedGroup}

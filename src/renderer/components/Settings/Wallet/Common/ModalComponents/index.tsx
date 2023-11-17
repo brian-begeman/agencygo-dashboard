@@ -174,8 +174,9 @@ export function DropdownWithTreeLabel(props: DropdownWithTreeLabelProps) {
       <div onClick={() => setShowTreeSelectBox(true)}>
         <InputWithLabel
           label={label}
+          value={value}
           // inputIdentifierName="agencyId"
-          placeholder={value?value:"Enter group name"}
+          placeholder={"Enter parent group name"}
           // register={register as any}
         />
       </div>

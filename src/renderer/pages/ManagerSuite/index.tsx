@@ -73,7 +73,7 @@ export default function ManagerSuite() {
             <span style={{ textTransform: 'capitalize' }}>{page}</span>
           </PageTopbar.HeaderText>
         </PageTopbar>
-        <PageAside>
+        <section>
           <Grid container>
             <Grid xs={4} item>
               <div className={styles.search}>
@@ -158,7 +158,7 @@ export default function ManagerSuite() {
               </div>
             </Grid>
           </Grid>
-        </PageAside>
+        </section>
       </section>
     </Dashboard>
   );
