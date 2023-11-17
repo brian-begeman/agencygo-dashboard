@@ -86,6 +86,7 @@ const Payouts = () => {
   const [openView, setOpenView] = useState<any>(false);
   const [selectedStatus, setSelectedStatus] = useState('Filter');
   const [userData, setUserData] = useState<any>('');
+  const [selectedStatu, setSelectedStatu] = useState<any>('');
 
   const [allInvoice, setAllInvoice] = useState<any>([]);
 
@@ -117,12 +118,42 @@ const Payouts = () => {
       console.error(error);
     }
   };
+
+  const dataForReactApi = {
+    status: selectedStatu,
+  };
+
+  const updateInvoice = async (id: any) => {
+    console.log(selectedStatu);
+
+    console.log(id);
+    try {
+      const response = await fetch(`http://localhost:3000/invoicing/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataForReactApi),
+      });
+
+      if (response.ok) {
+        // Update the state after a successful update
+        getInvoice(data?._id);
+        console.log('Invoice updated successfully');
+      } else {
+        console.error('Failed to update the invoice');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getInvoice(data?._id);
-    // setAllInvoice(data)
+    // setAllInvoice(contextData)
   }, [data]);
   // useEffect(()=>{
-  //   getInvoice(data.data._id)
+  //   getInvoice(contextData.data._id)
   // },[contextData?.data?._id])
   const [openPromo, setOpenPromo] = useState<any | null>(false);
   const handleView = (data: any) => {
@@ -130,6 +161,12 @@ const Payouts = () => {
     setUserData(data);
     setOpenView(true);
   };
+
+  const handleStatusToggle = (istrue: any) => {
+    console.log(istrue);
+    setSelectedStatu((istrue: any) => (istrue ? true : false));
+  };
+
   return (
     <>
       <Stack
@@ -236,10 +273,32 @@ const Payouts = () => {
                     <TableCell
                       scope="row"
                       sx={{
-                        color: item?.status === true ? '#FEC84A' : '#37DE8F',
+                        color: item?.status ? '#FEC84A' : '#37DE8F',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                      onClick={() => {
+                        handleStatusToggle(item?.status);
+                        updateInvoice(item?._id);
                       }}
                     >
-                      {item?.status === true ? 'paid' : 'Unpaid'}
+                      <Select
+                        value={item?.status ? 'Paid' : 'Unpaid'}
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                          updateInvoice(item?._id);
+
+                          setSelectedStatu(
+                            e.target.value === 'Paid' ? true : false
+                          );
+                        }}
+                        style={{ color: item?.status ? '#FEC84A' : '#37DE8F' }}
+                      >
+                        <MenuItem value="Paid">Paid</MenuItem>
+                        <MenuItem value="Unpaid">Unpaid</MenuItem>
+                      </Select>
                     </TableCell>
                     {/* <TableCell
                   sx={{
