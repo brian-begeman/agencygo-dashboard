@@ -19,15 +19,23 @@ const style = {
   borderRadius: 2,
 };
 
-export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
+export default function AssignCreatorModal({
+  open,
+  setOpen,
+  name,
+  id,
+  refetch,
+}: any) {
   const [selectedValues, setSelectedValues] = useState([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
-  
-  const handleAssignCreator =(id:string)=>{
-    const payload = selectedValues
+
+  const handleAssignCreator = (id: string) => {
+    const payload = {
+      assignCreator: selectedValues,
+    };
     let endpoint = `employee/${id}`;
     let options = {
       method: 'PUT' as 'PUT',
@@ -35,21 +43,22 @@ export default function AssignCreatorModal({ open, setOpen, name, id }: any) {
         'content-type': 'application/json',
       },
       withAuth: true,
-      body:JSON.stringify(payload)
+      body: JSON.stringify(payload),
     };
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
+        handleClose();
+        refetch();
       })
       .catch((err) => {
         console.log('Error occured: ', err);
       });
-      handleClose()
-  }
+  };
 
   const theme = useTheme();
-   const isDarkTheme = theme.palette.mode === 'dark';
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div>

@@ -6,7 +6,8 @@
 .secondChild {
   display: grid;
   grid-template-rows: 80px 1fr;
-  overflow: hidden;
+  
+ 
 }
 .darkTheme {
   

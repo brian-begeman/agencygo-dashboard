@@ -11,6 +11,7 @@ const useFormEmployee = (
   type: 'add' | 'edit',
   selectedEmployee: ISelectedEmployee
 ) => {
+  const [selectedValues, setSelectedValues] = useState<any>([]);
   const [groupOptions, setGroupOptions] = useState<
     {
       label: string;
@@ -35,7 +36,11 @@ const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string().required('Group is required'),
-    assignCreator: Yup.string(),
+    assignCreator: Yup.array(),
+    payRate: Yup.number().required('Pay rate is required'),
+    payInterval: Yup.string().required('Pay Interval is required'),
+    commission: Yup.number().min(0).max(100),
+    shiftSchedular: Yup.string(),
   });
 
   const { register, handleSubmit, reset, setValue } = useForm({
@@ -61,13 +66,6 @@ const useFormEmployee = (
   const onSubmit = (data: any) => {
     if (type === 'add') {
       addEmployee(data);
-      mutataCreate(data, {
-        onSuccess: () => {
-          callback();
-          reset();
-          refetch();
-        },
-      });
     } else {
       editEmployee({ ...data, id: selectedEmployee?.id });
       mutateUpdate(
@@ -85,7 +83,7 @@ const useFormEmployee = (
 
   const addEmployee = (data: any) => {
     const endPoint = 'employee/' + data.agencyId;
-    const twilioEndPoint = 'chat/user'
+    const twilioEndPoint = 'chat/user';
     const options = {
       method: 'POST' as 'POST',
       headers: {
@@ -101,18 +99,20 @@ const useFormEmployee = (
       },
       withAuth: true,
       body: JSON.stringify({
-        email: data.email
+        email: data.email,
       }),
     };
     fetchReq(endPoint, options)
-      .then((responce) => responce.json())
-      .then((res) => {
-        fetchReq(twilioEndPoint,twilioOptions)
-        .then(response=> response.json())
-        .then((res)=>{
-          refetch();
-        })
-        .catch(err=> console.log(err))
+      .then((response) => {
+        response.json();
+        callback();
+        reset();
+        setSelectedValues([]);
+      })
+      .then((_res) => {
+        fetchReq(twilioEndPoint, twilioOptions)
+          .then((response) => response.json())
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };
@@ -130,6 +130,7 @@ const useFormEmployee = (
       .then((responce) => responce.json())
       .then((res) => {
         refetch();
+        setSelectedValues([]);
       })
       .catch((err) => console.log(err));
   };
@@ -139,6 +140,12 @@ const useFormEmployee = (
       setValue('name', selectedEmployee?.name);
       setValue('email', selectedEmployee?.email);
       setValue('role', selectedEmployee?.role);
+      setValue('agencyId', selectedEmployee?.agencyId);
+      setSelectedValues(
+        selectedEmployee?.assignedCreatorsForDropdown.map((val) => val.id)
+      );
+    } else {
+      setSelectedValues([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmployee, type]);
@@ -149,6 +156,9 @@ const useFormEmployee = (
     groupOptions,
     assignCreator,
     isLoading: loadingCreate || loadingUpdate,
+    selectedValues,
+    setSelectedValues,
+    setValue,
   };
 };
 

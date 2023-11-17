@@ -6,6 +6,10 @@
   padding-right: 24px;
   padding-left: 16px;
   align-items: center;
+  
+   position: fixed;
+   z-index: 12;
+   width: 95%;
 }
 
 .end {
