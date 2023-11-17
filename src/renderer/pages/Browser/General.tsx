@@ -66,6 +66,8 @@ const General = ({
   const [newData, setNewData] = useState({
     name: '',
     status: '',
+    platform: selectedPlatform,
+    tags: [],
   });
   const [errors, setErrors] = useState({
     name: '',
@@ -153,6 +155,11 @@ const General = ({
       alert('Form is invalid');
       return;
     }
+
+    window.electron.ipcRenderer.sendMessage(
+      'anty-browser:create-profile',
+      newData
+    );
 
     // Display form data in the console
     console.log('Form Data:', newData);

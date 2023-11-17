@@ -314,6 +314,14 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  React.useEffect(() => {
+    window.electron.ipcRenderer
+      .invoke('anty-browser:get-profiles')
+      .then((res) => {
+        console.log(res);
+      });
+  }, []);
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data

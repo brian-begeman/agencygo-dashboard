@@ -6,6 +6,9 @@ import * as pie from '../packages/electron-puppeteer';
 import locateChrome from 'locate-chrome';
 import log from 'electron-log';
 import UserAgent from 'user-agents';
+import Store from 'electron-store';
+
+const es = new Store();
 
 const getPageUrl = (page: any) => {
   const urls = [
@@ -68,7 +71,7 @@ const startIPCBridge = ({
   const fingerprintUrl = 'https://bot.sannysoft.com/';
   // https://antoinevastel.com/bots/
 
-  ipcMain.on('launch-anty-browser', async (e, arg) => {
+  ipcMain.on('anty-browser:launch', async (e, arg) => {
     try {
       const proxyConfig = {
         address: 'geo.iproyal.com',
@@ -126,6 +129,20 @@ const startIPCBridge = ({
     } catch (err) {
       log.error(err);
     }
+  });
+
+  ipcMain.on('anty-browser:create-profile', (e, arg) => {
+    const existingProfiles = es.get('antyBrowser.profiles');
+    if (!existingProfiles.length) {
+      es.set('antyBrowser.profiles', [arg]);
+      return;
+    }
+    es.set('antyBrowser.profiles', existingProfiles.concat(arg));
+  });
+
+  ipcMain.handle('anty-browser:get-profiles', (e) => {
+    const existingProfiles = es.get('antyBrowser.profiles');
+    return existingProfiles;
   });
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
