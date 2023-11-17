@@ -49,17 +49,17 @@ export default function GridSelectionItem() {
 
         <MenuItem sx={{ justifyContent: 'space-between' }}>
           <Typography>Large Grid</Typography>
-          <ViewModuleIcon sx={{ paddingLeft: '15px' }} />
+          <ViewModuleIcon  />
         </MenuItem>
 
         <MenuItem sx={{ justifyContent: 'space-between' }}>
           <Typography> List</Typography>
-          <ListIcon sx={{ paddingLeft: '15px' }} />
+          <ListIcon  />
         </MenuItem>
 
         <MenuItem sx={{ justifyContent: 'space-between' }}>
           <Typography>Large List</Typography>
-          <ViewListIcon sx={{ paddingLeft: '15px' }} />
+          <ViewListIcon  />
         </MenuItem>
       </Menu>
     </div>

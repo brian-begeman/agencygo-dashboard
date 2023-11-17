@@ -142,7 +142,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
         gap="3px"
       >
         Message Count
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Box display={'flex'} gap={'20px'} marginTop={'20px'}>
         <Box sx={{ width: '75%', height: 300 }}>

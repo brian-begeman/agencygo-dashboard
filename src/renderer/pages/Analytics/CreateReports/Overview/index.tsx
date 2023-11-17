@@ -6,7 +6,7 @@ import CreatorStatistics from './components/CreatorStatistics';
 
 export default function Overview() {
   return (
-    <Box display="flex" flexDirection="column" gap="10px">
+    <Box display="flex" flexDirection="column" gap="16px">
       <Earnings />
       <CreatorEarnings />
       <EaringDistribution />

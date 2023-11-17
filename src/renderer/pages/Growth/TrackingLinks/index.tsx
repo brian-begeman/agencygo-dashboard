@@ -18,7 +18,7 @@ const theme = useTheme();
       <SearchUsers />
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack gap="22px">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between" alignItems={'center'}>
             <SearchInput
               value={search}
               onUpdateSearch={onSearch}
@@ -46,7 +46,7 @@ const theme = useTheme();
             </Button>
           </Stack>
           <Stack gap="10px">
-            <Typography fontWeight={600} fontSize="16px">
+            <Typography fontWeight={600} fontSize="14px">
               Campaign Insights
             </Typography>
             <Stack

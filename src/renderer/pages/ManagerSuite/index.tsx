@@ -75,7 +75,7 @@ export default function ManagerSuite() {
         </PageTopbar>
         <PageAside>
           <Grid container>
-            <Grid xs={4} item>
+            <Grid xs={3} item>
               <div className={styles.search}>
                 <SearchInput
                   value={search}
@@ -133,7 +133,7 @@ export default function ManagerSuite() {
                 </div>
               )}
             </Grid>
-            <Grid xs={8} item>
+            <Grid xs={9} item>
               <div
                 style={{
                   width: '100%',

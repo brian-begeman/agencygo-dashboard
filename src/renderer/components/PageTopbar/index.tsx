@@ -11,10 +11,13 @@ function PageTopbar({ children }: $Props) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
-    <Box component={'header'} className={styles.header}
-    sx={{
-      backgroundColor:isDarkTheme ? '#292929' : '#EAF1FF'
-    }}>
+    <Box
+      component={'header'}
+      className={styles.header}
+      sx={{
+        backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+      }}
+    >
       {children}
     </Box>
   );
@@ -22,13 +25,7 @@ function PageTopbar({ children }: $Props) {
 
 function HeaderText({ children }: $Props) {
   return (
-    <Typography
-      variant="h1"
-
-      fontSize={'34px'}
-      fontWeight={600}
-      margin={0}
-    >
+    <Typography variant="h1" fontSize={'34px'} fontWeight={600} margin={0}>
       {children}
     </Typography>
   );
@@ -41,7 +38,7 @@ interface $ButtonProps {
   color?: 'primary' | 'secondary';
   isLink?: boolean;
   isActiveLink?: boolean;
-  tabButton?:boolean
+  tabButton?: boolean;
 }
 
 function ButtonElement({
@@ -53,17 +50,16 @@ function ButtonElement({
   isLink = false,
   isActiveLink = false,
 }: $ButtonProps) {
-  const getWidth = ()=>{
+  const getWidth = () => {
     let width = 'max-content';
-    if(tabButton){
+    if (tabButton) {
       width = '200px';
     }
-    return width
-  }
+    return width;
+  };
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-
 
   const getColor = () => {
     let color = isDarkTheme ? '#fff' : '#000';
@@ -81,21 +77,20 @@ function ButtonElement({
     }
     if (isActiveLink) {
       backgroundColor = isDarkTheme ? '#fff !important' : '#000 !important';
-
     }
-    if(isActiveLink && tabButton){
-      backgroundColor = `${theme.palette.primary.main}`
+    if (isActiveLink && tabButton) {
+      backgroundColor = `${theme.palette.primary.main}`;
     }
     return backgroundColor;
   };
 
   const getBorderRadius = () => {
-    let borderRadius = '3px';
+    let borderRadius = '6px';
     if (isLink) {
       borderRadius = '0 !important';
     }
     if (isActiveLink) {
-      borderRadius = '3px 3px 0px 0px !important';
+      borderRadius = '6px 6px 6px 6px !important';
     }
     return borderRadius;
   };
@@ -126,7 +121,8 @@ function ButtonElement({
         borderRadius: getBorderRadius(),
         boxShadow: 'none',
         display: 'flex',
-        alignItems: 'center',
+        justifyContent: 'start',
+        alignItems: 'start',
         gap: '5px',
         backgroundColor: getBackgroundColor(),
         position: 'relative',
@@ -140,12 +136,13 @@ function ButtonElement({
     >
       <Typography
         sx={{
-          fontSize: '10px',
+          fontSize: '14px',
           fontWeight: 500,
           color: getColor(),
-          marginTop: '2px',
-          borderRadius: '6px',
-          textTransform: 'unset',
+
+          borderRadius: '10px',
+          textTransform: 'none',
+          textAlign: 'start',
         }}
       >
         {text}
@@ -157,7 +154,7 @@ function ButtonTabElement({
   onClick,
   tabButton = false,
   text,
-  
+
   endIcon,
   isLink = false,
   isActiveLink = false,
@@ -260,7 +257,6 @@ function ButtonTabElement({
     </Button>
   );
 }
-
 
 PageTopbar.HeaderText = HeaderText;
 PageTopbar.Button = ButtonElement;

@@ -37,8 +37,8 @@ const theme = useTheme();
 const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
-      sx={{ padding: '10px ' }}
-      gap="10px"
+      sx={{ padding: '16px ' }}
+      gap="8px"
       display="flex"
       flexDirection="column"
     >
@@ -65,16 +65,31 @@ const isDarkTheme = theme.palette.mode === 'dark';
             gap="5px"
             border="2px solid "
             borderColor="primary.contrastText"
-            padding="6px 8px"
+            padding="2px 8px"
             borderRadius="4px"
             onClick={() => setOpen(!open)}
           >
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
               {' '}
               {startDate}{' '}
             </Typography>
-            <Typography color={isDarkTheme ? '#fff' : '#000'}> to </Typography>
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
+              {' '}
+              to{' '}
+            </Typography>
+            <Typography
+              fontSize={'11px'}
+              fontWeight={500}
+              color={isDarkTheme ? '#fff' : '#000'}
+            >
               {endDate}
             </Typography>
             <DatePickerSvg />
@@ -91,10 +106,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
-                {
-                  padding: '4px 8px',
-                },
+              ' & .MuiOutlinedInput-input': {
+                padding: '4px 8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
@@ -109,10 +123,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
               },
             }}
           >
-            <MenuItem
-              value={'Gross Earnings'}
-              sx={{ fontWeight: 500 }}
-            >
+            <MenuItem value={'Gross Earnings'} sx={{ fontWeight: 500 }}>
               Gross Earnings
             </MenuItem>
           </Select>
@@ -128,10 +139,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
-                {
-                  padding: '4px 8px',
-                },
+              ' & .MuiOutlinedInput-input': {
+                padding: '4px 8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
@@ -146,10 +156,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
               },
             }}
           >
-            <MenuItem
-              value={'All Creators'}
-              sx={{ fontWeight: 500}}
-            >
+            <MenuItem value={'All Creators'} sx={{fontWeight: 500 }}>
               All Creators
             </MenuItem>
           </Select>
