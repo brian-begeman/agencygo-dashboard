@@ -113,9 +113,9 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
     setValue(newValue);
   };
 
-  const dataRef = (newData) => {
-    // setNewData(newData);
-  };
+  // const dataRef = (newData) => {
+  //    setNewData(newData);
+  // };
 
   // console.log('--newData--', newData);
 

@@ -34,7 +34,6 @@ interface $props {
   refetch: () => void;
   onFormSubmit: (data: any) => void;
   handleCreate: (data: any) => void;
-  dataRef: (data: any) => void;
   handleFormSubmitRef: any;
 }
 
@@ -45,76 +44,71 @@ const General = ({
   refetch,
   onFormSubmit,
   handleCreate,
-  dataRef,
   handleFormSubmitRef,
 }: $props) => {
-  const [alignment, setAlignment] = React.useState('web');
+  const [selectedPlatform, setSelectedPlatform] = React.useState('windows');
   const [alignment2, setAlignment2] = React.useState('web');
-  const [alignment3, setAlignment3] = React.useState('web');
+  const [selectedproxy, setselectedproxy] = React.useState('web');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [alignment4, setAlignment4] = React.useState('web');
-  const [alignment5, setAlignment5] = React.useState('web');
-  const [alignment6, setAlignment6] = React.useState('web');
-  const [alignment7, setAlignment7] = React.useState('web');
-  const [alignment8, setAlignment8] = React.useState('web');
-  const [alignment9, setAlignment9] = React.useState('web');
-  const [alignment10, setAlignment10] = React.useState('web');
-  const [alignment11, setAlignment11] = React.useState('web');
-  const [alignment12, setAlignment12] = React.useState('web');
-  const [alignment13, setAlignment13] = React.useState('web');
-  const [alignment14, setAlignment14] = React.useState('web');
-  const [alignment15, setAlignment15] = React.useState('web');
+  const [selectedProxyProtocol, setSelectedProxyProtocol] =
+    React.useState('http');
+  // const [alignment5, setAlignment5] = React.useState('web');
+  // const [alignment6, setAlignment6] = React.useState('web');
+  // const [alignment7, setAlignment7] = React.useState('web');
+  // const [alignment8, setAlignment8] = React.useState('web');
+  // const [alignment9, setAlignment9] = React.useState('web');
+  // const [alignment10, setAlignment10] = React.useState('web');
+  // const [alignment11, setAlignment11] = React.useState('web');
+  // const [alignment12, setAlignment12] = React.useState('web');
+  // const [alignment13, setAlignment13] = React.useState('web');
+  // const [alignment14, setAlignment14] = React.useState('web');
+  // const [alignment15, setAlignment15] = React.useState('web');
   const [newData, setNewData] = useState({
     name: '',
     status: '',
-    tags: '',
-    proxy: '',
-    changeIPURL: '',
-    proxyName: '',
   });
   const [errors, setErrors] = useState({
     name: '',
     status: '',
   });
 
-  useEffect(() => {
-    if (newData.name) {
-      dataRef(newData);
-    }
-  }, [newData]);
-
   const handleNameChange = (name: string, value: string) => {
     setNewData((prevData) => ({
       ...prevData,
-      [name]: value,
+      name: value,
     }));
   };
 
   const handleProxyChange = (proxy: string, value: string) => {
     setNewData((prevData) => ({
       ...prevData,
-      [proxy]: value,
+      proxy: value,
     }));
   };
 
   const handlechangeIPURLChange = (changeIPURL: any, value: any) => {
     setNewData((prevData) => ({
       ...prevData,
-      [changeIPURL]: value,
+      changeIPURL: value,
     }));
   };
 
-  const handleTagsChange = (tags: any, value: any) => {
+  const handleTagsChange = (value: []) => {
     setNewData((prevData) => ({
       ...prevData,
-      [tags]: value,
+      tags: value,
     }));
   };
-
   const handleproxyNameChange = (proxyName: any, value: any) => {
     setNewData((prevData) => ({
       ...prevData,
-      [proxyName]: value,
+      proxyName: value,
+    }));
+  };
+  const handleUserAgentChange = (userAgent: any, value: any) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      userAgent: value,
     }));
   };
 
@@ -150,133 +144,143 @@ const General = ({
   };
 
   const handleFormSubmit = (event) => {
-   // event.preventDefault(); // Prevents default form submission behavior
+    // event.preventDefault(); // Prevents default form submission behavior
 
     // Validate fields before submission
     const isValid = validateFields();
 
+    if (!isValid) {
+      alert('Form is invalid');
+      return;
+    }
+
     // Display form data in the console
     console.log('Form Data:', newData);
 
-    // onFormSubmit(newData);
-    // Clear form data after submission (if needed)
-    setNewData({
-      name: '',
-      status: '',
-      tags: '',
-      proxy: '',
-      changeIPURL: '',
-      proxyName: '',
-    });
+    // // onFormSubmit(newData);
+    // // Clear form data after submission (if needed)
+    // setNewData({
+    //   name: '',
+    //   status: '',
+    //   tags: '',
+    //   proxy: '',
+    //   changeIPURL: '',
+    //   proxyName: '',
+    // });
     // handleCreate(newData);
   };
 
   handleFormSubmitRef.current = { handleFormSubmit: handleFormSubmit };
 
-  const handleChange = (
+  const handleOSChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    platform: string
   ) => {
-    setAlignment(newAlignment);
+    setNewData((prevData) => ({
+      ...prevData,
+      platform: platform,
+    }));
+    setSelectedPlatform(platform);
   };
 
-  const handleChange1 = (
+  const handleProxySelect = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    proxy: string
   ) => {
-    setAlignment2(newAlignment);
+    setNewData((prevData) => ({
+      ...prevData,
+      proxy: proxy,
+    }));
+    setselectedproxy(proxy);
   };
 
-  const handleChange2 = (
+  const handleProxyProtocolChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    selectedProxyProtocol: string
   ) => {
-    setAlignment3(newAlignment);
+    setNewData((prevData) => ({
+      ...prevData,
+      proxyProtocol: selectedProxyProtocol,
+    }));
+    setSelectedProxyProtocol(selectedProxyProtocol);
   };
 
-  const handleChange3 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment4(newAlignment);
-  };
+  // const handleChange4 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment5(newAlignment);
+  // };
 
-  const handleChange4 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment5(newAlignment);
-  };
+  // const handleChange5 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment6(newAlignment);
+  // };
 
-  const handleChange5 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment6(newAlignment);
-  };
+  // const handleChange6 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment7(newAlignment);
+  // };
 
-  const handleChange6 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment7(newAlignment);
-  };
+  // const handleChange7 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment8(newAlignment);
+  // };
 
-  const handleChange7 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment8(newAlignment);
-  };
+  // const handleChange8 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment9(newAlignment);
+  // };
 
-  const handleChange8 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment9(newAlignment);
-  };
+  // const handleChange9 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment10(newAlignment);
+  // };
 
-  const handleChange9 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment10(newAlignment);
-  };
+  // const handleChange10 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment11(newAlignment);
+  // };
 
-  const handleChange10 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment11(newAlignment);
-  };
+  // const handleChange11 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment12(newAlignment);
+  // };
 
-  const handleChange11 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment12(newAlignment);
-  };
+  // const handleChange12 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment13(newAlignment);
+  // };
 
-  const handleChange12 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment13(newAlignment);
-  };
+  // const handleChange13 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment14(newAlignment);
+  // };
 
-  const handleChange13 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment14(newAlignment);
-  };
-
-  const handleChange14 = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment15(newAlignment);
-  };
+  // const handleChange14 = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment15(newAlignment);
+  // };
 
   const onDrop = (acceptedFiles: File[]) => {
     setSelectedFiles(acceptedFiles);
@@ -338,6 +342,9 @@ const General = ({
           }}
         >
           <Autocomplete
+            onChange={(event, newValue) => {
+              handleTagsChange(newValue, event);
+            }}
             sx={{ width: '100%' }}
             clearIcon={false}
             options={[]}
@@ -353,7 +360,6 @@ const General = ({
                 {...params}
                 InputLabelProps={{
                   shrink: false,
-                  onChange: { handleTagsChange },
                 }}
               />
             )}
@@ -370,14 +376,14 @@ const General = ({
         >
           <ToggleButtonGroup
             color="primary"
-            value={alignment}
+            value={selectedPlatform}
             exclusive
-            onChange={handleChange}
+            onChange={handleOSChange}
             aria-label="Platform"
           >
-            <ToggleButton value="web">WINDOWS</ToggleButton>
-            <ToggleButton value="android">MACOS</ToggleButton>
-            <ToggleButton value="ios">LINUX</ToggleButton>
+            <ToggleButton value="wndows">WINDOWS</ToggleButton>
+            <ToggleButton value="macos">MACOS</ToggleButton>
+            <ToggleButton value="linux">LINUX</ToggleButton>
           </ToggleButtonGroup>
           {/* <ToggleButtonGroup
           color="primary"
@@ -392,26 +398,26 @@ const General = ({
         </ToggleButtonGroup> */}
           <ToggleButtonGroup
             color="primary"
-            value={alignment3}
+            value={selectedproxy}
             exclusive
-            onChange={handleChange2}
+            onChange={handleProxySelect}
             aria-label="Platform"
           >
-            <ToggleButton value="web">NO PROXY</ToggleButton>
-            <ToggleButton value="android">NEW PROXY</ToggleButton>
-            <ToggleButton value="ios">SAVED PROXIES</ToggleButton>
+            <ToggleButton value="no_proxy">NO PROXY</ToggleButton>
+            <ToggleButton value="new_proxy">NEW PROXY</ToggleButton>
+            <ToggleButton value="saved_proxies">SAVED PROXIES</ToggleButton>
           </ToggleButtonGroup>
           <ToggleButtonGroup
             color="primary"
-            value={alignment4}
+            value={selectedProxyProtocol}
             exclusive
-            onChange={handleChange3}
+            onChange={handleProxyProtocolChange}
             aria-label="Platform"
             sx={{ height: '31px', borderRadius: '8px' }}
           >
-            <ToggleButton value="web">HTTP</ToggleButton>
-            <ToggleButton value="android">SOCKS4</ToggleButton>
-            <ToggleButton value="ios">SOCKS5</ToggleButton>
+            <ToggleButton value="http">HTTP</ToggleButton>
+            <ToggleButton value="socks4">SOCKS4</ToggleButton>
+            <ToggleButton value="socks5">SOCKS5</ToggleButton>
             <ToggleButton value="ssh">SSH</ToggleButton>
           </ToggleButtonGroup>
         </Box>
@@ -517,6 +523,7 @@ const General = ({
             label="User Agent"
             inputIdentifierName="User Agent"
             placeholder="User Agent"
+            handleOnChange={handleUserAgentChange}
           />
         </Box>
         {/* <Box
