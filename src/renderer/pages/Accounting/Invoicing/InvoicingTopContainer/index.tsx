@@ -5,35 +5,66 @@ import {
   Select,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import theme from 'renderer/styles/muiTheme';
 import CreateInvoiceModal from '../CreateInvoiceModal';
 import CustomInvoiceModal from '../CustomInvoiceModal';
 import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
+import { MyInvoiceContext } from '../context/context';
 
-const cardData = [
-  { id: 1, title: 'Current Model Balance', value: '$200,456.03' },
-  { id: 2, title: 'Agency/Model Split (%)', value: '30/70' },
-];
 const InvoicingTopContainer = () => {
   const [isCreateInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
+  const [customer, setCustomer] = useState('');
   const [isCustomInvoiceModalOpen, setCustomInvoiceModalOpen] = useState(false);
   const [selectData, setSelectedData] = useState('Current invoice settings');
   const handleOpen = () => setCreateInvoiceModalOpen(true);
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const [alluser, setAlluser] = useState<any>([]);
 
+  const { data } = useContext(MyInvoiceContext);
+  console.debug(data?.data?.currentModalBalance, 'data');
 
+  const cardData = [
+    {
+      id: 1,
+      title: 'Current Model Balance',
+      value: data?.data?.currentModalBalance || ' 20000',
+    },
+    {
+      id: 2,
+      title: 'Agency/Model Split (%)',
+      value: data?.data?.agencyPer || '30/70 ',
+    },
+  ];
+  const getuser = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const response = await fetch('http://localhost:3000/users', options);
+      if (response.ok) {
+        const data = await response.json();
+        setAlluser(data?.data);
+        console.log(data, 'get user Data');
+      } else {
+        console.error('Failed to create the user');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getuser();
+  }, []);
 
   return (
     <Box margin={'10px 0px'}>
-      <Box display={'flex'} justifyContent={'space-between'} >
-        <Typography fontSize="22px" paddingLeft={'10px'}>Invoicing</Typography>
-
-        
-        <Box gap={'10px'} display={'flex'} >
+      <Box display={'flex'} justifyContent={'space-between'}>
+        <Typography fontSize="22px">Invoicing</Typography>
+        <Box gap={'10px'} display={'flex'}>
           <Button
             variant="contained"
             sx={{ color: '#fff', textTransform: 'capitalize' }}
@@ -46,14 +77,16 @@ const isDarkTheme = theme.palette.mode === 'dark';
             value={selectData}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-             
+              color: theme.palette.secondary.contrastText,
               width: 'fit-content',
-              
+              '.MuiOutlinedInput-notchedOutline': {
+                borderColor: theme.palette.secondary.light,
+              },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
                 {
-                  padding: '8px 8px',
+                  padding: '4px 8px',
                 },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
@@ -61,7 +94,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-             
+              '.MuiSvgIcon-root': {
+                fill: 'white !important',
+              },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -74,14 +109,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
             >
               Current Invoice Setting
             </MenuItem>
-            {[
-              'Don Toliver',
-              'Joan Adams',
-              'Brad Goldborn',
-              'Michelle Smith',
-            ].map((d) => (
+            {alluser.map((item: any, index: any) => (
               <MenuItem
-                value={d}
+                value={`${item?.firstName} ${item?.lastName}`}
                 sx={{
                   fontWeight: 500,
                   fontSize: '11px',
@@ -89,10 +119,12 @@ const isDarkTheme = theme.palette.mode === 'dark';
                   gap: '5px',
                   alignItems: 'center',
                 }}
-                onClick={() => setCustomInvoiceModalOpen(true)}
+                onClick={() => (
+                  setCustomInvoiceModalOpen(true), setCustomer(item)
+                )}
               >
                 <AvatarSvg />
-                <Typography>{d}</Typography>
+                <Typography>{`${item?.firstName} ${item?.lastName}`}</Typography>
               </MenuItem>
             ))}
           </Select>
@@ -109,23 +141,29 @@ const isDarkTheme = theme.palette.mode === 'dark';
               gap="15px"
               alignItems="center"
               height="90px"
-              bgcolor={isDarkTheme ? '#000' : '#fff'}
               sx={{
                 padding: '10px 20px',
                 border: `1px solid ${theme.palette.primary.contrastText}`,
               }}
             >
               <Stack minWidth="130px">
-                <Typography fontWeight="600" fontSize="12px">
+                <Typography
+                  color={theme.palette.secondary.contrastText}
+                  fontWeight="600"
+                  fontSize="12px"
+                >
                   {data.title}
                 </Typography>
-                <Typography fontSize="30px" fontWeight={700}>
+                <Typography color="#fff" fontSize="30px" fontWeight={700}>
+                  ${data.value}
+                </Typography>
+                {/* <Typography color="#fff" fontSize="30px" fontWeight={700}>
                   {data.value.split('.')[0]}
                   {data.value.split('.')[1] && <span>.</span>}
                   <span style={{ fontSize: '20px' }}>
                     {data.value.split('.')[1]}
                   </span>
-                </Typography>
+                </Typography> */}
               </Stack>
             </Stack>
           );
@@ -135,12 +173,14 @@ const isDarkTheme = theme.palette.mode === 'dark';
         <CreateInvoiceModal
           open={isCreateInvoiceModalOpen}
           setOpen={setCreateInvoiceModalOpen}
+          userData={customer}
         />
       )}
       {isCustomInvoiceModalOpen && (
         <CustomInvoiceModal
           open={isCustomInvoiceModalOpen}
           setOpen={setCustomInvoiceModalOpen}
+          userData={customer}
         />
       )}
     </Box>
