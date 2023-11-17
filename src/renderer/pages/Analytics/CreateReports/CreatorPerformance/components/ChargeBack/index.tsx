@@ -65,7 +65,12 @@ export default function ChargeBacks() {
           color={isDarkTheme ? '#fff' : '#000'}
         >
           Chargebacks
-          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+          <ErrorOutline
+            sx={{
+              color: theme.palette.secondary.contrastText,
+              fontSize: '24px',
+            }}
+          />
         </Typography>
 
         <Box display="flex" flexDirection="column" gap="20px" maxHeight="300px">

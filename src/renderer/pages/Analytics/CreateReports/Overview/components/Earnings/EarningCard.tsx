@@ -11,7 +11,7 @@ interface $Props {
 export default function EarningsRecordCard({ title, amount, icon }: $Props) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-  
+
   return (
     <Stack
       flexDirection="row"
@@ -20,11 +20,11 @@ export default function EarningsRecordCard({ title, amount, icon }: $Props) {
       alignItems="center"
       height="140px"
       sx={{
-        padding: '16px',
+        padding: '13px',
         border: `1px solid ${theme.palette.primary.contrastText}`,
       }}
     >
-      <Stack spacing="10px" minWidth="130px">
+      <Stack spacing="10px" minWidth="140px">
         <Typography
           color={isDarkTheme ? '#fff' : '#000'}
           fontWeight="600"
@@ -52,7 +52,24 @@ export default function EarningsRecordCard({ title, amount, icon }: $Props) {
           component="div"
         />
       )}
-      {icon}
+      <div
+        style={{
+          backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+          borderRadius: '200px',
+          width: '50px',
+          height: '50px',
+        }}
+      >
+        <div
+          style={{marginTop:'12px',marginLeft:'12px',
+            filter: isDarkTheme
+              ? ' brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(248deg) brightness(106%) contrast(106%)'
+              : 'brightness(0) saturate(100%) invert(41%) sepia(98%) saturate(1260%) hue-rotate(177deg) brightness(101%) contrast(102%)',
+          }}
+        >
+          {icon}
+        </div>
+      </div>
     </Stack>
   );
 }

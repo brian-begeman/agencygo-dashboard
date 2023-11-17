@@ -63,11 +63,14 @@ const InvoicingTopContainer = () => {
   return (
     <Box margin={'10px 0px'}>
       <Box display={'flex'} justifyContent={'space-between'}>
-        <Typography fontSize="22px">Invoicing</Typography>
-        <Box gap={'10px'} display={'flex'}>
+        <Typography fontSize="22px" >
+          Invoicing
+        </Typography>
+
+        <Box gap={'10px'} display={'flex'} alignItems={'center'}>
           <Button
             variant="contained"
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
+            sx={{ color: '#fff', textTransform: 'capitalize', height: '40px' }}
             onClick={handleOpen}
           >
             Create Invoice{' '}
@@ -79,15 +82,14 @@ const InvoicingTopContainer = () => {
             sx={{
               color: theme.palette.secondary.contrastText,
               width: 'fit-content',
-              '.MuiOutlinedInput-notchedOutline': {
+'.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
-                {
-                  padding: '4px 8px',
-                },
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input': {
+                padding: '4px 8px',
+              },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
@@ -96,6 +98,11 @@ const InvoicingTopContainer = () => {
               },
               '.MuiSvgIcon-root': {
                 fill: 'white !important',
+              },
+              '& .MuiSelect-select': {
+                display: 'flex',
+                gap: '5px',
+                alignItems: 'center',
               },
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
@@ -130,7 +137,7 @@ const InvoicingTopContainer = () => {
           </Select>
         </Box>
       </Box>
-      <Box display={'flex'} gap={'10px'} margin={'10px 0px'}>
+      <Box display={'flex'} gap={'10px'} margin={'16px 0px'}>
         {cardData.map((data) => {
           return (
             <Stack

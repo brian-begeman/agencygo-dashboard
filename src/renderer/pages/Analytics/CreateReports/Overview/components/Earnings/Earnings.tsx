@@ -8,45 +8,49 @@ import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import styles from '../../styles.module.css';
 import EarningsRecordCard from './EarningCard';
+import NewMessageSvg from 'renderer/assets/svg/NewMessageSvg';
+import SubscriptionSvg from 'renderer/assets/svg/subscription';
+import WalletSvg from 'renderer/assets/svg/WalletSvg';
+import PersonSvg from 'renderer/assets/svg/Person';
+import StreamSvg from 'renderer/assets/svg/Stream';
+import ChatSvg from 'renderer/assets/svg/ChatSvg';
 
 const earningsInitJson = [
   {
     title: 'Subscriptions ($)',
     amount: '44.44',
-    icon: <ArchiveAddSvg />,
+    icon: <SubscriptionSvg />,
   },
   {
     title: 'Post ($)',
     amount: '0.00',
-    icon: <ArchiveAddSvg />,
+    icon: <NewMessageSvg />,
   },
   {
     title: 'Messages ($)',
     amount: '432.00',
-    icon: <ArchiveAddSvg />,
+    icon: <ChatSvg />,
   },
   {
     title: 'Tips ($)',
     amount: '6.00',
-    icon: <WalletAddSvg />,
+    icon: <WalletSvg />,
   },
   {
     title: 'Referrals ($)',
     amount: '0.00',
-    icon: <UserAdd />,
+    icon: <PersonSvg />,
   },
   {
     title: 'Streams ($)',
     amount: '0.00',
-    icon: <SubtitleSvg />,
+    icon: <StreamSvg />,
   },
 ];
 
 export default function Earnings() {
-
   const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box
@@ -64,27 +68,28 @@ const isDarkTheme = theme.palette.mode === 'dark';
             padding: '30px',
             height: 'fit-content',
             border: `1px solid ${theme.palette.primary.contrastText}`,
-            minWidth: '200px',
+            minWidth: '270px',
           }}
         >
           <OnlyFansCircleBlue />
           <Divider
             sx={{ backgroundColor: theme.palette.primary.contrastText }}
           />
-          <Stack flexDirection="row" alignItems="center" gap="20px">
-            <Typography color={isDarkTheme ? '#fff' : '#000'}>
+          <Stack flexDirection="row" alignItems="center" gap="35px">
+            <Typography color={isDarkTheme ? '#fff' : '#000'} fontSize={14}>
               Total Earnings
             </Typography>
-            <KeyboardArrowUp
-              sx={{
-                color: theme.palette.primary.light,
-                marginLeft: '20px',
-                fontSize: '14px',
-              }}
-            />
-            <Typography color={theme.palette.primary.light} fontSize="14px">
-              12.7%
-            </Typography>
+            <Box display={'flex'}>
+              <KeyboardArrowUp
+                sx={{
+                  color: theme.palette.primary.light,
+                  fontSize: '14px',
+                }}
+              />
+              <Typography color={theme.palette.primary.light} fontSize="14px">
+                12.7%
+              </Typography>
+            </Box>
           </Stack>
           <Typography
             variant="h3"

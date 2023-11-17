@@ -57,7 +57,7 @@ export function ChartLine() {
   return (
     <Box
       sx={{
-        backgroundColor:isDarkTheme ? '#0F0F0F':'#fff',
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
         maxHeight: '200px',
         borderRadius: '16px',
       }}

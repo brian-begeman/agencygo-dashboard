@@ -21,6 +21,7 @@ export default function ButtonGroup({
       borderColor="primary.contrastText"
       width="fit-content"
       borderRadius="6px"
+      sx={{   cursor:'pointer'}}
     >
       {tabButton.map((val: any) => {
         return (
@@ -32,6 +33,7 @@ export default function ButtonGroup({
                     background: isDarkTheme ? '#292929' : '#EAF1FF',
                     color:isDarkTheme ? '#fff' : '#000',
                     borderRadius: '4px',
+                   
                   }
                 : { padding: '8px 12px',color:isDarkTheme ? '#fff' : '#000', borderRadius: '4px' }
             }

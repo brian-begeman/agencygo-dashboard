@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import theme from 'renderer/styles/muiTheme';
@@ -10,7 +10,7 @@ export default function UpdateButtons() {
   return (
     <Stack
       direction="row"
-      gap="20px"
+      gap="10px"
       alignItems="center"
       justifyContent="start"
     >

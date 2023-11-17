@@ -2,10 +2,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Switch, styled } from '@mui/material';
+import { Divider, Switch, styled, useTheme } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik'
+;
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -13,11 +14,11 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   borderRadius: '10px',
-  bgcolor: '#121212',
-  color: '#fff',
+
   boxShadow: 24,
   p: 2,
 };
+
 const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
 export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
   const handleClose = () => setOpen(false);
@@ -65,6 +66,9 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
   const handleOnChange = (name: any) => {
     console.log(name);
   };
+
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Modal
@@ -149,9 +153,13 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
               value={values.amount}
               placeholder="$1,203"
               style={{
-                color: 'white',
-                border: '1px solid #292929',
-                backgroundColor: '#0C0C0C',
+                color: isDarkTheme ? '#fff' : '#000',
+                border: '1px solid ',
+                borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+                height: '40px',
+                borderRadius: '8px',
+                width: '100%',
               }}
               onChange={handleChange}
             />
@@ -173,7 +181,11 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             alignItems={'center'}
             margin={'8px 0px'}
           >
-            <Typography>Recurring invoice</Typography>
+            <Typography
+              sx={{ fontSize: '16px', marginTop: '10px', fontWeight: '500' }}
+            >
+              Recurring invoice
+            </Typography>
             <AntSwitch
               defaultChecked
               inputProps={{ 'aria-label': 'ant design' }}
@@ -185,7 +197,9 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             alignItems={'center'}
             margin={'8px 0px'}
           >
-            <Typography>Recurring Timeline</Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: '500' }}>
+              Recurring Timeline
+            </Typography>
             <AntSwitch
               defaultChecked
               inputProps={{ 'aria-label': 'ant design' }}
@@ -195,12 +209,12 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             sx={{
               display: 'flex',
               justifyContent: 'end',
-              margin: '12px 0px',
+              margin: '10px 0px',
             }}
           >
             <Box>
-              <Typography>Pick frequency</Typography>
-              <Box sx={{ borderRadius: '10px' }}>
+              <Typography> Pick frequency</Typography>
+              <Box sx={{ borderRadius: '10px', marginTop: '5px' }}>
                 <FrequencySelector frequencyFilter={frequencyFilter} />
               </Box>
             </Box>
@@ -211,7 +225,9 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             alignItems={'center'}
             margin={'8px 0px'}
           >
-            <Typography>Automatic Email notification</Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: '500' }}>
+              Automatic Email notification
+            </Typography>
             <AntSwitch
               defaultChecked
               inputProps={{ 'aria-label': 'ant design' }}
@@ -223,7 +239,9 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             alignItems={'center'}
             margin={'8px 0px'}
           >
-            <Typography>Automatic Text notification</Typography>
+            <Typography sx={{ fontSize: '16px', fontWeight: '500' }}>
+              Automatic Text notification
+            </Typography>
             <AntSwitch
               defaultChecked
               inputProps={{ 'aria-label': 'ant design' }}
@@ -237,18 +255,20 @@ export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
             }}
           >
             <Box>
-              {/* <InputWithLabel
-            label="Enter Number"
-            inputIdentifierName="number"
-            value={data.number}
-            placeholder="+1 (209) - 424- 23"
-            inputStyle={{
-              border: '1px solid #292929',
-              backgroundColor: '#0C0C0C',
-              width: '100%',
-            }}
-            handleOnChange={handleOnChange}
-          /> */}
+              <InputWithLabel
+                label="Enter Number"
+                inputIdentifierName="number"
+                //value={data.number}
+                placeholder="+1 (209) - 424- 23"
+                inputStyle={{
+                  color: isDarkTheme ? '#fff' : '#000',
+                  border: '1px solid ',
+                  borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+                  backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+                  width: '100%',
+                }}
+                handleOnChange={handleOnChange}
+              />
             </Box>
           </Box>
           <Box
@@ -323,7 +343,12 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const FrequencySelector = ({ frequencyFilter }: any) => {
+
   const [selected, setSelected] = useState(1);
+
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
       sx={{
@@ -341,6 +366,12 @@ const FrequencySelector = ({ frequencyFilter }: any) => {
             cursor: 'pointer',
             padding: '8px 10px',
             border: '1px solid #04A1FF',
+            color:
+              index + 1 === selected
+                ? '#fff'
+                : isDarkTheme
+                ? '#fff'
+                : '#000',
           }}
           key={index}
           onClick={() => setSelected(index + 1)}
