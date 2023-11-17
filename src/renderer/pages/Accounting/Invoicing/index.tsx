@@ -2,14 +2,15 @@ import { Box, Stack, useTheme } from '@mui/material';
 import SearchUsers from 'renderer/components/SearchUsers';
 import InvoicingTopContainer from './InvoicingTopContainer';
 import Payouts from './Payouts';
+import Wrapper from './context/Wrapper';
 
 export default function Invoicing() {
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
-    <Box display="flex" bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}>
+    <Wrapper>
+      <Box display="flex" bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}>
       <Stack width={'25%'} bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
         <SearchUsers />
       </Stack>
@@ -17,6 +18,6 @@ const isDarkTheme = theme.palette.mode === 'dark';
         <InvoicingTopContainer />
         <Payouts />
       </Stack>
-    </Box>
+    </Box></Wrapper>
   );
 }

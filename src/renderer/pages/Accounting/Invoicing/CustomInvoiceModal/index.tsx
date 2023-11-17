@@ -6,7 +6,7 @@ import { Divider, Switch, styled, useTheme } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
 import {useFormik} from 'formik'
-
+;
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -14,22 +14,23 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   borderRadius: '10px',
- 
+
   boxShadow: 24,
   p: 2,
 };
 
-const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly']; 
-export default function CustomInvoiceModal({ open, setOpen }: any) {
+const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
+export default function CustomInvoiceModal({ open, setOpen, userData }: any) {
   const handleClose = () => setOpen(false);
-  
+
   const initialValues = {
-    name: 'test',
+    name: `${userData?.firstName} ${userData?.lastName}`,
     amount: 30,
     description: 'string',
-    employeeId: '653f987965bf70aa9b5df6f2',
-    status: "true",
-    userId: '653f987965bf70aa9b5df6f2', 
+    employeeId: userData?._id,
+    status: 'true',
+    userId: userData?._id,
+    date: new Date(),
   };
 
   const { values, handleChange, handleSubmit } = useFormik({
@@ -41,7 +42,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
     },
   });
 
-  const handleCreateInvoice = async (value:any) => {
+  const handleCreateInvoice = async (value: any) => {
     const options = {
       method: 'POST',
       headers: {
@@ -62,7 +63,7 @@ export default function CustomInvoiceModal({ open, setOpen }: any) {
     }
   };
 
-  const handleOnChange = (name:any) => {
+  const handleOnChange = (name: any) => {
     console.log(name);
   };
 
@@ -78,7 +79,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
       aria-describedby="modal-modal-description"
     >
       <form onSubmit={handleSubmit}>
-        <Box sx={style} bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
+        <Box sx={style}>
           <Box
             sx={{
               display: 'flex',
@@ -87,36 +88,29 @@ const isDarkTheme = theme.palette.mode === 'dark';
               margin: '10px 0px',
             }}
           >
-            <Typography fontSize={'18px'}> Create Invoice </Typography>
+            <Typography> Create Invoice </Typography>
             <Typography onClick={handleClose} sx={{ cursor: 'pointer' }}>
               X
             </Typography>
           </Box>
-          <Divider sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }} />
+          <Divider sx={{ bgcolor: '#292929' }} />
           <Box
             display={'flex'}
             justifyContent={'space-between'}
             alignItems={'end'}
           >
             <Box>
-              <Typography fontSize={'24px'} marginTop="10px">
-                To
-              </Typography>
-              <Typography
-                sx={{ fontSize: '18px', fontWeight: '500', marginTop: '10px' }}
-              >
-                Client name
+              <Typography fontSize={'18px'}>To</Typography>
+              <Typography sx={{ fontSize: '14px' }}>
+                {`${userData?.firstName} ${userData?.lastName}`}
                 <br />
-                <Typography sx={{ fontSize: '18px', fontWeight: '300' }}>
-                  {' '}
-                  Address here
-                  <br />
-                  client@email.com
-                </Typography>
+                Address here
+                <br />
+                {`${userData?.email} `}
               </Typography>
             </Box>
             <Box>
-              <Typography sx={{ fontSize: '18px', fontWeight: '500' }}>
+              <Typography sx={{ fontSize: '14px' }}>
                 Invoice No. 001 <br />
                 04, Sep 2023
               </Typography>
@@ -124,35 +118,20 @@ const isDarkTheme = theme.palette.mode === 'dark';
           </Box>
           <Box
             display={'flex'}
-          
-           
+            justifyContent={'space-between'}
             gap={'8px'}
-            margin={'8px 0px'}
+            margin={'12px 0px'}
           >
-            <Typography sx={{ fontSize: '14px', marginTop: '20px' }}>
-              Company Name
-            </Typography>
-            <Typography
-              sx={{ fontSize: '14px', marginTop: '20px',marginLeft:'230px' }}
-            >
-              Amount
-            </Typography>
-          </Box>
-
-          <Box display={'flex'} justifyContent={'space-between'} gap={'14px'}>
             <input
               type="text"
               name="name"
               value={values.name}
               placeholder="AgencyGo"
               style={{
-                color: isDarkTheme ? '#fff' : '#000',
-                border: '1px solid ',
-                borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
-                backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
-                height: '40px',
-                borderRadius: '8px',
-                width: '100%',
+                color: 'white',
+
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
               }}
               onChange={handleChange}
             />
@@ -169,7 +148,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
             handleOnChange={handleOnChange}
           /> */}
             <input
-              type="text"
+              type="number"
               name="amount"
               value={values.amount}
               placeholder="$1,203"
