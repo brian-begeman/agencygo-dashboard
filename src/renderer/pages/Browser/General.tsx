@@ -34,7 +34,6 @@ interface $props {
   refetch: () => void;
   onFormSubmit: (data: any) => void;
   handleCreate: (data: any) => void;
-  dataRef: (data: any) => void;
   handleFormSubmitRef: any;
 }
 
@@ -45,7 +44,6 @@ const General = ({
   refetch,
   onFormSubmit,
   handleCreate,
-  dataRef,
   handleFormSubmitRef,
 }: $props) => {
   const [alignment, setAlignment] = React.useState('web');
@@ -77,11 +75,6 @@ const General = ({
     status: '',
   });
 
-  useEffect(() => {
-    if (newData.name) {
-      dataRef(newData);
-    }
-  }, [newData]);
 
   const handleNameChange = (name: string, value: string) => {
     setNewData((prevData) => ({
@@ -104,13 +97,16 @@ const General = ({
     }));
   };
 
-  const handleTagsChange = (tags: any, value: any) => {
+  const handleTagsChange = (
+    tags: string,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value } = event.currentTarget;
     setNewData((prevData) => ({
       ...prevData,
       [tags]: value,
     }));
   };
-
   const handleproxyNameChange = (proxyName: any, value: any) => {
     setNewData((prevData) => ({
       ...prevData,
@@ -158,16 +154,16 @@ const General = ({
     // Display form data in the console
     console.log('Form Data:', newData);
 
-    // onFormSubmit(newData);
-    // Clear form data after submission (if needed)
-    setNewData({
-      name: '',
-      status: '',
-      tags: '',
-      proxy: '',
-      changeIPURL: '',
-      proxyName: '',
-    });
+    // // onFormSubmit(newData);
+    // // Clear form data after submission (if needed)
+    // setNewData({
+    //   name: '',
+    //   status: '',
+    //   tags: '',
+    //   proxy: '',
+    //   changeIPURL: '',
+    //   proxyName: '',
+    // });
     // handleCreate(newData);
   };
 
