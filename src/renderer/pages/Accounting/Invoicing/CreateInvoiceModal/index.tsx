@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Stack } from '@mui/material';
+import { Divider, Stack, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import AlignmentSvg from 'renderer/assets/svg/AlignmentSvg';
 import RightArrowSvg from 'renderer/assets/svg/RightArrowSvg';
@@ -19,7 +19,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   borderRadius: '10px',
-  bgcolor: '#121212',
+
   color: '#fff',
   boxShadow: 24,
   p: 2,
@@ -61,6 +61,10 @@ const data = {
 
 
 export default function CreateInvoiceModal({ open, setOpen }: any) {
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   const handleClose = () => setOpen(false);
   const [pdfURL,setpdfURl]=useState('')
   // const handlePDF = async()=>{
@@ -91,29 +95,29 @@ const handlePDFView = async (name:any)=>{
   const handlePDF = async (name:any) => {
 
     // setOpen2(true)
-  
+
     const options = {
       method: "POST",
       headers:{
         'content-type':'application/json'
       },
       body:JSON.stringify(data)
-    };                            
-  
+    };
+
     try {
       const response = await fetch(`http://localhost:3000/invoicing/create?templateName=${name}`, options);
-      const responseData = await response.json(); 
-  
-      console.log(responseData.data); 
-      
-        
+      const responseData = await response.json();
+
+      console.log(responseData.data);
+
+
       window.location.href = responseData.data;
       setpdfURl(responseData.data)
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   const modalData = [
     {
       id: 1,
@@ -164,26 +168,29 @@ const handlePDFView = async (name:any)=>{
   return (
     <>
     <Modal
-    sx={{backdropFilter:"blur(4px)"}}
+    sx={{ backdropFilter: 'blur(4px)' }}
     open={open}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       >
-      <Box sx={style}>
+      <Box sx={style} bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             margin: '10px 0px',
+            color: isDarkTheme ? '#fff' : '#000',
           }}
         >
           <Typography> Create Invoice </Typography>
-          <Typography onClick={handleClose} sx={{cursor:"pointer"}}>X</Typography>
+          <Typography onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            X
+          </Typography>
         </Box>
         <Divider sx={{ bgcolor: '#292929' }} />
-        <Typography margin={'12px 0px'}>
+        <Typography margin={'12px 0px'} color={isDarkTheme ? '#fff' : '#000'}>
           Pick a template or create an invoice from scratch
         </Typography>
         <Box
@@ -202,6 +209,7 @@ const handlePDFView = async (name:any)=>{
                 padding: '10px 20px',
                 border: `1px solid ${theme.palette.primary.contrastText}`,
                 cursor: 'pointer',
+                backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
               }}
             >
               <Box
@@ -210,23 +218,25 @@ const handlePDFView = async (name:any)=>{
               >
                 <AlignmentSvg />
               </Box>
-              <Typography>{data.title}</Typography>
+              <Typography color={isDarkTheme ? '#fff' : '#000'}>
+                {data.title}
+              </Typography>
               <Box display={'flex'} flexDirection={'column'} justifyContent={'center'}alignItems={'center'} gap={'4px'}>
-           <a href="../../" />  
+           <a href="../../" />
            <Typography onClick={()=>handlePDFView(data.name)} sx={{ color: '#04A1FF', fontSize: '14px' }}>
-         
+
 
          View<RightArrowSvg />
-         
+
        </Typography>
               <Typography onClick={()=>handlePDF(data.name)} sx={{ color: '#04A1FF', fontSize: '14px' }}>
-         
 
-                  {data.icon ? 'Create new invoice' : 'Use'}    
-                  
+
+                  {data.icon ? 'Create new invoice' : 'Use'}
+
                 </Typography>
-              
-            
+
+
               </Box>
             </Stack>
           ))}
@@ -244,16 +254,16 @@ const handlePDFView = async (name:any)=>{
           >
             Cancel
           </Button>
-    
-          
+
+
           <Button
             variant="contained"
             sx={{ color: '#fff', textTransform: 'capitalize' }}
-           
+
           >
             Create Invoice
           </Button>
- 
+
         </Box>
       </Box>
     </Modal>

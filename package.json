@@ -86,7 +86,7 @@
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
     "@mui/x-data-grid": "^6.17.0",
-    "@mui/x-date-pickers": "^6.17.0",
+    "@mui/x-date-pickers": "^6.18.1",
     "@mui/x-date-pickers-pro": "^6.17.0",
     "@mui/x-tree-view": "^6.17.0",
     "archiver": "^6.0.1",

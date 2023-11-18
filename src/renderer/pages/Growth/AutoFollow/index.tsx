@@ -21,14 +21,23 @@ function AutoFollow() {
       <Box marginLeft="32px" marginRight="16px" marginTop="16px">
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" gap="16px" alignItems="center">
-            <Typography fontWeight={700} fontSize="22px">
+            <Typography fontWeight={700} fontSize="22px" fontFamily={'Arimo'}>
               Expired Fans Overview
             </Typography>
             <ErrorOutline
               sx={{ color: theme.palette.secondary.contrastText }}
             />
           </Stack>
-          <SettingSvg />
+
+          <Box
+            sx={{
+              filter: isDarkTheme
+                ? 'brightness(0) saturate(100%) invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);'
+                : 'brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(7500%) hue-rotate(244deg) brightness(94%) contrast(103%);',
+            }}
+          >
+            <SettingSvg />
+          </Box>
         </Stack>
         <Stack
           direction="row"
@@ -37,7 +46,7 @@ function AutoFollow() {
           marginY="32px"
           justifyContent="space-between"
         >
-          <Typography fontWeight={600} fontSize="14px">
+          <Typography fontWeight={600} fontSize="14px" fontFamily={'Arimo'}>
             Followed 0 expired fans for Joan Adams
           </Typography>
           <Button variant="text" onClick={onOpenScanDetails}>
@@ -45,6 +54,7 @@ function AutoFollow() {
               color={theme.palette.primary.main}
               fontWeight={600}
               fontSize="14px"
+              textTransform={'none'}
             >
               Details
             </Typography>
@@ -65,14 +75,14 @@ function AutoFollow() {
               alignItems="flex-start"
               justifyContent="start"
             >
-              <Typography fontWeight={600} fontSize="18px">
+              <Typography fontWeight={600} fontSize="18px" fontFamily={'Arimo'}>
                 Automatically follow expired fans
               </Typography>
               <ErrorOutline
                 sx={{ color: theme.palette.secondary.contrastText }}
               />
             </Stack>
-            <Typography fontWeight={600} fontSize="14px">
+            <Typography fontWeight={600} fontSize="14px" fontFamily={'Arimo'}>
               Automatically follow expired fans every day without any additional
               effort. (Recommended)
             </Typography>
@@ -96,10 +106,16 @@ function AutoFollow() {
           <Stack direction="row" marginY="16px">
             <Button
               variant="contained"
-              sx={{ background: theme.palette.primary.main,color:'#fff' }}
+              sx={{ background: theme.palette.primary.main, color: '#fff' }}
               startIcon={<UserCircleAddSvg />}
             >
-              <Typography fontWeight={600} fontSize="14px" padding="5px 10px">
+              <Typography
+                fontWeight={500}
+                fontFamily={'Arimo'}
+                fontSize="14px"
+                padding="5px 10px"
+                textTransform={'none'}
+              >
                 Search Expired Fans
               </Typography>
             </Button>
@@ -109,12 +125,14 @@ function AutoFollow() {
                 fontSize="14px"
                 color={theme.palette.secondary.contrastText}
                 padding="5px 10px"
+                fontFamily={'Arimo'}
+                textTransform={'none'}
               >
                 Show scan details
               </Typography>
             </Button>
           </Stack>
-          <Typography fontWeight={400} fontSize="11px">
+          <Typography fontWeight={400} fontSize="11px" fontFamily={'Arimo'}>
             Last scanned on Aug 26 2023, 06:30 am
           </Typography>
           <Divider sx={{ height: '1px', marginTop: '32px' }} />

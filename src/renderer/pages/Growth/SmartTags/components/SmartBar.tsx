@@ -52,7 +52,7 @@ export default function SmartBar() {
     <Box
       sx={{
         backgroundColor: theme.palette.secondary.main,
-        maxHeight: '300px',
+        maxHeight: '200px',
         width: '100%',
       }}
     >

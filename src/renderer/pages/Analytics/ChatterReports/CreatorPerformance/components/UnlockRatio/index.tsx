@@ -116,7 +116,9 @@ const isDarkTheme = theme.palette.mode === 'dark';
         gap="3px"
       >
         Unlock Ratio
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Box sx={{ height: '400px', width: '100%' }}>
         <UnlockRatioChart />

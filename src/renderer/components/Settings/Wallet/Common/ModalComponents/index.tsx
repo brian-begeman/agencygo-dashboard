@@ -272,7 +272,7 @@ export function RadioButton({ title }: RadioProps) {
             checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
           />
         }
-        label=""
+        label={title}
         // label={`${title.title}`}
       />
     </FormGroup>
@@ -319,7 +319,7 @@ any) {
       >
         <Select
           sx={{
-            '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+            '&.MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
               background: 'gray !important',
             },
             color: 'white',

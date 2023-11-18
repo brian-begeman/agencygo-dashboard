@@ -5,22 +5,35 @@ import { Box, Stack, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
 
-
-
 function Options(props: any) {
   const { menu, handlePopoverClose } = props;
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
-    <div className={classes.optionWrapper} onMouseLeave={handlePopoverClose}>
-      {menu.map((menuItem:any, index:any) => (
-        <NavLink
-          to={menuItem.link || '#'}
-          className={classes.optionItem}
-          key={menuItem.label}
-        >
-          {menuItem.label}
-        </NavLink>
+    <Box onMouseLeave={handlePopoverClose} sx={{ borderRadius: '10px' }}>
+      {menu.map((menuItem: any, index: any) => (
+        <Box sx={{ width: '100%' }} className={classes.optionWrapper}>
+          <NavLink
+            to={menuItem.link || '#'}
+            className={classes.optionItem}
+            key={menuItem.label}
+          >
+            {menuItem.label}
+          </NavLink>
+          <div
+            style={{
+              width: '80%',
+              height: '1px',
+              backgroundColor: isDarkTheme
+                ? 'rgba(255, 255, 255, 0.2)'
+                : '#EAF1FF',
+            }}
+          ></div>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 }
 export default function SidebarItem(props: any) {
@@ -42,7 +55,7 @@ export default function SidebarItem(props: any) {
   const getActiveStatus = () => {
     return (
       link?.includes(location.pathname) ||
-      menu?.some((el:any) => el.link?.includes(location.pathname)) ||
+      menu?.some((el: any) => el.link?.includes(location.pathname)) ||
       location.pathname === link
     );
   };
@@ -51,9 +64,7 @@ export default function SidebarItem(props: any) {
 
   const openPopOver = () => {
     if (Array.isArray(menu) && menu.length > 0) {
-   handlePopoverOpen(index);
-   
-     
+      handlePopoverOpen(index);
     } else {
       handlePopoverOpen(-1);
     }
@@ -62,41 +73,33 @@ export default function SidebarItem(props: any) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-
-   
   // Determine the class based on the theme
   const activeClass = isDarkTheme
     ? classes.sidebarItemWrapperActiveDark
     : classes.sidebarItemWrapperActiveLight;
 
-     const wrapperClass = isDarkTheme
-       ? classes.sidebarItemWrapperDark
-       : classes.sidebarItemWrapperLight;
+  const wrapperClass = isDarkTheme
+    ? classes.sidebarItemWrapperDark
+    : classes.sidebarItemWrapperLight;
 
-          const getImageColor =()=> {
-            let color=''
-            if (open && !isDarkTheme){
-              color =
-                'brightness(0) saturate(100%) invert(45%) sepia(77%) saturate(1638%) hue-rotate(176deg) brightness(99%) contrast(105%);';
+  const getImageColor = () => {
+    let color = '';
+    if (open && !isDarkTheme) {
+      color =
+        'brightness(0) saturate(100%) invert(45%) sepia(77%) saturate(1638%) hue-rotate(176deg) brightness(99%) contrast(105%);';
+    }
+    return color;
+  };
 
-            }
-            return color
-           
-          };
-
-
-           const getTextColor =()=> {
-            let color='#fff'
-            if(open && !isDarkTheme){
-             color = '#04a1ff';
-
-            }else if (isActive && !isDarkTheme) {
-
-                color = '#04a1ff';
-            }
-            return color
-            
-           };
+  const getTextColor = () => {
+    let color = '#fff';
+    if (open && !isDarkTheme) {
+      color = '#04a1ff';
+    } else if (isActive && !isDarkTheme) {
+      color = '#04a1ff';
+    }
+    return color;
+  };
 
   return (
     <div className={open || isActive ? activeClass : wrapperClass}>

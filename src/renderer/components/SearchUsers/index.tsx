@@ -59,7 +59,7 @@ export default function SearchUsers() {
     <aside
       className={styles.aside}
       style={{
-        backgroundColor: isDarkTheme ? '#000' : '#fff',
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
         borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
       }}
     >

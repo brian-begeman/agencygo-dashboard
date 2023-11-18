@@ -24,7 +24,7 @@ export default function FilterGrid() {
 
 
       const parsedData = JSON.parse(tagsData);
- 
+
       setFormData(parsedData)
 
 
@@ -37,7 +37,7 @@ export default function FilterGrid() {
       console.error("An error occurred while retrieving tagsData:", error);
     }
   };
-  
+
 
 
 
@@ -67,7 +67,7 @@ export default function FilterGrid() {
     return `Fans: ${total} (${fansPercentage}%)`;
   };
 
-  
+
   const calculateFansPercentage2 = () => {
     const tag1Value = parseInt(formData.tag3) || 0;
     const tag2Value = parseInt(formData.tag4) || 0;
@@ -194,9 +194,9 @@ export default function FilterGrid() {
           </Typography>
         </Stack>
       </Grid>
-     
 
-       
+
+
       </Grid>
       <Grid container spacing={2} marginTop="48px">
         <Grid item xs={3} alignItems="center">

@@ -10,20 +10,14 @@ export default function Invoicing() {
 
   return (
     <Wrapper>
-      <Box
-        display="flex"
-        gap="5px"
-        padding={'6px'}
-        bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}
-      >
-        <Stack width={'25%'}>
-          <SearchUsers />
-        </Stack>
-        <Stack width={'75%'} display="flex" gap="10px" padding={'10px'}>
-          <InvoicingTopContainer />
-          <Payouts />
-        </Stack>
-      </Box>
-    </Wrapper>
+      <Box display="flex" bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}>
+      <Stack width={'25%'} bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
+        <SearchUsers />
+      </Stack>
+      <Stack width={'75%'} display="flex"  padding={'10px'}>
+        <InvoicingTopContainer />
+        <Payouts />
+      </Stack>
+    </Box></Wrapper>
   );
 }

@@ -102,7 +102,12 @@ export default function Earnings() {
           color={isDarkTheme ? '#fff' : '#000'}
         >
           Earnings
-          <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+          <ErrorOutline
+            sx={{
+              color: theme.palette.secondary.contrastText,
+              fontSize: '24px',
+            }}
+          />
         </Typography>
         <ButtonGroup
           tabButton={tabButtonData}

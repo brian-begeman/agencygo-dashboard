@@ -97,12 +97,17 @@ const ChatterSales = () => {
       <Typography
         color={isDarkTheme ? '#fff' : '#000'}
         fontSize="18px"
+        fontFamily={'Arimo'}
+
+        fontWeight={'600'}
         display="flex"
         alignItems="center"
-        gap="3px"
+        gap="6px"
       >
         Chatter Sales
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '18px' }}
+        />
       </Typography>
       <Box sx={{ height: '600px', width: '100%' }}>
         <ChatterSalesChart />

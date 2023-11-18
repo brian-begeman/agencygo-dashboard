@@ -77,16 +77,18 @@ export default function CreatorEarnings() {
       <Typography
         color={isDarkTheme ? '#fff' : '#000'}
         fontSize="22px"
+        fontWeight={'600'}
+        fontFamily={'Arimo'}
         display="flex"
         alignItems="center"
-        gap="3px"
+        gap="6px"
       >
         Creator Earnings
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText,fontSize:'24px' }} />
       </Typography>
       <Box
         sx={{
-          height: '450px',
+          height: '550px',
           width: '100%',
         }}
       >

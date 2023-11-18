@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import {
   Box,
+  Checkbox,
   FormControlLabel,
   FormGroup,
   Link,
+  Radio,
+  RadioGroup,
   Switch,
   Typography,
   useTheme,
@@ -104,6 +107,24 @@ export default function AddCreaterModal({
     type,
     selectedCreator
   );
+
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  const handleOptionChange = (optionValue: string) => {
+    if (selectedOptions.includes(optionValue)) {
+      setSelectedOptions(
+        selectedOptions.filter((value) => value !== optionValue)
+      );
+    } else {
+      // Limit selection to a maximum of 5 options
+      if (selectedOptions.length < 5) {
+        setSelectedOptions([...selectedOptions, optionValue]);
+      } else {
+        // Notify the user or handle the maximum selection limit
+        console.log('Maximum selection limit reached');
+      }
+    }
+  };
 
   const addHandler = () => {
     handleSubmit();
@@ -206,7 +227,18 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <MultiSelectDropdown
+            <DropdownWithLabel
+              selectStyle={{
+                border: '1px solid #292929',
+                backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+              }}
+              label="Assign Employee"
+              inputIdentifierName="assignEmployee"
+              options={genderList}
+              placeholder="Select Employee"
+              register={register as any}
+            />
+            {/* <MultiSelectDropdown
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
@@ -216,7 +248,9 @@ export default function AddCreaterModal({
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-            />
+
+              
+            /> */}
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
@@ -262,13 +296,13 @@ export default function AddCreaterModal({
                 padding: '10px 0px',
               }}
             >
-              <Typography fontSize={20}>Auto relink</Typography>
+              <Typography fontSize={'14px'}>Auto relink</Typography>
               <Box
                 display={'flex'}
                 justifyContent={'space-between'}
                 alignItems={'center'}
               >
-                <Typography fontSize={'12px'} width={'350px'}>
+                <Typography fontSize={'12px'}>
                   When enabled, we'll automatically relink the OnlyFans account
                   when they are disconnected from OnlyManager
                 </Typography>
@@ -330,6 +364,37 @@ export default function AddCreaterModal({
               ))}
             </Box> */}
           </Stack>
+          <Typography>
+            {' '}
+            Model Data (select at least 3 and a maximum of 5 options)
+          </Typography>
+          <FormGroup
+            aria-label="proxy-options"
+            // value={selectedOption}
+            // onChange={handleRadioChange}
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'auto auto auto auto',
+              marginTop: '10px',
+            }}
+            row
+          >
+            {dummyTypes.map((option, index) => (
+              <FormControlLabel
+                key={index} // Ensure each component has a unique key
+                value={option.title}
+                control={
+                  <Checkbox
+                    checked={selectedOptions.includes(option.title)}
+                    onChange={() => handleOptionChange(option.title)}
+                    name={option.title}
+                  />
+                }
+                label={option.title}
+              />
+            ))}
+            {/* Add more FormControlLabel components for additional options */}
+          </FormGroup>
         </form>
       </Box>
       <ModalFooter

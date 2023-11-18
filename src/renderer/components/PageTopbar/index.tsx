@@ -97,12 +97,12 @@ function ButtonElement({
   };
 
   const getBorderRadius = () => {
-    let borderRadius = '3px';
+    let borderRadius = '6px';
     if (isLink) {
       borderRadius = '0 !important';
     }
     if (isActiveLink) {
-      borderRadius = '3px 3px 0px 0px !important';
+      borderRadius = '6px 6px 6px 6px !important';
     }
     return borderRadius;
   };
@@ -133,7 +133,8 @@ function ButtonElement({
         borderRadius: getBorderRadius(),
         boxShadow: 'none',
         display: 'flex',
-        alignItems: 'center',
+        justifyContent: 'start',
+        alignItems: 'start',
         gap: '5px',
         backgroundColor: getBackgroundColor(),
         position: 'relative',
@@ -147,12 +148,13 @@ function ButtonElement({
     >
       <Typography
         sx={{
-          fontSize: '10px',
+          fontSize: '14px',
           fontWeight: 500,
           color: getColor(),
-          marginTop: '2px',
-          borderRadius: '6px',
-          textTransform: 'unset',
+
+          borderRadius: '10px',
+          textTransform: 'none',
+          textAlign: 'start',
         }}
       >
         {text}

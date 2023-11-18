@@ -1,5 +1,11 @@
 import { ChangeEvent, ReactNode } from 'react';
-import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  useTheme,
+} from '@mui/material';
 import Refresh from 'renderer/assets/svg/refreshSvg';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from './styles.module.css';
@@ -25,6 +31,8 @@ function SearchInput({
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     onUpdateSearch(event.target.value as string);
   };
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={`${styles.search} ${className}`}>
@@ -49,7 +57,15 @@ function SearchInput({
           </InputAdornment>
         }
       />
-      {children}
+      <Box
+        sx={{
+          filter: isDarkTheme
+            ? 'brightness(0) saturate(100%) invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);'
+            : 'brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(7500%) hue-rotate(244deg) brightness(94%) contrast(103%);',
+        }}
+      >
+        {children}
+      </Box>
     </div>
   );
 }
@@ -85,7 +101,9 @@ function NewConvButton({ onClick }: $NewConvProps) {
       onMouseDown={onClick}
       edge="end"
     >
-      <AddIcon sx={{ color: theme.palette.secondary.contrastText, fontSize: '28px' }} />
+      <AddIcon
+        sx={{ color: theme.palette.secondary.contrastText, fontSize: '28px' }}
+      />
     </IconButton>
   );
 }
