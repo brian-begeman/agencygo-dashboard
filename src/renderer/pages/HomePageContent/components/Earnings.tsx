@@ -10,7 +10,7 @@ import EarningsCard from 'renderer/components/EarningsCard';
 import styles from './styles.module.css';
 import ButtonGroup from 'renderer/components/ButtonGroup';
 import { useState } from 'react';
-import SubscriptionSvg from 'renderer/assets/svg/subscription';
+import SubscriptionSvg from 'renderer/assets/svg/NewMessageSvg';
 import NewMessageSvg from 'renderer/assets/svg/NewMessageSvg';
 import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import WalletSvg from 'renderer/assets/svg/WalletSvg';
@@ -60,9 +60,8 @@ const timeButton = [
 
 export default function Earnings() {
   const [activeButton, setActiveButton] = useState(1);
-   const theme = useTheme();
-   const isDarkTheme = theme.palette.mode === 'dark';
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box
