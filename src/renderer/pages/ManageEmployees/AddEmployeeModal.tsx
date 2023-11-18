@@ -9,9 +9,9 @@ import MultiSelectDropdown, {
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { roleList, groupList, frequencyList, scheduleList } from './constant';
-import useFormEmployee from './hooks/useForm';
+import { roleList,groupList, frequencyList, scheduleList } from './constant';
 import fetchReq from 'utils/fetch';
+import { useFormEmployee } from './hooks/useForm';
 
 interface $Props {
   open: boolean;

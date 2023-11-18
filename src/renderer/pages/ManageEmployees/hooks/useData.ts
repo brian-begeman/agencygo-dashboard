@@ -73,11 +73,9 @@ const useDataEmployees = () => {
   }, []);
 
   const handleSearch = (data: any) => {
-    console.log(data, 'data:::::::::::::::::');
     const queryString = Object.keys(data)
       .map((key) => `${key}=${encodeURIComponent(data[key])}`)
       .join('&');
-    console.log(queryString, 'queryString::::::::::::::::::::');
     let endpoint = `employee/search/data?${queryString}`;
     let options = {
       method: 'GET' as 'GET',

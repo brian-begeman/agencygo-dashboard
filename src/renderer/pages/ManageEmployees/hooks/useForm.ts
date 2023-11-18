@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import refetch, { ISelectedEmployee } from './useData';
 import fetchReq from 'utils/fetch';
 
-const useFormEmployee = (
+export const useFormEmployee = (
   callback: () => void,
   type: 'add' | 'edit',
   selectedEmployee: ISelectedEmployee
@@ -162,4 +162,52 @@ const useFormEmployee = (
   };
 };
 
-export default useFormEmployee;
+// export default useFormEmployee;
+export const useFormAgencyGroup = () => {
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [groupName, setGroupName] = useState('');
+  const [selectedGroupId, setSelectedGroupId] = useState('');
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    agencyId: Yup.string().required('Agency id is required'),
+  });
+
+  const { register, handleSubmit, reset, setValue } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = (data: any) => {
+    const payload = {
+      name: groupName,
+      agencyId: selectedGroup,
+    };
+    const endPoint = 'agency/addgroup/' + data.agencyId;
+    const options = {
+      method: 'POST' as 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      withAuth: true,
+      body: JSON.stringify(payload),
+    };
+    fetchReq(endPoint, options)
+      .then((responce) => responce.json())
+      .then((res) => {
+        refetch();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return {
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    reset,
+    setSelectedGroup,
+    selectedGroup,
+    groupName,
+    setGroupName,
+    selectedGroupId,
+    setSelectedGroupId,
+  };
+};
