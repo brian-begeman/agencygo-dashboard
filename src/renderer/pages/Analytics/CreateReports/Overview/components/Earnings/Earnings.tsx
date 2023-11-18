@@ -9,7 +9,7 @@ import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import styles from '../../styles.module.css';
 import EarningsRecordCard from './EarningCard';
 import NewMessageSvg from 'renderer/assets/svg/NewMessageSvg';
-import SubscriptionSvg from 'renderer/assets/svg/subscription';
+import SubscriptionSvg from 'renderer/assets/svg/NewMessageSvg';
 import WalletSvg from 'renderer/assets/svg/WalletSvg';
 import PersonSvg from 'renderer/assets/svg/Person';
 import StreamSvg from 'renderer/assets/svg/Stream';

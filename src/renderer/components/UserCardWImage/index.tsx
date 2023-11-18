@@ -4,7 +4,7 @@ import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
 import { useContext, useEffect, useState } from 'react';
-import { bool } from 'yup';
+
 import { MyInvoiceContext } from 'renderer/pages/Accounting/Invoicing/context/context';
 
 interface $Props {
@@ -94,7 +94,7 @@ export default function UserCardWImage({
               <Typography fontSize={'14px'} fontWeight={400}>
                 {notificationCount}
               </Typography>
-              <Message />
+              {/* <Message /> */}
             </IconButton>
           )}
           {messageCount !== 0 && (
