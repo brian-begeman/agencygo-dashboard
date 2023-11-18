@@ -18,7 +18,7 @@ import UserAdd from 'renderer/assets/svg/UserAddSvg';
 import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
-import SubscriptionSvg from 'renderer/assets/svg/subscription';
+import SubscriptionSvg from 'renderer/assets/svg/NewMessageSvg';
 import WalletSvg from 'renderer/assets/svg/WalletSvg';
 import PersonSvg from 'renderer/assets/svg/Person';
 import StreamSvg from 'renderer/assets/svg/Stream';
@@ -151,7 +151,6 @@ export default function CreatorStatistics() {
         {earningsInitJson.map((item) => (
           <StatisticsCard
             key={item.title}
-           
             title={item.title}
             amount={item.amount}
           />
