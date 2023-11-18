@@ -26,7 +26,7 @@ export interface ICreatorProxy {
 }
 
 export interface ICreatorList {
-  _id: ICreatorList | null;
+  _id?: ICreatorList | null;
   creatorName: string;
   imageSrc: string;
   gender: string;

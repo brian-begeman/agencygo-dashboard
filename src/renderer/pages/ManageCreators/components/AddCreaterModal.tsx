@@ -227,7 +227,7 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <DropdownWithLabel
+            {/* <DropdownWithLabel
               selectStyle={{
                 border: '1px solid #292929',
                 backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
@@ -237,8 +237,8 @@ export default function AddCreaterModal({
               options={genderList}
               placeholder="Select Employee"
               register={register as any}
-            />
-            {/* <MultiSelectDropdown
+            /> */}
+            <MultiSelectDropdown
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
@@ -248,9 +248,7 @@ export default function AddCreaterModal({
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-
-              
-            /> */}
+            />
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',

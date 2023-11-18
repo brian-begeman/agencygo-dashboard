@@ -286,11 +286,12 @@ function FilterByEmployeeInCreator({
           
           <Select
             sx={{
-              color: '#fff',
+              color: '#fff !important',
               '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select':
                 {
                   border: ' 1px solid #ddd',
                   height: ' 20px',
+              color: '#fff !important',
                 },
               '&:hover': {
                 border: ' 1px solid #4a4a4a',
@@ -419,8 +420,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Typography font-size="22px">Filters</Typography>
       </Box>
 
-      <Box>
-        <Typography> Applied Filters</Typography>
+      <Box sx={{display:"flex",justifyContent:'center', gap: "10px"}}>
+        {/* <Typography> Applied Filters</Typography>
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
@@ -433,8 +434,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           {chipData.map((data) => {
             return <Chip label={data.label} onDelete={handleDelete(data)} />;
           })}
-        </Box>
-        {/* <Button variant="outlined" onClick={onRemoveFilter}>
+        </Box> */}
+        <Button variant="outlined" onClick={onRemoveFilter}>
           Reset
         </Button>
         <Button
@@ -443,7 +444,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           onClick={handleFilterData}
         >
           Search
-        </Button> */}
+        </Button>
         {/* <Stack
           justifyContent="space-between"
           flexDirection="row"
@@ -554,7 +555,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           />
         </Box>
       )}
-      {location.pathname === '/creators' && (
+      {/* {location.pathname === '/creators' && (
         <Box padding="12px 16px 12px 16px">
           <FilterByStatus
             title="By Employee"
@@ -569,9 +570,9 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             }}
           />
         </Box>
-      )}
+      )} */}
 
-      {/* {location.pathname == '/creators' && (
+      {location.pathname == '/creators' && (
         <Box padding="12px 16px 12px 16px">
           <FilterByEmployeeInCreator
             title="By Employee name"
@@ -585,7 +586,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             }}
           />
         </Box>
-      )} */}
+      )}
     </PageAside>
   );
 }

@@ -219,7 +219,7 @@ export default function ManageCreators() {
             tableHeaders={creatorsTableHeaders}
           >
             <>
-              {creators.map(
+              {creators?.map(
                 ({
                   creatorName: name,
                   gender,
