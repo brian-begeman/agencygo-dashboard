@@ -88,48 +88,31 @@ interface HeadCell {
   numeric: boolean;
 }
 
-const headCells: readonly HeadCell[] = [
+const headCells = [
   {
     id: 'name',
-    numeric: false,
     disablePadding: true,
     label: 'Name',
   },
   {
-    id: 'calories',
-    numeric: true,
+    id: 'a',
+    disablePadding: false,
+    label: 'OS',
+  },
+  {
+    id: 'status',
     disablePadding: false,
     label: 'Status',
   },
   {
-    id: 'fat',
-    numeric: true,
-    disablePadding: false,
-    label: 'Notes',
-  },
-  {
     id: 'carbs',
-    numeric: true,
     disablePadding: false,
     label: 'Tags',
   },
   {
     id: 'protein',
-    numeric: true,
     disablePadding: false,
-    label: 'Proxy',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: '',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: '',
+    label: 'Action',
   },
 ];
 
@@ -162,17 +145,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -180,18 +152,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {headCell.id === 'name' && <>&nbsp; &nbsp;</>}
+            {headCell.label}
           </TableCell>
         ))}
       </TableRow>
@@ -201,6 +163,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  increaseFetchIndex: () => any;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
@@ -268,6 +231,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         name="Example Name"
         id="exampleId"
         onClose={handleCloseModal}
+        increaseFetchIndex={props.increaseFetchIndex}
       />
     </Toolbar>
   );
@@ -280,6 +244,7 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [fetchIndex, setFetchIndex] = React.useState(0);
 
   React.useEffect(() => {
     window.electron.ipcRenderer
@@ -287,7 +252,16 @@ export default function EnhancedTable() {
       .then((res) => {
         setRows(res);
       });
-  }, []);
+  }, [fetchIndex]);
+
+  const launchBrowser = (args) => {
+    window.electron.ipcRenderer.sendMessage('anty-browser:launch', args);
+  };
+
+  const deleteProfile = async (id) => {
+    await window.electron.ipcRenderer.invoke('anty-browser:delete-profile', id);
+    setFetchIndex(fetchIndex + 1);
+  };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -316,7 +290,10 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          increaseFetchIndex={() => setFetchIndex(fetchIndex + 1)}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -333,47 +310,33 @@ export default function EnhancedTable() {
             <TableBody>
               {rows.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
-                console.log(row);
 
                 return (
                   <TableRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={index}
+                    key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
+                    <TableCell component="th" id={labelId} scope="row">
                       <Box
                         display={'flex'}
                         justifyContent={'start'}
                         alignItems={'center'}
                         gap="10px"
                       >
-                        <GoogleIcon />
-                        <AppleIcon />
-                        <MoreVertIcon />
-                        <Button variant="outlined">Start</Button>
+                        {' '}
+                        {row.name}
                       </Box>
                     </TableCell>
+                    <TableCell>{row.platform}</TableCell>
                     <TableCell align="left">
-                      <Button variant="contained">Ready</Button>
-                    </TableCell>
-                    <TableCell align="left">
-                      This is a sample of an added note...
+                      <Chip
+                        sx={{ color: 'white' }}
+                        label={row.status}
+                        color="primary"
+                      />
                     </TableCell>
                     <TableCell align="left">
                       <Box
@@ -385,20 +348,33 @@ export default function EnhancedTable() {
                           gap: '10px',
                         }}
                       >
-                        <Chip label="OFLinks" /> <Chip label="OFUsers" />{' '}
-                        <Chip label="OFUsers" />{' '}
+                        {row.tags.map((c) => (
+                          <Chip
+                            key={c}
+                            sx={{ color: 'white' }}
+                            label={c}
+                            color="primary"
+                          />
+                        ))}
                       </Box>
-                    </TableCell>
-                    <TableCell align="left">
-                      sockt4://95.216.63.149.1222
                     </TableCell>
                     <TableCell align="left">
                       <Box display={'flex'} gap="20px">
-                        <DeleteForeverOutlinedIcon />
-                        <EditOutlinedIcon />
+                        <Button
+                          onClick={() => launchBrowser(row)}
+                          variant="outlined"
+                        >
+                          Launch Browser
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => deleteProfile(row.id)}
+                        >
+                          Delete
+                        </Button>
                       </Box>
                     </TableCell>
-                    <TableCell align="left" width={'200px'}></TableCell>
                   </TableRow>
                 );
               })}

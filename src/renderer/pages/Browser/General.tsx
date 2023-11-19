@@ -26,6 +26,7 @@ interface $props {
   onFormSubmit: (data: any) => void;
   handleCreate: (data: any) => void;
   handleFormSubmitRef: any;
+  increaseFetchIndex: () => any;
 }
 
 const General = ({
@@ -36,6 +37,7 @@ const General = ({
   onFormSubmit,
   handleCreate,
   handleFormSubmitRef,
+  increaseFetchIndex,
 }: $props) => {
   const [selectedPlatform, setSelectedPlatform] = React.useState('Win32');
   const [alignment2, setAlignment2] = React.useState('web');
@@ -132,7 +134,7 @@ const General = ({
     return isValid;
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async () => {
     // event.preventDefault(); // Prevents default form submission behavior
 
     // Validate fields before submission
@@ -143,10 +145,12 @@ const General = ({
       return;
     }
 
-    window.electron.ipcRenderer.sendMessage(
+    await window.electron.ipcRenderer.invoke(
       'anty-browser:create-profile',
       newData
     );
+    increaseFetchIndex();
+    setOpen(false);
 
     // // onFormSubmit(newData);
     // // Clear form data after submission (if needed)

@@ -24,7 +24,13 @@ const style = {
   borderRadius: 2,
 };
 
-export default function NewProfile({ open, setOpen, name, id }: any) {
+export default function NewProfile({
+  open,
+  setOpen,
+  name,
+  id,
+  increaseFetchIndex,
+}: any) {
   const [selectedValues, setSelectedValues] = useState([]);
   const [formData, setFormData] = useState(null);
   const [newData, setNewData] = useState(null);
@@ -161,7 +167,11 @@ export default function NewProfile({ open, setOpen, name, id }: any) {
           <Box bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
             <CustomTabPanel value={value} index={0}>
               <Box>
-                <General handleFormSubmitRef={handleFormSubmitRef} />
+                <General
+                  setOpen={setOpen}
+                  handleFormSubmitRef={handleFormSubmitRef}
+                  increaseFetchIndex={increaseFetchIndex}
+                />
               </Box>
             </CustomTabPanel>
           </Box>

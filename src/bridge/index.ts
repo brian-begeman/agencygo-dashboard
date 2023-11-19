@@ -7,6 +7,7 @@ import locateChrome from 'locate-chrome';
 import log from 'electron-log';
 import UserAgent from 'user-agents';
 import Store from 'electron-store';
+import { v4 } from 'uuid';
 
 const es = new Store();
 
@@ -72,6 +73,7 @@ const startIPCBridge = ({
   // https://antoinevastel.com/bots/
 
   ipcMain.on('anty-browser:launch', async (e, arg) => {
+    console.log(arg);
     try {
       const proxyConfig = {
         address: 'geo.iproyal.com',
@@ -96,6 +98,7 @@ const startIPCBridge = ({
 
       const ua = new UserAgent({
         deviceCategory: 'desktop',
+        platform: arg.platform,
       });
 
       browser.on('targetcreated', async (target) => {
@@ -104,10 +107,10 @@ const startIPCBridge = ({
           const newPage = await target.page();
           await Promise.all([
             // Set the geolocation for the new page
-            await newPage?.setGeolocation({
-              latitude: 59.95,
-              longitude: 30.31667,
-            }),
+            // await newPage?.setGeolocation({
+            //   latitude: 59.95,
+            //   longitude: 30.31667,
+            // }),
             await newPage?.setUserAgent(randomizedUserAgent.data.userAgent),
             await page.evaluateOnNewDocument(() => {
               if (navigator.webdriver) {
@@ -131,19 +134,33 @@ const startIPCBridge = ({
     }
   });
 
-  ipcMain.on('anty-browser:create-profile', (e, arg) => {
+  ipcMain.handle('anty-browser:create-profile', (e, arg) => {
     const existingProfiles = es.get('antyBrowser.profiles');
+    const id = v4();
     if (!existingProfiles || !existingProfiles.length) {
-      es.set('antyBrowser.profiles', [arg]);
-      return;
+      es.set('antyBrowser.profiles', [Object.assign(arg, { id })]);
+      return true;
     }
-    es.set('antyBrowser.profiles', existingProfiles.concat(arg));
+    es.set(
+      'antyBrowser.profiles',
+      existingProfiles.concat(Object.assign(arg, { id }))
+    );
+    return true;
   });
 
   ipcMain.handle('anty-browser:get-profiles', (e) => {
     const existingProfiles = es.get('antyBrowser.profiles');
     if (existingProfiles && existingProfiles.length) return existingProfiles;
     return [];
+  });
+
+  ipcMain.handle('anty-browser:delete-profile', (e, id) => {
+    const existingProfiles = es.get('antyBrowser.profiles') as Array<any>;
+    // Delete the item from the array
+    const filtered = existingProfiles.filter((item) => item.id !== id);
+    // Save the updated array back to Electron Store
+    es.set('antyBrowser.profiles', filtered);
+    return true;
   });
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
