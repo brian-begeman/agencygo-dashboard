@@ -133,7 +133,7 @@ const startIPCBridge = ({
 
   ipcMain.on('anty-browser:create-profile', (e, arg) => {
     const existingProfiles = es.get('antyBrowser.profiles');
-    if (!existingProfiles.length) {
+    if (!existingProfiles || !existingProfiles.length) {
       es.set('antyBrowser.profiles', [arg]);
       return;
     }
@@ -142,7 +142,8 @@ const startIPCBridge = ({
 
   ipcMain.handle('anty-browser:get-profiles', (e) => {
     const existingProfiles = es.get('antyBrowser.profiles');
-    return existingProfiles;
+    if (existingProfiles && existingProfiles.length) return existingProfiles;
+    return [];
   });
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {

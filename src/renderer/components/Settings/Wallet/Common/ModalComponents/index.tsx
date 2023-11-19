@@ -9,7 +9,8 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Switch, useTheme
+  Switch,
+  useTheme,
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import LensIcon from '@mui/icons-material/Lens';
@@ -31,7 +32,7 @@ interface InputWithLabelProps {
   errors?: any;
   required?: boolean;
   inputStyle?: any;
-  type?:string;
+  type?: string;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
 }
@@ -43,16 +44,14 @@ export function InputWithLabel(props: InputWithLabelProps) {
     value,
     errors,
     inputStyle,
-    type='text',
+    type = 'text',
     required = false,
     handleOnChange = () => {},
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -110,9 +109,8 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
     register = () => ({}),
   } = props;
 
-
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div className={classes.inputLabelWrapper}>
@@ -125,15 +123,13 @@ const isDarkTheme = theme.palette.mode === 'dark';
         className={classes.selectCss}
         name={inputIdentifierName}
         id={inputIdentifierName}
+        defaultValue={'ready'}
         value={value}
         placeholder={placeholder}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName || '')}
       >
-        <option value="" selected>
-          {placeholder}
-        </option>
         {options?.map((res, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <option key={index} value={res?.value}>
@@ -288,7 +284,6 @@ any) {
           value={selectedValues}
           placeholder="add"
           label="Select Values"
-         
           onChange={handleOnChange}
         >
           {options?.map((val: any) => {
