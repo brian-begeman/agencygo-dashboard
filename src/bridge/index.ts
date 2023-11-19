@@ -84,6 +84,9 @@ const startIPCBridge = ({
         },
       };
 
+      const mockLocation =
+        arg.geolocation && 'lat' in arg.geolocation ? true : false;
+
       const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
@@ -94,6 +97,7 @@ const startIPCBridge = ({
           // `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
         ],
         executablePath: await locateChrome(),
+        // userDataDir : "/only-manage/"
       });
 
       const ua = new UserAgent({
@@ -105,19 +109,25 @@ const startIPCBridge = ({
         if (target.type() === 'page') {
           const randomizedUserAgent = ua.random();
           const newPage = await target.page();
-          await Promise.all([
-            // Set the geolocation for the new page
-            // await newPage?.setGeolocation({
-            //   latitude: 59.95,
-            //   longitude: 30.31667,
-            // }),
+          const promiseChain = [
             await newPage?.setUserAgent(randomizedUserAgent.data.userAgent),
             await page.evaluateOnNewDocument(() => {
               if (navigator.webdriver) {
                 delete Object.getPrototypeOf(navigator).webdriver;
               }
             }),
-          ]);
+          ];
+
+          if (mockLocation) {
+            promiseChain.push(
+              await newPage?.setGeolocation({
+                latitude: arg.geolocation.lat,
+                longitude: arg.geolocation.lng,
+              })
+            );
+          }
+
+          await Promise.all(promiseChain);
         }
       });
 

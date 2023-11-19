@@ -10,6 +10,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  FormLabel,
   useTheme,
 } from '@mui/material';
 import {
@@ -17,6 +18,7 @@ import {
   InputWithLabel,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { antyBrowserProfileStatusList } from '../ManageEmployees/constant';
+import GoogleMaps from './GoogleMaps';
 
 interface $props {
   open: boolean;
@@ -40,6 +42,8 @@ const General = ({
   increaseFetchIndex,
 }: $props) => {
   const [selectedPlatform, setSelectedPlatform] = React.useState('Win32');
+  const [locationPreference, setLocationPreference] = React.useState('default');
+  const [locationCoords, setLocationCoords] = useState(null);
   const [alignment2, setAlignment2] = React.useState('web');
   const [selectedproxy, setselectedproxy] = React.useState('web');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -147,7 +151,9 @@ const General = ({
 
     await window.electron.ipcRenderer.invoke(
       'anty-browser:create-profile',
-      newData
+      Object.assign(newData, {
+        geolocation: locationCoords,
+      })
     );
     increaseFetchIndex();
     setOpen(false);
@@ -288,11 +294,43 @@ const General = ({
             exclusive
             onChange={handleOSChange}
             aria-label="Platform"
+            style={{ alignItems: 'center' }}
+            size="small"
           >
+            <FormLabel>Operating System: &nbsp;</FormLabel>
             <ToggleButton value="Win32">WINDOWS</ToggleButton>
             <ToggleButton value="MacIntel">MACOS</ToggleButton>
             <ToggleButton value="Linux x86_64">LINUX</ToggleButton>
           </ToggleButtonGroup>
+
+          <ToggleButtonGroup
+            color="primary"
+            value={locationPreference}
+            exclusive
+            onChange={(e, lp) => {
+              if (lp === 'default') {
+                setLocationCoords(null);
+              }
+              setLocationPreference(lp);
+            }}
+            aria-label="GeoLocation Preference"
+            style={{ alignItems: 'center' }}
+            size="small"
+          >
+            <FormLabel>Geolocation Preference: &nbsp;</FormLabel>
+            <ToggleButton value="default">Default</ToggleButton>
+            <ToggleButton value="custom">Custom</ToggleButton>
+          </ToggleButtonGroup>
+
+          {locationPreference === 'custom' && (
+            <GoogleMaps
+              setLocationCoords={(payload) => {
+                if (locationPreference === 'custom') {
+                  setLocationCoords(payload);
+                }
+              }}
+            />
+          )}
 
           {/*  <ToggleButtonGroup
             color="primary"

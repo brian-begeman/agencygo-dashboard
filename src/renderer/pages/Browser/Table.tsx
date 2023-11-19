@@ -110,6 +110,11 @@ const headCells = [
     label: 'Tags',
   },
   {
+    id: 'ml',
+    disablePadding: false,
+    label: 'Location Mocked',
+  },
+  {
     id: 'protein',
     disablePadding: false,
     label: 'Action',
@@ -310,6 +315,8 @@ export default function EnhancedTable() {
             <TableBody>
               {rows.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
+                const mockLocation =
+                  row?.geolocation && 'lat' in row.geolocation ? true : false;
 
                 return (
                   <TableRow
@@ -358,6 +365,7 @@ export default function EnhancedTable() {
                         ))}
                       </Box>
                     </TableCell>
+                    <TableCell>{mockLocation.toString()}</TableCell>
                     <TableCell align="left">
                       <Box display={'flex'} gap="20px">
                         <Button
