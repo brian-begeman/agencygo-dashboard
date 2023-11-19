@@ -75,27 +75,23 @@ const startIPCBridge = ({
 
   ipcMain.on('anty-browser:launch', async (e, arg) => {
     try {
-      const proxyConfig = {
-        address: 'geo.iproyal.com',
-        port: 12321,
-        credentials: {
-          username: 'ryb6AD',
-          password: 'ryb6AD',
-        },
-      };
-
       const mockLocation =
         arg.geolocation && 'lat' in arg.geolocation ? true : false;
+      const isProxy = arg.proxy && 'host' in arg.proxy ? true : false;
+
+      const pptrArgs = [
+        '--start-maximized',
+        '--disable-blink-features=AutomationControlled',
+      ];
+
+      isProxy &&
+        pptrArgs.push(`--proxy-server=${arg.proxy.host}:${arg.proxy.port}`);
 
       const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
         ignoreDefaultArgs: ['--enable-automation'],
-        args: [
-          '--start-maximized',
-          '--disable-blink-features=AutomationControlled',
-          // `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
-        ],
+        args: pptrArgs,
         executablePath: await locateChrome(),
         userDataDir: path.join(
           app.getPath('userData'),
@@ -135,12 +131,12 @@ const startIPCBridge = ({
       });
 
       const page = await browser.newPage();
-
       page.setDefaultNavigationTimeout(60000);
-      // await page.authenticate({
-      //   username: proxyConfig.credentials.username,
-      //   password: proxyConfig.credentials.password,
-      // });
+      isProxy &&
+        (await page.authenticate({
+          username: arg.proxy.username,
+          password: arg.proxy.password,
+        }));
       await page.goto('https://bot.sannysoft.com/');
     } catch (err) {
       log.error(err);

@@ -45,7 +45,7 @@ const General = ({
   const [locationPreference, setLocationPreference] = React.useState('default');
   const [locationCoords, setLocationCoords] = useState(null);
   const [alignment2, setAlignment2] = React.useState('web');
-  const [selectedproxy, setselectedproxy] = React.useState('web');
+  const [selectedproxy, setselectedproxy] = React.useState('no-proxy');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [selectedProxyProtocol, setSelectedProxyProtocol] =
     React.useState('http');
@@ -54,11 +54,17 @@ const General = ({
     status: 'ready',
     platform: selectedPlatform,
     tags: [],
+    proxy: '',
   });
   const [errors, setErrors] = useState({
     name: '',
     status: '',
   });
+
+  const validateProxyString = (proxyUrl) => {
+    const proxyPattern = /^((.*?):(\d+))(@(.+?):(.+))?$/;
+    return proxyPattern.test(proxyUrl);
+  };
 
   const handleNameChange = (name: string, value: string) => {
     setNewData((prevData) => ({
@@ -71,13 +77,6 @@ const General = ({
     setNewData((prevData) => ({
       ...prevData,
       proxy: value,
-    }));
-  };
-
-  const handlechangeIPURLChange = (changeIPURL: any, value: any) => {
-    setNewData((prevData) => ({
-      ...prevData,
-      changeIPURL: value,
     }));
   };
 
@@ -132,11 +131,44 @@ const General = ({
       newErrors.status = '';
     }
 
+    if (selectedproxy === 'set-proxy' && !newData.proxy) {
+      newErrors.proxy = 'Proxy url is not added';
+      isValid = false;
+    } else {
+      if (!validateProxyString(newData.proxy)) {
+        newErrors.proxy = 'Proxy url is not valid';
+        isValid = false;
+      } else {
+        newErrors.proxy = '';
+      }
+    }
+
     // Validate other fields similarly if needed
 
     setErrors(newErrors);
     return isValid;
   };
+
+  function parseProxyString(proxyString) {
+    const proxyPattern = /^((.*?):(\d+))(@(.+?):(.+))?$/;
+    const match = proxyString.match(proxyPattern);
+
+    if (!match) {
+      throw new Error('Invalid proxy string format');
+    }
+
+    const result = {
+      host: match[2],
+      port: parseInt(match[3]),
+    };
+
+    if (match[5] && match[6]) {
+      result.username = match[5];
+      result.password = match[6];
+    }
+
+    return result;
+  }
 
   const handleFormSubmit = async () => {
     // event.preventDefault(); // Prevents default form submission behavior
@@ -153,6 +185,7 @@ const General = ({
       'anty-browser:create-profile',
       Object.assign(newData, {
         geolocation: locationCoords,
+        proxy: parseProxyString(newData.proxy),
       })
     );
     increaseFetchIndex();
@@ -332,31 +365,40 @@ const General = ({
             />
           )}
 
-          {/*  <ToggleButtonGroup
+          <ToggleButtonGroup
             color="primary"
             value={selectedproxy}
             exclusive
             onChange={handleProxySelect}
             aria-label="Platform"
+            style={{ alignItems: 'center' }}
+            size="small"
           >
-            <ToggleButton value="no_proxy">NO PROXY</ToggleButton>
-            <ToggleButton value="new_proxy">NEW PROXY</ToggleButton>
-            <ToggleButton value="saved_proxies">SAVED PROXIES</ToggleButton>
+            <FormLabel>Proxy Config: &nbsp;</FormLabel>
+            <ToggleButton value="no-proxy">No Proxy</ToggleButton>
+            <ToggleButton value="set-proxy">NEW PROXY</ToggleButton>
           </ToggleButtonGroup>
-          <ToggleButtonGroup
-            color="primary"
-            value={selectedProxyProtocol}
-            exclusive
-            onChange={handleProxyProtocolChange}
-            aria-label="Platform"
-            sx={{ height: '31px', borderRadius: '8px' }}
-          >
-            <ToggleButton value="http">HTTP</ToggleButton>
-            <ToggleButton value="socks4">SOCKS4</ToggleButton>
-            <ToggleButton value="socks5">SOCKS5</ToggleButton>
-            <ToggleButton value="ssh">SSH</ToggleButton>
-          </ToggleButtonGroup> */}
         </Box>
+
+        {selectedproxy === 'set-proxy' && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              color: isDarkTheme ? '#fff' : '#000',
+              gap: '14px',
+            }}
+          >
+            <InputWithLabel
+              label="Proxy URL"
+              inputIdentifierName="proxyUrl"
+              placeholder="Enter proxy url"
+              handleOnChange={handleProxyChange}
+            />
+            <small>Correct format: HOST:PORT@USER:PASS or HOST:PORT</small>
+          </Box>
+        )}
 
         {/*   <Box
           sx={{

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import PlaceIcon from '@mui/icons-material/Place';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import axios from 'axios';
+import mapStyles from './mapStyles';
 
 const Map = ({ setLocationCoords }) => {
   const gApiKey = 'AIzaSyAy4ju0eocnpVLO3LpRI8aWVF31z5ruql4';
@@ -57,6 +58,9 @@ const Map = ({ setLocationCoords }) => {
           defaultZoom={10}
           mapMinHeight="30vh"
           onGoogleApiLoaded={onGoogleApiLoaded}
+          options={{
+            styles: mapStyles,
+          }}
         >
           <span
             markerId={'maps-d-23'}
