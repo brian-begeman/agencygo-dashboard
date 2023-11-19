@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ipcMain, session } from 'electron';
+import { BrowserView, BrowserWindow, ipcMain, session, app } from 'electron';
 import chalk from 'chalk';
 import puppeteer, { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
@@ -8,6 +8,7 @@ import log from 'electron-log';
 import UserAgent from 'user-agents';
 import Store from 'electron-store';
 import { v4 } from 'uuid';
+import path from 'path';
 
 const es = new Store();
 
@@ -73,7 +74,6 @@ const startIPCBridge = ({
   // https://antoinevastel.com/bots/
 
   ipcMain.on('anty-browser:launch', async (e, arg) => {
-    console.log(arg);
     try {
       const proxyConfig = {
         address: 'geo.iproyal.com',
@@ -97,7 +97,10 @@ const startIPCBridge = ({
           // `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
         ],
         executablePath: await locateChrome(),
-        // userDataDir : "/only-manage/"
+        userDataDir: path.join(
+          app.getPath('userData'),
+          'anty-browser-data' + arg.id
+        ),
       });
 
       const ua = new UserAgent({

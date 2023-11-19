@@ -23,46 +23,46 @@ const Map = ({ setLocationCoords }) => {
   return (
     <>
       <div style={{ width: '100%' }}>
-        <GooglePlacesAutocomplete
-          apiKey={'AIzaSyA4PmJsMQCUqWiAcSTHbQInNzgHobD69n4'}
-          selectProps={{
-            async onChange(p) {
-              const pid = p?.value.place_id;
-              const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${pid}&key=${gApiKey}`;
-              const response = (await axios.get(url)).data;
-              const coords = {
-                lat: response.result.geometry.location.lat,
-                lng: response.result.geometry.location.lng,
-              };
-              setCurrentCoords(coords);
-            },
-            styles: {
-              option(base, props) {
-                return {
-                  ...base,
-                  color: 'black',
+        {mapReady && (
+          <GooglePlacesAutocomplete
+            apiKey={gApiKey}
+            apiOptions={{
+              libraries: ['core'],
+            }}
+            selectProps={{
+              async onChange(p) {
+                const pid = p?.value.place_id;
+                const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${pid}&key=${gApiKey}`;
+                const response = (await axios.get(url)).data;
+                const coords = {
+                  lat: response.result.geometry.location.lat,
+                  lng: response.result.geometry.location.lng,
                 };
+                setCurrentCoords(coords);
               },
-            },
-          }}
-        />
+              styles: {
+                option(base, props) {
+                  return {
+                    ...base,
+                    color: 'black',
+                  };
+                },
+              },
+            }}
+          />
+        )}
         <GoogleMap
           apiKey={gApiKey}
           defaultCenter={defaultCoords}
           defaultZoom={10}
           mapMinHeight="30vh"
           onGoogleApiLoaded={onGoogleApiLoaded}
-          onChange={(map) => {
-            setCurrentCoords({
-              lat: map.center[1],
-              lng: map.center[0],
-            });
-          }}
         >
           <span
             markerId={'maps-d-23'}
             lat={currentCoords.lat}
             lng={currentCoords.lng}
+            draggable={false}
           >
             <PlaceIcon fontSize="large" style={{ color: 'green' }} />
           </span>
