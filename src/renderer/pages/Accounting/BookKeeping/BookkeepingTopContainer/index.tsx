@@ -14,12 +14,12 @@ const isDarkTheme = theme.palette.mode === 'dark';
       display="flex"
       justifyContent={'space-between'}
       gap="10px"
-      padding={'6px'}
+     
       sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
     >
       <Stack
-        width={'30%'}
-        padding={'10px'}
+       
+       
         sx={{ background: isDarkTheme ? '#0C0C0C' : '#EAF1FF' }}
       >
         {/* <BookkeepingTopContainer/> */}
@@ -27,7 +27,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
       </Stack>
       <Stack
         width={'65%'}
-        padding={'10px'}
+        
         sx={{ background: isDarkTheme ? '#0C0C0C' : '#EAF1FF' }}
       >
         {/* <BookkeepingTopContainer/> */}

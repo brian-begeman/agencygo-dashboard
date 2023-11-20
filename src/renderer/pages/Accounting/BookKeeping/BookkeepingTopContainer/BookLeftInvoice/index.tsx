@@ -143,7 +143,7 @@ export default function BookLeftInvoice() {
       flexDirection={'column'}
       sx={{
         backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
-       width:'100%',
+       width:'500px',
         padding: '20px',
         gap: '20px',
         borderRadius:'16px'
