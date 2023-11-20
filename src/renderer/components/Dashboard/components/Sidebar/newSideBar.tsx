@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import { Box, Stack, useTheme } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 import classes from './styles.module.css';
+import { Collapse, IconButton } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 function Options(props: any) {
   const { menu, handlePopoverClose } = props;
@@ -36,7 +38,7 @@ function Options(props: any) {
     </Box>
   );
 }
-export default function SidebarItem(props: any) {
+export default function NewSideBar(props: any) {
   const {
     name,
     icon,
@@ -105,8 +107,9 @@ export default function SidebarItem(props: any) {
     <div className={open || isActive ? activeClass : wrapperClass}>
       <NavLink to={link || '#'} className={classes.sidebarItemNav}>
         <Stack
-          alignItems="center"
-          
+          alignSelf="center"
+          direction="row" // Setting direction to row
+          justifyContent="flex-start" // Aligning items to start in a row
           sx={
             isDarkTheme
               ? {
@@ -134,16 +137,19 @@ export default function SidebarItem(props: any) {
               isActive && !isDarkTheme ? classes.iconLight : classes.iconDark
             }
             sx={{ filter: getImageColor() }}
+            mr={3} // Adjust margin between icon and text
           >
             {icon}
           </Box>
           <Typography
             sx={{
-              fontSize: '11px',
+              fontSize: '14px',
               fontWeight: 600,
               marginTop: '4px',
               color: getTextColor(),
               textAlign: 'center',
+                whiteSpace: 'nowrap',
+               overflow: 'hidden',
             }}
           >
             {name}

@@ -1,7 +1,6 @@
 .sidebar {
   margin: 0px 8px;
   min-height: 100vh;
-
 }
 .brandLogo {
   border-bottom: 1px solid #04a1ff;
@@ -13,7 +12,7 @@
 
 .sidebarItem {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 16px 0px;
   align-items: center;
 }
@@ -27,8 +26,8 @@
 }
 
 .sidebarNavWrapper {
-  padding-top: 28px;
   background-color: '#d3d3d3';
+  /* margin-left: 22px; */
 }
 
 .optionWrapper {
@@ -55,8 +54,10 @@
   border-bottom: none;
 }
 .sidebarItemWrapperDark {
-  padding: 8px;
-  margin-bottom: 24px;
+ padding: 10px 8px 2px 20px;
+  margin-top: 10px;
+
+  /* margin-bottom: 24px; */
 }
 
 .sidebarItemWrapperDark:last-child {
@@ -69,16 +70,18 @@
 .sidebarItemWrapperActiveDark {
   border-radius: 8px;
   background: #04a1ff;
-  padding: 8px;
-  margin-bottom: 24px;
+  padding: 10px 8px 2px 20px;
+  margin-top: 10px;
+  /* margin-bottom: 24px; */
 }
 .sidebarItemNav {
   text-decoration: none;
 }
 
 .sidebarItemWrapperLight {
-  padding: 8px;
-  margin-bottom: 24px;
+ padding: 10px 8px 2px 20px;
+  margin-top: 10px;
+  /* margin-bottom: 24px; */
 }
 
 .sidebarItemWrapperLight:last-child {
@@ -91,8 +94,9 @@
 .sidebarItemWrapperActiveLight {
   border-radius: 8px;
   background: #fff;
-  padding: 8px;
-  margin-bottom: 24px;
+  padding: 10px 8px 2px 20px;
+  margin-top: 10px;
+  /* margin-bottom: 24px; */
 }
 
 .iconDark {
@@ -105,7 +109,7 @@
     hue-rotate(176deg) brightness(99%) contrast(105%);
 }
 .darkTheme {
-  background-color: #0C0C0C; /* Dark mode background color */
+  background-color: #0c0c0c; /* Dark mode background color */
 }
 
 .lightTheme {
@@ -114,4 +118,8 @@
   margin: 0;
   padding-left: 10px;
   padding-right: 10px;
+}
+.drawer {
+  min-width: 240px; /* Adjust width as needed */
+  flex-shrink: 0;
 }

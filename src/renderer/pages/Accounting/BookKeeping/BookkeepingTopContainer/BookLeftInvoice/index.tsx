@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, MenuItem, Select, Typography } from '@mui/material';
+import { Box, MenuItem, Select, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import { useState } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
@@ -133,87 +133,123 @@ const valueFormatter = (value: number) => `${value}mm`;
 export default function BookLeftInvoice() {
   const [selectedStatus, setSelectedStatus] = useState('Filter');
 
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box
-    display="flex" justifyContent={'space-between'}
-    flexDirection={'column'}
+      display="flex"
+      justifyContent={'space-between'}
+      flexDirection={'column'}
       sx={{
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: '16px',
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+       width:'100%',
         padding: '20px',
         gap: '20px',
+        borderRadius:'16px'
       }}
     >
-       <Box display="flex" justifyContent={'space-between'} alignItems={'center'}>
-
-              <Box>
-              
-                    <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
-                    Invoicing        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
-                    </Typography>
-                  
-              </Box>
+      <Box
+        display="flex"
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
         <Box>
-
-      <Typography fontSize="14px" display='flex' alignItems="center" gap='3px' color={'#04A1FF'}>
-      Create an invoices      
-      </Typography>
-    
-       </Box>
-        
-
+          <Typography
+            fontSize="22px"
+            display="flex"
+            alignItems="center"
+            gap="3px"
+          >
+            Invoicing{' '}
+            <ErrorOutline
+              sx={{ color: theme.palette.secondary.contrastText }}
+            />
+          </Typography>
         </Box>
+        <Box>
+          <Typography
+            fontSize="14px"
+            display="flex"
+            alignItems="center"
+            gap="3px"
+            color={'#04A1FF'}
+          >
+            Create an invoices
+          </Typography>
+        </Box>
+      </Box>
       <Box
         sx={{
           height: '450px',
           width: '100%',
         }}
       >
-          <BarChart
-      
-      dataset={dataset}
-      yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
-      series={[{ dataKey: 'seoul',  valueFormatter }]}
-      layout="horizontal"
-      {...chartSetting}
-    />
+        <BarChart
+          dataset={dataset}
+          yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
+          series={[{ dataKey: 'seoul', valueFormatter }]}
+          layout="horizontal"
+          {...chartSetting}
+        />
         {/* <Bar options={options} data={data} /> */}
       </Box>
 
-    
-      <Box display='flex' justifyContent={'space-evenly'} gap='16px'>
-          <Box display='flex' alignItems="center" gap='8px' >
-              <Box width={'12px'} height={'12px'} style={{backgroundColor:"#E26626",borderRadius:"50%"}}></Box>
-              <Box>
+      <Box display="flex" justifyContent={'space-evenly'} gap="16px"  bgcolor={isDarkTheme ? '#000' : '#fff'}>
+        <Box display="flex" alignItems="center" gap="8px">
+          <Box
+            width={'12px'}
+            height={'12px'}
+            style={{ backgroundColor: '#E26626', borderRadius: '50%' }}
+          ></Box>
+          <Box>
+            <Typography
+              fontSize="14px"
+              display="flex"
+              alignItems="center"
+              gap="3px"
+            >
+              Expenses
+            </Typography>
+            <Typography
+              fontSize="22px"
+              display="flex"
+              alignItems="center"
+              gap="3px"
+            >
+              $822
+            </Typography>
+          </Box>
+        </Box>
 
-              
-               <Typography fontSize="14px" display='flex' alignItems="center" gap='3px'>
-               Expenses      
-               </Typography>
-               <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
-               $822        
-               </Typography>
-               </Box>
-            </Box>
-
+        <Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Box
+              width={'12px'}
+              height={'12px'}
+              style={{ backgroundColor: '#FF0000', borderRadius: '50%' }}
+            ></Box>
             <Box>
-            
-            <Box display='flex' alignItems="center" gap='8px' >
-              <Box width={'12px'} height={'12px'} style={{backgroundColor:"#FF0000",borderRadius:"50%"}}></Box>
-              <Box>
-
-              
-               <Typography fontSize="14px" display='flex' alignItems="center" gap='3px'>
-               Expenses      
-               </Typography>
-               <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
-               $822        
-               </Typography>
-               </Box>
+              <Typography
+                fontSize="14px"
+                display="flex"
+                alignItems="center"
+                gap="3px"
+              >
+                Expenses
+              </Typography>
+              <Typography
+                fontSize="22px"
+                display="flex"
+                alignItems="center"
+                gap="3px"
+              >
+                $822
+              </Typography>
             </Box>
+          </Box>
         </Box>
       </Box>
- 
     </Box>
   );
 }

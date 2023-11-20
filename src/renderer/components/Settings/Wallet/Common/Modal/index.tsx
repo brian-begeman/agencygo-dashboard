@@ -36,7 +36,7 @@ function Overlay(props: OverlayProps) {
           sx={{
             borderTopLeftRadius: '10px',
             borderTopRightRadius: '10px',
-            backgroundColor: isDarkTheme ? '#0C0C0C' : '#EAF1FF',
+            backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
           }}
         >
           {heading}

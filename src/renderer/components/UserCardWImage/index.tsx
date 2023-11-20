@@ -74,8 +74,8 @@ export default function UserCardWImage({
             setData(data);
           }}
           variant="h3"
-          color="#fff"
-          fontSize={'14px'}
+        
+          fontSize={'18px'}
           sx={{ cursor: 'pointer' }}
           fontWeight={500}
         >

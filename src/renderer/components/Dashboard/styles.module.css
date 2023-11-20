@@ -1,18 +1,13 @@
 .dashboardWrapper {
-  display: grid;
-  grid-template-columns: 89px 1fr;
+  display: flex;
+  flex-grow: 1;
 }
 
 .secondChild {
   display: grid;
-  grid-template-rows: 80px 1fr;
-  
- 
+
+  width: 100%;
 }
 .darkTheme {
-  
-  background-color: #0F0F0F; /* Dark mode background color */
- 
-  
+  background-color: #0f0f0f; /* Dark mode background color */
 }
-

@@ -7,10 +7,14 @@ import {
   FormGroup,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 
 export default function FilterTag() {
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Stack flexDirection="row" justifyContent="space-between" marginTop="32px">
       <Stack flexDirection="row" gap="16px" alignItems="center">

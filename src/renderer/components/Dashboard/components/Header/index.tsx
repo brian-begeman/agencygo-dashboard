@@ -109,8 +109,8 @@ function Header() {
   return (
     <div className={classes.navbar}  style={{backgroundColor:isDarkTheme?'#0C0C0C':'#fff'}}>
       <div className={classes.start}>
-        <LeftChevronSvg />
-        <RightChevronSvg />
+        {/* <LeftChevronSvg />
+        <RightChevronSvg /> */}
       </div>
 
       <div className={classes.endWrapper}>

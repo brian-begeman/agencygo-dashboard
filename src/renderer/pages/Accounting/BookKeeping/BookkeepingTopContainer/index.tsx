@@ -1,18 +1,37 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import BookLeftInvoice from './BookLeftInvoice';
 import BookRightInvoice from './BookRightInvoice';
 
 
 export default function BookkeepingTopContainer() {
+
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
-    <Box display="flex" justifyContent={'space-between'} gap="5px" padding={"6px"} sx={{background:'#121212'}}>
-      <Stack width={"30%"} padding={"10px"} sx={{background:'#0c0c0c'}}>
+    <Box
+      display="flex"
+      justifyContent={'space-between'}
+      gap="5px"
+      padding={'6px'}
+      sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
+    >
+      <Stack
+        width={'30%'}
+        padding={'10px'}
+        sx={{ background: isDarkTheme ? '#0C0C0C' : '#EAF1FF' }}
+      >
         {/* <BookkeepingTopContainer/> */}
- <BookLeftInvoice/>
+        <BookLeftInvoice />
       </Stack>
-      <Stack width={"65%"} padding={"10px"} sx={{background:'#0c0c0c'}}>
+      <Stack
+        width={'65%'}
+        padding={'10px'}
+        sx={{ background: isDarkTheme ? '#0C0C0C' : '#EAF1FF' }}
+      >
         {/* <BookkeepingTopContainer/> */}
-<BookRightInvoice/>
+        <BookRightInvoice />
       </Stack>
     </Box>
   );
