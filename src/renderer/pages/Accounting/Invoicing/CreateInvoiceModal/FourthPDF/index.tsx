@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './FourthPDF.css';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 const style = {
   position: 'absolute' satisfies string,
@@ -41,7 +41,7 @@ export default function FourthPDF({ open, setOpen, name }: any) {
         >
           X
         </Typography>{' '}
-        <div className="main-div ">
+        <div className="">
           <div className="istbox">
             <div className="left">
               <div className="Juliana">
@@ -118,6 +118,17 @@ export default function FourthPDF({ open, setOpen, name }: any) {
               <h3> $ 110.00</h3>
             </div>
           </div>
+          <Button
+            variant="contained"
+            sx={{
+              color: '#fff',
+              textTransform: 'capitalize',
+              float: 'right',
+            }}
+            // onClick={handlePDF}
+          >
+            Create Invoice
+          </Button>
         </div>
       </Box>
     </Modal>

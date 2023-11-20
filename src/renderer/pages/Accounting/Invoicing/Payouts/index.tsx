@@ -315,7 +315,7 @@ const Payouts = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allInvoice.map((item: any, index: any) => {
+              {allInvoice.reverse().map((item: any, index: any) => {
                 return (
                   <TableRow
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
