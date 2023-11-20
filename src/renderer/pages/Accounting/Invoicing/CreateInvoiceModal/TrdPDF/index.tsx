@@ -492,11 +492,21 @@ export default function TrdPDF({ open, setOpen, name }: any) {
                   <h4 style={{ fontWeight: 'bold' }}>TOTAL:</h4>
                 </div>
                 <div className="new-item-75"></div>
+                <Button
+                  variant="contained"
+                  sx={{
+                    color: '#fff',
+                    textTransform: 'capitalize',
+                    float: 'right',
+                  }}
+                  onClick={handlePDF}
+                >
+                  Create Invoice
+                </Button>
               </div>
             </div>
           </div>
         </div>
-        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );
