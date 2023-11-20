@@ -420,7 +420,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       </Box>
 
       <Box>
-        <Typography> Applied Filters</Typography>
+        <Typography marginLeft={'20px'}> Applied Filters</Typography>
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
