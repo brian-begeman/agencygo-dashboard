@@ -334,7 +334,7 @@ const Payouts = () => {
                     >
                       {item?.delivery === true ? 'Successfull' : 'Pending'}
                     </TableCell>
-                    <TableCell sx={{ color: '#FFFFFF' }}>02/02/2000</TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>{item?.createdAt }</TableCell>
                     <TableCell
                       scope="row"
                       sx={{
