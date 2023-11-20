@@ -131,6 +131,12 @@ const createWindow = async () => {
     width: winDimens.width,
     height: winDimens.height,
   });
+  view1.setAutoResize({
+    width: true,
+    height: true,
+    horizontal: true,
+    vertical: true,
+  });
   await view1.webContents.loadURL(resolveHtmlPath('index.html'));
   view1.webContents.openDevTools();
 
