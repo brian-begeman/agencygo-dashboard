@@ -26,7 +26,7 @@ export default function FilterTag() {
         >
           <Button
             variant="text"
-            sx={{ background: theme.palette.secondary.light }}
+            sx={{ background: isDarkTheme ? '#292929' : '#EAF1FF' }}
           >
             <Typography
               fontWeight={600}

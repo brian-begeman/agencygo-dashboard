@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import DownloadSvgIcon from 'renderer/assets/svg/downloadSvg';
@@ -166,6 +167,10 @@ const Payouts = () => {
     console.log(istrue);
     setSelectedStatu((istrue: any) => (istrue ? true : false));
   };
+ const theme = useTheme();
+ const isDarkTheme = theme.palette.mode === 'dark';
+
+
 
   return (
     <>
@@ -174,10 +179,16 @@ const Payouts = () => {
         gap="15px"
         sx={{
           padding: '10px',
-          border: `1px solid ${theme.palette.primary.contrastText}`,
+          border: `1px solid `,
+          borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+          backgroundColor: isDarkTheme ? '#121212' : '#fff',
         }}
       >
-        <Box display={'flex'} justifyContent={'space-between'}>
+        <Box
+          display={'flex'}
+          justifyContent={'space-between'}
+          
+        >
           <Typography fontSize="22px">Invoicing</Typography>
           <Box>
             <Select
@@ -185,26 +196,20 @@ const Payouts = () => {
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               sx={{
-                color: theme.palette.secondary.contrastText,
                 width: 'fit-content',
-                '.MuiOutlinedInput-notchedOutline': {
-                  borderColor: theme.palette.secondary.light,
-                },
+
                 height: 'fit-content',
                 padding: '0px 0px',
-                ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
-                  {
-                    padding: '4px 8px',
-                  },
+                ' & .MuiOutlinedInput-input': {
+                  padding: '4px 8px',
+                },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                   borderColor: theme.palette.secondary.contrastText,
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
                   borderColor: theme.palette.secondary.contrastText,
                 },
-                '.MuiSvgIcon-root': {
-                  fill: 'white !important',
-                },
+
                 input: {
                   backgroundColor: theme.palette.secondary.contrastText,
                 },
@@ -240,13 +245,13 @@ const Payouts = () => {
             }}
             aria-label="simple table"
           >
-            <TableHead sx={{ bgcolor: '#292929' }}>
+            <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
               <TableRow>
-                <TableCell sx={{ color: '#FFFFFF' }}>Amount</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>Delivery</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>Status</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>Actions</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Delivery</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -255,10 +260,7 @@ const Payouts = () => {
                   <TableRow
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell
-                      scope="row"
-                      sx={{ color: '#FFFFFF', padding: '25px 10px' }}
-                    >
+                    <TableCell scope="row" sx={{ padding: '25px 10px' }}>
                       ${item?.amount}
                     </TableCell>
                     <TableCell
@@ -269,7 +271,7 @@ const Payouts = () => {
                     >
                       {item?.delivery === true ? 'Pending' : 'Successfull'}
                     </TableCell>
-                    <TableCell sx={{ color: '#FFFFFF' }}>02/02/2000</TableCell>
+                    <TableCell>02/02/2000</TableCell>
                     <TableCell
                       scope="row"
                       sx={{

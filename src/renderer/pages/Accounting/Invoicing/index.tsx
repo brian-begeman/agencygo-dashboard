@@ -10,7 +10,7 @@ export default function Invoicing() {
 
   return (
     <Wrapper>
-      <Box display="flex" bgcolor={isDarkTheme ? '#292929' : '#EAF1FF'}>
+      <Box display="flex" bgcolor={isDarkTheme ? '#121212' : '#EAF1FF'}>
       <Stack width={'25%'} bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}>
         <SearchUsers />
       </Stack>

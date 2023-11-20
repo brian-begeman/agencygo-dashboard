@@ -5,6 +5,7 @@ import {
   Select,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import theme from 'renderer/styles/muiTheme';
@@ -60,6 +61,9 @@ const InvoicingTopContainer = () => {
     getuser();
   }, []);
 
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Box margin={'10px 0px'}>
       <Box display={'flex'} justifyContent={'space-between'}>
@@ -78,14 +82,14 @@ const InvoicingTopContainer = () => {
             value={selectData}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
+              
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.light,
+                
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+              ' & .MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -95,9 +99,7 @@ const InvoicingTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+             
               '& .MuiSelect-select': {
                 display: 'flex',
                 gap: '5px',
@@ -149,7 +151,9 @@ const InvoicingTopContainer = () => {
               height="90px"
               sx={{
                 padding: '10px 20px',
-                border: `1px solid ${theme.palette.primary.contrastText}`,
+                border: `1px solid `,
+                borderColor: isDarkTheme ? '#292929' : '#fff',
+                backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
               }}
             >
               <Stack minWidth="130px">
@@ -160,7 +164,7 @@ const InvoicingTopContainer = () => {
                 >
                   {data.title}
                 </Typography>
-                <Typography color="#fff" fontSize="30px" fontWeight={700}>
+                <Typography fontSize="30px" fontWeight={700}>
                   ${data.value}
                 </Typography>
                 {/* <Typography color="#fff" fontSize="30px" fontWeight={700}>

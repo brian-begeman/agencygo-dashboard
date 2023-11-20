@@ -412,7 +412,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           padding: '20px',
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+        
         }}
       >
         <CandleSvg />

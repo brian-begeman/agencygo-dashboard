@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Button, Grid, Stack, TextField, Typography, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import { MyContext } from '../context/context';
 import { useContext } from 'react';
@@ -89,129 +89,141 @@ export default function FilterGrid() {
 
     return `Fans: ${total} (${fansPercentage}%)`;
   };
+
+ const theme = useTheme();
+ const isDarkTheme = theme.palette.mode === 'dark';
+
+
+
+
   return (
     <>
       <Stack
-      direction="row"
-      gap="20px"
-      alignItems="center"
-      justifyContent="start"
-    >
-      <Button
-        variant="text"
-        startIcon={
-          <DeleteOutlineIcon
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              color: theme.palette.error.main,
-            }}
-          />
-        }
+        direction="row"
+        gap="20px"
+        alignItems="center"
+        justifyContent="start"
       >
-        <Typography
-          fontWeight={500}
-          fontSize="12px"
-          sx={{ color: theme.palette.error.main }}
+        <Button
+          variant="text"
+          startIcon={
+            <DeleteOutlineIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                color: theme.palette.error.main,
+              }}
+            />
+          }
         >
-          Delete
-        </Typography>
-      </Button>
-      <Button
-        variant="text"
-        startIcon={
-          <EditNoteIcon
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              color: '#fff',
-            }}
-          />
-        }
-      >
-        <Typography variant="h5"
-        onClick={getTags}
-        >Edit</Typography>
-      </Button>
-    </Stack>
-      <Grid container spacing={2} marginTop="48px">
-      <Grid item xs={3} alignItems="center">
-        <Stack flexDirection="row" gap="10px" alignItems="center">
-          <Typography color="#fff" fontWeight={500} fontSize="14px">
-            Tag 1
+          <Typography
+            fontWeight={500}
+            fontSize="12px"
+            sx={{ color: theme.palette.error.main }}
+          >
+            Delete
           </Typography>
-          <TextField
-            placeholder={`${placeholderData.tag1}`}
-            size="small"
-            sx={{
-              maxWidth: '161px',
-              height: '41px',
-              border: `1px solid ${theme.palette.secondary.contrastText}`,
-              input: { color: theme.palette.secondary.contrastText },
-            }}
-            name="tag1"
-            value={formData.tag1}
-            onChange={(e) => handleChange(e, 'tag1')}
-          />
-        </Stack>
-      </Grid>
-      <Grid item xs={3} alignItems="center">
-        <Stack
-                flexDirection="row"
-                alignItems="center"
-                height="100%"
-                justifyContent="center"
-              >
-                <Typography color="#fff" fontWeight={500} fontSize="14px">
-                  total spents
-                </Typography>
-              </Stack>
-        </Grid>
-      <Grid item xs={3} alignItems="center">
-        <Stack flexDirection="row" alignItems="center" height="100%" justifyContent="center">
-          <Typography color="#fff" fontWeight={500} fontSize="14px">
-            Tag 2
+        </Button>
+        <Button
+          variant="text"
+          startIcon={
+            <EditNoteIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                color: isDarkTheme ? '#fff' : '#000',
+              }}
+            />
+          }
+        >
+          <Typography
+            variant="h5"
+            onClick={getTags}
+            color={isDarkTheme ? '#fff' : '#000'}
+          >
+            Edit
           </Typography>
-          <TextField
-            placeholder={`${placeholderData.tag2}`}
-            size="small"
-            sx={{
-              maxWidth: '161px',
-              height: '41px',
-              border: `1px solid ${theme.palette.secondary.contrastText}`,
-              input: { color: theme.palette.secondary.contrastText },
-            }}
-            name="tag2"
-            value={formData.tag2}
-            onChange={(e) => handleChange(e, 'tag2')}
-          />
-        </Stack>
-      </Grid>
-      <Grid item xs={3} alignItems="center">
-        <Stack flexDirection="row" alignItems="center" height="100%" justifyContent="center">
-          <Typography color="#fff" fontWeight={500} fontSize="14px">
-            {calculateFansPercentage()}
-          </Typography>
-        </Stack>
-      </Grid>
-
-
-
-      </Grid>
+        </Button>
+      </Stack>
       <Grid container spacing={2} marginTop="48px">
         <Grid item xs={3} alignItems="center">
           <Stack flexDirection="row" gap="10px" alignItems="center">
-            <Typography color="#fff" fontWeight={500} fontSize="14px">
-              Tag 3
+            <Typography fontWeight={500} fontSize="14px">
+              Tag 1
             </Typography>
             <TextField
-                                       placeholder={`${placeholderData.tag3}`}
-
+              placeholder={`${placeholderData.tag1}`}
               size="small"
               sx={{
                 maxWidth: '161px',
                 height: '41px',
-                border: `1px solid ${theme.palette.secondary.contrastText}`,
+                
+                input: { color: theme.palette.secondary.contrastText },
+              }}
+              name="tag1"
+              value={formData.tag1}
+              onChange={(e) => handleChange(e, 'tag1')}
+            />
+          </Stack>
+        </Grid>
+        <Grid item xs={3} alignItems="center">
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              total spents
+            </Typography>
+          </Stack>
+        </Grid>
+
+        <Grid item xs={3} alignItems="center">
+          <Stack flexDirection="row" gap="10px" alignItems="center">
+            <Typography fontWeight={500} fontSize="14px">
+              Tag 2
+            </Typography>
+            <TextField
+              placeholder={`${placeholderData.tag2}`}
+              size="small"
+              sx={{
+                maxWidth: '161px',
+                height: '41px',
+                
+                input: { color: theme.palette.secondary.contrastText },
+              }}
+              name="tag2"
+              value={formData.tag2}
+              onChange={(e) => handleChange(e, 'tag2')}
+            />
+          </Stack>
+        </Grid>
+        <Grid item xs={3} alignItems="center">
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              {calculateFansPercentage()}
+            </Typography>
+          </Stack>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} marginTop="48px">
+        <Grid item xs={3} alignItems="center">
+          <Stack flexDirection="row" gap="10px" alignItems="center">
+            <Typography fontWeight={500} fontSize="14px">
+              Tag 3
+            </Typography>
+            <TextField
+              placeholder={`${placeholderData.tag3}`}
+              size="small"
+              sx={{
+                maxWidth: '161px',
+                height: '41px',
                 input: { color: theme.palette.secondary.contrastText },
               }}
               name="tag3"
@@ -221,31 +233,30 @@ export default function FilterGrid() {
           </Stack>
         </Grid>
         <Grid item xs={3} alignItems="center">
-        <Stack
-                flexDirection="row"
-                alignItems="center"
-                height="100%"
-                justifyContent="center"
-              >
-                <Typography color="#fff" fontWeight={500} fontSize="14px">
-                  total spents
-                </Typography>
-              </Stack>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              total spents
+            </Typography>
+          </Stack>
         </Grid>
 
         <Grid item xs={3} alignItems="center">
           <Stack flexDirection="row" gap="10px" alignItems="center">
-            <Typography color="#fff" fontWeight={500} fontSize="14px">
+            <Typography fontWeight={500} fontSize="14px">
               Tag 4
             </Typography>
             <TextField
-                                       placeholder={`${placeholderData.tag4}`}
-
+              placeholder={`${placeholderData.tag4}`}
               size="small"
               sx={{
                 maxWidth: '161px',
                 height: '41px',
-                border: `1px solid ${theme.palette.secondary.contrastText}`,
+                
                 input: { color: theme.palette.secondary.contrastText },
               }}
               name="tag4"
@@ -256,33 +267,32 @@ export default function FilterGrid() {
         </Grid>
 
         <Grid item xs={3} alignItems="center">
-        <Stack
-                flexDirection="row"
-                alignItems="center"
-                height="100%"
-                justifyContent="center"
-              >
-                <Typography color="#fff" fontWeight={500} fontSize="14px">
-               {calculateFansPercentage2()}
-                </Typography>
-              </Stack>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              {calculateFansPercentage2()}
+            </Typography>
+          </Stack>
         </Grid>
       </Grid>
 
       <Grid container spacing={2} marginTop="48px">
         <Grid item xs={3} alignItems="center">
           <Stack flexDirection="row" gap="10px" alignItems="center">
-            <Typography color="#fff" fontWeight={500} fontSize="14px">
+            <Typography fontWeight={500} fontSize="14px">
               Tag 5
             </Typography>
             <TextField
-                                        placeholder={`${placeholderData.tag5}`}
-
+              placeholder={`${placeholderData.tag5}`}
               size="small"
               sx={{
                 maxWidth: '161px',
                 height: '41px',
-                border: `1px solid ${theme.palette.secondary.contrastText}`,
+                
                 input: { color: theme.palette.secondary.contrastText },
               }}
               name="tag5"
@@ -292,31 +302,30 @@ export default function FilterGrid() {
           </Stack>
         </Grid>
         <Grid item xs={3} alignItems="center">
-        <Stack
-                flexDirection="row"
-                alignItems="center"
-                height="100%"
-                justifyContent="center"
-              >
-                <Typography color="#fff" fontWeight={500} fontSize="14px">
-                  total spents
-                </Typography>
-              </Stack>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              total spents
+            </Typography>
+          </Stack>
         </Grid>
 
         <Grid item xs={3} alignItems="center">
           <Stack flexDirection="row" gap="10px" alignItems="center">
-            <Typography color="#fff" fontWeight={500} fontSize="14px">
+            <Typography fontWeight={500} fontSize="14px">
               Tag 6
             </Typography>
             <TextField
-                                     placeholder={`${placeholderData.tag6}`}
-
+              placeholder={`${placeholderData.tag6}`}
               size="small"
               sx={{
                 maxWidth: '161px',
                 height: '41px',
-                border: `1px solid ${theme.palette.secondary.contrastText}`,
+                
                 input: { color: theme.palette.secondary.contrastText },
               }}
               name="tag6"
@@ -327,16 +336,16 @@ export default function FilterGrid() {
         </Grid>
 
         <Grid item xs={3} alignItems="center">
-        <Stack
-                flexDirection="row"
-                alignItems="center"
-                height="100%"
-                justifyContent="center"
-              >
-                <Typography color="#fff" fontWeight={500} fontSize="14px">
-               {calculateFansPercentage3()}
-                </Typography>
-              </Stack>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Typography fontWeight={500} fontSize="14px">
+              {calculateFansPercentage3()}
+            </Typography>
+          </Stack>
         </Grid>
       </Grid>
       <Stack
@@ -346,7 +355,9 @@ export default function FilterGrid() {
         alignItems="center"
         justifyContent="end"
       >
-        <Button sx={{ color: '#fff', background: theme.palette.secondary.light }}>
+        <Button
+          sx={{ color: '#fff', background: theme.palette.secondary.light }}
+        >
           Cancel
         </Button>
         <Button
