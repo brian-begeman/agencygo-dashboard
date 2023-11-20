@@ -49,7 +49,7 @@ export default function AddLeder({ open, setOpen, name }: any) {
 
       console.log(responseData.data);
 
-      window.location.href = responseData.data;
+      // window.location.href = responseData.data;
       // setpdfURl(responseData.data)
     } catch (error) {
       console.log(error);
@@ -75,10 +75,15 @@ export default function AddLeder({ open, setOpen, name }: any) {
     email: data?.email,
     amount: 0,
     status: true,
-    address: 'test',
     invoiceNo: 'INC0001',
+    address: 'test',
+
+    
+
     paymentTerms: 'test',
     contactName: 'test',
+    amonut:0,
+    delivery:true,
     nameDept: 'test',
     addresss: 'test',
     phone: 'test',
