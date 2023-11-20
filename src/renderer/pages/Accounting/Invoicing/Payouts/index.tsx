@@ -148,6 +148,71 @@ const Payouts = () => {
     }
   };
 
+  // handle dowmold pdf
+  const pdfData = {
+    userName: data?.firstName,
+    companyName: '',
+    clientCompanyName: '',
+    companyAddress: '',
+    companyContact: '',
+    contactDetails: '',
+    description: '',
+    qty: 11,
+    unitPrice: 12.11,
+    total: 0,
+    userId: data?._id,
+    employeeId: data?._id,
+    email: data?.email,
+    amount: 0,
+    status: true,
+    address: 'test',
+    invoiceNo: 'INC0001',
+    paymentTerms: 'test',
+    contactName: 'test',
+    nameDept: 'test',
+    addresss: 'test',
+    phone: 'test',
+    invoiceTitle: 'test',
+    paymentInstructions: 'test',
+    subtotal: 0,
+    discount: 0,
+    subtotalLessDiscount: 0,
+    taxRate: 'test',
+    totalTax: 0,
+    shippingHandling: 0,
+    balanceDue: '$25310',
+    date: '2023-11-06',
+    addressShipTo: 'test',
+    phoneShipTo: 'test',
+  };
+  const handlePDF = async (data: any) => {
+    console.log(data);
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/invoicing/create?templateName=template1`,
+        options
+      );
+      const responseData = await response.json();
+
+      console.log(responseData.data);
+
+      window.location.href = responseData.data;
+      // setpdfURl(responseData.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // const handlePDF = async (data: any) => {
+  //   console.log(data);
+  // };
   useEffect(() => {
     getInvoice(data?._id);
     // setAllInvoice(contextData)
@@ -264,10 +329,10 @@ const Payouts = () => {
                     <TableCell
                       scope="row"
                       sx={{
-                        color: item?.delivery === true ? '#FEC84A' : '#37DE8F',
+                        color: item?.delivery === true ? '#37DE8F' : '#FEC84A',
                       }}
                     >
-                      {item?.delivery === true ? 'Pending' : 'Successfull'}
+                      {item?.delivery === true ? 'Successfull' : 'Pending'}
                     </TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>02/02/2000</TableCell>
                     <TableCell
@@ -333,7 +398,10 @@ const Payouts = () => {
                         >
                           View
                         </Typography>
-                        <Box sx={{ cursor: 'pointer' }}>
+                        <Box
+                          onClick={() => handlePDF(item)}
+                          sx={{ cursor: 'pointer' }}
+                        >
                           <DownloadSvgIcon />
                         </Box>
                       </Box>
