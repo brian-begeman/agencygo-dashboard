@@ -13,7 +13,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
     <Box
       display="flex"
       justifyContent={'space-between'}
-      gap="5px"
+      gap="10px"
       padding={'6px'}
       sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
     >
