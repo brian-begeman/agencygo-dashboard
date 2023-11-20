@@ -383,10 +383,10 @@ const Payouts = () => {
                           View
                         </Typography>
                         <Box
-                          onClick={() => handlePDF(item?.pdfUrl)}
+                          // onClick={() => handlePDF(item?.pdfUrl)}
                           sx={{ cursor: 'pointer' }}
                         >
-                          <DownloadSvgIcon />
+                          <a href={item?.pdfUrl} target="_blank" rel="noopener noreferrer"><DownloadSvgIcon /></a>
                         </Box>
                       </Box>
                     </TableCell>
