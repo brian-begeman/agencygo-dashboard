@@ -110,7 +110,7 @@ const Payouts = () => {
       if (response.ok) {
         const data = await response.json();
         setAllInvoice(data?.data);
-        console.debug(data?.data, 'getData');
+        console.log(data?.data, 'getData');
       } else {
         console.error('Failed to create the invoice');
       }
@@ -324,7 +324,7 @@ const Payouts = () => {
                       scope="row"
                       sx={{ color: '#FFFFFF', padding: '25px 10px' }}
                     >
-                      ${item?.amount}
+                      ${item?.qty * item?.unitPrice}
                     </TableCell>
                     <TableCell
                       scope="row"
