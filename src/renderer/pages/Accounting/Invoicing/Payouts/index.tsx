@@ -187,28 +187,12 @@ const Payouts = () => {
   };
   const handlePDF = async (data: any) => {
     console.log(data);
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
+    
+    
 
-    try {
-      const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template1`,
-        options
-      );
-      const responseData = await response.json();
-
-      console.log(responseData.data);
-
-      window.location.href = responseData.data;
+      window.location.href = data;
       // setpdfURl(responseData.data)
-    } catch (error) {
-      console.log(error);
-    }
+     
   };
   // const handlePDF = async (data: any) => {
   //   console.log(data);
@@ -399,10 +383,10 @@ const Payouts = () => {
                           View
                         </Typography>
                         <Box
-                          onClick={() => handlePDF(item)}
+                          // onClick={() => handlePDF(item?.pdfUrl)}
                           sx={{ cursor: 'pointer' }}
                         >
-                          <DownloadSvgIcon />
+                          <a href={item?.pdfUrl} target="_blank" rel="noopener noreferrer"><DownloadSvgIcon /></a>
                         </Box>
                       </Box>
                     </TableCell>
