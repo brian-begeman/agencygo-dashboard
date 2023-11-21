@@ -1,6 +1,8 @@
 import { ErrorOutline } from '@mui/icons-material';
 import {
   Box,
+  Button,
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -13,6 +15,7 @@ import {
 import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
 import theme from 'renderer/styles/muiTheme';
 import StatisticsCard from './StatisticsCard';
+import SimCardDownloadOutlinedIcon from '@mui/icons-material/SimCardDownloadOutlined';
 
 const tabledata = [
   {
@@ -84,23 +87,57 @@ const ChattingStatistics = () => {
         gap: '20px',
       }}
     >
-      <Typography
-        color={isDarkTheme ? '#fff' : '#000'}
-        fontSize="18px"
-        display="flex"
-        alignItems="center"
-        gap="3px"
-      >
-        Chatting Statistics
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
-      </Typography>
+      <Box display="flex" justifyContent={'space-between'}>
+        <Box display="flex">
+          <Typography
+            color={isDarkTheme ? '#fff' : '#000'}
+            fontFamily="Arimo"
+            fontSize="20px"
+            fontWeight="600"
+            display="flex"
+            alignItems="center"
+            gap="10px"
+          >
+            Chatting Statistics
+            <ErrorOutline
+              sx={{
+                color: theme.palette.secondary.contrastText,
+                fontSize: '18px',
+              }}
+            />
+          </Typography>
+
+          <Checkbox defaultChecked sx={{ marginLeft: '10px' }} />
+          <Typography
+            color={isDarkTheme ? '#fff' : '#000'}
+            fontSize="14px"
+            display="flex"
+            alignItems="center"
+            gap="14px"
+          >
+            Show only employees with Chatter role
+          </Typography>
+        </Box>
+
+        <Button
+          variant="contained"
+          endIcon={<SimCardDownloadOutlinedIcon />}
+          sx={{
+            height: '36px',
+            color: '#fff',
+            textTransform: 'capitalize',
+          }}
+        >
+          Export
+        </Button>
+      </Box>
+
       <Box
         width="fit-content"
         display={'flex'}
         flexWrap={'wrap'}
         margin={'20px 0px'}
         gap={'20px'}
-        
       >
         {statisticsSampleData.map((item) => (
           <StatisticsCard
@@ -121,7 +158,6 @@ const ChattingStatistics = () => {
           <TableHead
             sx={{
               background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
-              
             }}
           >
             <TableRow>
@@ -152,35 +188,19 @@ const ChattingStatistics = () => {
                 >
                   {row.employee}
                 </TableCell>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell component="th" scope="row" sx={{ fontSize: 12 }}>
                   {row.group}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.sales}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.messagesSent}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.PPVsSent}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.PPVsUnlocked}
                 </TableCell>
                 <TableCell
@@ -195,28 +215,16 @@ const ChattingStatistics = () => {
                 >
                   {row.unlockRatio}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.fansChatted}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.words}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{  fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.replyTime}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ fontSize: 12 }}
-                >
+                <TableCell align="right" sx={{ fontSize: 12 }}>
                   {row.scheduledHours}
                 </TableCell>
               </TableRow>

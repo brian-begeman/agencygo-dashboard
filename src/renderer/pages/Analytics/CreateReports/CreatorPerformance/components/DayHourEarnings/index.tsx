@@ -56,7 +56,9 @@ export default function DayHourEarnings() {
         color={isDarkTheme ? '#fff' : '#000'}
       >
         Day - Hour Earnings
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Scatter options={options} data={data} />
     </Box>

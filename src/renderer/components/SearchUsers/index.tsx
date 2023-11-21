@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import managers from 'renderer/utils/managerSuiteConstant';
 import UserCardWImage from 'renderer/components/UserCardWImage';
@@ -10,25 +10,56 @@ import ProfilePic from 'renderer/assets/png/profile.jpg';
 
 export default function SearchUsers() {
   const [search, setSearch] = useState('');
-    const { isLoading, data } = useQuery({ key: 'get-creator' });
-      const [selectedCreator, setSelectedCreator] = useState('');
+  const { isLoading, data } = useQuery({ key: 'get-creator' });
+  const [selectedCreator, setSelectedCreator] = useState('');
+  const [allUsers, setAllUsers] = useState<any>([]);
 
   const onSearch = (value: string) => {
     setSearch(value);
+
+    if (value === '') {
+      // If the search value is empty, show all users
+      setAllUsers(allUsers);
+    } else {
+      // Filter the users based on the search input
+      const filteredUsers = allUsers.filter((item: any) => {
+        return item.firstName.toLowerCase().includes(value.toLowerCase());
+      });
+      setAllUsers(filteredUsers);
+    }
   };
 
-   const theme = useTheme();
-   const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
+  const handleCreatorSelection = (creator: any) => {
+    setSelectedCreator(creator);
+  };
 
-     const handleCreatorSelection = (creator) => {
-       setSelectedCreator(creator);
-     };
+  const getUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/users');
+      if (response.ok) {
+        const data = await response.json();
+        setAllUsers(data?.data);
+        console.log(data, 'get user Data');
+      } else {
+        console.error('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch all users when the component mounts
+    getUsers();
+  }, []);
   return (
     <aside
       className={styles.aside}
       style={{
-        backgroundColor: isDarkTheme ? '#000' : '#fff',
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
         borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
       }}
     >
@@ -38,21 +69,23 @@ export default function SearchUsers() {
           onUpdateSearch={onSearch}
           onSearch={() => {}}
         >
-          <SearchInput.ReloadButton onRefresh={() => {}} />
+          <SearchInput.ReloadButton onRefresh={getUsers} />
         </SearchInput>
       </div>
-      {data?.data &&
-        data.data.map((c) => (
-          <UserCardWImage
-            key={c._id}
-            name={c.creatorName}
-            profileImage={ProfilePic}
-            notificationCount={0}
-            messageCount={0}
-            selected={selectedCreator === c._id}
-            onClick={() => handleCreatorSelection(c._id)}
-          />
-        ))}
+      {allUsers.map((item: any, index: any) => (
+        <UserCardWImage
+          data={item}
+          id={item._id}
+          name={`${item?.firstName} ${item?.lastName}`}
+          notificationCount={item?.notificationCount}
+          messageCount={item?.messageCount}
+          key={item?._id} // Use a unique key, such as _id
+          profileImage={''}
+          selected={false}
+          onClick={() => {}}
+          autoRelink={false}
+        />
+      ))}
     </aside>
   );
 }

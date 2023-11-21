@@ -105,13 +105,17 @@ const EaringDistribution = () => {
     >
       <Typography
         color={isDarkTheme ? '#fff' : '#000'}
-        fontSize="18px"
+        fontFamily="Arimo"
+        fontSize="20px"
+        fontWeight="600"
         display="flex"
         alignItems="center"
-        gap="3px"
+        gap="10px"
       >
         Earing Distribution
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '18px' }}
+        />
       </Typography>
       <Box display={'flex'} gap={'20px'} marginTop={'20px'}>
         <Box sx={{ width: '70%', height: 400 }}>
@@ -139,7 +143,11 @@ const EaringDistribution = () => {
                   >
                     {val.name}
                   </Typography>
-                  <Typography width="50px" fontSize={14} color={isDarkTheme ? '#fff' : '#000'}>
+                  <Typography
+                    width="50px"
+                    fontSize={14}
+                    color={isDarkTheme ? '#fff' : '#000'}
+                  >
                     {val.dollar}
                   </Typography>
                 </Box>

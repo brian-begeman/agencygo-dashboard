@@ -1,15 +1,19 @@
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
-import Message from 'renderer/assets/svg/messageSvg';
+
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import styles from './styles.module.css';
-import { useEffect, useState } from 'react';
-import { bool } from 'yup';
+import { useContext, useEffect, useState } from 'react';
+
+import { MyInvoiceContext } from 'renderer/pages/Accounting/Invoicing/context/context';
 
 interface $Props {
   name: string;
   profileImage: string;
   notificationCount?: number;
+  data: any;
+  id: string;
+
   messageCount?: number;
   selected: boolean;
   onClick: () => void;
@@ -19,6 +23,9 @@ export default function UserCardWImage({
   name,
   autoRelink,
   profileImage,
+  data,
+  id,
+
   notificationCount,
   messageCount,
   selected,
@@ -32,6 +39,7 @@ export default function UserCardWImage({
   useEffect(() => {
     console.log('inner', selected);
   }, []);
+  const { setData } = useContext(MyInvoiceContext);
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -60,9 +68,15 @@ export default function UserCardWImage({
         width={'100%'}
       >
         <Typography
+          onClick={() => {
+            console.log('set===== data', data);
+
+            setData(data);
+          }}
           variant="h3"
-          color={isDarkTheme ? '#fff' : '#000'}
-          fontSize={'18px'}
+          color="#fff"
+          fontSize={'14px'}
+          sx={{ cursor: 'pointer' }}
           fontWeight={500}
         >
           {name}
@@ -80,7 +94,7 @@ export default function UserCardWImage({
               <Typography fontSize={'14px'} fontWeight={400}>
                 {notificationCount}
               </Typography>
-              <Message />
+              {/* <Message /> */}
             </IconButton>
           )}
           {messageCount !== 0 && (

@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 
 ChartJS.register(
   CategoryScale,
@@ -48,15 +48,11 @@ export const data = {
 };
 
 export default function SmartBar() {
-
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
-
   return (
     <Box
       sx={{
-      backgroundColor:isDarkTheme ? '#000' : '#fff',
-        maxHeight: '300px',
+        backgroundColor: theme.palette.secondary.main,
+        maxHeight: '200px',
         width: '100%',
       }}
     >

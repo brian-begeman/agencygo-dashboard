@@ -3,7 +3,7 @@
   justify-content: space-between;
   padding-top: 32px;
   padding-bottom: 16px;
-  padding-right: 16px;
+  padding-right: 24px;
   padding-left: 16px;
   align-items: center;
   
@@ -40,8 +40,8 @@ filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotat
 }
 
 .navItemText {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .start {

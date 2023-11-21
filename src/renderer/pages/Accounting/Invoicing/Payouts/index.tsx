@@ -10,11 +10,12 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import DownloadSvgIcon from 'renderer/assets/svg/downloadSvg';
 import theme from 'renderer/styles/muiTheme';
+import { MyInvoiceContext } from '../context/context';
+import ViewModal from './ViewModal';
 
 const payoutData = [
   {
@@ -82,139 +83,227 @@ const payoutData = [
   },
 ];
 const Payouts = () => {
+  const [openView, setOpenView] = useState<any>(false);
   const [selectedStatus, setSelectedStatus] = useState('Filter');
+  const [userData, setUserData] = useState<any>('');
+  const [selectedStatu, setSelectedStatu] = useState<any>('');
 
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
+  const [allInvoice, setAllInvoice] = useState<any>([]);
+
+  const { data } = useContext(MyInvoiceContext);
+  console.log('contextData', data?._id);
+
+  // console.log(allInvoice?.data?.firstName)
+
+  const getInvoice = async (id: any) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const response = await fetch(
+        `http://localhost:3000/invoicing/user/${id}/invoices`,
+        options
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAllInvoice(data?.data);
+        console.debug(data?.data, 'getData');
+      } else {
+        console.error('Failed to create the invoice');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const dataForReactApi = {
+    status: selectedStatu,
+  };
+
+  const updateInvoice = async (id: any) => {
+    console.log(selectedStatu);
+
+    console.log(id);
+    try {
+      const response = await fetch(`http://localhost:3000/invoicing/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataForReactApi),
+      });
+
+      if (response.ok) {
+        // Update the state after a successful update
+        getInvoice(data?._id);
+        console.log('Invoice updated successfully');
+      } else {
+        console.error('Failed to update the invoice');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getInvoice(data?._id);
+    // setAllInvoice(contextData)
+  }, [data]);
+  // useEffect(()=>{
+  //   getInvoice(contextData.data._id)
+  // },[contextData?.data?._id])
+  const [openPromo, setOpenPromo] = useState<any | null>(false);
+  const handleView = (data: any) => {
+    console.log(data);
+    setUserData(data);
+    setOpenView(true);
+  };
+
+  const handleStatusToggle = (istrue: any) => {
+    console.log(istrue);
+    setSelectedStatu((istrue: any) => (istrue ? true : false));
+  };
 
   return (
-    <Stack
-      borderRadius="16px"
-      gap="15px"
-      bgcolor={isDarkTheme ? '#000' : '#fff'}
-      sx={{
-        paddingTop: '10px',
-        paddingBottom:'10px',
-        border: `2px solid ${theme.palette.primary.contrastText}`,
-      }}
-    >
-      <Box
-        display={'flex'}
-        justifyContent={'space-between'}
-        paddingTop={'10px'}
-        paddingLeft={'15px'}
-      >
-        <Typography fontSize="22px">Invoicing</Typography>
-        <Box sx={ {paddingRight:'16px'}}>
-          <Select
-            id="filter"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            sx={{
-           
-              width: '150px',
-              
-              height: 'fit-content',
-              padding: '0px 0px',
-              ' & .MuiOutlinedInput-input': {
-                padding: '4px  8px',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.contrastText,
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.contrastText,
-              },
-
-              input: {
-                backgroundColor: theme.palette.secondary.contrastText,
-              },
-            }}
-          >
-            <MenuItem
-              value={'Filter'}
-              sx={{ fontWeight: 500,  }}
-            >
-              Filter
-            </MenuItem>
-            <MenuItem value={'paid'} sx={{ fontWeight: 500, }}>
-              Paid invoice
-            </MenuItem>
-            <MenuItem
-              value={'unpaid'}
-              sx={{ fontWeight: 500,  }}
-            >
-              Pending invoice
-            </MenuItem>
-          </Select>
-        </Box>
-      </Box>
-      <TableContainer
+    <>
+      <Stack
+        borderRadius="16px"
+        gap="15px"
         sx={{
+          padding: '10px',
           border: `1px solid ${theme.palette.primary.contrastText}`,
-         width:'100%'
         }}
       >
-        <Table
-          
-          aria-label="simple table"
-        >
-          <TableHead
-            sx={{
-              background: isDarkTheme ? '#ffffff33' : '#EAF1FF',
-            }}
-          >
-            <TableRow>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(selectedStatus == 'Filter'
-              ? payoutData
-              : payoutData.filter(
-                  (d) =>
-                    d.invoiceStatus.toLowerCase() ===
-                    selectedStatus.toLowerCase()
-                )
-            ).map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        <Box display={'flex'} justifyContent={'space-between'}>
+          <Typography fontSize="22px">Invoicing</Typography>
+          <Box>
+            <Select
+              id="filter"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              sx={{
+                color: theme.palette.secondary.contrastText,
+                width: 'fit-content',
+                '.MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.light,
+                },
+                height: 'fit-content',
+                padding: '0px 0px',
+                ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+                  {
+                    padding: '4px 8px',
+                  },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.contrastText,
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.contrastText,
+                },
+                '.MuiSvgIcon-root': {
+                  fill: 'white !important',
+                },
+                input: {
+                  backgroundColor: theme.palette.secondary.contrastText,
+                },
+              }}
+            >
+              <MenuItem
+                value={'Filter'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
               >
-                <TableCell
-                  scope="row"
-                  sx={{  padding: '25px 10px' }}
-                >
-                  {row.amount}
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  sx={{
-                    color: row.status === 'Pending' ? '#FEC84A' : '#37DE8F',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      width: 'fit-content',
-                      padding: '4px 10px',
-                      borderRadius: '14px',
-                      fontSize: '12px',
-                      background:
-                        row.status === 'Pending' ? '#473200' : '#072718',
-                    }}
+                Filter
+              </MenuItem>
+              <MenuItem
+                value={'paid'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
+              >
+                Paid invoice
+              </MenuItem>
+              <MenuItem
+                value={'unpaid'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
+              >
+                Pending invoice
+              </MenuItem>
+            </Select>
+          </Box>
+        </Box>
+        <TableContainer>
+          <Table
+            sx={{
+              minWidth: 650,
+              borderRadius: 16,
+              border: '1px solid #292929',
+            }}
+            aria-label="simple table"
+          >
+            <TableHead sx={{ bgcolor: '#292929' }}>
+              <TableRow>
+                <TableCell sx={{ color: '#FFFFFF' }}>Amount</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>Delivery</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>Status</TableCell>
+                <TableCell sx={{ color: '#FFFFFF' }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allInvoice.map((item: any, index: any) => {
+                return (
+                  <TableRow
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    {row.status}
-                  </Typography>
-                </TableCell>
-                <TableCell >{row.date}</TableCell>
-                <TableCell
+                    <TableCell
+                      scope="row"
+                      sx={{ color: '#FFFFFF', padding: '25px 10px' }}
+                    >
+                      ${item?.amount}
+                    </TableCell>
+                    <TableCell
+                      scope="row"
+                      sx={{
+                        color: item?.delivery === true ? '#FEC84A' : '#37DE8F',
+                      }}
+                    >
+                      {item?.delivery === true ? 'Pending' : 'Successfull'}
+                    </TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>02/02/2000</TableCell>
+                    <TableCell
+                      scope="row"
+                      sx={{
+                        color: item?.status ? '#FEC84A' : '#37DE8F',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                      onClick={() => {
+                        handleStatusToggle(item?.status);
+                        updateInvoice(item?._id);
+                      }}
+                    >
+                      <Select
+                        value={item?.status ? 'Paid' : 'Unpaid'}
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                          updateInvoice(item?._id);
+
+                          setSelectedStatu(
+                            e.target.value === 'Paid' ? true : false
+                          );
+                        }}
+                        style={{ color: item?.status ? '#FEC84A' : '#37DE8F' }}
+                      >
+                        <MenuItem value="Paid">Paid</MenuItem>
+                        <MenuItem value="Unpaid">Unpaid</MenuItem>
+                      </Select>
+                    </TableCell>
+                    {/* <TableCell
                   sx={{
                     color:
-                      row.invoiceStatus === 'Unpaid' ? '#FEC84A' : '#37DE8F',
+                    allInvoice.data.isAdmin  === 'Unpaid' ? '#FEC84A' : '#37DE8F',
                   }}
                 >
                   <Typography
@@ -224,32 +313,40 @@ const Payouts = () => {
                       borderRadius: '14px',
                       fontSize: '12px',
                       background:
-                        row.invoiceStatus === 'Unpaid' ? '#473200' : '#072718',
+                      allInvoice.data.isAdmin === 'Unpaid' ? '#473200' : '#072718',
                     }}
                   >
-                    {row.invoiceStatus}
+                    {allInvoice.data.isAdmin  === true ? 'paid': 'Unpaid'}
                   </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#04A1FF' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                    }}
-                  >
-                    <Typography sx={{ cursor: 'pointer' }}>View</Typography>
-                    <Box sx={{ cursor: 'pointer' }}>
-                      <DownloadSvgIcon />
-                    </Box>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Stack>
+                </TableCell> */}
+                    <TableCell sx={{ color: '#04A1FF' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                        }}
+                      >
+                        <Typography
+                          sx={{ cursor: 'pointer' }}
+                          onClick={() => handleView(allInvoice[index])}
+                        >
+                          View
+                        </Typography>
+                        <Box sx={{ cursor: 'pointer' }}>
+                          <DownloadSvgIcon />
+                        </Box>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Stack>
+      <ViewModal open={openView} setOpen={setOpenView} userData={userData} />
+    </>
   );
 };
 

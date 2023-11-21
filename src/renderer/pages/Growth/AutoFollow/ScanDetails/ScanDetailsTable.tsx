@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
@@ -70,6 +71,9 @@ const rows = [
 ];
 
 export default function ScanDetailsTable() {
+
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box>
       <TableContainer
@@ -82,18 +86,18 @@ export default function ScanDetailsTable() {
           <TableHead
             sx={{
               background: theme.palette.primary.contrastText,
-              color: '#fff',
+              color: isDarkTheme?'#0C0C0C': '#EAF1FF',
             }}
           >
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Creators</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Gender</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Internal Notes</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Platform</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Employees</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Proxy</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Status</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Operations</TableCell>
+              <TableCell >Creators</TableCell>
+              <TableCell >Gender</TableCell>
+              <TableCell >Internal Notes</TableCell>
+              <TableCell >Platform</TableCell>
+              <TableCell >Employees</TableCell>
+              <TableCell  >Proxy</TableCell>
+              <TableCell >Status</TableCell>
+              <TableCell >Operations</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -121,7 +125,7 @@ export default function ScanDetailsTable() {
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
                       <Avatar />
-                      <Typography variant="h6" fontSize="18px" color="#fff">
+                      <Typography variant="h6" fontSize="18px" >
                         {name}
                       </Typography>
                     </Stack>
@@ -129,7 +133,7 @@ export default function ScanDetailsTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                     
                     }}
                     align="right"
                   >
@@ -138,7 +142,7 @@ export default function ScanDetailsTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                      
                     }}
                   >
                     {internalNotes}
@@ -152,19 +156,19 @@ export default function ScanDetailsTable() {
                       alignItems="center"
                       flexDirection="row"
                       spacing={2}
-                      color="#fff"
+                      
                     >
                       {platform.icon}
                       {platform.name}
                     </Stack>
-                    <Typography component="small" color="#fff" fontSize="11px">
+                    <Typography component="small"  fontSize="11px">
                       {platform.linked ? 'Linked' : 'Not Linked'}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      color: '#fff',
+                      
                     }}
                   >
                     {employees}
@@ -174,10 +178,10 @@ export default function ScanDetailsTable() {
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Typography color="#fff" fontSize="14px">
+                    <Typography  fontSize="14px">
                       {proxy.name}
                     </Typography>
-                    <Typography color="#fff" fontSize="11px">
+                    <Typography  fontSize="11px">
                       {proxy.ipAddress}
                     </Typography>
                   </TableCell>
@@ -195,10 +199,10 @@ export default function ScanDetailsTable() {
                     align="right"
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
-                      <Typography variant="body1" color="#fff">
+                      <Typography variant="body1" >
                         Edit
                       </Typography>
-                      <Typography variant="body1" color="#fff">
+                      <Typography variant="body1" >
                         More
                       </Typography>
                     </Stack>

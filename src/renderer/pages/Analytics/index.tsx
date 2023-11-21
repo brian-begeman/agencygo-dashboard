@@ -49,6 +49,7 @@ export default function ShareForShare() {
             <Typography
               sx={{ padding: '20px 0px ' }}
               color={isDarkTheme ? '#fff' : '#000'}
+            
             >
               Analytics
             </Typography>

@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import LensIcon from '@mui/icons-material/Lens';
+import { ReactNode, useState } from 'react';
 
 interface LabelTextProps {
   label: string;
@@ -141,6 +142,50 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
   );
 }
 
+interface DropdownWithTreeLabelProps {
+  label?: string | undefined;
+  inputIdentifierName?: string;
+  value?: string;
+  selectStyle?: any;
+  handleOnChange?: (name?: string, value?: string) => void;
+  options?: ReactNode; // Array of options
+  placeholder?: string;
+  register?: UseFormRegister<FieldValues>;
+}
+export function DropdownWithTreeLabel(props: DropdownWithTreeLabelProps) {
+  const {
+    label,
+    inputIdentifierName,
+    value,
+    selectStyle,
+    handleOnChange = () => {},
+    options,
+    placeholder,
+    register = () => ({}),
+  } = props;
+  const [showTreeSelectBox, setShowTreeSelectBox] = useState(false);
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+  return (
+    <div className={classes.inputLabelWrapper}>
+      {/* {label && <LabelText label={label} />} */}
+      <div onClick={() => setShowTreeSelectBox(true)}>
+        <InputWithLabel
+          label={label}
+          value={value}
+          // inputIdentifierName="agencyId"
+          placeholder={"Enter parent group name"}
+          // register={register as any}
+        />
+      </div>
+      {showTreeSelectBox && (
+        <div style={{ borderRadius: '5px', width: '100%', background: 'gray' }}>
+          {options}
+        </div>
+      )}
+    </div>
+  );
+}
 interface ModalFooterProps {
   addHandler: () => void;
   cancelHandler: () => void;
@@ -225,7 +270,7 @@ export function RadioButton({ title }: RadioProps) {
             checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
           />
         }
-        label=""
+        label={title}
         // label={`${title.title}`}
       />
     </FormGroup>
@@ -272,7 +317,7 @@ any) {
       >
         <Select
           sx={{
-            '&.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+            '&.MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
               background: 'gray !important',
             },
             color: 'white',

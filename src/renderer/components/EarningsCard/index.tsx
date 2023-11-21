@@ -43,7 +43,26 @@ export default function EarningsCard({ title, amount, icon }: $Props) {
           component="div"
         />
       )}
-      {icon}
+      <div
+        style={{
+          backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+          borderRadius: '200px',
+          width: '50px',
+          height: '50px',
+        }}
+      >
+        <div
+          style={{
+            marginTop: '12px',
+            marginLeft: '12px',
+            filter: isDarkTheme
+              ? ' brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(248deg) brightness(106%) contrast(106%)'
+              : 'brightness(0) saturate(100%) invert(41%) sepia(98%) saturate(1260%) hue-rotate(177deg) brightness(101%) contrast(102%)',
+          }}
+        >
+          {icon}
+        </div>
+      </div>
     </Stack>
   );
 }

@@ -17,7 +17,7 @@ function AllUserDataMessage(props: any) {
           onSearch={() => {}}
         >
           <SearchInput.ReloadButton onRefresh={() => props.getAllConversationList()} />
-          <SearchInput.NewConvButton onClick={() => setIsOpenNewConvModal((prevOpen)=> !prevOpen)} />
+          {/* <SearchInput.NewConvButton onClick={() => setIsOpenNewConvModal((prevOpen)=> !prevOpen)} /> */}
         </SearchInput>
       </div>
       <div style={{ cursor: 'pointer' }}>

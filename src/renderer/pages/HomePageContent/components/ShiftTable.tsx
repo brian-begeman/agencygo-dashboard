@@ -82,7 +82,7 @@ export default function ShiftTable() {
     <Box
       className={mode}
       padding="16px"
-      sx={{ backgroundColor: theme.palette.secondary.main }}
+      sx={{ backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff' }}
       borderRadius="16px"
     >
       <Box marginBottom="10px">
@@ -102,14 +102,14 @@ export default function ShiftTable() {
             }}
           >
             <TableRow>
-              <TableCell >Creators</TableCell>
-              <TableCell >Gender</TableCell>
+              <TableCell>Creators</TableCell>
+              <TableCell>Gender</TableCell>
               <TableCell>Internal Notes</TableCell>
-              <TableCell >Platform</TableCell>
-              <TableCell >Employees</TableCell>
-              <TableCell >Proxy</TableCell>
-              <TableCell >Status</TableCell>
-              <TableCell >Operations</TableCell>
+              <TableCell>Platform</TableCell>
+              <TableCell>Employees</TableCell>
+              <TableCell>Proxy</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Operations</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -145,7 +145,6 @@ export default function ShiftTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                     
                     }}
                   >
                     {gender}
@@ -153,7 +152,6 @@ export default function ShiftTable() {
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                      
                     }}
                   >
                     {internalNotes}
@@ -163,23 +161,17 @@ export default function ShiftTable() {
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Stack
-                      alignItems="center"
-                      flexDirection="row"
-                      spacing={2}
-                      
-                    >
+                    <Stack alignItems="center" flexDirection="row" spacing={2}>
                       {platform.icon}
                       {platform.name}
                     </Stack>
-                    <Typography component="small"  fontSize="11px">
+                    <Typography component="small" fontSize="11px">
                       {platform.linked ? 'Linked' : 'Not Linked'}
                     </Typography>
                   </TableCell>
                   <TableCell
                     sx={{
                       borderColor: theme.palette.primary.contrastText,
-                     
                     }}
                   >
                     {employees}
@@ -189,12 +181,8 @@ export default function ShiftTable() {
                       borderColor: theme.palette.primary.contrastText,
                     }}
                   >
-                    <Typography  fontSize="12px">
-                      {proxy.name}
-                    </Typography>
-                    <Typography  fontSize="10px">
-                      {proxy.ipAddress}
-                    </Typography>
+                    <Typography fontSize="12px">{proxy.name}</Typography>
+                    <Typography fontSize="10px">{proxy.ipAddress}</Typography>
                   </TableCell>
                   <TableCell
                     sx={{
@@ -210,18 +198,10 @@ export default function ShiftTable() {
                     align="right"
                   >
                     <Stack spacing={4} direction="row" alignItems="center">
-                      <Typography
-                        variant="body1"
-                        
-                        fontSize={'14px'}
-                      >
+                      <Typography variant="body1" fontSize={'14px'}>
                         Edit
                       </Typography>
-                      <Typography
-                        variant="body1"
-                       
-                        fontSize={'14px'}
-                      >
+                      <Typography variant="body1" fontSize={'14px'}>
                         More
                       </Typography>
                     </Stack>
