@@ -414,7 +414,7 @@ function ButtonTabWithIconsElement({
           sx={{
             fontSize: '14px',
             fontWeight: 500,
-            color: getColor(),
+            color:'#fff',
             borderRadius: '6px',
             textTransform: 'capitalize',
           }}

@@ -6,6 +6,7 @@ import {
   TableCell,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
@@ -176,6 +177,9 @@ export default function ManageCreators() {
   const handleAccountClose = () => {
     setOpenLinked(false);
   };
+ const theme = useTheme();
+ const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -235,16 +239,9 @@ export default function ManageCreators() {
                 }) => (
                   <TableRow
                     key={name}
-                    sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
-                    }}
+                   
                   >
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                      scope="row"
-                    >
+                    <TableCell scope="row">
                       <Stack spacing={1} direction="row" alignItems="center">
                         <Avatar />
                         <Typography variant="h6" fontSize="18px">
@@ -252,35 +249,29 @@ export default function ManageCreators() {
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                      align="right"
-                    >
+                    <TableCell align="right">
                       {gender === 'male' ? 'Male' : 'Female'}
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      {internalNotes}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
-                      <Stack
-                        alignItems="center"
-                        flexDirection="row"
-                        spacing={2}
+                    <TableCell>{internalNotes}</TableCell>
+                    <TableCell>
+                      <Box display={'flex'} justifyContent={'center'}>
+                        <Box
+                          sx={{
+                            filter: isDarkTheme
+                              ? 'brightness(0) saturate(100%) invert(100%) sepia(3%) saturate(13%) hue-rotate(81deg) brightness(106%) contrast(106%);'
+                              : 'brightness(0) saturate(100%) invert(0%) sepia(4%) saturate(7500%) hue-rotate(244deg) brightness(94%) contrast(103%);',
+                          }}
+                        >
+                          <OnlyFansSvg />
+                        </Box>
+
+                        <Typography marginLeft={'10px'}> OnlyFans</Typography>
+                      </Box>
+                      <Typography
+                        component="small"
+                        fontSize="11px"
+                        marginLeft={'10px'}
                       >
-                        OnlyFans
-                        <OnlyFansSvg />
-                      </Stack>
-                      <Typography component="small" fontSize="11px">
                         {proxy !== null &&
                         proxy.hasOwnProperty('creds') &&
                         proxy.hasOwnProperty('proxyUser') ? (
@@ -308,38 +299,21 @@ export default function ManageCreators() {
                         )}
                       </Typography>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
+                    <TableCell>
                       {assignEmployee
                         ?.map((employee: any) => {
                           return `${employee.name} `;
                         })
                         .join(', ')}
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
+                    <TableCell>
                       <Typography variant="body2">OnlyManager Proxy</Typography>
                       <Typography variant="caption">107.175.227.145</Typography>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                    >
+                    <TableCell>
                       {status ? <Activated /> : <DeactivatedSvg />}
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        borderColor: theme.palette.primary.contrastText,
-                      }}
-                      align="right"
-                    >
+                    <TableCell align="right">
                       <Stack spacing={2} direction="row" alignItems="center">
                         <ButtonBase
                           onClick={() => {

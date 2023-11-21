@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import faker from 'faker';
 import theme from 'renderer/styles/muiTheme';
-import { Box, MenuItem, Select, Typography } from '@mui/material';
+import { Box, MenuItem, Select, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import { useState } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
@@ -121,13 +121,19 @@ const xLabels = [
 export default function BookRightInvoice() {
   const [selectedStatus, setSelectedStatus] = useState('Filter');
 
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
+
+
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: '16px',
+        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+        
         padding: '20px',
         gap: '20px',
+        borderRadius:'16px'
       }}
     >
       <Box

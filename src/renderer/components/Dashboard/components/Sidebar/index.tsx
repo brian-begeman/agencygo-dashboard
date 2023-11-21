@@ -14,7 +14,13 @@ import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 import Message from 'renderer/assets/svg/messageSvg';
 import ContentHubSvg from 'renderer/assets/svg/ContentHubSvg';
-import { useTheme } from '@mui/material';
+import { Drawer, IconButton, useTheme } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
+import NewSideBar from './newSideBar';
+import ChatSvg from 'renderer/assets/svg/ChatSvg';
+import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
 
 const sideBarMenuConst = [
   {
@@ -82,7 +88,7 @@ const sideBarMenuConst = [
   },
   {
     name: localisation.browser,
-    icon: <ContentHubSvg />,
+    icon: <AntyBrowser />,
     menu: [],
     link: '/browser',
   },
@@ -130,7 +136,7 @@ const sideBarMenuConst = [
   },
   {
     name: localisation.growth,
-    icon: <GrowthSvg  />,
+    icon: <GrowthSvg />,
     menu: [
       {
         label: 'Smart Tags',
@@ -207,7 +213,7 @@ const sideBarMenuConst = [
   },
   {
     name: 'Message',
-    icon: <Message />,
+    icon: <ChatSvg />,
     menu: [],
     link: '/chatmessage',
   },
@@ -245,39 +251,90 @@ function SideBar() {
   const handlePopoverOpen = (index: number) => {
     setCurrentNavItemHovered(index);
   };
+  const [open, setOpen] = React.useState(false);
 
   const handlePopoverClose = () => {
     setCurrentNavItemHovered(-1);
   };
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
 
-// Determine the class based on the theme
-const mode = isDarkTheme ? classes.darkTheme : classes.lightTheme;
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  // Determine the class based on the theme
+  const mode = isDarkTheme ? classes.darkTheme : classes.lightTheme;
 
   return (
-    <div
-      className={`${classes.sidebar} ${mode}`}
-     
-    >
+    <div className={`${classes.sidebar} ${mode}`}>
       <BrandLogo />
-      <div className={classes.sidebarNavWrapper}>
-        {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
-          return (
-            <SidebarItem
-              handlePopoverOpen={handlePopoverOpen}
-              handlePopoverClose={handlePopoverClose}
-              name={name}
-              icon={icon}
-              menu={menu}
-              currentNavItemHovered={currentNavItemHovered}
-              index={index}
-              link={link}
-              key={name}
-            />
-          );
-        })}
-      </div>
+      <MenuIcon
+        onClick={open ? handleDrawerClose : handleDrawerOpen}
+        sx={{ marginLeft: '22px', marginTop: '10px' ,color:'#fff'}}
+      />
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        open={open}
+        PaperProps={{
+          sx: {
+            width: open ? '240px' : '64px', // Adjust width for the mini variant
+            transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+            overflowX: 'hidden',
+            backgroundColor: isDarkTheme ? '#0C0C0C' : '#04a1ff',
+          },
+        }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: open ? '240px' : '64px', // Adjust width for the mini variant
+            transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+            overflowX: 'hidden',
+            border: 'none',
+            position: 'relative',
+          },
+        }}
+      >
+        <div className={classes.toolbar}>
+          {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
+            {theme.direction === 'rtl' ? (
+              open ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )
+            ) : open ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton> */}
+        </div>
+        <div className={classes.sidebarNavWrapper}>
+          {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
+            return (
+              <NewSideBar
+                handlePopoverOpen={handlePopoverOpen}
+                handlePopoverClose={handlePopoverClose}
+                name={name}
+                icon={icon}
+                menu={menu}
+                currentNavItemHovered={currentNavItemHovered}
+                index={index}
+                link={link}
+                key={name}
+                open={open}
+              />
+            );
+          })}
+        </div>
+      </Drawer>
     </div>
   );
 }

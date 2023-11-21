@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Stack } from '@mui/material';
+import { Divider, Stack, useTheme } from '@mui/material';
 import theme from 'renderer/styles/muiTheme';
 import AlignmentSvg from 'renderer/assets/svg/AlignmentSvg';
 import RightArrowSvg from 'renderer/assets/svg/RightArrowSvg';
@@ -19,8 +19,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   borderRadius: '10px',
-  bgcolor: '#121212',
-  color: '#fff',
+ 
   boxShadow: 24,
   p: 2,
 };
@@ -148,6 +147,12 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
     //   title: 'Invoice Template 5',
     // },
   ];
+
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
+
+
   return (
     <>
       <Modal
@@ -157,7 +162,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} bgcolor={isDarkTheme ? '#000' : '#fff'}>
           <Box
             sx={{
               display: 'flex',
@@ -166,7 +171,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
               margin: '10px 0px',
             }}
           >
-            <Typography> Create Invoice </Typography>
+            <Typography> Create Invoiceee </Typography>
             <Typography onClick={handleClose} sx={{ cursor: 'pointer' }}>
               X
             </Typography>
@@ -184,12 +189,13 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
             {modalData.map((data) => (
               <Stack
                 key={data.id}
-                width={'26%'}
+                width={'30%'}
                 borderRadius="8px"
                 gap="15px"
                 sx={{
                   border: `1px solid ${theme.palette.primary.contrastText}`,
                   cursor: 'pointer',
+                  bgcolor: isDarkTheme ? '#121212' : '#EAF1FF',
                 }}
               >
                 <div

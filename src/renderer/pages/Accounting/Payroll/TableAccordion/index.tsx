@@ -12,12 +12,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  useTheme,
 } from '@mui/material';
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-  border: `1px solid #292929`,
+  border: `1px solid  `,
+
   '&:not(:last-child)': {
     borderBottom: 0,
   },
@@ -49,46 +51,58 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function TableAccordion({ children }: any) {
-  const [expanded, setExpanded] = React.useState<string | false>("1");
+  const [expanded, setExpanded] = React.useState<string | false>('1');
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
 
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <div>
-      {
-        ["1","2","3","4","5"].map((d)=>(
-      <Accordion
-        expanded={expanded === d}
-        onChange={handleChange(d)}
-      >
-        <AccordionSummary
-          aria-controls="panel1d-content"
-          id="panel1d-header"
-          sx={{ background: '#121212', color: '#fff' }}
+      {['1', '2', '3', '4', '5'].map((d) => (
+        <Accordion
+          expanded={expanded === d}
+          onChange={handleChange(d)}
+          sx={{ borderColor: isDarkTheme ? '#292929' : '#fff' }}
         >
-          <AccordionHeaderData d={d} />
-        </AccordionSummary>
-        <AccordionDetails sx={{ background: '#292929', color: '#fff' }}>
-          {children}
-        </AccordionDetails>
-      </Accordion>
-        ))
-      }
+          <AccordionSummary
+            aria-controls="panel1d-content"
+            id="panel1d-header"
+            sx={{
+              background: isDarkTheme ? '#131213' : '#EAF1FF',
+            }}
+          >
+            <AccordionHeaderData d={d} />
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{ background: isDarkTheme ? '#0C0C0C' : '#fff' }}
+          >
+            {children}
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </div>
   );
 }
 
-const AccordionHeaderData = ({d}:any) => {
+const AccordionHeaderData = ({ d }: any) => {
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
+
+
+
   return (
     <>
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead
             sx={{
-              bgcolor: '#121212',
+              bgcolor: isDarkTheme ? '#131213' :  '#EAF1FF',
               '&..css-4didej-MuiButtonBase-root-MuiAccordionSummary-root': {
                 padding: '0px',
                 border: 'none',
@@ -102,7 +116,7 @@ const AccordionHeaderData = ({d}:any) => {
             <TableRow>
               <TableCell
                 sx={{
-                  color: '#fff',
+              
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
@@ -112,72 +126,72 @@ const AccordionHeaderData = ({d}:any) => {
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                  
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
                 }}
               >
-                <Typography sx={{ fontSize: '12px', color: '#aaa' }}>
+                <Typography sx={{ fontSize: '12px' }}>
                   Start Date
                 </Typography>
                 <Typography>5/10/23</Typography>
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
                 }}
               >
-                <Typography sx={{ fontSize: '12px', color: '#aaa' }}>
+                <Typography sx={{ fontSize: '12px' }}>
                   End Date
                 </Typography>
                 <Typography>5/12/23</Typography>
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+               
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
                 }}
               >
-                <Typography sx={{ fontSize: '12px', color: '#aaa' }}>
+                <Typography sx={{ fontSize: '12px', }}>
                   Total Hours
                 </Typography>
                 <Typography>700 hrs</Typography>
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                 
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
                 }}
               >
-                <Typography sx={{ fontSize: '12px', color: '#aaa' }}>
+                <Typography sx={{ fontSize: '12px'}}>
                   Total Salary
                 </Typography>
                 <Typography>$34,042.42</Typography>
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                 
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
                 }}
               >
-                <Typography sx={{ fontSize: '12px', color: '#aaa' }}>
+                <Typography sx={{ fontSize: '12px'}}>
                   Total Salary
                 </Typography>
                 <Typography>$3,042.42</Typography>
               </TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                 
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
@@ -185,7 +199,7 @@ const AccordionHeaderData = ({d}:any) => {
               ></TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,
@@ -193,7 +207,7 @@ const AccordionHeaderData = ({d}:any) => {
               ></TableCell>
               <TableCell
                 sx={{
-                  color: '#fff',
+                  
                   fontSize: '17px',
                   border: 'none',
                   padding: 0,

@@ -275,7 +275,7 @@ export default function UploadFolderModal({
               />
             </Box>
           )}
-          <Dropzone maxSize={104857600} onDrop={onDrop}>
+          <Dropzone minSize={1000000} maxSize={104857600} onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (
               <section>
                 <div {...getRootProps()}>
@@ -324,10 +324,7 @@ export default function UploadFolderModal({
               sx={{ textTransform: 'capitalize' }}
               onClick={handleUpload}
             >
-              <Typography sx={{ color:'#fff' }}>
-                {' '}
-                Upload
-              </Typography>
+              <Typography sx={{ color: '#fff' }}> Upload</Typography>
             </Button>
           </Box>
         </Box>

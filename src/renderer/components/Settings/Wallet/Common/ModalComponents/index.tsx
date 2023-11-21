@@ -59,7 +59,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
       <LabelText label={label} />
       <input
         style={{
-          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           color: isDarkTheme ? '#fff' : '#000',
         }}
         className={classes.inputCss}
@@ -118,7 +118,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
       {label && <LabelText label={label} />}
       <select
         style={{
-          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           color: isDarkTheme ? '#fff' : '#000',
         }}
         className={classes.selectCss}
@@ -212,13 +212,16 @@ export function ModalFooter(props: ModalFooterProps) {
   return (
     <div
       className={classes.modalFooter}
-      style={{ backgroundColor: isDarkTheme ? '#000' : '#EAF1FF' }}
+      style={{ backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF' }}
     >
       <button
         className={classes.cancelButtonCss}
         onClick={cancelHandler}
         type="button"
-        style={{ color: isDarkTheme ? '#fff' : '#000' }}
+        style={{
+          color: isDarkTheme ? '#fff' : '#000',
+          borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+        }}
       >
         {cancelText}
       </button>
@@ -302,7 +305,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',

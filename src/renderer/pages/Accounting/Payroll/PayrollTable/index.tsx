@@ -7,13 +7,14 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Button
+  Button,
+  useTheme,
 } from '@mui/material';
 import EditIconSvg from 'renderer/assets/svg/EditIconSvg';
 import AddFromVaultSvg from 'renderer/assets/svg/AddFromVaultSvg';
 
 import TableAccordion from '../TableAccordion';
-import { useState, useEffect,ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { AnyNsRecord } from 'dns';
 
 const tableData = [
@@ -82,27 +83,27 @@ const tableData = [
 const PayrollTable = () => {
   return (
     <TableAccordion>
-      <TableData/>
+      <TableData />
     </TableAccordion>
   );
 };
 
 export default PayrollTable;
 
-const TableData = ()=>{
+const TableData = () => {
   const [alluser, setAlluser] = useState<any>([]);
-const [tableData2, setTableData] = useState<any>([]); // Initialize with your data
-const [loaclData, setLoaclData] = useState<any>([]); // Initialize with your data
-const [editingIndex, setEditingIndex] = useState<any>(null);
-const [inputValue, setInputValue] = useState<any>({
-  hourlyPay: '',        
-  commissionEarned: '',
-  bonuses:''
-});
+  const [tableData2, setTableData] = useState<any>([]); // Initialize with your data
+  const [loaclData, setLoaclData] = useState<any>([]); // Initialize with your data
+  const [editingIndex, setEditingIndex] = useState<any>(null);
+  const [inputValue, setInputValue] = useState<any>({
+    hourlyPay: '',
+    commissionEarned: '',
+    bonuses: '',
+  });
 
-const handleChnge = (e: ChangeEvent<HTMLInputElement>) => {
-  setInputValue({ ...inputValue, [e.target.name]: e.target.value });
-}
+  const handleChnge = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+  };
 
   const getuser = async () => {
     const options = {
@@ -110,13 +111,12 @@ const handleChnge = (e: ChangeEvent<HTMLInputElement>) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      
     };
     try {
       const response = await fetch('http://localhost:3000/users', options);
       if (response.ok) {
         const data = await response.json();
-        setAlluser(data?.data)
+        setAlluser(data?.data);
         console.log(data, 'get user Data');
       } else {
         console.error('Failed to create the user');
@@ -125,9 +125,9 @@ const handleChnge = (e: ChangeEvent<HTMLInputElement>) => {
       console.error(error);
     }
   };
-  useEffect(()=>{
-    getuser()
-  },[ ])
+  useEffect(() => {
+    getuser();
+  }, []);
 
   const editIndex = (index: any) => {
     setEditingIndex(index);
@@ -135,197 +135,245 @@ const handleChnge = (e: ChangeEvent<HTMLInputElement>) => {
       const edit123 = tableData2[index];
       setInputValue(edit123);
     }
-  }
-  
-  
-const saveData = (e: ChangeEvent<HTMLInputElement>) => {
-  if (editingIndex !== null) {
-    // If editing an existing entry, replace it
-    const updatedTableData = [...tableData2];
-    updatedTableData[editingIndex] = inputValue; 
-    setTableData(updatedTableData);
-  } else {
-    // If not editing, add a new entry
-    setTableData((prevTableData: any) => [...prevTableData, inputValue]);
-  }
-  setEditingIndex(null);
-  setInputValue({
-    hourlyPay: '',
-    commissionEarned: '',
-    bonuses:''
-  });
-  localStorage.setItem('tableData', JSON.stringify(tableData2));
-}
+  };
 
-useEffect(() => {
-  // Load data from local storage only if it's not already set
-  const dataFromLocalStorage = localStorage.getItem('tableData');
-  if (dataFromLocalStorage && tableData2.length === 0) {
-    const parsedData = JSON.parse(dataFromLocalStorage);
-    setTableData(parsedData);
-  }
-}, []);
+  const saveData = (e: ChangeEvent<HTMLInputElement>) => {
+    if (editingIndex !== null) {
+      // If editing an existing entry, replace it
+      const updatedTableData = [...tableData2];
+      updatedTableData[editingIndex] = inputValue;
+      setTableData(updatedTableData);
+    } else {
+      // If not editing, add a new entry
+      setTableData((prevTableData: any) => [...prevTableData, inputValue]);
+    }
+    setEditingIndex(null);
+    setInputValue({
+      hourlyPay: '',
+      commissionEarned: '',
+      bonuses: '',
+    });
+    localStorage.setItem('tableData', JSON.stringify(tableData2));
+  };
 
+  useEffect(() => {
+    // Load data from local storage only if it's not already set
+    const dataFromLocalStorage = localStorage.getItem('tableData');
+    if (dataFromLocalStorage && tableData2.length === 0) {
+      const parsedData = JSON.parse(dataFromLocalStorage);
+      setTableData(parsedData);
+    }
+  }, []);
 
-  return(
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
+  return (
     <TableContainer>
-    <Table    
-      sx={{
-        minWidth: 650,
-        borderRadius: 16,
-        border: '1px solid #292929',
-      }}
-      aria-label="simple table"
-    >
-      <TableHead sx={{ bgcolor: '#121212' }}>
-        <TableRow>
-          <TableCell sx={{ color: '#AAAAAA' }}>Employee</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Role</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Hourly Pay</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Commission earned</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Bonuses</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Date paid</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Status</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Total Hours</TableCell>
-          <TableCell sx={{ color: '#AAAAAA' }}>Total Compensation</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {alluser.map((item:any,index:any) => (
-          <TableRow
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell sx={{ color: '#FFFFFF' }}> {`${item?.firstName} ${item?.lastName}`} </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>{item.role? 'Employee': tableData[index]?.role}</TableCell>
-            <TableCell sx={{ color: '#FFFFFF'  }}>
-              <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-
-
-
-         
-              {editingIndex === index ? (
-                <input
-                  type="number"
-                  style={{width:'40px'}}
-                  name='hourlyPay'
-                  value={inputValue.hourlyPay}
-                  onChange={handleChnge}
-                />
-              ) : (
-                <Typography>${!tableData2[index]?.hourlyPay ? 0: tableData2[index]?.hourlyPay }</Typography>
-              )}
- 
- {editingIndex === index ? (
-                <button style={{    background: 'transparent',
-                border: 'none', color:'#ffff', fontSize:'20px'}}  onClick={() => saveData(index)}>+</button>
-              ) : (
-                <button style={{    background: 'transparent',
-                border: 'none'}}  onClick={() => editIndex(index)}><EditIconSvg /></button>
-              )}
- 
-             
- 
-              </Box>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>
-            <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-
-
-
-
-
-         
-            {editingIndex === index ? (
-                <input
-                  type="number"
-                  style={{width:'40px'}}
-                  name='commissionEarned'
-                  value={inputValue.commissionEarned}
-                  onChange={handleChnge}
-                />
-              ) : (
-                <Typography>${!tableData2[index]?.commissionEarned ? 0: tableData2[index]?.commissionEarned }</Typography>
-              )}
- 
- {editingIndex === index ? (
-                <button style={{    background: 'transparent',
-                border: 'none', color:'#ffff', fontSize:'20px'}}  onClick={() => saveData(index)}>+</button>
-              ) : (
-                <button style={{    background: 'transparent',
-                border: 'none'}}  onClick={() => editIndex(index)}><EditIconSvg /></button>
-              )}
- 
-             
-
-
-              
-             
-              </Box>
-            </TableCell> 
-            <TableCell sx={{ color: '#FFFFFF'  }}>
-            <Box sx={{display:'flex',justifyContent:'center',gap:'14px'}}>
-
-
-
-
-
-
-         
-            {editingIndex === index ? (
-                <input
-                  type="number"
-                  style={{width:'40px'}}
-                  name='bonuses'
-                  value={inputValue.bonuses }
-                  onChange={handleChnge}
-                />
-              ) : (
-                <Typography>${!tableData2[index]?.bonuses ? 0: tableData2[index]?.bonuses }</Typography>
-              )}
- 
- {editingIndex === index ? (
-                <button style={{    background: 'transparent',
-                border: 'none', color:'#ffff', fontSize:'20px'}}  onClick={() => saveData(index)}>+</button>
-              ) : (
-                <button style={{    background: 'transparent',
-                border: 'none'}}  onClick={() => editIndex(index)}><EditIconSvg /></button>
-              )}
- 
-             
-
-
- 
-              </Box>
-            </TableCell>
-            <TableCell sx={{ color: '#FFFFFF' }}>{tableData[index]?.datePaid}</TableCell>
-            <TableCell
-              sx={{
-                color: tableData[index]?.status === 'Unpaid' ? '#FEC84A' : '#37DE8F',
-              }}
+      <Table
+        sx={{
+          minWidth: 650,
+          borderRadius: 16,
+          border: '1px solid ',
+          borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+        }}
+        aria-label="simple table"
+      >
+        <TableHead sx={{ bgcolor: isDarkTheme ? '#131213' : '#EAF1FF' }}>
+          <TableRow>
+            <TableCell>Employee</TableCell>
+            <TableCell>Role</TableCell>
+            <TableCell>Hourly Pay</TableCell>
+            <TableCell>Commission earned</TableCell>
+            <TableCell>Bonuses</TableCell>
+            <TableCell>Date paid</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Total Hours</TableCell>
+            <TableCell>Total Compensation</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {alluser.map((item: any, index: any) => (
+            <TableRow
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <Typography
+              <TableCell> {`${item?.firstName} ${item?.lastName}`} </TableCell>
+              <TableCell>
+                {item.role ? 'Employee' : tableData[index]?.role}
+              </TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      style={{ width: '40px' }}
+                      name="hourlyPay"
+                      value={inputValue.hourlyPay}
+                      onChange={handleChnge}
+                    />
+                  ) : (
+                    <Typography>
+                      $
+                      {!tableData2[index]?.hourlyPay
+                        ? 0
+                        : tableData2[index]?.hourlyPay}
+                    </Typography>
+                  )}
+
+                  {editingIndex === index ? (
+                    <button
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+
+                        fontSize: '20px',
+                      }}
+                      onClick={() => saveData(index)}
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      style={{ background: 'transparent', border: 'none' }}
+                      onClick={() => editIndex(index)}
+                    >
+                      <EditIconSvg />
+                    </button>
+                  )}
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      style={{ width: '40px' }}
+                      name="commissionEarned"
+                      value={inputValue.commissionEarned}
+                      onChange={handleChnge}
+                    />
+                  ) : (
+                    <Typography>
+                      $
+                      {!tableData2[index]?.commissionEarned
+                        ? 0
+                        : tableData2[index]?.commissionEarned}
+                    </Typography>
+                  )}
+
+                  {editingIndex === index ? (
+                    <button
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+
+                        fontSize: '20px',
+                      }}
+                      onClick={() => saveData(index)}
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      style={{ background: 'transparent', border: 'none' }}
+                      onClick={() => editIndex(index)}
+                    >
+                      <EditIconSvg />
+                    </button>
+                  )}
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '14px',
+                  }}
+                >
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      style={{ width: '40px' }}
+                      name="bonuses"
+                      value={inputValue.bonuses}
+                      onChange={handleChnge}
+                    />
+                  ) : (
+                    <Typography>
+                      $
+                      {!tableData2[index]?.bonuses
+                        ? 0
+                        : tableData2[index]?.bonuses}
+                    </Typography>
+                  )}
+
+                  {editingIndex === index ? (
+                    <button
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+
+                        fontSize: '20px',
+                      }}
+                      onClick={() => saveData(index)}
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      style={{ background: 'transparent', border: 'none' }}
+                      onClick={() => editIndex(index)}
+                    >
+                      <EditIconSvg />
+                    </button>
+                  )}
+                </Box>
+              </TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>
+                {tableData[index]?.datePaid}
+              </TableCell>
+              <TableCell
                 sx={{
-                  width: 'fit-content',
-                  padding: '4px 10px',
-                  borderRadius: '14px',
-                  fontSize: '12px',
-                  background: tableData[index]?.status === 'Unpaid' ? '#473200' : '#072718',
+                  color:
+                    tableData[index]?.status === 'Unpaid'
+                      ? '#FEC84A'
+                      : '#37DE8F',
                 }}
               >
-                {tableData[index]?.status}
-              </Typography>
-            </TableCell>
+                <Typography
+                  sx={{
+                    width: 'fit-content',
+                    padding: '4px 10px',
+                    borderRadius: '14px',
+                    fontSize: '12px',
+                    background:
+                      tableData[index]?.status === 'Unpaid'
+                        ? '#473200'
+                        : '#072718',
+                  }}
+                >
+                  {tableData[index]?.status}
+                </Typography>
+              </TableCell>
 
+              <TableCell sx={{ color: '#FFFFFF' }}>
+                {tableData[index]?.totalHours}Hrs
+              </TableCell>
 
-            
-            <TableCell sx={{ color: '#FFFFFF' }}>{tableData[index]?.totalHours}Hrs</TableCell>
-
-
-
-
-
-
-            {/* <TableCell sx={{ color: '#FFFFFF' }}>
+              {/* <TableCell sx={{ color: '#FFFFFF' }}>
 
 
 
@@ -334,20 +382,19 @@ useEffect(() => {
               
               ${tableData2[index]?.hourlyPay*tableData[index]?.totalHours+tableData2[index]?.commissionEarned+tableData2[index]?.bonuses}   
             </TableCell> */}
-          <TableCell sx={{ color: '#FFFFFF' }}>
-  ${(
-    parseFloat(tableData2[index]?.hourlyPay) *
-    parseFloat(tableData[index]?.totalHours) +
-    parseFloat(tableData2[index]?.commissionEarned) +
-    parseFloat(tableData2[index]?.bonuses)
-  ).toFixed(2)}
-</TableCell>
-
-
-          </TableRow> 
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-  )
-}
+              <TableCell sx={{ color: '#FFFFFF' }}>
+                $
+                {(
+                  parseFloat(tableData2[index]?.hourlyPay) *
+                    parseFloat(tableData[index]?.totalHours) +
+                  parseFloat(tableData2[index]?.commissionEarned) +
+                  parseFloat(tableData2[index]?.bonuses)
+                ).toFixed(2)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
