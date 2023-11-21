@@ -47,9 +47,11 @@ export default function AddLeder({ open, setOpen, name }: any) {
       );
       const responseData = await response.json();
 
-      console.log(responseData.data);
-
-      window.location.href = responseData.data;
+      // console.log(responseData.data);
+if (responseData?.data?.pdfUrl) {
+  setOpen(false)
+}
+      // window.location.href = responseData.data;
       // setpdfURl(responseData.data)
     } catch (error) {
       console.log(error);
@@ -75,10 +77,15 @@ export default function AddLeder({ open, setOpen, name }: any) {
     email: data?.email,
     amount: 0,
     status: true,
-    address: 'test',
     invoiceNo: 'INC0001',
+    address: 'test',
+
+    
+
     paymentTerms: 'test',
     contactName: 'test',
+    amonut:0,
+    delivery:true,
     nameDept: 'test',
     addresss: 'test',
     phone: 'test',
@@ -147,11 +154,21 @@ export default function AddLeder({ open, setOpen, name }: any) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography
+       
+
+        <div
+          style={{
+            backgroundColor: '#f3f3f3',
+
+            color: 'black',
+            overflowY: 'auto',
+          }}
+        >
+           <Typography
           style={{
             float: 'right',
-            background: '#c9adad',
-            padding: '2px',
+            background: '#858585',
+            padding: '2px 6px',
             marginBottom: '5px',
           }}
           onClick={handleClose}
@@ -159,16 +176,8 @@ export default function AddLeder({ open, setOpen, name }: any) {
         >
           X
         </Typography>
-
-        <div
-          style={{
-            backgroundColor: 'white',
-            color: 'black',
-            overflowY: 'auto',
-          }}
-        >
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-
+          
           <div
             style={{
               display: 'flex',
@@ -216,7 +225,8 @@ export default function AddLeder({ open, setOpen, name }: any) {
               <h4>INVOICE No. {'INC0001'}</h4>
             </div>
           </div>
-
+            
+<div style={{background: '#ffffff',}}>
           {/* secound box */}
           <div style={{ padding: '20px' }}>
             <div
@@ -489,9 +499,26 @@ export default function AddLeder({ open, setOpen, name }: any) {
               <div style={{ height: '4px', backgroundColor: 'black' }}></div>
             </div>
           </div>
+  </div>
+
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
         </div>
-        <Button onClick={handlePDF}>Create</Button>
+
+
+<div style={{
+            float: 'right',
+           padding:'10px 10px'
+          }}>
+
+        <Button
+              variant="contained"
+              sx={{ color: '#fff', textTransform: 'capitalize' }}
+              onClick={handlePDF}
+              >
+              Create Invoice
+            </Button>
+              </div>
+        
       </Box>
     </Modal>
   );

@@ -75,11 +75,6 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
 
   const handlePDFView = async (name: any) => {
     setPdfData(name);
-    setOpen2('template1' === name ? true : false);
-    setSndpdf('template2' === name ? true : false);
-    setTrdpdf('template3' === name ? true : false);
-
-    setFourthPdf('template4' === name ? true : false);
   };
 
   const handlePDFCreate = async () => {
@@ -225,22 +220,15 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
                     alignItems={'center'}
                     gap={'4px'}
                   >
-                    <a href="../../" />
-                    <Typography
-                      onClick={() => handlePDFView(data.name)}
-                      sx={{ color: '#04A1FF', fontSize: '14px' }}
-                    >
+                    {/* <Typography sx={{ color: '#04A1FF', fontSize: '14px' }}>
                       View
-                      {/* <div style={{ marginTop: '1px' }}>
+                      <div style={{ marginTop: '1px' }}>
                       <RightArrowSvg />
-                    </div> */}
-                    </Typography>
-                    <Typography
-                      onClick={() => handlePDFView(data.name)}
-                      sx={{ color: '#04A1FF', fontSize: '14px' }}
-                    >
+                    </div>
+                    </Typography> */}
+                    {/* <Typography sx={{ color: '#04A1FF', fontSize: '14px' }}>
                       {data.icon ? 'Create new invoice' : 'Use'}
-                    </Typography>
+                    </Typography> */}
                   </Box>
                 </div>
               </Stack>

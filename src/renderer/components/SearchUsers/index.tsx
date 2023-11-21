@@ -51,10 +51,17 @@ export default function SearchUsers() {
     }
   };
 
+
+
   useEffect(() => {
     // Fetch all users when the component mounts
     getUsers();
   }, []);
+
+
+   const [selectName,setSelectName]=useState<any>('')
+
+
   return (
     <aside
       className={styles.aside}
@@ -73,6 +80,7 @@ export default function SearchUsers() {
         </SearchInput>
       </div>
       {allUsers.map((item: any, index: any) => (
+      <div style={{ background: item?.firstName === selectName ? '#04A1FF' : '' }} key={item?._id} >
         <UserCardWImage
           data={item}
           id={item._id}
@@ -84,7 +92,9 @@ export default function SearchUsers() {
           selected={false}
           onClick={() => {}}
           autoRelink={false}
-        />
+          selectName={setSelectName}
+          />
+          </div>
       ))}
     </aside>
   );

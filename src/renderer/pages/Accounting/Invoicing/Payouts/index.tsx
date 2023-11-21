@@ -111,7 +111,7 @@ const Payouts = () => {
       if (response.ok) {
         const data = await response.json();
         setAllInvoice(data?.data);
-        console.debug(data?.data, 'getData');
+        console.log(data?.data, 'getData');
       } else {
         console.error('Failed to create the invoice');
       }
@@ -149,6 +149,55 @@ const Payouts = () => {
     }
   };
 
+  // handle dowmold pdf
+  const pdfData = {
+    userName: data?.firstName,
+    companyName: '',
+    clientCompanyName: '',
+    companyAddress: '',
+    companyContact: '',
+    contactDetails: '',
+    description: '',
+    qty: 11,
+    unitPrice: 12.11,
+    total: 0,
+    userId: data?._id,
+    employeeId: data?._id,
+    email: data?.email,
+    amount: 0,
+    status: true,
+    address: 'test',
+    invoiceNo: 'INC0001',
+    paymentTerms: 'test',
+    contactName: 'test',
+    nameDept: 'test',
+    addresss: 'test',
+    phone: 'test',
+    invoiceTitle: 'test',
+    paymentInstructions: 'test',
+    subtotal: 0,
+    discount: 0,
+    subtotalLessDiscount: 0,
+    taxRate: 'test',
+    totalTax: 0,
+    shippingHandling: 0,
+    balanceDue: '$25310',
+    date: '2023-11-06',
+    addressShipTo: 'test',
+    phoneShipTo: 'test',
+  };
+  const handlePDF = async (data: any) => {
+    console.log(data);
+
+
+
+      window.location.href = data;
+      // setpdfURl(responseData.data)
+
+  };
+  // const handlePDF = async (data: any) => {
+  //   console.log(data);
+  // };
   useEffect(() => {
     getInvoice(data?._id);
     // setAllInvoice(contextData)
@@ -187,7 +236,7 @@ const Payouts = () => {
         <Box
           display={'flex'}
           justifyContent={'space-between'}
-          
+
         >
           <Typography fontSize="22px">Invoicing</Typography>
           <Box>
@@ -255,23 +304,23 @@ const Payouts = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allInvoice.map((item: any, index: any) => {
+              {allInvoice.reverse().map((item: any, index: any) => {
                 return (
                   <TableRow
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell scope="row" sx={{ padding: '25px 10px' }}>
-                      ${item?.amount}
+                      ${item?.qty * item?.unitPrice}
                     </TableCell>
                     <TableCell
                       scope="row"
                       sx={{
-                        color: item?.delivery === true ? '#FEC84A' : '#37DE8F',
+                        color: item?.delivery === true ? '#37DE8F' : '#FEC84A',
                       }}
                     >
-                      {item?.delivery === true ? 'Pending' : 'Successfull'}
+                      {item?.delivery === true ? 'Successfull' : 'Pending'}
                     </TableCell>
-                    <TableCell>02/02/2000</TableCell>
+                    <TableCell>{item?.createdAt }</TableCell>
                     <TableCell
                       scope="row"
                       sx={{
@@ -335,8 +384,11 @@ const Payouts = () => {
                         >
                           View
                         </Typography>
-                        <Box sx={{ cursor: 'pointer' }}>
-                          <DownloadSvgIcon />
+                        <Box
+                          // onClick={() => handlePDF(item?.pdfUrl)}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          <a href={item?.pdfUrl} target="_blank" rel="noopener noreferrer"><DownloadSvgIcon /></a>
                         </Box>
                       </Box>
                     </TableCell>

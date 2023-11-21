@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { Divider, Switch, styled } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -17,18 +17,18 @@ const style = {
   color: '#fff',
   boxShadow: 24,
 };
-const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly']; 
-export default function ViewModal({ open, setOpen,userData }: any) {
+const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
+export default function ViewModal({ open, setOpen, userData }: any) {
   const handleClose = () => setOpen(false);
-  console.log(userData,"data")
+  console.debug(userData, 'data');
   const initialValues = {
     name: `${userData?.firstName} ${userData?.lastName}`,
     amount: 30,
     description: 'string',
     employeeId: userData?._id,
-    status: "true",
-    userId: userData?._id, 
-    date:new Date()
+    status: 'true',
+    userId: userData?._id,
+    date: new Date(),
   };
 
   const { values, handleChange, handleSubmit } = useFormik({
@@ -40,7 +40,7 @@ export default function ViewModal({ open, setOpen,userData }: any) {
     },
   });
 
-  const handleCreateInvoice = async (value:any) => {
+  const handleCreateInvoice = async (value: any) => {
     const options = {
       method: 'POST',
       headers: {
@@ -61,13 +61,13 @@ export default function ViewModal({ open, setOpen,userData }: any) {
     }
   };
 
-  const handleOnChange = (name:any) => {
+  const handleOnChange = (name: any) => {
     console.log(name);
   };
 
   return (
     <Modal
-    className='boxsize'
+      className="boxsize"
       sx={{ backdropFilter: 'blur(4px)' }}
       open={open}
       onClose={handleClose}
@@ -75,33 +75,79 @@ export default function ViewModal({ open, setOpen,userData }: any) {
       aria-describedby="modal-modal-description"
     >
       <form onSubmit={handleSubmit}>
-      <Box sx={style}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          
-          }}
-        >
-          <Typography sx={{fontSize:"40px",padding: '10px' }}> View Data </Typography><span style={{fontSize:'30px',padding: '10px'}}>{userData?.userName}</span> 
-    
+        <Box sx={style}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography sx={{ fontSize: '40px', padding: '10px' }}>
+              {' '}
+              View Data{' '}
+            </Typography>
+            <span style={{ fontSize: '30px', padding: '10px' }}>
+              {userData?.userName}
+            </span>
+          </Box>
+          <div
+            className="bvb"
+            style={{
+              boxSizing: 'border-box',
+              backgroundColor: '#625f5f',
+              padding: '30px',
+            }}
+          >
+            <h3>
+              Amount : <span>{userData?.amount}</span>
+            </h3>
+            <h3>
+              Status :{' '}
+              <span>{userData?.status ? 'Delivery' : 'unDelivery'}</span>
+            </h3>
+            <h3>
+              Date : <span>10\1\2000</span>
+            </h3>
+            <h3>
+              Status : <span>{userData?.isEmployee ? 'Paid' : 'unPaid'}</span>
+            </h3>
+            <h3>
+              balanceDue : <span>{userData?.balanceDue}</span>
+            </h3>
+            <h3>
+              addressShipTo : <span>{userData?.addressShipTo}</span>
+            </h3>
+            <h3>
+              address : <span>{userData?.address}</span>
+            </h3>
+            <h3>
+              clientCompanyName : <span>{userData?.clientCompanyName}</span>
+            </h3>
+            <h3>
+              contactDetails : <span>{userData?.contactDetails}</span>
+            </h3>
+            <h3>
+              email : <span>{userData?.email}</span>
+            </h3>
+            <h3>
+              subtotal : <span>{userData?.subtotal}</span>
+            </h3>
+            <h3>
+              subtotalLessDiscount :{' '}
+              <span>{userData?.subtotalLessDiscount}</span>
+            </h3>
+            <h3>
+              total : <span>{userData?.total}</span>
+            </h3>{' '}
+            <h3>
+              totalTax : <span>{userData?.totalTax}</span>
+            </h3>{' '}
+            <h3>
+              unitPrice : <span>{userData?.unitPrice}</span>
+            </h3>
+          </div>
         </Box>
-        <div  className='bvb' style={{ boxSizing:'border-box', backgroundColor: '#625f5f', padding: '30px' }}>
-       <h3>Amount :  <span>{userData?.amount}</span></h3>
-       <h3>Status :  <span>{userData?.status ? 'Delivery':'unDelivery'}</span></h3>
-       <h3>Date   :  <span>10\1\2000</span></h3>
-       <h3>Status :  <span>{userData?.isEmployee ? 'Paid':'unPaid'}</span></h3>
-
-       
-
- 
-       </div>
- 
-
- 
-      </Box>
-      
       </form>
     </Modal>
   );
@@ -154,7 +200,15 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 const FrequencySelector = ({ frequencyFilter }: any) => {
   const [selected, setSelected] = useState(1);
   return (
-    <Box sx={{ display: 'flex',border:"1px solid #04A1FF", width: 'fit-content',borderRadius:"10px",overflow:"hidden" }}>
+    <Box
+      sx={{
+        display: 'flex',
+        border: '1px solid #04A1FF',
+        width: 'fit-content',
+        borderRadius: '10px',
+        overflow: 'hidden',
+      }}
+    >
       {frequencyFilter.map((data: string, index: number) => (
         <Box
           sx={{
