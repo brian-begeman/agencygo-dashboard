@@ -94,6 +94,8 @@ export default function AddCreaterModal({
     control,
     isLoading,
     isAutoRelink,
+    creatorImage,
+    setCreatorImage,
     toggleAutoRelink,
     setEmployeeOptions,
     setValue,
@@ -140,12 +142,13 @@ export default function AddCreaterModal({
     setOpen(false);
   };
 
-  const handleChangeFile = (file: File | undefined) => {
-    console.log('file ******', file);
-    if (file) {
-      console.log('file ******', URL.createObjectURL(file));
-    }
-  };
+  // const handleChangeFile = (file: File | undefined) => {
+  //   console.log('file ******', file);
+  //   if (file) {
+  //     console.log('file ******', URL.createObjectURL(file));
+  //   }
+  // };
+
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
@@ -183,7 +186,13 @@ export default function AddCreaterModal({
                 type == 'add' ? 'Add' : 'Edit'
               } Headshot`}</Typography>
               <Box>
-                <ImageUpload handleChangeFile={handleChangeFile} />
+                <ImageUpload
+                  creatorImage={creatorImage}
+                  setCreatorImage={setCreatorImage}
+                  register={register as any}
+                  setValue={setValue}
+                  // handleChangeFile={handleChangeFile}
+                />
               </Box>
             </Box>
             <InputWithLabel

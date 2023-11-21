@@ -21,7 +21,7 @@ const useFormCreator = (
   >([]);
 
   const [selectedValues, setSelectedValues] = useState<any>([]);
-
+  const [creatorImage, setCreatorImage] = useState('');
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
     params: { id: localStorage.getItem('AgencyId') },
@@ -34,6 +34,7 @@ const useFormCreator = (
   });
 
   const validationSchema = Yup.object().shape({
+    creatorImage: Yup.mixed(),
     creatorName: Yup.string().required('Name is required'),
     gender: Yup.string().required('Gender is required'),
     assignEmployee: Yup.array(),
@@ -50,12 +51,32 @@ const useFormCreator = (
   const { userData } = useContext(AuthContext);
 
   const onSubmit = (data: any) => {
+    console.log(data,"Data====================");
+    
     if (type === 'add') {
+      // data.status= true
+      // const ofCredsObj = {
+      //   email: data?.email,
+      //   password: data?.password,
+      // };
+      // data.ofcreds=ofCredsObj
+      const formdata = new FormData();
+    formdata.append('creatorImage', data.creatorImage);
+    // formdata.append('creatorName', data.creatorName);
+    // formdata.append('autoRelink',  data.autoRelink);
+    // formdata.append('gender', data.gender);
+    // formdata.append('ofcreds',JSON.stringify(data.ofcreds));
+    // formdata.append('email',data.email);
+    // formdata.append('password',data.password);
+    // formdata.append('internalNotes', data.internalNotes);
+    // formdata.append('status',data.status);
+    // formdata.append('agencyId',userData?.agency?._id)
+
       const ofCredsObj = {
         email: data?.email,
         password: data?.password,
       };
-
+      // data.creatorImage= formdata
       data.agencyId = userData?.agency?._id;
       data.status = true;
       data.ofcreds = ofCredsObj;
@@ -64,9 +85,9 @@ const useFormCreator = (
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
+        // headers: {
+        //   'content-type': 'application/json',
+        // },
         body: JSON.stringify(data),
         withAuth: true,
       };
@@ -164,6 +185,8 @@ const useFormCreator = (
     setValue,
     selectedValues,
     setSelectedValues,
+    creatorImage,
+    setCreatorImage,
   };
 };
 
