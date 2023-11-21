@@ -345,7 +345,7 @@ export default function ManageEmployees() {
           <Stack
             flexDirection="row"
             gap="8px"
-            sx={{ position: 'absolute', bottom: 0 }}
+            sx={{ position: 'absolute', bottom: 0,paddingBottom:"5px" }}
           >
             {group?.map((link: any, index: number) => (
               <>

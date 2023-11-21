@@ -57,6 +57,7 @@ const useDataEmployees = () => {
     params: selectedAgency,
   });
 
+
   useEffect(() => {
     // window.electron.ipcRenderer
     //   .invoke('get-store', 'agency')
@@ -94,14 +95,42 @@ const useDataEmployees = () => {
       });
   };
 
+  // useEffect(() => {
+  //   if (data?.data) {
+  //     const employeesRes = data?.data?.map((item: any) => {
+  //       const tempAssignedCreators = Array.from(item.assignedCreators);
+  //       return {
+  //         name: item?.name || '',
+  //         imageSrc: '',
+  //         assignedCreatorsForDropdown: item.assignedCreators,
+  //         assignedCreatorsText: tempAssignedCreators.length
+  //           ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
+  //           : '+ Please click to set',
+  //         role: item?.role
+  //           ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
+  //           : '',
+  //         activated: item?.status,
+  //         email: item?.email || '',
+  //         roleRaw: item?.role || '',
+  //         // eslint-disable-next-line no-underscore-dangle
+  //         id: item?._id || '',
+  //         agencyId: item?.agencyId,
+  //       };
+  //     });
+      
+  //     setEmployees(employeesRes || []);
+  //   }
+  // }, [data, data?.data]);
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
-        const tempAssignedCreators = Array.from(item.assignedCreators);
+        const tempAssignedCreators = Array.isArray(item.assignedCreators)
+          ? Array.from(item.assignedCreators)
+          : [];  
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreatorsForDropdown: item.assignedCreators,
+          assignedCreatorsForDropdown: tempAssignedCreators,
           assignedCreatorsText: tempAssignedCreators.length
             ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
             : '+ Please click to set',
@@ -118,8 +147,11 @@ const useDataEmployees = () => {
       });
       setEmployees(employeesRes || []);
     }
-  }, [data, data?.data]);
-
+  }, [data,data?.data]);
+  
+  
+  console.log(employees,">>>>>..employees");
+  
   return {
     isLoading,
     data,

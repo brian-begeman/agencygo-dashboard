@@ -424,7 +424,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
-
+flexWrap:"wrap",
             gap: '10px',
             display: 'flex',
             padding: '20px 0px 20px 20px ',
