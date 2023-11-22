@@ -8,6 +8,7 @@ const links = [
   { id: 1, text: 'Invoicing', link: 'invoicing' },
   { id: 2, text: 'Payroll', link: 'payroll' },
   { id: 3, text: 'Book Keeping', link: 'book-keeping' },
+  { id: 3, text: 'Time Keeping', link: 'time-keeping' },
 ];
 
 export default function Accounting() {
@@ -22,7 +23,6 @@ export default function Accounting() {
     <Dashboard>
       <section className={styles.wrapper}>
 
-        
         <Box
           sx={{
             display: 'grid',
@@ -34,7 +34,7 @@ export default function Accounting() {
         >
           <Box
             sx={{
-             
+
               position: 'absolute',
               top: 50,
               height: '100vh',
