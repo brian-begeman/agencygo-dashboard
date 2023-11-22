@@ -136,18 +136,6 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             overflowY: 'auto',
           }}
         >
-          <Typography
-            style={{
-              float: 'right',
-              background: '#858585',
-              padding: '2px 6px',
-              marginBottom: '5px',
-            }}
-            onClick={handleClose}
-            sx={{ cursor: 'pointer' }}
-          >
-            X
-          </Typography>
           {/* First box */}
           <div
             style={{
@@ -716,6 +704,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             Create Invoice
           </Button>
         </div>
+        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

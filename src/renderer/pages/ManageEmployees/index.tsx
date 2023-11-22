@@ -402,7 +402,7 @@ export default function ManageEmployees() {
             tableHeaders={employeesTableHeaders}
           >
             <>
-              {employees.map(
+              {employees && employees.map(
                 ({
                   name,
                   assignedCreatorsText,

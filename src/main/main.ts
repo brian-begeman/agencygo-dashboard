@@ -86,24 +86,8 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
+  Store.initRenderer();
   const winDimens = screen.getPrimaryDisplay().workAreaSize;
-  const store = new Store();
-  ipcMain.handle('get-store', (_, key) => {
-    return store.get(key);
-  });
-  ipcMain.handle('remove-store', (_, key) => {
-    store.delete(key);
-  });
-
-  ipcMain.on('download', (args, key) => {
-    console.log('download called from main', key);
-    mainWindow?.webContents.downloadURL(key.url);
-  });
-  ipcMain.on('copy-to-clipboard', (_, key) => {
-    clipboard.writeText(key.link, 'selection');
-
-    console.log('clip', clipboard.readText('selection'));
-  });
 
   /*  if (!isDebug) {
     await installExtensions();

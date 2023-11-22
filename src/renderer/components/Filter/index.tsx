@@ -185,6 +185,7 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
   const [collapse, setCollapse] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // setChipData({})
     setStatus(event.target.value);
   };
 
@@ -277,14 +278,15 @@ function FilterByEmployeeInCreator({
         {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Box>
       <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
-        <FormControl sx={{ width: 230, marginBottom: '30px' }}>
+        <FormControl sx={{ width: 250, marginBottom: '30px' }}>
           <Select
             sx={{
-              color: '#fff',
+              color: '#fff !important',
               '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select':
                 {
                   border: ' 1px solid #ddd',
                   height: ' 20px',
+                  color: '#fff !important',
                 },
               '&:hover': {
                 border: ' 1px solid #4a4a4a',
@@ -293,10 +295,13 @@ function FilterByEmployeeInCreator({
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             value={employeeId.name}
+            placeholder="asdfsadf"
             onChange={(e) => handleChange(e)}
-            // renderValue={(selected) => (selected.name ? selected.name : 'reeeteter')}
+            // renderValue={(selected: any) =>
+            //   selected.name != '' ? selected.name : 'Select employee name'
+            // }
             renderValue={(selected: any) =>
-              selected.name !== '' ? undefined : 'placeholder text'
+              selected.name !== '' ? selected.name : 'placeholder text'
             }
             MenuProps={MenuProps}
           >
@@ -340,6 +345,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
 
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
+  const [chipData, setChipData] = React.useState<readonly ChipData[]>([
+    // { key: 0, label: 'Status' },
+    // { key: 1, label: 'Employee' },
+    // { key: 2, label: 'Creator' },
+  ]);
 
   const location = useLocation();
   const onRemoveFilter = () => {
@@ -350,6 +360,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     setSelectedValues([]);
     setEmployeeSearch('');
     refetch('');
+    setChipData([]);
 
     // setFilters(filters.filter((filter) => filter.label !== id));
   };
@@ -365,7 +376,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       }
       if (linkStatus != '') {
         Object.assign(data, {
-          plateformlink: linkStatus == 'Linked' ? true : false,
+          isLinkOnlyFans: linkStatus == 'Linked' ? true : false,
         });
       }
       if (employeeId && Object.values(employeeId).length) {
@@ -403,11 +414,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       chips.filter((chip) => chip.key !== chipToDelete.key)
     );
   };
-  const [chipData, setChipData] = React.useState<readonly ChipData[]>([
-    { key: 0, label: 'Status' },
-    { key: 1, label: 'Employee' },
-    { key: 2, label: 'Creator' },
-  ]);
+
   return (
     <PageAside>
       <Box
@@ -422,33 +429,40 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       </Box>
 
       <Box>
-        <Typography marginLeft={'20px'}> Applied Filters</Typography>
+        {chipData.length > 0 && (
+          <>
+            <Typography marginLeft={'20px'}> Applied Filters</Typography>
+            <Box
+              sx={{
+                borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
+                gap: '10px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                padding: '10px 10px 10px 10px ',
+                marginBottom: '10px',
+              }}
+            >
+              {chipData?.map((data) => {
+                return (
+                  <Chip label={data.label} onDelete={handleDelete(data)} />
+                );
+              })}
+            </Box>
+          </>
+        )}
         <Box
           sx={{
-            borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
-            flexWrap: 'wrap',
-            gap: '10px',
             display: 'flex',
-            padding: '20px 0px 20px 20px ',
+            justifyContent: 'center',
+            gap: '20px',
+            margin: '10px,10px',
           }}
         >
-          {chipData.map((data) => {
-            return <Chip label={data.label} onDelete={handleDelete(data)} />;
-          })}
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            marginTop: '5px',
-          }}
-        >
-          <Button size="medium" variant="outlined" onClick={onRemoveFilter}>
+          <Button variant="outlined" onClick={onRemoveFilter}>
             Reset
           </Button>
           <Button
             variant="contained"
-            size="medium"
             sx={{ color: 'white' }}
             onClick={handleFilterData}
           >
@@ -565,7 +579,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           />
         </Box>
       )}
-      {location.pathname === '/creators' && (
+      {/* {location.pathname === '/creators' && (
         <Box padding="12px 16px 12px 16px">
           <FilterByStatus
             title="By Employee"
@@ -580,9 +594,9 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             }}
           />
         </Box>
-      )}
+      )} */}
 
-      {/* {location.pathname == '/creators' && (
+      {location.pathname == '/creators' && (
         <Box padding="12px 16px 12px 16px">
           <FilterByEmployeeInCreator
             title="By Employee name"
@@ -596,7 +610,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             }}
           />
         </Box>
-      )} */}
+      )}
     </PageAside>
   );
 }
