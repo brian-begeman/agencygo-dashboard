@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, ipcMain, session } from 'electron';
+import { BrowserView, BrowserWindow, ipcMain, session, app } from 'electron';
 import chalk from 'chalk';
 import puppeteer, { Browser } from 'puppeteer';
 import { IPCChannels } from '../types';
@@ -6,6 +6,11 @@ import * as pie from '../packages/electron-puppeteer';
 import locateChrome from 'locate-chrome';
 import log from 'electron-log';
 import UserAgent from 'user-agents';
+import Store from 'electron-store';
+import { v4 } from 'uuid';
+import path from 'path';
+
+const es = new Store();
 
 const getPageUrl = (page: any) => {
   const urls = [
@@ -68,65 +73,103 @@ const startIPCBridge = ({
   const fingerprintUrl = 'https://bot.sannysoft.com/';
   // https://antoinevastel.com/bots/
 
-  ipcMain.on('launch-anty-browser', async (e, arg) => {
+  ipcMain.on('anty-browser:launch', async (e, arg) => {
     try {
-      const proxyConfig = {
-        address: 'geo.iproyal.com',
-        port: 12321,
-        credentials: {
-          username: 'ryb6AD',
-          password: 'ryb6AD',
-        },
-      };
+      const mockLocation =
+        arg.geolocation && 'lat' in arg.geolocation ? true : false;
+      const isProxy = arg.proxy && 'host' in arg.proxy ? true : false;
+
+      const pptrArgs = [
+        '--start-maximized',
+        '--disable-blink-features=AutomationControlled',
+      ];
+
+      isProxy &&
+        pptrArgs.push(`--proxy-server=${arg.proxy.host}:${arg.proxy.port}`);
 
       const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
         ignoreDefaultArgs: ['--enable-automation'],
-        args: [
-          '--start-maximized',
-          '--disable-blink-features=AutomationControlled',
-          // `--proxy-server=${proxyConfig.address}:${proxyConfig.port}`,
-        ],
+        args: pptrArgs,
         executablePath: await locateChrome(),
+        userDataDir: path.join(
+          app.getPath('userData'),
+          'anty-browser-data' + arg.id
+        ),
       });
 
       const ua = new UserAgent({
         deviceCategory: 'desktop',
+        platform: arg.platform,
       });
 
       browser.on('targetcreated', async (target) => {
         if (target.type() === 'page') {
           const randomizedUserAgent = ua.random();
           const newPage = await target.page();
-          await Promise.all([
-            await page.setJavaScriptEnabled(false),
-            // Set the geolocation for the new page
-            await newPage?.setGeolocation({
-              latitude: 59.95,
-              longitude: 30.31667,
-            }),
+          const promiseChain = [
             await newPage?.setUserAgent(randomizedUserAgent.data.userAgent),
             await page.evaluateOnNewDocument(() => {
               if (navigator.webdriver) {
                 delete Object.getPrototypeOf(navigator).webdriver;
               }
             }),
-          ]);
+          ];
+
+          if (mockLocation) {
+            promiseChain.push(
+              await newPage?.setGeolocation({
+                latitude: arg.geolocation.lat,
+                longitude: arg.geolocation.lng,
+              })
+            );
+          }
+
+          await Promise.all(promiseChain);
         }
       });
 
       const page = await browser.newPage();
-
       page.setDefaultNavigationTimeout(60000);
-      // await page.authenticate({
-      //   username: proxyConfig.credentials.username,
-      //   password: proxyConfig.credentials.password,
-      // });
+      isProxy &&
+        (await page.authenticate({
+          username: arg.proxy.username,
+          password: arg.proxy.password,
+        }));
       await page.goto('https://bot.sannysoft.com/');
     } catch (err) {
       log.error(err);
     }
+  });
+
+  ipcMain.handle('anty-browser:create-profile', (e, arg) => {
+    const existingProfiles = es.get('antyBrowser.profiles');
+    const id = v4();
+    if (!existingProfiles || !existingProfiles.length) {
+      es.set('antyBrowser.profiles', [Object.assign(arg, { id })]);
+      return true;
+    }
+    es.set(
+      'antyBrowser.profiles',
+      existingProfiles.concat(Object.assign(arg, { id }))
+    );
+    return true;
+  });
+
+  ipcMain.handle('anty-browser:get-profiles', (e) => {
+    const existingProfiles = es.get('antyBrowser.profiles');
+    if (existingProfiles && existingProfiles.length) return existingProfiles;
+    return [];
+  });
+
+  ipcMain.handle('anty-browser:delete-profile', (e, id) => {
+    const existingProfiles = es.get('antyBrowser.profiles') as Array<any>;
+    // Delete the item from the array
+    const filtered = existingProfiles.filter((item) => item.id !== id);
+    // Save the updated array back to Electron Store
+    es.set('antyBrowser.profiles', filtered);
+    return true;
   });
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
