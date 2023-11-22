@@ -412,7 +412,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           padding: '20px',
           display: 'flex',
           alignItems: 'center',
-        
         }}
       >
         <CandleSvg />
@@ -424,7 +423,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
-flexWrap:"wrap",
+            flexWrap:"wrap",
             gap: '10px',
             display: 'flex',
             padding: '20px 0px 20px 20px ',
@@ -434,16 +433,19 @@ flexWrap:"wrap",
             return <Chip label={data.label} onDelete={handleDelete(data)} />;
           })}
         </Box>
-        {/* <Button variant="outlined" onClick={onRemoveFilter}>
+        <Box sx={{display:"flex",justifyContent:"space-around",marginTop:"5px"}}>
+        <Button size='medium' variant="outlined" onClick={onRemoveFilter}>
           Reset
         </Button>
         <Button
           variant="contained"
+          size='medium'
           sx={{ color: 'white' }}
           onClick={handleFilterData}
         >
           Search
-        </Button> */}
+        </Button>
+        </Box>
         {/* <Stack
           justifyContent="space-between"
           flexDirection="row"

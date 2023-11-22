@@ -262,7 +262,7 @@ export default function ManageEmployees() {
 
   return (
     <Dashboard>
-      <section className={styles.wrapper}>
+      <section className={styles.wrapper} style={{height:"auto"}}>
         <PageTopbar>
           <Stack
             alignItems="center"
@@ -345,7 +345,7 @@ export default function ManageEmployees() {
           <Stack
             flexDirection="row"
             gap="8px"
-            sx={{ position: 'absolute', bottom: 0,paddingBottom:"5px" }}
+            sx={{ position: 'absolute', bottom: 0,paddingBottom:"5px",paddingRight:"5px" }}
           >
             {group?.map((link: any, index: number) => (
               <>
@@ -417,9 +417,6 @@ export default function ManageEmployees() {
                   return (
                     <TableRow
                       key={id}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
                     >
                       <TableCell
                         sx={{

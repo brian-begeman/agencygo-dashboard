@@ -95,44 +95,19 @@ const useDataEmployees = () => {
       });
   };
 
-  // useEffect(() => {
-  //   if (data?.data) {
-  //     const employeesRes = data?.data?.map((item: any) => {
-  //       const tempAssignedCreators = Array.from(item.assignedCreators);
-  //       return {
-  //         name: item?.name || '',
-  //         imageSrc: '',
-  //         assignedCreatorsForDropdown: item.assignedCreators,
-  //         assignedCreatorsText: tempAssignedCreators.length
-  //           ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
-  //           : '+ Please click to set',
-  //         role: item?.role
-  //           ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
-  //           : '',
-  //         activated: item?.status,
-  //         email: item?.email || '',
-  //         roleRaw: item?.role || '',
-  //         // eslint-disable-next-line no-underscore-dangle
-  //         id: item?._id || '',
-  //         agencyId: item?.agencyId,
-  //       };
-  //     });
-      
-  //     setEmployees(employeesRes || []);
-  //   }
-  // }, [data, data?.data]);
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
         const tempAssignedCreators = Array.isArray(item.assignedCreators)
           ? Array.from(item.assignedCreators)
-          : [];  
+          : []; 
+           
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreatorsForDropdown: tempAssignedCreators,
+          assignedCreatorsForDropdown: item.assignedCreatorsForDropdown,
           assignedCreatorsText: tempAssignedCreators.length
-            ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
+            ? tempAssignedCreators.map((ta:any) => ta?.name).join(', ')
             : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
@@ -145,12 +120,13 @@ const useDataEmployees = () => {
           agencyId: item?.agencyId,
         };
       });
+      console.log(employeesRes,">>>>>..employeesres");
       setEmployees(employeesRes || []);
     }
   }, [data,data?.data]);
   
   
-  console.log(employees,">>>>>..employees");
+  
   
   return {
     isLoading,

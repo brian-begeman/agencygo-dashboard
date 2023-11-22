@@ -108,7 +108,7 @@ export default function AddEmployeeModal({
       .catch((err) => {
         console.log(err);
       });
-  };
+  };  
   const getCreators = () => {
     const endpoint = 'creators';
     let options = {
