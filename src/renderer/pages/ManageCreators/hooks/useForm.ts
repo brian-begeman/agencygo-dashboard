@@ -19,7 +19,7 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
-
+  const { userData } = useContext(AuthContext);
   const [selectedValues, setSelectedValues] = useState<any>([]);
   const [creatorImage, setCreatorImage] = useState('');
   const { data: dataEmployeeRaw } = useQuery({
@@ -35,10 +35,14 @@ const useFormCreator = (
 
   const validationSchema = Yup.object().shape({
     creatorImage: Yup.mixed(),
-    creatorName: Yup.string().required('Name is required'),
-    gender: Yup.string().required('Gender is required'),
-    email:Yup.string().required("Email is required"),
-    password:Yup.string().required("password is required"),
+    creatorName: Yup.string(), 
+    // .required('Name is required'),
+    gender: Yup.string(),
+    // .required('Gender is required'),
+    email:Yup.string(),
+    // .required("Email is required"),
+    password:Yup.string(),
+    // required("password is required"),
     assignEmployee: Yup.array(),
     internalNotes: Yup.string(),
     autoRelink: Yup.boolean(),
@@ -51,9 +55,9 @@ const useFormCreator = (
     useForm({
       resolver: yupResolver(validationSchema),
     });
-  const { userData } = useContext(AuthContext);
 
   const onSubmit = (data: any) => {
+    console.log(data,"::::::::::::::::::::");
     if (type === 'add') {
       data.status= true
       data.assignEmployee= selectedValues
@@ -113,10 +117,10 @@ const useFormCreator = (
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {
         method: 'PUT' as 'PUT',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        // headers: {
+        //   'content-type': 'application/json',
+        // },
+        body:  data,
         withAuth: true,
       };
       fetchReq(endpoint, options)
@@ -153,7 +157,7 @@ const useFormCreator = (
       setValue('internalNotes', selectedCreator?.internalNotes);
       setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
-      setValue('agency', selectedCreator?.agency);
+      // setValue('agency', selectedCreator?.agency);
       setSelectedValues(selectedCreator?.assignEmployee?.map((val) => val._id));
       setCreatorImage(selectedCreator?.creatorImage)
       // setValue('creator', selectedCreator?.creator);

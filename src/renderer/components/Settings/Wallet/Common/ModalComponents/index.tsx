@@ -1,6 +1,7 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import classes from './styles.module.css';
 import {
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -220,7 +221,7 @@ export function ModalFooter(props: ModalFooterProps) {
       className={classes.modalFooter}
       style={{ backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF' }}
     >
-      <button
+      <Button
         className={classes.cancelButtonCss}
         onClick={cancelHandler}
         type="button"
@@ -230,16 +231,18 @@ export function ModalFooter(props: ModalFooterProps) {
         }}
       >
         {cancelText}
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="contained"
         onClick={addHandler}
         className={classes.addButtonCss}
         type="submit"
         id={id}
-        disabled={isLoading}
+        // disabled={isLoading}
+        sx={{ color: 'white' }}
       >
         {addText}
-      </button>
+      </Button>
     </div>
   );
 }

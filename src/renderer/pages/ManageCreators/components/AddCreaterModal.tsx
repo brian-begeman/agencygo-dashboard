@@ -129,6 +129,7 @@ export default function AddCreaterModal({
   };
 
   const addHandler = () => {
+    console.log('Dataaaa', type, '----------------');
     handleSubmit();
   };
 
