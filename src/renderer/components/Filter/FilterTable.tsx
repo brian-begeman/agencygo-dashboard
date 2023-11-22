@@ -26,17 +26,17 @@ export default function FilterTable({
   tableHeaders,
   children,
 }: $Props) {
-
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
-    <Box sx={{  width:'80%',padding:'10px', overflow: 'auto' }}>
+    <Box sx={{ width: '80%', padding: '10px', overflow: 'auto' }}>
       {!isEmptyContent ? (
         <TableContainer
           sx={{
             border: `1px solid ${theme.palette.primary.contrastText}`,
             borderRadius: '12px',
-            width:'100%'
+            width: '100%',
+            marginBottom: '50px',
           }}
         >
           <Table aria-label="manage creators table">
@@ -68,7 +68,9 @@ export default function FilterTable({
             direction="row"
             justifyContent="space-between"
             sx={{
-              backgroundColor: isDarkTheme? '#292929':theme.palette.primary.contrastText,
+              backgroundColor: isDarkTheme
+                ? '#292929'
+                : theme.palette.primary.contrastText,
             }}
             className={styles.campaign}
             paddingTop="30px"

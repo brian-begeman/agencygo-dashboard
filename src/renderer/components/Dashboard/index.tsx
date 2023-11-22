@@ -24,7 +24,7 @@ function Dashboard({ children }: $Props) {
         <SideBar />
         <div className={classes.secondChild}>
           <Header />
-          <Box sx={{marginTop:'100px'}}>{children}</Box>
+          <Box sx={{ marginTop: '100px' }}>{children}</Box>
         </div>
         <div
           style={{

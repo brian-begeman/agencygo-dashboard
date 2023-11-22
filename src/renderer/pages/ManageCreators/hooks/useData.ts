@@ -26,9 +26,9 @@ export interface ICreatorProxy {
 }
 
 export interface ICreatorList {
-  _id: ICreatorList | null;
+  _id?: ICreatorList | null;
   creatorName: string;
-  imageSrc: string;
+  creatorImage: string;
   gender: string;
   internalNotes: string;
   assignEmployee: string[];
@@ -40,8 +40,13 @@ export interface ICreatorList {
   proxy: ICreatorProxy;
 }
 
+export interface IOfCredsProps {
+  email: string;
+  password: string;
+}
 export interface ISelectedCreator {
   creatorName: string;
+  ofcreds:IOfCredsProps;
   gender: string;
   id: string;
   internalNotes: string;
@@ -51,6 +56,7 @@ export interface ISelectedCreator {
   agency: string;
   creator: string;
   status: boolean;
+  creatorImage:string;
 }
 
 const useDataCreators = () => {

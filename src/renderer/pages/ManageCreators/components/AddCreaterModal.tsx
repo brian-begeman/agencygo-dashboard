@@ -94,6 +94,8 @@ export default function AddCreaterModal({
     control,
     isLoading,
     isAutoRelink,
+    creatorImage,
+    setCreatorImage,
     toggleAutoRelink,
     setEmployeeOptions,
     setValue,
@@ -127,11 +129,13 @@ export default function AddCreaterModal({
   };
 
   const addHandler = () => {
+    console.log('Dataaaa', type, '----------------');
     handleSubmit();
   };
 
   const cancelHandler = () => {
     setSelectedValues([]);
+    setCreatorImage('');
     setOpen(false);
   };
 
@@ -140,12 +144,13 @@ export default function AddCreaterModal({
     setOpen(false);
   };
 
-  const handleChangeFile = (file: File | undefined) => {
-    console.log('file ******', file);
-    if (file) {
-      console.log('file ******', URL.createObjectURL(file));
-    }
-  };
+  // const handleChangeFile = (file: File | undefined) => {
+  //   console.log('file ******', file);
+  //   if (file) {
+  //     console.log('file ******', URL.createObjectURL(file));
+  //   }
+  // };
+
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
@@ -183,7 +188,13 @@ export default function AddCreaterModal({
                 type == 'add' ? 'Add' : 'Edit'
               } Headshot`}</Typography>
               <Box>
-                <ImageUpload handleChangeFile={handleChangeFile} />
+                <ImageUpload
+                  creatorImage={creatorImage}
+                  setCreatorImage={setCreatorImage}
+                  register={register as any}
+                  setValue={setValue}
+                  // handleChangeFile={handleChangeFile}
+                />
               </Box>
             </Box>
             <InputWithLabel
@@ -227,7 +238,7 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <DropdownWithLabel
+            {/* <DropdownWithLabel
               selectStyle={{
                 border: '1px solid #292929',
                 backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
@@ -237,20 +248,17 @@ export default function AddCreaterModal({
               options={genderList}
               placeholder="Select Employee"
               register={register as any}
-            />
-            {/* <MultiSelectDropdown
+            /> */}
+            <MultiSelectDropdown
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
-                console.log(selected, 'selectedselected');
                 setValue('assignEmployee', selected);
                 setSelectedValues(selected);
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-
-              
-            /> */}
+            />
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
@@ -274,9 +282,13 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=""
+                  type="number"
+                  // max=10
+                  // min=1
+                  value="10"
                   inputIdentifierName="agency"
                   placeholder="Agency %"
-                  // register={register as any}
+                  register={register as any}
                 />
                 <InputWithLabel
                   inputStyle={{
@@ -284,10 +296,13 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=" "
+                  type="number"
+                  value="10"
+                  // max= 10
+                  // min= 1
                   inputIdentifierName="creator"
                   placeholder="Creator %"
-
-                  // register={register as any}
+                  register={register as any}
                 />
               </Box>
             </Box>

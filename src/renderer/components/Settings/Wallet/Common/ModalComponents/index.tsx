@@ -1,6 +1,7 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 import classes from './styles.module.css';
 import {
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -33,6 +34,8 @@ interface InputWithLabelProps {
   errors?: any;
   required?: boolean;
   inputStyle?: any;
+  max?: number;
+  min?: number;
   type?: string;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
@@ -45,6 +48,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
     value,
     errors,
     inputStyle,
+    max = '',
+    min = '',
     type = 'text',
     required = false,
     handleOnChange = () => {},
@@ -67,6 +72,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
         placeholder={placeholder}
         required={required}
         value={value}
+        max={max}
+        min={min}
         type={type}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -174,7 +181,7 @@ export function DropdownWithTreeLabel(props: DropdownWithTreeLabelProps) {
           label={label}
           value={value}
           // inputIdentifierName="agencyId"
-          placeholder={"Enter parent group name"}
+          placeholder={'Enter parent group name'}
           // register={register as any}
         />
       </div>
@@ -212,7 +219,7 @@ export function ModalFooter(props: ModalFooterProps) {
       className={classes.modalFooter}
       style={{ backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF' }}
     >
-      <button
+      <Button
         className={classes.cancelButtonCss}
         onClick={cancelHandler}
         type="button"
@@ -222,16 +229,18 @@ export function ModalFooter(props: ModalFooterProps) {
         }}
       >
         {cancelText}
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="contained"
         onClick={addHandler}
         className={classes.addButtonCss}
         type="submit"
         id={id}
-        disabled={isLoading}
+        // disabled={isLoading}
+        sx={{ color: 'white' }}
       >
         {addText}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -252,6 +261,7 @@ export function AutoRelinkSwitch({
     <FormGroup>
       <FormControlLabel
         control={<Switch defaultChecked={isAutoRelink} />}
+        toggleAutoRelink
         label=""
         {...register(name)}
       />

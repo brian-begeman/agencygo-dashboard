@@ -507,6 +507,7 @@ export default function TrdPDF({ open, setOpen, name }: any) {
             </div>
           </div>
         </div>
+        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

@@ -19,9 +19,9 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
-
+  const { userData } = useContext(AuthContext);
   const [selectedValues, setSelectedValues] = useState<any>([]);
-
+  const [creatorImage, setCreatorImage] = useState('');
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
     params: { id: localStorage.getItem('AgencyId') },
@@ -34,40 +34,70 @@ const useFormCreator = (
   });
 
   const validationSchema = Yup.object().shape({
-    creatorName: Yup.string().required('Name is required'),
-    gender: Yup.string().required('Gender is required'),
+    creatorImage: Yup.mixed(),
+    creatorName: Yup.string(), 
+    // .required('Name is required'),
+    gender: Yup.string(),
+    // .required('Gender is required'),
+    email:Yup.string(),
+    // .required("Email is required"),
+    password:Yup.string(),
+    // required("password is required"),
     assignEmployee: Yup.array(),
     internalNotes: Yup.string(),
     autoRelink: Yup.boolean(),
     agency: Yup.string(),
     creator: Yup.string(),
+    isAgencyProxy:Yup.boolean(),
   });
 
   const { register, handleSubmit, reset, setValue, getValues, control } =
     useForm({
       resolver: yupResolver(validationSchema),
     });
-  const { userData } = useContext(AuthContext);
 
   const onSubmit = (data: any) => {
+    console.log(data,"::::::::::::::::::::");
     if (type === 'add') {
+      data.status= true
+      data.assignEmployee= selectedValues
       const ofCredsObj = {
         email: data?.email,
         password: data?.password,
       };
+      data.ofcreds=ofCredsObj
 
-      data.agencyId = userData?.agency?._id;
-      data.status = true;
-      data.ofcreds = ofCredsObj;
-      console.log(data);
+      const formdata = new FormData();
+    formdata.append('creatorImage', data.creatorImage);
+    formdata.append('creatorName', data.creatorName);
+    formdata.append('autoRelink',  data.autoRelink);
+    formdata.append('gender', data.gender);
+    formdata.append('ofcreds',JSON.stringify(data.ofcreds));
+    formdata.append('internalNotes', data.internalNotes);
+    formdata.append('status',data.status);
+    formdata.append('agencyComission',data.agency);
+    formdata.append('creatorComission',data.creator);
+    formdata.append('agencyId',userData?.agency?._id);  
+    formdata.append('assignEmployee',JSON.stringify(data.assignEmployee));  
+
+      // const ofCredsObj = {
+      //   email: data?.email,
+      //   password: data?.password,
+      // };
+      // // data.creatorImage= formdata
+      // data.agencyId = userData?.agency?._id;
+      // data.status = true;
+      // data.ofcreds = ofCredsObj;
+      // console.log(data);
 
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        // headers: {
+        //   'content-type': 'application/json',
+        // },
+        // body: JSON.stringify(data),
+        body: formdata,
         withAuth: true,
       };
       fetchReq(endpoint, options)
@@ -76,6 +106,7 @@ const useFormCreator = (
           if ((res.message = 'creator added successfully')) {
             callback();
             setSelectedValues([]);
+            setCreatorImage("")
             reset();
           }
         })
@@ -86,10 +117,10 @@ const useFormCreator = (
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {
         method: 'PUT' as 'PUT',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        // headers: {
+        //   'content-type': 'application/json',
+        // },
+        body:  data,
         withAuth: true,
       };
       fetchReq(endpoint, options)
@@ -120,12 +151,15 @@ const useFormCreator = (
     if (selectedCreator && type === 'edit') {
       setValue('creatorName', selectedCreator?.creatorName);
       setValue('assignEmployee', selectedCreator?.assignEmployee);
+      setValue('email',selectedCreator?.ofcreds?.email);
+      setValue('password',selectedCreator?.ofcreds?.password);
       setValue('gender', selectedCreator?.gender);
       setValue('internalNotes', selectedCreator?.internalNotes);
       setValue('autoRelink', selectedCreator?.autoRelink);
       setValue('isAgencyProxy', selectedCreator?.proxy);
-      setValue('agency', selectedCreator?.agency);
-      setSelectedValues(selectedCreator?.assignEmployee.map((val) => val._id));
+      // setValue('agency', selectedCreator?.agency);
+      setSelectedValues(selectedCreator?.assignEmployee?.map((val) => val._id));
+      setCreatorImage(selectedCreator?.creatorImage)
       // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
@@ -164,6 +198,8 @@ const useFormCreator = (
     setValue,
     selectedValues,
     setSelectedValues,
+    creatorImage,
+    setCreatorImage,
   };
 };
 
