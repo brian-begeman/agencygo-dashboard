@@ -10,11 +10,11 @@ import './Addleder.css';
 import { MyInvoiceContext } from '../../context/context';
 const style = {
   position: 'absolute',
-  top: '50%',
+  top: '47%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 800,
-  height: 750,
+  height: 730,
   borderRadius: '10px',
   backgroundColor: 'white', // Changed "bgcolor" to "backgroundColor"
   color: 'black',
@@ -24,12 +24,11 @@ const style = {
 };
 
 const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
-export default function AddLeder({ open, setOpen, name }: any) {
+export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
   const { data } = useContext(MyInvoiceContext);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // console.log(data, '====><><><><><><====');
 
   const handlePDF = async () => {
     const options = {
@@ -47,7 +46,7 @@ export default function AddLeder({ open, setOpen, name }: any) {
       );
       const responseData = await response.json();
 
-      // console.log(responseData.data);
+      console.log(responseData.data);
 if (responseData?.data?.pdfUrl) {
   setOpen(false)
 }
@@ -58,8 +57,6 @@ if (responseData?.data?.pdfUrl) {
     }
   };
 
-  // useEffect(()=>{
-  //   handlePDF
 
   const pdfData = {
     userName: data?.firstName,
@@ -79,8 +76,6 @@ if (responseData?.data?.pdfUrl) {
     status: true,
     invoiceNo: 'INC0001',
     address: 'test',
-
-    
 
     paymentTerms: 'test',
     contactName: 'test',
@@ -102,12 +97,10 @@ if (responseData?.data?.pdfUrl) {
     addressShipTo: 'test',
     phoneShipTo: 'test',
   };
-  // },[name])
+
   const truevalue = true;
   const falsevalue = false;
-
   const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
-
   const [editpdf, setEditpdf] = useState({
     companyName: false,
     clientCompanyName: false,
@@ -118,8 +111,9 @@ if (responseData?.data?.pdfUrl) {
     qty: false,
     unitPrice: false,
   });
+
   const handleContactClick = (field: any, value: any) => {
-    setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
@@ -143,7 +137,6 @@ if (responseData?.data?.pdfUrl) {
     return () => clearInterval(intervalId);
   }, [invoicedetails?.unitPrice]);
 
-  // right side end
   return (
     <Modal
       className="boxsize"
@@ -156,10 +149,9 @@ if (responseData?.data?.pdfUrl) {
       <Box sx={style}>
        
 
-        <div
+        <Box
           style={{
             backgroundColor: '#f3f3f3',
-
             color: 'black',
             overflowY: 'auto',
           }}
@@ -167,9 +159,11 @@ if (responseData?.data?.pdfUrl) {
            <Typography
           style={{
             float: 'right',
-            background: '#858585',
-            padding: '2px 6px',
+            background: '#fff',
+            padding: '2px 8px',
             marginBottom: '5px',
+            borderRadius: '100%',
+          margin: '2px'
           }}
           onClick={handleClose}
           sx={{ cursor: 'pointer' }}
@@ -502,24 +496,27 @@ if (responseData?.data?.pdfUrl) {
   </div>
 
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-        </div>
-
-
-<div style={{
+        </Box>
+        
+        <div style={{
             float: 'right',
            padding:'10px 10px'
-          }}>
-
-        <Button
-              variant="contained"
-              sx={{ color: '#fff', textTransform: 'capitalize' }}
-              onClick={handlePDF}
-              >
+          }}
+          >
+            {!viewOnly && 
+            <Button variant="contained" sx={{ color: '#fff', textTransform: 'capitalize', marginRight: '4px'  }} 
+            onClick={handlePDF}>
               Create Invoice
+            </Button>}
+
+            
+            <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
+            onClick={()=> {setOpen(false)}}
+            >
+              Close
             </Button>
               </div>
-        
-      </Box>
+              </Box>
     </Modal>
   );
 }

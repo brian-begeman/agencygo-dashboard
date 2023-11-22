@@ -18,7 +18,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function TrdPDF({ open, setOpen, name }: any) {
+export default function TrdPDF({ open, setOpen, name, viewOnly }: any) {
   const [editDescription, setEditDescription] = useState(false);
   const [editDate, setEditDate] = useState(false);
   const [newDescription, setNewDescription] = useState('');
@@ -82,7 +82,7 @@ export default function TrdPDF({ open, setOpen, name }: any) {
   });
 
   const handleContactClick = (field: any, value: any) => {
-    setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
@@ -163,9 +163,10 @@ export default function TrdPDF({ open, setOpen, name }: any) {
         <Typography
           style={{
             float: 'right',
-            background: '#c9adad',
-            padding: '2px',
-            marginBottom: '5px',
+            background: '#333',
+            padding: '2px 8px',
+            borderRadius: '100%',
+            margin: '2px'
           }}
           onClick={handleClose}
           sx={{ cursor: 'pointer' }}
@@ -492,20 +493,25 @@ export default function TrdPDF({ open, setOpen, name }: any) {
                   <h4 style={{ fontWeight: 'bold' }}>TOTAL:</h4>
                 </div>
                 <div className="new-item-75"></div>
-                <Button
-                  variant="contained"
-                  sx={{
-                    color: '#fff',
-                    textTransform: 'capitalize',
-                    float: 'right',
-                  }}
-                  onClick={handlePDF}
-                >
-                  Create Invoice
-                </Button>
               </div>
             </div>
           </div>
+          <Box sx={{width: '100%', display: 'flex', padding: '5px', justifyContent: 'end', gap: '4px'}}>
+          {!viewOnly &&<Button
+            variant="contained"
+            sx={{ color: '#fff', textTransform: 'capitalize' }}
+            onClick={handlePDF}
+          >
+            Create Invoice
+          </Button>}
+                <Button
+                variant="outlined"
+              sx={{ borderColor: '#fff',color: '#fff', textTransform: 'capitalize' }}
+              onClick={()=> {setOpen(false)}}
+            >
+              close
+            </Button> 
+          </Box>
         </div>
       </Box>
     </Modal>

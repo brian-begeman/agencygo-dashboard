@@ -16,7 +16,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function FourthPDF({ open, setOpen, name }: any) {
+export default function FourthPDF({ open, setOpen, name, viewOnly }: any) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -32,9 +32,12 @@ export default function FourthPDF({ open, setOpen, name }: any) {
         <Typography
           style={{
             float: 'right',
-            background: '#c9adad',
-            padding: '2px',
+            background: '#df287b',
+            padding: '2px 8px',
             marginBottom: '5px',
+            borderRadius: '100%',
+            color: '#fff',
+            margin: '2px'
           }}
           onClick={handleClose}
           sx={{ cursor: 'pointer' }}

@@ -18,7 +18,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function ScndPDF({ open, setOpen, name }: any) {
+export default function ScndPDF({ open, setOpen, name, viewOnly }: any) {
   const handleClose = () => setOpen(false);
 
   const { data } = useContext(MyInvoiceContext);
@@ -77,7 +77,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
   });
 
   const handleContactClick = (field: any, value: any) => {
-    setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
@@ -130,7 +130,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
           style={{
             backgroundColor: 'white',
             color: 'black',
-            padding: '20px',
+            padding: '5px 20px',
             boxSizing: 'border-box',
             height: '100%',
             overflowY: 'auto',
@@ -140,8 +140,10 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             style={{
               float: 'right',
               background: '#858585',
-              padding: '2px 6px',
+              padding: '2px 8px',
               marginBottom: '5px',
+              borderRadius: '100%',
+              textAlign: 'center'
             }}
             onClick={handleClose}
             sx={{ cursor: 'pointer' }}
@@ -661,60 +663,24 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             </div>
           </div>
 
-          {/* <div>
-            <div className="Business-name">
-              <h1>Business Name</h1>
-            </div>
-            <div className="Business-p">
-              <p>add address Lorem ipsum dolor sit amet.</p>
-            </div>
-          </div> */}
-
-          {/* <div className="billing-div-main">
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                BILL TO
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>email address</p>
-                <p style={{ margin: '1px 0px' }}>phone number</p>
-                <p style={{ margin: '1px 0px' }}>Street address</p>
-                <p style={{ margin: '1px 0px' }}>country/code</p>
-              </div>
-            </div>
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                DETAILS
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>Your address</p>
-                <p style={{ margin: '1px 0px' }}>Your contact details</p>
-              </div>
-            </div>
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                PAYMENT
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>Your address</p>
-              </div>
-            </div>
-          </div> */}
-
-          {/* 3 boxes */}
-
           <div>{/* Additional content if needed */}</div>
 
-          <Button
+          <Box sx={{width: '100%', display: 'flex', paddingTop: '6px', justifyContent: 'end', gap: '4px'}}>
+          {!viewOnly &&<Button
             variant="contained"
             sx={{ color: '#fff', textTransform: 'capitalize' }}
             onClick={handlePDF}
           >
             Create Invoice
-          </Button>
+          </Button>}
+                <Button
+                variant="outlined"
+              sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize' }}
+              onClick={()=> {setOpen(false)}}
+            >
+              close
+            </Button> 
+          </Box>
         </div>
       </Box>
     </Modal>
