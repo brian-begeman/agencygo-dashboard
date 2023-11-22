@@ -33,6 +33,8 @@ interface InputWithLabelProps {
   errors?: any;
   required?: boolean;
   inputStyle?: any;
+  max?: number;
+  min?: number;
   type?: string;
   handleOnChange?: (name: string, value: string) => void;
   register?: UseFormRegister<FieldValues>;
@@ -45,6 +47,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
     value,
     errors,
     inputStyle,
+    max = '',
+    min = '',
     type = 'text',
     required = false,
     handleOnChange = () => {},
@@ -59,7 +63,7 @@ export function InputWithLabel(props: InputWithLabelProps) {
       <LabelText label={label} />
       <input
         style={{
-          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           color: isDarkTheme ? '#fff' : '#000',
         }}
         className={classes.inputCss}
@@ -67,6 +71,8 @@ export function InputWithLabel(props: InputWithLabelProps) {
         placeholder={placeholder}
         required={required}
         value={value}
+        max={max}
+        min={min}
         type={type}
         onChange={(e) => handleOnChange(inputIdentifierName, e.target.value)}
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -118,7 +124,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
       {label && <LabelText label={label} />}
       <select
         style={{
-          backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           color: isDarkTheme ? '#fff' : '#000',
         }}
         className={classes.selectCss}
@@ -176,7 +182,7 @@ export function DropdownWithTreeLabel(props: DropdownWithTreeLabelProps) {
           label={label}
           value={value}
           // inputIdentifierName="agencyId"
-          placeholder={"Enter parent group name"}
+          placeholder={'Enter parent group name'}
           // register={register as any}
         />
       </div>
@@ -212,13 +218,16 @@ export function ModalFooter(props: ModalFooterProps) {
   return (
     <div
       className={classes.modalFooter}
-      style={{ backgroundColor: isDarkTheme ? '#000' : '#EAF1FF' }}
+      style={{ backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF' }}
     >
       <button
         className={classes.cancelButtonCss}
         onClick={cancelHandler}
         type="button"
-        style={{ color: isDarkTheme ? '#fff' : '#000' }}
+        style={{
+          color: isDarkTheme ? '#fff' : '#000',
+          borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+        }}
       >
         {cancelText}
       </button>
@@ -251,6 +260,7 @@ export function AutoRelinkSwitch({
     <FormGroup>
       <FormControlLabel
         control={<Switch defaultChecked={isAutoRelink} />}
+        toggleAutoRelink
         label=""
         {...register(name)}
       />
@@ -302,7 +312,7 @@ any) {
         sx={{
           m: 0,
           minWidth: '100%',
-          backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
+          backgroundColor: isDarkTheme ? '#292929' : '#fff',
           border: '1px solid #fff',
           borderRadius: '5px',
           outline: 'none',
@@ -331,7 +341,6 @@ any) {
           value={selectedValues}
           placeholder="add"
           label="Select Values"
-         
           onChange={handleOnChange}
         >
           {options?.map((val: any) => {

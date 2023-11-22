@@ -47,9 +47,11 @@ export default function AddLeder({ open, setOpen, name }: any) {
       );
       const responseData = await response.json();
 
-      console.log(responseData.data);
-
-      window.location.href = responseData.data;
+      // console.log(responseData.data);
+      if (responseData?.data?.pdfUrl) {
+        setOpen(false);
+      }
+      // window.location.href = responseData.data;
       // setpdfURl(responseData.data)
     } catch (error) {
       console.log(error);
@@ -75,10 +77,13 @@ export default function AddLeder({ open, setOpen, name }: any) {
     email: data?.email,
     amount: 0,
     status: true,
-    address: 'test',
     invoiceNo: 'INC0001',
+    address: 'test',
+
     paymentTerms: 'test',
     contactName: 'test',
+    amonut: 0,
+    delivery: true,
     nameDept: 'test',
     addresss: 'test',
     phone: 'test',
@@ -147,19 +152,6 @@ export default function AddLeder({ open, setOpen, name }: any) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography
-          style={{
-            float: 'right',
-            background: '#c9adad',
-            padding: '2px',
-            marginBottom: '5px',
-          }}
-          onClick={handleClose}
-          sx={{ cursor: 'pointer' }}
-        >
-          X
-        </Typography>
-
         <div
           style={{
             backgroundColor: 'white',
@@ -202,18 +194,16 @@ export default function AddLeder({ open, setOpen, name }: any) {
                 LOGO
               </div>
               <div style={{ lineHeight: '4px', marginLeft: '10px' }}>
-                <h3>
-                  {data?.firstName} {data?.lastName}
-                </h3>
+                <h3> Your Company Name</h3>
                 <h3>Address</h3>
-                <h3>{data?.email}</h3>
+                <h3>Your Contact Details</h3>
               </div>
             </div>
 
             <div>
               <h2>INVOICE</h2>
-              <h4>DATE: {currentDate.toLocaleString()}</h4>
-              <h4>INVOICE No. {'INC0001'}</h4>
+              <h4>DATE</h4>
+              <h4>INVOICE No.</h4>
             </div>
           </div>
 
@@ -241,102 +231,48 @@ export default function AddLeder({ open, setOpen, name }: any) {
                 <div
                   style={{ height: '3px', backgroundColor: '#bfbfbf' }}
                 ></div>
-                <h3
-                  onClick={() => handleContactClick('companyName', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyName ? (
+
+                <h3 onClick={handleContactClick} style={{ cursor: 'pointer' }}>
+                  {editContact ? (
                     <input
                       type="text"
-                      name="companyName"
-                      value={invoicedetails?.companyName}
+                      value={newContact}
                       onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('companyName', falsevalue)
-                      }
+                      onBlur={() => seteditContact(false)}
                     />
                   ) : (
-                    invoicedetails?.companyName || '< Contact Name >'
+                    newContact || '< Contact Name >'
                   )}
                 </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('clientCompanyName', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.clientCompanyName ? (
+                <h3 onClick={handleClientClick} style={{ cursor: 'pointer' }}>
+                  {editClient ? (
                     <input
                       type="text"
-                      name="clientCompanyName"
-                      value={invoicedetails?.clientCompanyName}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('clientCompanyName', falsevalue)
-                      }
+                      value={newClient}
+                      onChange={handleClientChange}
+                      onBlur={() => seteditClient(false)}
                     />
                   ) : (
-                    invoicedetails?.clientCompanyName ||
-                    '<Client Company Name >'
+                    newClient || '<Client Company Name >'
                   )}
                 </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyAddress', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyAddress ? (
+
+                <h3 onClick={handleAddressClick} style={{ cursor: 'pointer' }}>
+                  {editAddress ? (
                     <input
                       type="text"
-                      name="companyAddress"
-                      value={invoicedetails?.companyAddress}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyAddress', falsevalue)}
+                      value={newAddress}
+                      onChange={handleAddressChange}
+                      onBlur={() => seteditAddress(false)}
                     />
                   ) : (
-                    invoicedetails?.companyAddress || '<Address >'
+                    newAddress || '<Address >'
                   )}
                 </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyContact', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyContact ? (
-                    <input
-                      type="text"
-                      name="companyContact"
-                      value={invoicedetails?.companyContact}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyContact', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.companyContact || '<Phone >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('contactDetails', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.contactDetails ? (
-                    <input
-                      type="text"
-                      name="contactDetails"
-                      value={invoicedetails?.contactDetails}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('contactDetails', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.contactDetails || '<Email >'
-                  )}
-                </h3>
+
+                <h3>&lt;Phone &gt;</h3>
+
+                <h3>&lt;Email &gt;</h3>
               </div>
 
               <div>
@@ -344,20 +280,34 @@ export default function AddLeder({ open, setOpen, name }: any) {
                 <div
                   style={{ height: '3px', backgroundColor: '#bfbfbf' }}
                 ></div>
-                <h3>
-                  &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
+                <h3>&lt; Name / Dept&gt;</h3>
+                <h3>&lt;Client Company Name&gt;</h3>
+                <h3>&lt;Address &gt;</h3>
+                <h3 onClick={handlePhoneClick} style={{ cursor: 'pointer' }}>
+                  {editPhone ? (
+                    <input
+                      type="text"
+                      value={newPhone}
+                      onChange={handlePhoneChange}
+                      onBlur={() => seteditPhone(false)}
+                    />
+                  ) : (
+                    newPhone || '<Phone >'
+                  )}
+                </h3>{' '}
+                {/* fourth */}
+                <h3 onClick={handleEmailClick} style={{ cursor: 'pointer' }}>
+                  {editEmail ? (
+                    <input
+                      type="text"
+                      value={newEmail}
+                      onChange={handleEmailChange}
+                      onBlur={() => seteditEmail(false)}
+                    />
+                  ) : (
+                    newEmail || '<Email >'
+                  )}
                 </h3>
-                <h3>
-                  &lt;
-                  {invoicedetails?.clientCompanyName || 'Client Company Name'}
-                  &gt;
-                </h3>
-                <h3>
-                  {' '}
-                  &lt;{invoicedetails?.companyAddress || ' Address '}&gt;
-                </h3>
-                <h3>&lt;{invoicedetails?.companyContact || ' phone '}&gt;</h3>
-                <h3>&lt;{invoicedetails?.contactDetails || '  Email '}&gt;</h3>
               </div>
             </div>
           </div>
@@ -482,16 +432,13 @@ export default function AddLeder({ open, setOpen, name }: any) {
                 <h3>_____________0.00</h3>
                 <h3>_____________0.00</h3>
                 <h3>_____________0.00</h3>
-                <h2 style={{ backgroundColor: 'pink', height: '50px' }}>
-                  ${invoicedetails?.qty * invoicedetails?.unitPrice}
-                </h2>
+                <h2 style={{ backgroundColor: 'pink', height: '50px' }}></h2>
               </div>
               <div style={{ height: '4px', backgroundColor: 'black' }}></div>
             </div>
           </div>
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
         </div>
-        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

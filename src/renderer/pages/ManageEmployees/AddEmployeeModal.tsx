@@ -158,39 +158,43 @@ export default function AddEmployeeModal({
             gap="10px"
             sx={{
               marginInline: '30px',
-              paddingTop: '30px',
+              paddingTop: '31px',
               paddingBottom: '50px',
             }}
             className={styles.inputListWrapper}
           >
-            <InputWithLabel
-              label="Employee name"
-              inputIdentifierName="name"
-              placeholder="Enter name"
-              register={register as any}
-            />
-            <InputWithLabel
-              label="Email"
-              inputIdentifierName="email"
-              placeholder="Enter email"
-              register={register as any}
-            />
-            <DropdownWithLabel
-              label="Group"
-              inputIdentifierName="agencyId"
-              options={agencies}
-              register={register as any}
-            />
-            <DropdownWithLabel
-              label="Role"
-              inputIdentifierName="role"
-              options={roleList}
-              register={register as any}
-            />
+            <Box sx={{ display: 'flex', gap: '20px' }}>
+              <InputWithLabel
+                label="Employee name"
+                inputIdentifierName="name"
+                placeholder="Enter name"
+                register={register as any}
+              />
+              <InputWithLabel
+                label="Email"
+                inputIdentifierName="email"
+                placeholder="Enter email"
+                register={register as any}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', gap: '20px' }}>
+              <DropdownWithLabel
+                label="Group"
+                inputIdentifierName="agencyId"
+                options={agencies}
+                register={register as any}
+              />
+              <DropdownWithLabel
+                label="Role"
+                inputIdentifierName="role"
+                options={roleList}
+                register={register as any}
+              />
+            </Box>
 
             <Box>
               <LabelText label={'Pay Rate'} />
-              <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                 <InputWithLabel
                   label=""
                   inputIdentifierName="payRate"
@@ -205,23 +209,24 @@ export default function AddEmployeeModal({
                 />
               </Box>
             </Box>
-
-            <Box>
-              <InputWithLabel
-                label="Commission"
-                inputIdentifierName="commission"
-                placeholder="Commission"
+            <Box sx={{ display: 'flex', gap: '20px'}}>
+             
+              <Box sx={{width:'100%'}}>
+                <InputWithLabel
+                  label="Commission"
+                  inputIdentifierName="commission"
+                  placeholder="Commission"
+                  register={register as any}
+                />
+                <LabelText label={'0.10%'} />
+              </Box>
+              <DropdownWithLabel
+                label="Shift Schedule"
+                inputIdentifierName="shiftSchedular"
+                options={scheduleList}
                 register={register as any}
               />
-              <LabelText label={'0.10%'} />
             </Box>
-
-            <DropdownWithLabel
-              label="Shift Schedule"
-              inputIdentifierName="shiftSchedular"
-              options={scheduleList}
-              register={register as any}
-            />
 
             <MultiSelectDropdown
               label="Assign Creator"

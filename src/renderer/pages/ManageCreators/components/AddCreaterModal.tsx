@@ -134,6 +134,7 @@ export default function AddCreaterModal({
 
   const cancelHandler = () => {
     setSelectedValues([]);
+    setCreatorImage('');
     setOpen(false);
   };
 
@@ -251,7 +252,6 @@ export default function AddCreaterModal({
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
-                console.log(selected, 'selectedselected');
                 setValue('assignEmployee', selected);
                 setSelectedValues(selected);
               }}
@@ -281,9 +281,13 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=""
+                  type="number"
+                  // max=10
+                  // min=1
+                  value="10"
                   inputIdentifierName="agency"
                   placeholder="Agency %"
-                  // register={register as any}
+                  register={register as any}
                 />
                 <InputWithLabel
                   inputStyle={{
@@ -291,10 +295,13 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=" "
+                  type="number"
+                  value="10"
+                  // max= 10
+                  // min= 1
                   inputIdentifierName="creator"
                   placeholder="Creator %"
-
-                  // register={register as any}
+                  register={register as any}
                 />
               </Box>
             </Box>

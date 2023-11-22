@@ -257,9 +257,12 @@ function AppRoutes() {
   const location = useLocation();
 
   useEffect(() => {
-    window.electron.ipcRenderer.sendMessage('remove-browser-view');
+    if (window.electron) {
+      window.electron.ipcRenderer.sendMessage('remove-browser-view');
+    } else {
+      console.error('Electron IPCRenderer not available');
+    }
   }, [location]);
-
   return (
     <Routes>
       {isLogin ? (

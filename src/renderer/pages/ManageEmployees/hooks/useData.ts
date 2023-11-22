@@ -97,12 +97,12 @@ const useDataEmployees = () => {
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
-        const tempAssignedCreators = Array.from(item.assignedCreators);
+        const tempAssignedCreators =  item?.assignedCreators;
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreatorsForDropdown: item.assignedCreators,
-          assignedCreatorsText: tempAssignedCreators.length
+          assignedCreatorsForDropdown: item?.assignedCreators,
+          assignedCreatorsText: tempAssignedCreators?.length
             ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
             : '+ Please click to set',
           role: item?.role

@@ -4,6 +4,7 @@ import SideBar from './components/Sidebar';
 import Header from './components/Header';
 import Promotracker from '../../assets/png/Promotracker.png';
 import PromoTacker from './components/PromoTacker';
+import { Box } from '@mui/material';
 interface $Props {
   children: ReactNode | ReactNode[];
 }
@@ -23,7 +24,7 @@ function Dashboard({ children }: $Props) {
         <SideBar />
         <div className={classes.secondChild}>
           <Header />
-          {children}
+          <Box sx={{ marginTop: '100px' }}>{children}</Box>
         </div>
         <div
           style={{

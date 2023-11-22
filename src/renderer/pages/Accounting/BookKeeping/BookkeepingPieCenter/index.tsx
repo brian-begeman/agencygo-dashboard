@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { Box, Divider, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Box, Divider, MenuItem, Select, Stack, Typography, useTheme } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import theme from 'renderer/styles/muiTheme';
 
@@ -41,28 +41,47 @@ const dummyData = [
 export function BookkeepingPieCenter() {
   const [selectedStatus, setSelectedStatus] = useState('Filter');
 
+ const theme = useTheme();
+ const isDarkTheme = theme.palette.mode === 'dark';
+
+
   return (
     <Box
       borderRadius="16px"
-      bgcolor="var(--color-background)"
+      bgcolor={isDarkTheme ? '#0C0C0C' : '#fff'}
       padding="20px"
       display="flex"
       flexDirection="column"
       gap="20px"
     >
-       <Box display="flex" justifyContent={'space-between'} alignItems={'center'}>
+      <Box
+        display="flex"
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
+        <Box>
+          <Typography
+            fontSize="22px"
+            display="flex"
+            alignItems="center"
+            gap="3px"
+          >
+            Expenses{' '}
+            <ErrorOutline
+              sx={{ color: theme.palette.secondary.contrastText }}
+            />
+          </Typography>
+          <Typography
+            fontSize="34px"
+            display="flex"
+            alignItems="center"
+            gap="3px"
+          >
+            $822
+          </Typography>
+        </Box>
 
-<Box>
-
-      <Typography fontSize="22px" display='flex' alignItems="center" gap='3px'>
-      Expenses        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText }}/>
-      </Typography>
-      <Typography fontSize="34px" display='flex' alignItems="center" gap='3px'>
-      $822        
-      </Typography>
-</Box>
-        
-      <Box>
+        <Box>
           <Select
             id="filter"
             value={selectedStatus}
@@ -110,8 +129,12 @@ export function BookkeepingPieCenter() {
             </MenuItem>
           </Select>
         </Box>
-        </Box>
-      <Box display="flex" justifyContent={'space-between'} alignItems={'center'}>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
         <Box width={'30%'}>
           <Doughnut data={data} />
         </Box>
@@ -128,7 +151,7 @@ export function BookkeepingPieCenter() {
                     bgcolor={val.color}
                   ></Box>
                   <Typography width="354px">{val.title}</Typography>
-               
+
                   <Typography width="354px">{val.dollar}</Typography>
                 </Box>
                 <Divider sx={{ bgcolor: '#292929' }} />

@@ -13,7 +13,7 @@ interface $Props {
   notificationCount?: number;
   data: any;
   id: string;
-
+  selectName: any;
   messageCount?: number;
   selected: boolean;
   onClick: () => void;
@@ -25,7 +25,7 @@ export default function UserCardWImage({
   profileImage,
   data,
   id,
-
+  selectName,
   notificationCount,
   messageCount,
   selected,
@@ -43,6 +43,10 @@ export default function UserCardWImage({
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+
+  const selctfunction = (data: any) => {
+    selectName(data);
+  };
   return (
     <Box
       // spacing={1}
@@ -50,7 +54,11 @@ export default function UserCardWImage({
       justifyContent={'space-between'}
       alignItems={'center'}
       className={cardClass}
-      onClick={onClick}
+      onClick={() => {
+        onClick;
+        selctfunction(data?.firstName);
+        setData(data);
+      }}
     >
       {profileImage !== '' ? (
         <img
@@ -70,12 +78,11 @@ export default function UserCardWImage({
         <Typography
           onClick={() => {
             console.log('set===== data', data);
-
             setData(data);
           }}
           variant="h3"
-          color="#fff"
-          fontSize={'14px'}
+        
+          fontSize={'18px'}
           sx={{ cursor: 'pointer' }}
           fontWeight={500}
         >

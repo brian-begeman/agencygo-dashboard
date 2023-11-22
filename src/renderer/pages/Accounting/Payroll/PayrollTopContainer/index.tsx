@@ -37,14 +37,14 @@ const PayrollTopContainer = () => {
             value={'Weekly'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
+             
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+              ' & .MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -54,9 +54,7 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+            
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -92,14 +90,14 @@ const PayrollTopContainer = () => {
             value={'Roles'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
+             
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+              ' & .MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -109,9 +107,7 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+             
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },
@@ -147,14 +143,14 @@ const PayrollTopContainer = () => {
             value={'Status'}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              color: theme.palette.secondary.contrastText,
+             
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
               },
               height: 'fit-content',
               padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
+              ' & .MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -164,9 +160,7 @@ const PayrollTopContainer = () => {
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
+             
               input: {
                 backgroundColor: theme.palette.secondary.contrastText,
               },

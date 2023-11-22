@@ -58,7 +58,7 @@
   align-items: center;
   border-radius: 3px;
   background: transparent;
-  border: 1px solid #292929;
+  border: 1px solid;
   
   cursor: pointer;
 }

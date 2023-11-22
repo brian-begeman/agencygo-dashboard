@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import EditSvg from 'renderer/assets/svg/downloadSvg';
@@ -60,153 +61,152 @@ const[isOpen,setOpen]=useState<any>(false)
   useEffect(()=>{
     getInvoice()
   },[])
+const theme = useTheme();
+const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <>
-    <Stack
-      borderRadius="16px"
-      gap="15px"
-      sx={{
-        padding: '10px',
-        border: `1px solid ${theme.palette.primary.contrastText}`,
-      }}
-    >
-      <Box display={'flex'} justifyContent={'space-between'}>
-        <Box display={'flex'}  gap={'10px'}>
-
-      <Button
-            variant="contained"
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
-            onClick={()=>setOpen(true)}
+      <Stack
+        borderRadius="16px"
+        gap="15px"
+        sx={{
+          padding: '10px',
+          border: `1px solid ${theme.palette.primary.contrastText}`,
+          bgcolor: isDarkTheme ? '#0C0C0C' : '#fff',
+        }}
+      >
+        <Box display={'flex'} justifyContent={'space-between'}>
+          <Box display={'flex'} gap={'10px'}>
+            <Button
+              variant="contained"
+              sx={{ color: '#fff', textTransform: 'capitalize' }}
+              onClick={() => setOpen(true)}
             >
-            Add Ledger{' '}
-          </Button>
-        <Typography fontSize="22px">Ledger</Typography>
-            </Box>
-        <Box>
-          <Select
-            id="filter"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            sx={{
-              color: theme.palette.secondary.contrastText,
-              width: 'fit-content',
-              '.MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.light,
-              },
-              height: 'fit-content',
-              padding: '0px 0px',
-              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
-                {
+              Add Ledger{' '}
+            </Button>
+            <Typography fontSize="22px">Ledger</Typography>
+          </Box>
+          <Box>
+            <Select
+              id="filter"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              sx={{
+                width: 'fit-content',
+                '.MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.light,
+                },
+                height: 'fit-content',
+                padding: '0px 0px',
+                ' & .MuiOutlinedInput-input': {
                   padding: '4px 8px',
                 },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.contrastText,
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: theme.palette.secondary.contrastText,
-              },
-              '.MuiSvgIcon-root': {
-                fill: 'white !important',
-              },
-              input: {
-                backgroundColor: theme.palette.secondary.contrastText,
-              },
-            }}
-          >
-            <MenuItem
-              value={'Filter'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
-            >
-              Filter
-            </MenuItem>
-            <MenuItem value={'paid'} sx={{ fontWeight: 500, fontSize: '11px' }}>
-              Paid invoice
-            </MenuItem>
-            <MenuItem
-              value={'unpaid'}
-              sx={{ fontWeight: 500, fontSize: '11px' }}
-            >
-              Pending invoice
-            </MenuItem>
-          </Select>
-        </Box>
-      </Box>
-      <TableContainer>
-        <Table
-          sx={{
-            minWidth: 650,
-            borderRadius: 16,
-            border: '1px solid #292929',
-          }}
-          aria-label="simple table"
-        >
-          <TableHead sx={{ bgcolor: '#292929' }}>
-            <TableRow>
-              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Description</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Category</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Reference</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Debit</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Credit</TableCell>
-              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.contrastText,
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.contrastText,
+                },
 
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-            // (
-            //   selectedStatus == 'Filter'
-            //   ? payoutData
-            //   : payoutData.filter(
-            //       (d) =>
-            //         d.invoiceStatus.toLowerCase() ===
-            //         selectedStatus.toLowerCase()
-            //     )
-            // )
-            allInvoice.map((row:any,index:any) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                input: {
+                  backgroundColor: theme.palette.secondary.contrastText,
+                },
+              }}
+            >
+              <MenuItem
+                value={'Filter'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
               >
-                <TableCell sx={{ color: '#FFFFFF' }}>23/04/2023</TableCell>
-
-                <TableCell
-                  scope="column"
-                  sx={{  color: '#FFFFFF', padding: '25px 10px' }}
-                >
-                  Cash
-                </TableCell>
-              
-                <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>100</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>1090</TableCell>
-
-
-            
-                <TableCell sx={{ color: '#04A1FF' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                    }}
-                  >
-                    
-                    <Box sx={{ cursor: 'pointer' }}>
-                      <EditSvg />
-                    </Box>
-                  </Box>
-                </TableCell>
+                Filter
+              </MenuItem>
+              <MenuItem
+                value={'paid'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
+              >
+                Paid invoice
+              </MenuItem>
+              <MenuItem
+                value={'unpaid'}
+                sx={{ fontWeight: 500, fontSize: '11px' }}
+              >
+                Pending invoice
+              </MenuItem>
+            </Select>
+          </Box>
+        </Box>
+        <TableContainer>
+          <Table
+            sx={{
+              minWidth: 650,
+              borderRadius: 16,
+              border: '1px solid ',
+              borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+            }}
+            aria-label="simple table"
+          >
+            <TableHead sx={{ bgcolor: isDarkTheme ? '#0C0C0C' : '#fff' }}>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Reference</TableCell>
+                <TableCell>Debit</TableCell>
+                <TableCell>Credit</TableCell>
+                <TableCell>Date</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Stack>
-    <AddLeder open={isOpen} setOpen={setOpen}/>
-    </>
+            </TableHead>
+            <TableBody>
+              {
+                // (
+                //   selectedStatus == 'Filter'
+                //   ? payoutData
+                //   : payoutData.filter(
+                //       (d) =>
+                //         d.invoiceStatus.toLowerCase() ===
+                //         selectedStatus.toLowerCase()
+                //     )
+                // )
+                allInvoice.map((row: any, index: any) => (
+                  <TableRow
+                    key={index}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell sx={{ color: '#FFFFFF' }}>23/04/2023</TableCell>
 
+                    <TableCell
+                      scope="column"
+                      sx={{ color: '#FFFFFF', padding: '25px 10px' }}
+                    >
+                      Cash
+                    </TableCell>
+
+                    <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>Invioce</TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>100</TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>1090</TableCell>
+
+                    <TableCell sx={{ color: '#04A1FF' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                        }}
+                      >
+                        <Box sx={{ cursor: 'pointer' }}>
+                          <EditSvg />
+                        </Box>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              }
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Stack>
+      <AddLeder open={isOpen} setOpen={setOpen} />
+    </>
   );
 };
 

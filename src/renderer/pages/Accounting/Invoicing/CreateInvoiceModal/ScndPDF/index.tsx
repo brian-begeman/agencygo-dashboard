@@ -125,18 +125,6 @@ export default function ScndPDF({ open, setOpen, name }: any) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography
-          style={{
-            float: 'right',
-            background: '#c9adad',
-            padding: '2px',
-            marginBottom: '5px',
-          }}
-          onClick={handleClose}
-          sx={{ cursor: 'pointer' }}
-        >
-          X
-        </Typography>
         <div
           className="main_boxx"
           style={{
@@ -707,6 +695,14 @@ export default function ScndPDF({ open, setOpen, name }: any) {
           {/* 3 boxes */}
 
           <div>{/* Additional content if needed */}</div>
+
+          <Button
+            variant="contained"
+            sx={{ color: '#fff', textTransform: 'capitalize' }}
+            onClick={handlePDF}
+          >
+            Create Invoice
+          </Button>
         </div>
         <Button onClick={handlePDF}>Create</Button>
       </Box>

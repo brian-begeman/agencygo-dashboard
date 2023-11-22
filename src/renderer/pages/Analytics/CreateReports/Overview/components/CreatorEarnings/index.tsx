@@ -69,9 +69,9 @@ export default function CreatorEarnings() {
     <Box
       sx={{
         backgroundColor: isDarkTheme ? '#000' : '#fff',
-        borderRadius: '16px',
         padding: '20px',
         gap: '20px',
+        borderRadius:'16px'
       }}
     >
       <Typography
@@ -84,7 +84,9 @@ export default function CreatorEarnings() {
         gap="6px"
       >
         Creator Earnings
-        <ErrorOutline sx={{ color: theme.palette.secondary.contrastText,fontSize:'24px' }} />
+        <ErrorOutline
+          sx={{ color: theme.palette.secondary.contrastText, fontSize: '24px' }}
+        />
       </Typography>
       <Box
         sx={{
