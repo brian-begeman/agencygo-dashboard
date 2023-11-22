@@ -23,6 +23,7 @@ function PageTopbar({ children }: $Props) {
       className={styles.header}
       sx={{
         backgroundColor: isDarkTheme ? '#292929' : '#EAF1FF',
+        overflowX:"scroll",
       }}
     >
       {children}

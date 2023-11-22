@@ -345,7 +345,7 @@ any) {
           onChange={handleOnChange}
         >
           {options?.map((val: any) => {
-            return <MenuItem value={val?.value}>{val?.label}</MenuItem>;
+            return <MenuItem  value={val?.value}>{val?.label}</MenuItem>;
           })}
         </Select>
       </FormControl>

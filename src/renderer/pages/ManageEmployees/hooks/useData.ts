@@ -57,6 +57,7 @@ const useDataEmployees = () => {
     params: selectedAgency,
   });
 
+
   useEffect(() => {
     // window.electron.ipcRenderer
     //   .invoke('get-store', 'agency')
@@ -97,13 +98,16 @@ const useDataEmployees = () => {
   useEffect(() => {
     if (data?.data) {
       const employeesRes = data?.data?.map((item: any) => {
-        const tempAssignedCreators =  item?.assignedCreators;
+        const tempAssignedCreators = Array.isArray(item.assignedCreators)
+          ? Array.from(item.assignedCreators)
+          : []; 
+           
         return {
           name: item?.name || '',
           imageSrc: '',
-          assignedCreatorsForDropdown: item?.assignedCreators,
-          assignedCreatorsText: tempAssignedCreators?.length
-            ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
+          assignedCreatorsForDropdown: item.assignedCreatorsForDropdown,
+          assignedCreatorsText: tempAssignedCreators.length
+            ? tempAssignedCreators.map((ta:any) => ta?.name).join(', ')
             : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
@@ -116,10 +120,14 @@ const useDataEmployees = () => {
           agencyId: item?.agencyId,
         };
       });
+      console.log(employeesRes,">>>>>..employeesres");
       setEmployees(employeesRes || []);
     }
-  }, [data, data?.data]);
-
+  }, [data,data?.data]);
+  
+  
+  
+  
   return {
     isLoading,
     data,
