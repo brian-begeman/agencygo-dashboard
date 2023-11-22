@@ -141,9 +141,9 @@ export const useFormEmployee = (
       setValue('email', selectedEmployee?.email);
       setValue('role', selectedEmployee?.role);
       setValue('agencyId', selectedEmployee?.agencyId);
-      setSelectedValues(
-        selectedEmployee?.assignedCreatorsForDropdown.map((val) => val.id)
-      );
+      // setSelectedValues(
+      //   selectedEmployee?.assignedCreatorsForDropdown?.map((val) => val.id)
+      // );
     } else {
       setSelectedValues([]);
     }

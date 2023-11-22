@@ -37,20 +37,16 @@ import useQuery from 'renderer/hooks/useQuery';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
-  
 }
 
 function FilterByManageEmployeeCreator({
   label = 'By Creator',
-
 }: $ByManageEmployeeCreatorProps) {
   const [collapse, setCollapse] = useState(false);
   const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
-
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <div>
@@ -61,7 +57,6 @@ const isDarkTheme = theme.palette.mode === 'dark';
           justifyContent: 'space-between',
           cursor: 'pointer',
           marginBottom: '12px',
-         
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -254,7 +249,7 @@ function FilterByEmployeeInCreator({
     },
   };
   const [collapse, setCollapse] = useState(false);
-  const [agencyId] = useState(localStorage.getItem('AgencyId') || '')
+  const [agencyId] = useState(localStorage.getItem('AgencyId') || '');
   const { isLoading, data } = useQuery({
     key: 'get-employee',
     params: { id: agencyId },
@@ -283,7 +278,6 @@ function FilterByEmployeeInCreator({
       </Box>
       <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
         <FormControl sx={{ width: 230, marginBottom: '30px' }}>
-          
           <Select
             sx={{
               color: '#fff',
@@ -346,7 +340,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
 
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
-  
+
   const location = useLocation();
   const onRemoveFilter = () => {
     setCreatorSearch('');
@@ -381,15 +375,24 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       }
     } else {
       if (selectedValues.length) {
-        Object.assign(data, { creator: selectedValues.toString() });
+        Object.assign(data, {
+          agencyId: '654dcc70179b1ae7635e43f8',
+          creator: selectedValues.toString(),
+        });
       }
       if (status != '') {
         Object.assign(data, {
+          agencyId: '654dcc70179b1ae7635e43f8',
           status: status == 'inactive' ? 'inactive' : 'active',
         });
       }
       if (employeeSearch != '') {
-        Object.assign(data, { name: employeeSearch });
+        Object.assign(data, {
+          agencyId: '654dcc70179b1ae7635e43f8',
+          name: employeeSearch,
+        });
+      } else {
+        Object.assign(data, { agencyId: '654dcc70179b1ae7635e43f8' });
       }
     }
     handleSearch(data);
@@ -400,11 +403,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       chips.filter((chip) => chip.key !== chipToDelete.key)
     );
   };
-    const [chipData, setChipData] = React.useState<readonly ChipData[]>([
-      { key: 0, label: 'Status' },
-      { key: 1, label: 'Employee' },
-      { key: 2, label: 'Creator' },
-    ]);
+  const [chipData, setChipData] = React.useState<readonly ChipData[]>([
+    { key: 0, label: 'Status' },
+    { key: 1, label: 'Employee' },
+    { key: 2, label: 'Creator' },
+  ]);
   return (
     <PageAside>
       <Box
@@ -423,7 +426,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
-            flexWrap:"wrap",
+            flexWrap: 'wrap',
             gap: '10px',
             display: 'flex',
             padding: '20px 0px 20px 20px ',
@@ -433,18 +436,24 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             return <Chip label={data.label} onDelete={handleDelete(data)} />;
           })}
         </Box>
-        <Box sx={{display:"flex",justifyContent:"space-around",marginTop:"5px"}}>
-        <Button size='medium' variant="outlined" onClick={onRemoveFilter}>
-          Reset
-        </Button>
-        <Button
-          variant="contained"
-          size='medium'
-          sx={{ color: 'white' }}
-          onClick={handleFilterData}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            marginTop: '5px',
+          }}
         >
-          Search
-        </Button>
+          <Button size="medium" variant="outlined" onClick={onRemoveFilter}>
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            size="medium"
+            sx={{ color: 'white' }}
+            onClick={handleFilterData}
+          >
+            Search
+          </Button>
         </Box>
         {/* <Stack
           justifyContent="space-between"
