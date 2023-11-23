@@ -72,6 +72,16 @@ export default function AddEmployeeModal({
 
   const cancelHandler = () => {
     setOpen(false);
+    setSelectedValues([]);
+    setValue('name', '');
+    setValue('email', '');
+    setValue('agencyId', '');
+    setValue('role', '');
+    setValue('payRate', '');
+    setValue('payInterval', '');
+    setValue('commission', '');
+    setValue('shiftSchedular', '');
+    setValue('assignCreator','')
   };
 
   const handleModalClose = () => {

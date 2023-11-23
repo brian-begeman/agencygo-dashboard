@@ -410,6 +410,8 @@ export default function ManageEmployees() {
                   activated,
                   email,
                   roleRaw,
+                  payRate,
+                  commission,
                   id,
                   agencyId,
                   assignedCreatorsForDropdown,
@@ -527,6 +529,8 @@ export default function ManageEmployees() {
                                     email,
                                     id,
                                     agencyId,
+                                    payRate,
+                                    commission,
                                     assignedCreatorsForDropdown,
                                   });
                                   setFormType('edit');

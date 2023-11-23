@@ -137,12 +137,16 @@ export const useFormEmployee = (
 
   useEffect(() => {
     if (selectedEmployee && type === 'edit') {
+      console.log(selectedEmployee,">>>>>>>selectedEmployee");
+      
       setValue('name', selectedEmployee?.name);
       setValue('email', selectedEmployee?.email);
       setValue('role', selectedEmployee?.role);
       setValue('agencyId', selectedEmployee?.agencyId);
+      setValue('payRate',selectedEmployee?.payRate);
+      setValue('commission',selectedEmployee?.commission);
       // setSelectedValues(
-      //   selectedEmployee?.assignedCreatorsForDropdown?.map((val) => val.id)
+      //   selectedEmployee?.assignedCreatorsForDropdown?.map((val) => val)
       // );
     } else {
       setSelectedValues([]);
