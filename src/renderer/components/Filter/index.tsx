@@ -387,23 +387,18 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     } else {
       if (selectedValues.length) {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           creator: selectedValues.toString(),
         });
       }
       if (status != '') {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           status: status == 'inactive' ? 'inactive' : 'active',
         });
       }
       if (employeeSearch != '') {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           name: employeeSearch,
         });
-      } else {
-        Object.assign(data, { agencyId: '654dcc70179b1ae7635e43f8' });
       }
     }
     handleSearch(data);
