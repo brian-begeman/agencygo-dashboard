@@ -197,7 +197,7 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '12px',
+          marginBottom: '5px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -414,7 +414,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     <PageAside>
       <Box
         sx={{
-          padding: '20px',
+          padding: '10px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -450,7 +450,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             display: 'flex',
             justifyContent: 'center',
             gap: '20px',
-            margin: '10px,10px',
           }}
         >
           <Button variant="outlined" onClick={onRemoveFilter}>
@@ -496,8 +495,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           ))}
         </Stack> */}
       </Box>
-      <Box padding="12px 16px 12px 16px">
-        {location.pathname != '/creators' && (
+      {location.pathname != '/creators' && (
+        <Box padding="12px 16px 12px 16px" sx={{ border: '2px solid red' }}>
           <>
             <FilterByEmployee
               employeeSearch={employeeSearch}
@@ -510,10 +509,10 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
               }}
             />
           </>
-        )}
-      </Box>
+        </Box>
+      )}
 
-      <Box padding="0px 16px 0px 16px">
+      <Box padding="0px 12px 0px 12px">
         {location.pathname === '/creators' ? (
           <FilterByCreator
             creatorSearch={creatorSearch}
@@ -536,11 +535,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Divider
           sx={{
             background: theme.palette.primary.contrastText,
-            marginTop: '11px',
+            marginTop: '10px',
           }}
         />
       </Box>
-      <Box padding="12px 16px 12px 16px">
+      <Box padding="5px 16px 2px 16px">
         <FilterByStatus
           title="By Status"
           status={status}
@@ -554,12 +553,12 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Divider
           sx={{
             background: theme.palette.primary.contrastText,
-            marginTop: '11px',
+            marginTop: '5px',
           }}
         />
       </Box>
       {location.pathname === '/creators' && (
-        <Box padding="12px 16px 12px 16px">
+        <Box padding="5px 16px 0px 16px">
           <FilterByStatus
             title="By Link Status"
             status={linkStatus}
@@ -569,7 +568,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           <Divider
             sx={{
               background: theme.palette.primary.contrastText,
-              marginTop: '11px',
+              marginTop: '5px',
             }}
           />
         </Box>
