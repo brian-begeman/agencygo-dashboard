@@ -496,7 +496,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         </Stack> */}
       </Box>
       {location.pathname != '/creators' && (
-        <Box padding="12px 16px 12px 16px" sx={{ border: '2px solid red' }}>
+        <Box padding="12px 16px 12px 16px">
           <>
             <FilterByEmployee
               employeeSearch={employeeSearch}
