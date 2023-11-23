@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import './Addleder.css';
 import { MyInvoiceContext } from '../../context/context';
+
 const style = {
   position: 'absolute',
   top: '47%',
@@ -47,9 +48,9 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
       const responseData = await response.json();
 
       console.log(responseData.data);
-if (responseData?.data?.pdfUrl) {
-  setOpen(false)
-}
+      if (responseData?.data?.pdfUrl) {
+        setOpen(false)
+      }
       // window.location.href = responseData.data;
       // setpdfURl(responseData.data)
     } catch (error) {
@@ -98,10 +99,7 @@ if (responseData?.data?.pdfUrl) {
     phoneShipTo: 'test',
   };
 
-  const truevalue = true;
-  const falsevalue = false;
-  const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
-  const [editpdf, setEditpdf] = useState({
+  const initialPdfValue = {
     companyName: false,
     clientCompanyName: false,
     companyAddress: false,
@@ -110,7 +108,12 @@ if (responseData?.data?.pdfUrl) {
     description: false,
     qty: false,
     unitPrice: false,
-  });
+  }
+
+  const truevalue = true;
+  const falsevalue = false;
+  const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
+  const [editpdf, setEditpdf] = useState({...initialPdfValue});
 
   const handleContactClick = (field: any, value: any) => {
     if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
@@ -130,7 +133,7 @@ if (responseData?.data?.pdfUrl) {
     if (!invoicedetails?.unitPrice?.length === null) {
       setInvoiceDeails({
         ...invoicedetails,
-        ['total']: invoicedetails?.unitPrice * invoicedetails?.qty,
+        ['total']: (invoicedetails?.unitPrice * invoicedetails?.qty).toFixed(2),
       });
     }
     const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
@@ -486,8 +489,8 @@ if (responseData?.data?.pdfUrl) {
                 <h3>_____________0.00</h3>
                 <h3>_____________0.00</h3>
                 <h3>_____________0.00</h3>
-                <h2 style={{ backgroundColor: 'pink', height: '50px' }}>
-                  ${invoicedetails?.qty * invoicedetails?.unitPrice}
+                <h2 style={{ backgroundColor: 'pink', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
+                  ${(invoicedetails?.qty * invoicedetails?.unitPrice).toFixed(2)}
                 </h2>
               </div>
               <div style={{ height: '4px', backgroundColor: 'black' }}></div>
@@ -511,7 +514,7 @@ if (responseData?.data?.pdfUrl) {
 
             
             <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
-            onClick={()=> {setOpen(false)}}
+            onClick={()=> {setEditpdf(initialPdfValue);setOpen(false)}}
             >
               Close
             </Button>

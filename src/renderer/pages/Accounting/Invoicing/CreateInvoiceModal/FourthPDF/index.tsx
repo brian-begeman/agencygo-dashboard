@@ -1,15 +1,19 @@
+
+import { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './FourthPDF.css';
 import { Button, Typography } from '@mui/material';
+import { MyInvoiceContext } from '../../context/context';
 
 const style = {
   position: 'absolute' satisfies string,
-  top: '50%',
+  top: '48%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 700,
-  height: 765,
+  height: 700,
+  overflowY: 'auto',
   borderRadius: '10px',
   bgcolor: '#ffffff',
   color: '#0f0f0f',
@@ -18,7 +22,8 @@ const style = {
 
 export default function FourthPDF({ open, setOpen, name, viewOnly }: any) {
   const handleClose = () => setOpen(false);
-
+  const { data } = useContext(MyInvoiceContext);
+console.log("Data:", data)
   return (
     <Modal
       className="boxsize"
@@ -43,12 +48,12 @@ export default function FourthPDF({ open, setOpen, name, viewOnly }: any) {
           sx={{ cursor: 'pointer' }}
         >
           X
-        </Typography>{' '}
+        </Typography>
         <div className="">
           <div className="istbox">
             <div className="left">
               <div className="Juliana">
-                <h1>Juliana</h1>
+                <h1>{data?.firstName}</h1>
               </div>
             </div>
             <div className="right">
@@ -121,17 +126,34 @@ export default function FourthPDF({ open, setOpen, name, viewOnly }: any) {
               <h3> $ 110.00</h3>
             </div>
           </div>
-          <Button
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'end',
+            gap: '5px',
+           padding:'10px 10px'
+          }}
+          >
+            {!viewOnly && 
+            <Button
             variant="contained"
             sx={{
               color: '#fff',
               textTransform: 'capitalize',
-              float: 'right',
             }}
             // onClick={handlePDF}
           >
             Create Invoice
-          </Button>
+          </Button>}
+
+            
+            <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
+            onClick={()=> {setOpen(false)}}
+            >
+              Close
+            </Button>
+              </div>
+          
         </div>
       </Box>
     </Modal>
