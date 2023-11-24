@@ -101,7 +101,7 @@ export default function ManageCreators() {
 
     let endpoint = `creators/${id}`;
     let options = {
-      method: 'PUT' as 'PUT',
+      method: 'PATCH' as 'PATCH',
       headers: {
         'content-type': 'application/json',
       },
@@ -227,7 +227,8 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" sx={{ height: '80%' }}>
+
+        <Stack direction="row" sx={{ height: '85%' }}>
           <Filter handleSearch={handleSearch} refetch={handleSearch} />
           <FilterTable
             isEmptyContent={!creators.length}

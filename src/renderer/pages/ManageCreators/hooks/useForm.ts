@@ -22,6 +22,7 @@ const useFormCreator = (
   const { userData } = useContext(AuthContext);
   const [selectedValues, setSelectedValues] = useState<any>([]);
   const [creatorImage, setCreatorImage] = useState('');
+  const [creatorStatus,setCreatorStatus] = useState<any>(true)
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
     params: { id: localStorage.getItem('AgencyId') },
@@ -80,24 +81,11 @@ const useFormCreator = (
     formdata.append('creatorComission',data.creatorComission);
     formdata.append('agencyId',userData?.agency?._id);  
     formdata.append('assignEmployee',JSON.stringify(data.assignEmployee));  
-
-      // const ofCredsObj = {
-      //   email: data?.email,
-      //   password: data?.password,
-      // };
-      // // data.creatorImage= formdata
-      // data.agencyId = userData?.agency?._id;
-      // data.status = true;
-      // data.ofcreds = ofCredsObj;
-      // console.log(data);
+ 
 
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
-        // headers: {
-        //   'content-type': 'application/json',
-        // },
-        // body: JSON.stringify(data),
         body: formdata,
         withAuth: true,
       };
@@ -115,13 +103,13 @@ const useFormCreator = (
           console.log('Error occured: ', err);
         });
     } else {
+      data.status= creatorStatus
       data.assignEmployee= selectedValues
       const ofCredsObj = {
         email: data?.email,
         password: data?.password,
       };
       data.ofcreds=ofCredsObj
-      
       const formdata = new FormData();
       formdata.append('creatorImage', data.creatorImage);
       formdata.append('creatorName', data.creatorName);
@@ -137,7 +125,7 @@ const useFormCreator = (
 
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {
-        method: 'PUT' as 'PUT',
+        method: 'PATCH' as 'PATCH',
         // headers: {
         //   'content-type': 'application/json',
         // },
@@ -183,6 +171,7 @@ const useFormCreator = (
       // setValue('agencyComission', selectedCreator?.agencyComission);
       setSelectedValues(selectedCreator?.assignEmployee?.map((val) => val._id));
       setCreatorImage(selectedCreator?.creatorImage)
+      setCreatorStatus(selectedCreator?.status)
       // setValue('creator', selectedCreator?.creator);
     } else {
       reset();
