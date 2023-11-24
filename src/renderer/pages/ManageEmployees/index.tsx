@@ -379,14 +379,14 @@ export default function ManageEmployees() {
                   }
                   startIcon={
                     link.isSubGroup && (
-                      <span>
-                        <ArrowDropDownIcon sx={{ color: '#fff' }} />
+                      <span >
+                        <ArrowDropDownIcon sx={{color:'#fff'}}/>
                       </span>
                     )
                   }
                   endIcon={
                     <span>
-                      <MoreVertIcon sx={{ color: '#fff', fontSize: 15 }} />
+                      <MoreVertIcon sx={{ fontSize: 15,color:"#fff" }} />
                     </span>
                   }
                   isActiveLink={link._id == selectedAgency?.id ? true : false}

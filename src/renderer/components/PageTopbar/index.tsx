@@ -325,7 +325,7 @@ function ButtonTabWithIconsElement({
       backgroundColor = 'transparent !important';
     }
     if (isActiveLink) {
-      backgroundColor = isDarkTheme ? '#000!important' : '#fff!important';
+      backgroundColor = isDarkTheme ? '#000 !important' : '#fff !important';
     }
     if (isActiveLink && tabButton) {
       backgroundColor = `${theme.palette.primary.main}`;
@@ -362,7 +362,7 @@ function ButtonTabWithIconsElement({
 
   return (
     <Button
-      variant="contained"
+    variant={isActiveLink ? "outlined" : "contained"}
       disableElevation={true}
       style={{
         width: getWidth(),
@@ -373,7 +373,8 @@ function ButtonTabWithIconsElement({
         alignItems: 'center !important',
         justifyContent: 'center',
         gap: '5px !important',
-        backgroundColor: getTabBackgroundColor(),
+        // backgroundColor: getTabBackgroundColor(),
+        background:isActiveLink ? '#2e2d2d' :'',
         position: 'relative',
         ...getTabActiveBorder(),
         // '&.MuiButtonBase-root:hover': {
@@ -385,7 +386,7 @@ function ButtonTabWithIconsElement({
     >
       <div
         onClick={startIconClick}
-        style={{ marginTop: '7px', marginRight: '10px' }}
+        style={{ marginTop: '7px', marginRight: '10px',}}
         id="start-icon"
         aria-controls={openDropIcon ? 'menu' : undefined}
         aria-haspopup="true"
@@ -415,7 +416,7 @@ function ButtonTabWithIconsElement({
           sx={{
             fontSize: '14px',
             fontWeight: 500,
-            color:'#fff',
+            color:"#fff",
             borderRadius: '6px',
             textTransform: 'capitalize',
           }}
@@ -424,7 +425,7 @@ function ButtonTabWithIconsElement({
         </Typography>
       </div>
       <div
-        style={{ marginLeft: '20px',marginTop:"5px" }}
+        style={{ marginLeft: '20px',marginTop:"5px",}}
         onClick={handleClick}
         id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
