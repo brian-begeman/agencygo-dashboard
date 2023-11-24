@@ -407,187 +407,182 @@ export default function ManageEmployees() {
             tableHeaders={employeesTableHeaders}
           >
             <>
-              {employees &&
-                employees.map(
-                  ({
-                    name,
-                    assignedCreatorsText,
-                    role,
-                    activated,
-                    email,
-                    roleRaw,
-                    id,
-                    agencyId,
-                    assignedCreatorsForDropdown,
-                  }) => {
-                    return (
-                      <TableRow key={id}>
-                        <TableCell
-                          sx={{
-                            borderColor: theme.palette.primary.contrastText,
-                          }}
-                          scope="row"
-                        >
-                          <Stack
-                            spacing={1}
-                            direction="row"
-                            alignItems="center"
+              {employees && employees.map(
+                ({
+                  name,
+                  assignedCreatorsText,
+                  role,
+                  activated,
+                  email,
+                  roleRaw,
+                  payRate,
+                  commission,
+                  id,
+                  agencyId,
+                  assignedCreatorsForDropdown,
+                }) => {
+                  return (
+                    <TableRow
+                      key={id}
+                    >
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                        scope="row"
+                      >
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <Typography
+                            variant="h6"
+                            fontSize="18px"
+                            color={
+                              activated === 'deactivate'
+                                ? 'gray'
+                                : isDarkTheme
+                                ? '#fff'
+                                : '#000'
+                            }
                           >
+                            {name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                          color: '#fff',
+                          width: '300px',
+                        }}
+                        onClick={() => {
+                          setAssigneeName(name);
+                          setId(id);
+                          if (activated === 'deactivate') {
+                            setOpenAssignCreatorModal(false);
+                          } else {
+                            setOpenAssignCreatorModal(!openAssignCreatorModal);
+                          }
+                        }}
+                      >
+                        <Typography
+                          color={
+                            activated === 'deactivate'
+                              ? 'gray'
+                              : isDarkTheme
+                              ? '#fff'
+                              : '#000'
+                          }
+                        >
+                          {assignedCreatorsText}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                          color: '#fff',
+                        }}
+                      >
+                        <Typography
+                          color={
+                            activated === 'deactivate'
+                              ? 'gray'
+                              : isDarkTheme
+                              ? '#fff'
+                              : '#000'
+                          }
+                        >
+                          {role}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        {activated === 'deactivate' && <DeactivatedSvg />}
+                        {activated === 'active' && <Activated />}
+                        {activated === 'inactive' && (
+                          <Box
+                            display={'flex'}
+                            gap={'10px'}
+                            alignItems={'center'}
+                          >
+                            <Typography>Inactive</Typography>
                             <Typography
-                              variant="h6"
-                              fontSize="18px"
-                              color={
-                                activated === 'deactivate'
-                                  ? 'gray'
-                                  : isDarkTheme
-                                  ? '#fff'
-                                  : '#000'
-                              }
+                              color={'#04A1FF'}
+                              sx={{ cursor: 'pointer' }}
+                              onClick={() => handleResend(id)}
                             >
-                              {name}
+                              Resend
                             </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            borderColor: theme.palette.primary.contrastText,
-                            color: '#fff',
-                            width: '300px',
-                          }}
-                          onClick={() => {
-                            setAssigneeName(name);
-                            setId(id);
-                            if (activated === 'deactivate') {
-                              setOpenAssignCreatorModal(false);
-                            } else {
-                              setOpenAssignCreatorModal(
-                                !openAssignCreatorModal
-                              );
-                            }
-                          }}
-                        >
-                          <Typography
-                            color={
-                              activated === 'deactivate'
-                                ? 'gray'
-                                : isDarkTheme
-                                ? '#fff'
-                                : '#000'
-                            }
-                          >
-                            {assignedCreatorsText}
-                          </Typography>
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            borderColor: theme.palette.primary.contrastText,
-                            color: '#fff',
-                          }}
-                        >
-                          <Typography
-                            color={
-                              activated === 'deactivate'
-                                ? 'gray'
-                                : isDarkTheme
-                                ? '#fff'
-                                : '#000'
-                            }
-                          >
-                            {role}
-                          </Typography>
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            borderColor: theme.palette.primary.contrastText,
-                          }}
-                        >
-                          {activated === 'deactivate' && <DeactivatedSvg />}
-                          {activated === 'active' && <Activated />}
-                          {activated === 'inactive' && (
-                            <Box
-                              display={'flex'}
-                              gap={'10px'}
-                              alignItems={'center'}
-                            >
-                              <Typography>Inactive</Typography>
-                              <Typography
-                                color={'#04A1FF'}
-                                sx={{ cursor: 'pointer' }}
-                                onClick={() => handleResend(id)}
+                          </Box>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          {activated === 'active' ||
+                          activated === 'deactivate' ? (
+                            <>
+                              <ButtonBase
+                                onClick={() => {
+                                  setSelectedEmployee({
+                                    name,
+                                    role: roleRaw,
+                                    email,
+                                    id,
+                                    agencyId,
+                                    payRate,
+                                    commission,
+                                    assignedCreatorsForDropdown,
+                                  });
+                                  setFormType('edit');
+                                  setOpenAddEmployee(true);
+                                }}
                               >
-                                Resend
-                              </Typography>
-                            </Box>
+                                <Typography variant="body1">Edit</Typography>
+                              </ButtonBase>
+                              <ButtonBase>
+                                <Typography variant="body1">
+                                  <Box onClick={() => handleClick(id, email)}>
+                                    <MenuButton
+                                      title="More"
+                                      tabData={getOptions(activated)}
+                                      id={id}
+                                      status={activated}
+                                    />
+                                  </Box>
+                                </Typography>
+                              </ButtonBase>
+                            </>
+                          ) : (
+                            <>
+                              <ButtonBase
+                                onClick={() => handleDelete(id, activated)}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  color={
+                                    activated === 'deactivate'
+                                      ? 'gray'
+                                      : isDarkTheme
+                                      ? '#fff'
+                                      : '#000'
+                                  }
+                                >
+                                  Delete
+                                </Typography>
+                              </ButtonBase>
+                            </>
                           )}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            borderColor: theme.palette.primary.contrastText,
-                          }}
-                        >
-                          <Stack
-                            spacing={1}
-                            direction="row"
-                            alignItems="center"
-                          >
-                            {activated === 'active' ||
-                            activated === 'deactivate' ? (
-                              <>
-                                <ButtonBase
-                                  onClick={() => {
-                                    setSelectedEmployee({
-                                      name,
-                                      role: roleRaw,
-                                      email,
-                                      id,
-                                      agencyId,
-                                      assignedCreatorsForDropdown,
-                                    });
-                                    setFormType('edit');
-                                    setOpenAddEmployee(true);
-                                  }}
-                                >
-                                  <Typography variant="body1">Edit</Typography>
-                                </ButtonBase>
-                                <ButtonBase>
-                                  <Typography variant="body1">
-                                    <Box onClick={() => handleClick(id, email)}>
-                                      <MenuButton
-                                        title="More"
-                                        tabData={getOptions(activated)}
-                                        id={id}
-                                        status={activated}
-                                      />
-                                    </Box>
-                                  </Typography>
-                                </ButtonBase>
-                              </>
-                            ) : (
-                              <>
-                                <ButtonBase
-                                  onClick={() => handleDelete(id, activated)}
-                                >
-                                  <Typography
-                                    variant="body1"
-                                    color={
-                                      activated === 'deactivate'
-                                        ? 'gray'
-                                        : isDarkTheme
-                                        ? '#fff'
-                                        : '#000'
-                                    }
-                                  >
-                                    Delete
-                                  </Typography>
-                                </ButtonBase>
-                              </>
-                            )}
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }
-                )}
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
             </>
           </FilterTable>
           {open && (
