@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Checkbox,
@@ -129,7 +129,6 @@ export default function AddCreaterModal({
   };
 
   const addHandler = () => {
-    console.log('Dataaaa', type, '----------------');
     handleSubmit();
   };
 
@@ -151,8 +150,16 @@ export default function AddCreaterModal({
   //   }
   // };
 
+  useEffect(() => {
+    if (type === 'add') {
+      setValue('agencyComission', 10);
+      setValue('creatorComission', 10);
+    }
+  });
+
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Overlay
       heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
@@ -283,10 +290,9 @@ export default function AddCreaterModal({
                   }}
                   label=""
                   type="number"
-                  // max=10
                   // min=1
-                  value="10"
-                  inputIdentifierName="agency"
+                  // value="10"
+                  inputIdentifierName="agencyComission"
                   placeholder="Agency %"
                   register={register as any}
                 />
@@ -297,10 +303,9 @@ export default function AddCreaterModal({
                   }}
                   label=" "
                   type="number"
-                  value="10"
                   // max= 10
                   // min= 1
-                  inputIdentifierName="creator"
+                  inputIdentifierName="creatorComission"
                   placeholder="Creator %"
                   register={register as any}
                 />

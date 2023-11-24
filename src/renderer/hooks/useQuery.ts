@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 import { TQueryService } from 'types';
 import fetchReq from 'utils/fetch';
 
@@ -11,6 +12,9 @@ interface IProps {
 }
 
 const useQuery = (props: IProps) => {
+  const { userData } = useContext(AuthContext);
+
+  const AgencyId = localStorage.getItem('AgencyId') 
   const { key, params, notInitialFetch, onError, onSuccess } = props;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -20,7 +24,7 @@ const useQuery = (props: IProps) => {
   const fetch = async () => {
     setLoading(true);
     if (key === 'get-creator') {
-      let endpoint = 'creators';
+      let endpoint = `creators/${AgencyId}`;
       let options = {
         method: 'GET' as 'GET',
         headers: {

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
@@ -53,21 +54,24 @@ export interface ISelectedCreator {
   autoRelink: boolean;
   assignEmployee: any[];
   proxy: boolean;
-  agency: string;
+  agencyComission:number;
+  creatorComission:number;
   creator: string;
   status: boolean;
   creatorImage:string;
+
 }
 
 const useDataCreators = () => {
-  const agencyId = localStorage.getItem('AgencyId');
+  const { userData } = useContext(AuthContext);
+  const agencyId = localStorage.getItem('AgencyId')
   const [creators, setCreators] = useState<ICreatorList[]>([]);
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
     null
   );
   const { data, isLoading, refetch, setData } = useQuery({
     key: 'get-creator',
-    params: agencyId,
+    params: userData?.agency?._id,
   });
 
   useEffect(() => {
@@ -80,11 +84,13 @@ const useDataCreators = () => {
   }, [data]);
 
   const handleSearch = (data: any) => {
+    // data.agencyId=`${agencyId}`
+    
     const queryString = Object.keys(data)
-      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .map((key) => `${key}=${(data[key])}`)
       .join('&');
 
-    let endpoint = `creators/search?agencyId=${agencyId}&${queryString}`;
+    let endpoint = `creators/search/data?${queryString}`;
 
     let options = {
       method: 'GET' as 'GET',

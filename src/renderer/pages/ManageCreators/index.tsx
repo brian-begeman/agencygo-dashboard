@@ -70,9 +70,9 @@ export default function ManageCreators() {
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-creator',
   // });
-  useEffect(() => {
-    handleSearch('');
-  }, []);
+  // useEffect(() => {
+  //   handleSearch('');
+  // }, []);
   const handleDelete = (id: string) => {
     let endpoint = `creators/${id}`;
     let options = {
@@ -90,7 +90,6 @@ export default function ManageCreators() {
         console.log('Error occured: ', err);
       });
   };
-  console.log(creators);
 
   const handleActivate = (id: string, status: boolean) => {
     const data = {
@@ -126,7 +125,6 @@ export default function ManageCreators() {
     ];
     return tabData;
   };
-  console.log('creators', creators);
 
   const handleInitiateLink = (creator: any) => {
     const payload = {
@@ -216,7 +214,7 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" sx={{ height: '90%' }}>
+        <Stack direction="row" sx={{ height: '80%' }}>
           <Filter handleSearch={handleSearch} refetch={handleSearch} />
           <FilterTable
             isEmptyContent={!creators.length}

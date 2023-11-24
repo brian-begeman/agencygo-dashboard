@@ -36,7 +36,6 @@ export default function FilterTable({
             border: `1px solid ${theme.palette.primary.contrastText}`,
             borderRadius: '12px',
             width: '100%',
-            marginBottom: '50px',
           }}
         >
           <Table aria-label="manage creators table">
