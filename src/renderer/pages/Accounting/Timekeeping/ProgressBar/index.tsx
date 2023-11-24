@@ -1,4 +1,4 @@
-import "./style.css"
+import './style.css';
 
 const ProgressBar = ({ time, shiftStart, shiftEnd, isOnBreak }) => {
   const shiftDuration = shiftEnd - shiftStart;
@@ -28,7 +28,10 @@ const ProgressBar = ({ time, shiftStart, shiftEnd, isOnBreak }) => {
   return (
     <div className="progress-bar">
       {progressBarSegments}
-      <div className="progress-bar-time" style={{ width: `${progressPercentage}%` }} />
+      <div
+        className="progress-bar-time"
+        style={{ width: `${progressPercentage}%` }}
+      />
     </div>
   );
 };
