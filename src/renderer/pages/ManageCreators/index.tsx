@@ -18,7 +18,7 @@ import theme from 'renderer/styles/muiTheme';
 import Avatar from 'renderer/assets/svg/AvatarSvg';
 import DeactivatedSvg from 'renderer/assets/svg/DeactivatedSvg';
 import Activated from 'renderer/assets/svg/ActivatedSvg';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useMutation from 'renderer/hooks/useMutation';
 import styles from './styles.module.css';
 import AddCreaterModal from './components/AddCreaterModal';
@@ -26,6 +26,7 @@ import useDataCreators from './hooks/useData';
 import MenuButton from 'renderer/components/MenuButton';
 import fetchReq from 'utils/fetch';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
+import PaginationPage from 'renderer/components/Pagination';
 
 const creatorsTableHeaders = [
   'Creators',
@@ -65,14 +66,16 @@ export default function ManageCreators() {
     selectedCreator,
     setSelectedCreator,
     handleSearch,
+    setCurrnetPage,
+    totalCreatorsCount,
   } = useDataCreators();
 
   // const { mutate: mutateDelete } = useMutation({
   //   key: 'delete-creator',
   // });
-  useEffect(() => {
-    handleSearch('');
-  }, []);
+  // useEffect(() => {
+  //   handleSearch('');
+  // }, []);
   const handleDelete = (id: string) => {
     let endpoint = `creators/${id}`;
     let options = {
@@ -90,7 +93,6 @@ export default function ManageCreators() {
         console.log('Error occured: ', err);
       });
   };
-  console.log(creators);
 
   const handleActivate = (id: string, status: boolean) => {
     const data = {
@@ -99,7 +101,7 @@ export default function ManageCreators() {
 
     let endpoint = `creators/${id}`;
     let options = {
-      method: 'PUT' as 'PUT',
+      method: 'PATCH' as 'PATCH',
       headers: {
         'content-type': 'application/json',
       },
@@ -126,7 +128,6 @@ export default function ManageCreators() {
     ];
     return tabData;
   };
-  console.log('creators', creators);
 
   const handleInitiateLink = (creator: any) => {
     const payload = {
@@ -180,6 +181,16 @@ export default function ManageCreators() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+  const pageCount = useMemo(() => {
+    if (totalCreatorsCount && totalCreatorsCount > 10) {
+      return Math.ceil(totalCreatorsCount / 10);
+    }
+  }, [totalCreatorsCount]);
+
+  const handleGetCurrentPage = (e: any, page: any) => {
+    setCurrnetPage(page);
+  };
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -216,11 +227,18 @@ export default function ManageCreators() {
             <AddIcon sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }} />
           </Button>
         </PageTopbar>
-        <Stack direction="row" sx={{ height: '90%' }}>
+
+        <Stack direction="row" sx={{ height: '85%' }}>
           <Filter handleSearch={handleSearch} refetch={handleSearch} />
           <FilterTable
             isEmptyContent={!creators.length}
             tableHeaders={creatorsTableHeaders}
+            pagination={
+              <PaginationPage
+                count={pageCount}
+                handleGetCurrentPage={handleGetCurrentPage}
+              />
+            }
           >
             <>
               {creators?.map(

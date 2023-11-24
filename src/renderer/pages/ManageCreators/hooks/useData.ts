@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
@@ -53,39 +54,42 @@ export interface ISelectedCreator {
   autoRelink: boolean;
   assignEmployee: any[];
   proxy: boolean;
-  agency: string;
+  agencyComission:number;
+  creatorComission:number;
   creator: string;
   status: boolean;
   creatorImage:string;
+
 }
 
 const useDataCreators = () => {
-  const agencyId = localStorage.getItem('AgencyId');
+  const { userData } = useContext(AuthContext);
+  const agencyId = localStorage.getItem('AgencyId')
   const [creators, setCreators] = useState<ICreatorList[]>([]);
+  const [totalCreatorsCount, setTotalCreatorsCount]= useState<number>()
   const [selectedCreator, setSelectedCreator] = useState<ICreatorList | null>(
     null
   );
-  const { data, isLoading, refetch, setData } = useQuery({
+  const { data, isLoading, refetch, setData,setCurrnetPage,currentPage ,paginationLimit} = useQuery({
     key: 'get-creator',
-    params: agencyId,
+    params: userData?.agency?._id,
   });
 
   useEffect(() => {
     const creatorsRes =
-      data?.data?.map((item: any) => ({
+      data?.data?.creators?.map((item: any) => ({
         ...item,
         id: item?._id,
       })) || [];
     setCreators(creatorsRes);
+    setTotalCreatorsCount (data?.data?.totalDocument)
   }, [data]);
 
   const handleSearch = (data: any) => {
     const queryString = Object.keys(data)
-      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .map((key) => `${key}=${(data[key])}`)
       .join('&');
-
-    let endpoint = `creators/search?agencyId=${agencyId}&${queryString}`;
-
+    let endpoint = `creators/search/data?${queryString}&page=${currentPage}&limit=${paginationLimit}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -97,7 +101,7 @@ const useDataCreators = () => {
       .then((response) => response.json())
       .then((res) => {
         setData(res);
-        setCreators(res?.data);
+        // setCreators(res?.data.data);
         setSelectedCreator(res?.data[0]._id);
       })
       .catch((err) => {
@@ -112,6 +116,9 @@ const useDataCreators = () => {
     setSelectedCreator,
     refetch,
     handleSearch,
+    setCurrnetPage,
+    currentPage,
+    totalCreatorsCount,
   };
 };
 

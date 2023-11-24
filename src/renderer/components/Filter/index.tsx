@@ -24,7 +24,7 @@ import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
 // import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -34,6 +34,7 @@ import styles from './styles.module.css';
 import { useLocation } from 'react-router-dom';
 import MultiSelect from '../Dropdown';
 import useQuery from 'renderer/hooks/useQuery';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
@@ -185,7 +186,6 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
   const [collapse, setCollapse] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // setChipData({})
     setStatus(event.target.value);
   };
 
@@ -268,7 +268,6 @@ function FilterByEmployeeInCreator({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -277,8 +276,8 @@ function FilterByEmployeeInCreator({
         </Typography>
         {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Box>
-      <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
-        <FormControl sx={{ width: 250, marginBottom: '30px' }}>
+      <Collapse in={!collapse}>
+        <FormControl sx={{ width: 250 }}>
           <Select
             sx={{
               color: '#fff !important',
@@ -295,13 +294,9 @@ function FilterByEmployeeInCreator({
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             value={employeeId.name}
-            placeholder="asdfsadf"
             onChange={(e) => handleChange(e)}
-            // renderValue={(selected: any) =>
-            //   selected.name != '' ? selected.name : 'Select employee name'
-            // }
             renderValue={(selected: any) =>
-              selected.name !== '' ? selected.name : 'placeholder text'
+              selected.name !== '' ? selected.name : 'Select employee'
             }
             MenuProps={MenuProps}
           >
@@ -335,6 +330,7 @@ interface $FilterProps {
   refetch?: any;
 }
 function Filter({ handleSearch, refetch }: $FilterProps) {
+  const { userData } = useContext(AuthContext);
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
   const [employeeSearch, setEmployeeSearch] = useState('');
@@ -369,19 +365,31 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     const data = {};
     if (location.pathname === '/creators') {
       if (creatorSearch != '') {
-        Object.assign(data, { creator: creatorSearch });
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
+          creator: creatorSearch,
+        });
       }
       if (status != '') {
-        Object.assign(data, { status: status == 'Activated' ? true : false });
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
+          status: status == 'Activated' ? true : false,
+        });
       }
       if (linkStatus != '') {
         Object.assign(data, {
+          agencyID: userData?.agency?._id,
           isLinkOnlyFans: linkStatus == 'Linked' ? true : false,
         });
       }
       if (employeeId && Object.values(employeeId).length) {
         Object.assign(data, {
+          agencyID: userData?.agency?._id,
           employeeId: employeeId._id,
+        });
+      } else {
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
         });
       }
     } else {
@@ -596,12 +604,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             title="By Employee name"
             setEmployeeId={setEmployeeId}
             employeeId={employeeId}
-          />
-          <Divider
-            sx={{
-              background: theme.palette.primary.contrastText,
-              marginTop: '11px',
-            }}
           />
         </Box>
       )}
