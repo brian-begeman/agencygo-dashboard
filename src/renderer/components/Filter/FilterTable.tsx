@@ -19,11 +19,13 @@ interface $Props {
   tableHeaders: string[];
   children: ReactNode | ReactNode[];
   isEmptyContent?: boolean;
+  pagination?: any;
 }
 
 export default function FilterTable({
   isEmptyContent,
   tableHeaders,
+  pagination,
   children,
 }: $Props) {
   const theme = useTheme();
@@ -31,29 +33,40 @@ export default function FilterTable({
   return (
     <Box sx={{ width: '80%', padding: '10px', overflow: 'auto' }}>
       {!isEmptyContent ? (
-        <TableContainer
-          sx={{
-            border: `1px solid ${theme.palette.primary.contrastText}`,
-            borderRadius: '12px',
-            width: '100%',
-          }}
-        >
-          <Table aria-label="manage creators table">
-            <TableHead
-              sx={{
-                background: isDarkTheme ? '#292929' : '#EAF1FF',
-                color: '#fff',
-              }}
+        <>
+          <TableContainer
+            sx={{
+              border: `1px solid ${theme.palette.primary.contrastText}`,
+              borderRadius: '12px',
+              width: '100%',
+            }}
+          >
+            <Table aria-label="manage creators table">
+              <TableHead
+                sx={{
+                  background: isDarkTheme ? '#292929' : '#EAF1FF',
+                  color: '#fff',
+                }}
+              >
+                <TableRow>
+                  {tableHeaders.map((header) => (
+                    <TableCell key={header}>{header}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>{children}</TableBody>
+            </Table>
+          </TableContainer>
+          {pagination && (
+            <Stack
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
             >
-              <TableRow>
-                {tableHeaders.map((header) => (
-                  <TableCell key={header}>{header}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>{children}</TableBody>
-          </Table>
-        </TableContainer>
+              {pagination}
+            </Stack>
+          )}
+        </>
       ) : (
         <Box
           sx={{

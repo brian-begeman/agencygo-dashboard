@@ -20,11 +20,13 @@ const useQuery = (props: IProps) => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [currentPage, setCurrnetPage]= useState<number>(1)
+  const [paginationLimit,setPaginationLimit] = useState<Number>(10)
 
   const fetch = async () => {
     setLoading(true);
     if (key === 'get-creator') {
-      let endpoint = `creators/${AgencyId}`;
+      let endpoint = `creators/${AgencyId}?page=${currentPage}&limt=${paginationLimit}`;
       let options = {
         method: 'GET' as 'GET',
         headers: {
@@ -110,7 +112,7 @@ const useQuery = (props: IProps) => {
       fetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   return {
     isLoading: loading,
@@ -119,6 +121,10 @@ const useQuery = (props: IProps) => {
     data,
     refetch: fetch,
     setData: setData,
+    setCurrnetPage,
+    currentPage,
+    paginationLimit,
+    setPaginationLimit
   };
 };
 

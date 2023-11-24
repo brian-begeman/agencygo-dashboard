@@ -268,7 +268,6 @@ function FilterByEmployeeInCreator({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -277,8 +276,8 @@ function FilterByEmployeeInCreator({
         </Typography>
         {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Box>
-      <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
-        <FormControl sx={{ width: 250, marginBottom: '30px' }}>
+      <Collapse in={!collapse}>
+        <FormControl sx={{ width: 250 }}>
           <Select
             sx={{
               color: '#fff !important',
@@ -295,13 +294,9 @@ function FilterByEmployeeInCreator({
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             value={employeeId.name}
-            placeholder="asdfsadf"
             onChange={(e) => handleChange(e)}
-            // renderValue={(selected: any) =>
-            //   selected.name != '' ? selected.name : 'Select employee name'
-            // }
             renderValue={(selected: any) =>
-              selected.name !== '' ? selected.name : 'placeholder text'
+              selected.name !== '' ? selected.name : 'Select employee'
             }
             MenuProps={MenuProps}
           >
@@ -609,12 +604,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             title="By Employee name"
             setEmployeeId={setEmployeeId}
             employeeId={employeeId}
-          />
-          <Divider
-            sx={{
-              background: theme.palette.primary.contrastText,
-              marginTop: '11px',
-            }}
           />
         </Box>
       )}
