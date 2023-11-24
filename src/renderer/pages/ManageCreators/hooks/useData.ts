@@ -84,14 +84,10 @@ const useDataCreators = () => {
   }, [data]);
 
   const handleSearch = (data: any) => {
-    // data.agencyId=`${agencyId}`
-    
     const queryString = Object.keys(data)
       .map((key) => `${key}=${(data[key])}`)
       .join('&');
-
     let endpoint = `creators/search/data?${queryString}`;
-
     let options = {
       method: 'GET' as 'GET',
       headers: {
