@@ -36,7 +36,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(invoicedetails),
+      body: JSON.stringify(invoiceDetails),
     };
 
     try {
@@ -110,7 +110,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
 
   const truevalue = true;
   const falsevalue = false;
-  const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
+  const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
   const [editpdf, setEditpdf] = useState({...initialPdfValue});
 
   const handleContactClick = (field: any, value: any) => {
@@ -118,25 +118,25 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
   };
 
   const handleContactChange = (event: any) => {
-    console.log(invoicedetails);
+    console.log(invoiceDetails);
 
-    setInvoiceDeails({
-      ...invoicedetails,
+    setInvoiceDetails({
+      ...invoiceDetails,
       [event.target.name]: event.target.value,
     });
-    // console.log(invoicedetails, '===>>invoice data');
+    // console.log(invoiceDetails, '===>>invoice data');
   };
 
   useEffect(() => {
-    if (!invoicedetails?.unitPrice?.length === null) {
-      setInvoiceDeails({
-        ...invoicedetails,
-        ['total']: (invoicedetails?.unitPrice * invoicedetails?.qty).toFixed(2),
+    if (!invoiceDetails?.unitPrice?.length === null) {
+      setInvoiceDetails({
+        ...invoiceDetails,
+        ['total']: agencyShare,
       });
     }
     const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
     return () => clearInterval(intervalId);
-  }, [invoicedetails?.unitPrice]);
+  }, [invoiceDetails?.unitPrice]);
 
   return (
     <Modal
@@ -148,8 +148,6 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-       
-
         <Box
           style={{
             backgroundColor: '#f3f3f3',
@@ -207,10 +205,10 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
               </div>
               <div style={{ lineHeight: '4px', marginLeft: '10px' }}>
                 <h3>
-                  {data?.firstName} {data?.lastName}
+                  {pdfData?.userName}
                 </h3>
                 <h3>Address</h3>
-                <h3>{data?.email}</h3>
+                <h3>{pdfData?.email}</h3>
               </div>
             </div>
 
@@ -220,170 +218,168 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
               <h4>INVOICE No. {'INC0001'}</h4>
             </div>
           </div>
-            
-<div style={{background: '#ffffff',}}>
+          <div style={{background: '#ffffff',}}>
           {/* secound box */}
-          <div style={{ padding: '20px' }}>
-            <div
-              style={{
-                color: 'bfbfbf',
-                display: 'flex',
-                justifyContent: 'end',
-              }}
-            >
-              &lt;Payment terms due on receipt, due in X days&gt;
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                color: '#333f4f',
-              }}
-            >
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Bill To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-                <h3
-                  onClick={() => handleContactClick('companyName', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyName ? (
-                    <input
-                      type="text"
-                      name="companyName"
-                      value={invoicedetails?.companyName}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('companyName', falsevalue)
-                      }
-                    />
-                  ) : (
-                    invoicedetails?.companyName || '< Contact Name >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('clientCompanyName', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.clientCompanyName ? (
-                    <input
-                      type="text"
-                      name="clientCompanyName"
-                      value={invoicedetails?.clientCompanyName}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('clientCompanyName', falsevalue)
-                      }
-                    />
-                  ) : (
-                    invoicedetails?.clientCompanyName ||
-                    '<Client Company Name >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyAddress', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyAddress ? (
-                    <input
-                      type="text"
-                      name="companyAddress"
-                      value={invoicedetails?.companyAddress}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyAddress', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.companyAddress || '<Address >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyContact', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyContact ? (
-                    <input
-                      type="text"
-                      name="companyContact"
-                      value={invoicedetails?.companyContact}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyContact', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.companyContact || '<Phone >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('contactDetails', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.contactDetails ? (
-                    <input
-                      type="text"
-                      name="contactDetails"
-                      value={invoicedetails?.contactDetails}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('contactDetails', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.contactDetails || '<Email >'
-                  )}
-                </h3>
+            <div style={{ padding: '20px' }}>
+              <div
+                style={{
+                  color: 'bfbfbf',
+                  display: 'flex',
+                  justifyContent: 'end',
+                }}
+              >
+                &lt;Payment terms due on receipt, due in X days&gt;
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  color: '#333f4f',
+                }}
+              >
+                <div>
+                  <h2 style={{ color: '#1f3864' }}>Bill To</h2>
+                  <div
+                    style={{ height: '3px', backgroundColor: '#bfbfbf' }}
+                  ></div>
+                  <h3
+                    onClick={() => handleContactClick('companyName', truevalue)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {editpdf?.companyName ? (
+                      <input
+                        type="text"
+                        name="companyName"
+                        value={invoiceDetails?.companyName}
+                        onChange={handleContactChange}
+                        onBlur={() =>
+                          handleContactClick('companyName', falsevalue)
+                        }
+                      />
+                    ) : (
+                      invoiceDetails?.companyName || '< Contact Name >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('clientCompanyName', truevalue)
+                    }
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {editpdf?.clientCompanyName ? (
+                      <input
+                        type="text"
+                        name="clientCompanyName"
+                        value={invoiceDetails?.clientCompanyName}
+                        onChange={handleContactChange}
+                        onBlur={() =>
+                          handleContactClick('clientCompanyName', falsevalue)
+                        }
+                      />
+                    ) : (
+                      invoiceDetails?.clientCompanyName ||
+                      '<Client Company Name >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('companyAddress', truevalue)
+                    }
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {editpdf?.companyAddress ? (
+                      <input
+                        type="text"
+                        name="companyAddress"
+                        value={invoiceDetails?.companyAddress}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('companyAddress', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.companyAddress || '<Address >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('companyContact', truevalue)
+                    }
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {editpdf?.companyContact ? (
+                      <input
+                        type="text"
+                        name="companyContact"
+                        value={invoiceDetails?.companyContact}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('companyContact', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.companyContact || '<Phone >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('contactDetails', truevalue)
+                    }
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {editpdf?.contactDetails ? (
+                      <input
+                        type="text"
+                        name="contactDetails"
+                        value={invoiceDetails?.contactDetails}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('contactDetails', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.contactDetails || '<Email >'
+                    )}
+                  </h3>
+                </div>
 
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Ship To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-                <h3>
-                  &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
-                </h3>
-                <h3>
-                  &lt;
-                  {invoicedetails?.clientCompanyName || 'Client Company Name'}
-                  &gt;
-                </h3>
-                <h3>
-                  {' '}
-                  &lt;{invoicedetails?.companyAddress || ' Address '}&gt;
-                </h3>
-                <h3>&lt;{invoicedetails?.companyContact || ' phone '}&gt;</h3>
-                <h3>&lt;{invoicedetails?.contactDetails || '  Email '}&gt;</h3>
+                <div>
+                  <h2 style={{ color: '#1f3864' }}>Ship To</h2>
+                  <div
+                    style={{ height: '3px', backgroundColor: '#bfbfbf' }}
+                  ></div>
+                  <h3>
+                    &lt;{invoiceDetails?.companyName || '  Name / Dept '}&gt;
+                  </h3>
+                  <h3>
+                    &lt;
+                    {invoiceDetails?.clientCompanyName || 'Client Company Name'}
+                    &gt;
+                  </h3>
+                  <h3>
+                    {' '}
+                    &lt;{invoiceDetails?.companyAddress || ' Address '}&gt;
+                  </h3>
+                  <h3>&lt;{invoiceDetails?.companyContact || ' phone '}&gt;</h3>
+                  <h3>&lt;{invoiceDetails?.contactDetails || '  Email '}&gt;</h3>
+                </div>
               </div>
             </div>
-          </div>
 
           {/* third  */}
 
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'end',
-              width: '100%',
-              padding: ' 20px ',
-              color: '#333f4f',
-            }}
-          >
-            <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
-              ${agencyShare}
-            </h2>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'end',
+                width: '100%',
+                padding: ' 20px ',
+                color: '#333f4f',
+              }}
+            >
+              <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
+                ${agencyShare}
+              </h2>
+            </div>
           </div>
-          </div>
-
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
         </Box>
         
@@ -400,12 +396,12 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
 
             
             <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
-            onClick={()=> {setEditpdf(initialPdfValue);setOpen(false)}}
+            onClick={()=> {setInvoiceDetails(pdfData); setEditpdf(initialPdfValue);setOpen(false)}}
             >
               Close
             </Button>
-              </div>
-              </Box>
+          </div>
+      </Box>
     </Modal>
   );
 }

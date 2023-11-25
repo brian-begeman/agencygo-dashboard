@@ -310,7 +310,7 @@ const Payouts = () => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell scope="row" sx={{ padding: '25px 10px' }}>
-                      ${item?.qty * item?.unitPrice}
+                      ${item?.amount}
                     </TableCell>
                     <TableCell
                       scope="row"
