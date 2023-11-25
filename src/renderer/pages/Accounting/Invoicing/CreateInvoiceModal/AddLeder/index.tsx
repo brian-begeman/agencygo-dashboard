@@ -1,12 +1,10 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Switch, styled } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
 import './Addleder.css';
-import { MyInvoiceContext } from '../../context/context';
-import { agencyCreatorSplit } from 'renderer/utils/invoice';
 
 const style = {
   position: 'absolute',
@@ -23,11 +21,9 @@ const style = {
   scrollBehavior: 'smooth',
 };
 
-export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
+export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
-  const { data } = useContext(MyInvoiceContext);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const {agencyShare} = agencyCreatorSplit(data?.currentModalBalance, data?.agencyPer);
 
 
   const handlePDF = async () => {
@@ -50,63 +46,10 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
       if (responseData?.data?.pdfUrl) {
         setOpen(false)
       }
-      // window.location.href = responseData.data;
-      // setpdfURl(responseData.data)
     } catch (error) {
       console.log(error);
     }
   };
-
-
-  const pdfData = {
-    userName: data?.firstName,
-    companyName: '',
-    clientCompanyName: '',
-    companyAddress: '',
-    companyContact: '',
-    contactDetails: '',
-    description: '',
-    qty: 11,
-    unitPrice: 12.11,
-    total: 0,
-    userId: data?._id,
-    employeeId: data?._id,
-    email: data?.email,
-    amount: agencyShare,
-    status: true,
-    invoiceNo: 'INC0001',
-    address: 'test',
-
-    paymentTerms: 'test',
-    contactName: 'test',
-    delivery:true,
-    nameDept: 'test',
-    addresss: 'test',
-    phone: 'test',
-    invoiceTitle: 'test',
-    paymentInstructions: 'test',
-    subtotal: 0,
-    discount: 0,
-    subtotalLessDiscount: 0,
-    taxRate: 'test',
-    totalTax: 0,
-    shippingHandling: 0,
-    balanceDue: '$25310',
-    date: '2023-11-06',
-    addressShipTo: 'test',
-    phoneShipTo: 'test',
-  };
-
-  const initialPdfValue = {
-    companyName: false,
-    clientCompanyName: false,
-    companyAddress: false,
-    companyContact: false,
-    contactDetails: false,
-    description: false,
-    qty: false,
-    unitPrice: false,
-  }
 
   const truevalue = true;
   const falsevalue = false;
@@ -124,19 +67,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
       ...invoiceDetails,
       [event.target.name]: event.target.value,
     });
-    // console.log(invoiceDetails, '===>>invoice data');
   };
-
-  useEffect(() => {
-    if (!invoiceDetails?.unitPrice?.length === null) {
-      setInvoiceDetails({
-        ...invoiceDetails,
-        ['total']: agencyShare,
-      });
-    }
-    const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
-    return () => clearInterval(intervalId);
-  }, [invoiceDetails?.unitPrice]);
 
   return (
     <Modal
@@ -214,22 +145,13 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
 
             <div>
               <h2>INVOICE</h2>
-              <h4>DATE: {currentDate.toLocaleString()}</h4>
+              <h4>DATE: {pdfData?.date}</h4>
               <h4>INVOICE No. {'INC0001'}</h4>
             </div>
           </div>
           <div style={{background: '#ffffff',}}>
           {/* secound box */}
             <div style={{ padding: '20px' }}>
-              <div
-                style={{
-                  color: 'bfbfbf',
-                  display: 'flex',
-                  justifyContent: 'end',
-                }}
-              >
-                &lt;Payment terms due on receipt, due in X days&gt;
-              </div>
               <div
                 style={{
                   display: 'flex',
@@ -245,7 +167,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
                   ></div>
                   <h3
                     onClick={() => handleContactClick('companyName', truevalue)}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
                     {editpdf?.companyName ? (
                       <input
@@ -265,7 +187,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
                     onClick={() =>
                       handleContactClick('clientCompanyName', truevalue)
                     }
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
                     {editpdf?.clientCompanyName ? (
                       <input
@@ -286,7 +208,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
                     onClick={() =>
                       handleContactClick('companyAddress', truevalue)
                     }
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
                     {editpdf?.companyAddress ? (
                       <input
@@ -305,7 +227,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
                     onClick={() =>
                       handleContactClick('companyContact', truevalue)
                     }
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
                     {editpdf?.companyContact ? (
                       <input
@@ -324,7 +246,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
                     onClick={() =>
                       handleContactClick('contactDetails', truevalue)
                     }
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
                     {editpdf?.contactDetails ? (
                       <input
@@ -376,7 +298,7 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
               }}
             >
               <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
-                ${agencyShare}
+                ${pdfData.amount}
               </h2>
             </div>
           </div>

@@ -3,14 +3,14 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Divider, Stack, useTheme } from '@mui/material';
-import theme from 'renderer/styles/muiTheme';
 import AlignmentSvg from 'renderer/assets/svg/AlignmentSvg';
-import RightArrowSvg from 'renderer/assets/svg/RightArrowSvg';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import AddLeder from './AddLeder/index';
 import ScndPDF from './ScndPDF';
 import FourthPDF from './FourthPDF';
 import TrdPDF from './TrdPDF';
+import { MyInvoiceContext } from '../context/context';
+import { agencyCreatorSplit } from 'renderer/utils/invoice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,47 +22,66 @@ const style = {
   boxShadow: 24,
   p: 2,
 };
-const data = {
-  userName: 'XYZ',
-  id: '12345678',
-  userId: '65437ee03d1dbde2cbf4bb42',
-  employeeId: '65437ee03d1dbde2cbf4bb42',
-  amount: 100.0,
-  status: true,
-  date: '2023-11-03',
-  address: 'TDI Business Center',
-  contactDetails: 'XYZ',
-  invoiceNo: '1234568',
-  paymentTerms: 'hey',
-  contactName: 'Daizy',
-  nameDept: 'MSPL',
-  clientCompanyName: 'ZAIN',
-  addresss: 'TDI Business Center',
-  phone: '1234567890',
-  email: 'mailto:test@gmail.com',
-  description: 'hey',
-  qty: 1,
-  unitPrice: 100.0,
-  total: 100.0,
-  paymentInstructions: 'asdf',
-  subtotal: 100.0,
-  discount: 1.0,
-  subtotalLessDiscount: 100.0,
-  taxRate: '2.00%',
-  totalTax: 1.0,
-  shippingHandling: 2.0,
-  balanceDue: '$1.00',
-  addressShipTo: 'Ship To Address',
-  phoneShipTo: 'Ship To Phone',
-};
+
+const initialPdfValue = {
+  companyName: false,
+  clientCompanyName: false,
+  companyAddress: false,
+  companyContact: false,
+  contactDetails: false,
+  description: false,
+  qty: false,
+  unitPrice: false,
+}
 
 export default function CreateInvoiceModal({ open, setOpen }: any) {
   const handleClose = () => setOpen(false);
   const [pdfURL, setpdfURl] = useState('');
+  const { data } = useContext(MyInvoiceContext);
 
-  const [pdfData, setPdfData] = useState<any>('');
   const [viewOnly, setViewOnly] = useState<any>(false);
   const [selectedTemplate, setSelectedTemplate] = useState<any>('')
+  
+  const {agencyShare} = agencyCreatorSplit(data?.currentModalBalance, data?.agencyPer);
+
+  const pdfData = {
+    userName: data?.firstName,
+    companyName: '',
+    clientCompanyName: '',
+    companyAddress: '',
+    companyContact: '',
+    contactDetails: '',
+    description: '',
+    qty: 11,
+    unitPrice: 12.11,
+    total: agencyShare,
+    userId: data?._id,
+    employeeId: data?._id,
+    email: data?.email,
+    amount: agencyShare,
+    status: true,
+    invoiceNo: 'INC0001',
+    address: 'test',
+
+    paymentTerms: 'test',
+    contactName: 'test',
+    delivery:true,
+    nameDept: 'test',
+    addresss: 'test',
+    phone: 'test',
+    invoiceTitle: 'test',
+    paymentInstructions: 'test',
+    subtotal: 0,
+    discount: 0,
+    subtotalLessDiscount: 0,
+    taxRate: 'test',
+    totalTax: 0,
+    shippingHandling: 0,
+    balanceDue: '$25310',
+    date: new Date().toLocaleString(),
+    addressShipTo: 'test',
+    phoneShipTo: 'test',
+  };
 
 
   const handleViewTemplate = async (name: any) => {
@@ -214,10 +233,10 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
           </Box>
         </Box>
       </Modal>
-      <AddLeder open={selectedTemplate === 'template1'} setOpen={setSelectedTemplate} name={pdfData} viewOnly={viewOnly} />
-      <ScndPDF open={selectedTemplate === 'template2'} setOpen={setSelectedTemplate} name={pdfData} viewOnly={viewOnly}  />
-      <TrdPDF open={selectedTemplate === 'template3'} setOpen={setSelectedTemplate} name={pdfData}  viewOnly={viewOnly} />
-      <FourthPDF open={selectedTemplate === 'template4'} setOpen={setSelectedTemplate} name={pdfData}  viewOnly={viewOnly} />
+      <AddLeder open={selectedTemplate === 'template1'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
+      <ScndPDF open={selectedTemplate === 'template2'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly}  />
+      <TrdPDF open={selectedTemplate === 'template3'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
+      <FourthPDF open={selectedTemplate === 'template4'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
     </>
   );
 }
