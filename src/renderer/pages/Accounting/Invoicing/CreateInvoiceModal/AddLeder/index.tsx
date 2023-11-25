@@ -2,12 +2,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Switch, styled } from '@mui/material';
-import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
+import { Switch, styled } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
 import './Addleder.css';
 import { MyInvoiceContext } from '../../context/context';
+import { agencyCreatorSplit } from 'renderer/utils/invoice';
 
 const style = {
   position: 'absolute',
@@ -24,11 +23,11 @@ const style = {
   scrollBehavior: 'smooth',
 };
 
-const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
 export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
   const { data } = useContext(MyInvoiceContext);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const {agencyShare} = agencyCreatorSplit(data?.currentModalBalance, data?.agencyPer);
 
 
   const handlePDF = async () => {
@@ -73,14 +72,13 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
     userId: data?._id,
     employeeId: data?._id,
     email: data?.email,
-    amount: 0,
+    amount: agencyShare,
     status: true,
     invoiceNo: 'INC0001',
     address: 'test',
 
     paymentTerms: 'test',
     contactName: 'test',
-    amonut:0,
     delivery:true,
     nameDept: 'test',
     addresss: 'test',
@@ -371,132 +369,20 @@ export default function AddLeder({ open, setOpen, name, viewOnly  }: any) {
 
           {/* third  */}
 
-          <div style={{ padding: '20px' }}>
-            <table style={{ border: '1' }}>
-              <tr style={{ backgroundColor: 'tomato ' }}>
-                <th style={{ backgroundColor: 'tomato' }}>DESCRIPTION</th>
-                <th style={{ backgroundColor: 'tomato' }}>QTY</th>
-                <th style={{ backgroundColor: 'tomato' }}>UNIT PRICE</th>
-                <th style={{ backgroundColor: 'tomato' }}>TOTAL</th>
-              </tr>
-              <tr>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('description', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {editpdf.description ? (
-                      <input
-                        type="text"
-                        name="description"
-                        value={invoicedetails?.description}
-                        onChange={handleContactChange}
-                        onBlur={() =>
-                          handleContactClick('description', falsevalue)
-                        }
-                      />
-                    ) : (
-                      invoicedetails?.description || 'Item 1'
-                    )}
-                  </p>
-                </td>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('qty', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {editpdf.qty ? (
-                      <input
-                        type="number"
-                        name="qty"
-                        value={invoicedetails?.qty}
-                        onChange={handleContactChange}
-                        onBlur={() => handleContactClick('qty', falsevalue)}
-                      />
-                    ) : (
-                      invoicedetails?.qty || '0'
-                    )}
-                  </p>
-                </td>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('unitPrice', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    $
-                    {editpdf.unitPrice ? (
-                      <input
-                        type="number"
-                        name="unitPrice"
-                        value={invoicedetails?.unitPrice}
-                        onChange={handleContactChange}
-                        onBlur={() =>
-                          handleContactClick('unitPrice', falsevalue)
-                        }
-                      />
-                    ) : (
-                      invoicedetails?.unitPrice || '0'
-                    )}
-                  </p>
-                </td>
-                <td>${invoicedetails?.qty * invoicedetails?.unitPrice}</td>
-              </tr>
-              <tr style={{ backgroundColor: 'f3f3f3' }}>
-                <td>Item 2</td>
-                <td>0</td>
-                <td>$0.00</td>
-                <td>$0.00</td>
-              </tr>
-              <tr>
-                <td>Item 3</td>
-                <td>2</td>
-                <td>$0.00</td>
-                <td>$0.00</td>
-              </tr>
-            </table>
-          </div>
-
-          {/* fourth */}
-
           <div
             style={{
               display: 'flex',
+              justifyContent: 'end',
               width: '100%',
               padding: ' 20px ',
               color: '#333f4f',
             }}
           >
-            <div
-              style={{
-                width: '60%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              Remarks / Payment Instructions
-            </div>
-            <div style={{ width: '40%', display: 'flex' }}>
-              <div>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                {/* <h2>$ Balance due</h2> */}
-              </div>
-
-              <div>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h2 style={{ backgroundColor: 'pink', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
-                  ${(invoicedetails?.qty * invoicedetails?.unitPrice).toFixed(2)}
-                </h2>
-              </div>
-              <div style={{ height: '4px', backgroundColor: 'black' }}></div>
-            </div>
+            <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
+              ${agencyShare}
+            </h2>
           </div>
-  </div>
+          </div>
 
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
         </Box>
