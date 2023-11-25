@@ -77,11 +77,9 @@ export default function UserCardWImage({
       >
         <Typography
           onClick={() => {
-            console.log('set===== data', data);
             setData(data);
           }}
           variant="h3"
-        
           fontSize={'18px'}
           sx={{ cursor: 'pointer' }}
           fontWeight={500}

@@ -38,7 +38,6 @@ const useQuery = (props: IProps) => {
         .then((response) => response.json())
         .then((res) => {
           setData(res);
-        
           setLoading(false);
         })
         .catch((error) => {
@@ -47,7 +46,7 @@ const useQuery = (props: IProps) => {
         });
     }
     if (key === 'get-employee') {
-      let endPoint = 'employees/' + params.id;
+      let endPoint = `employees/${params.id}?page=${currentPage}&limt=${paginationLimit}`;
       let options = {
         method: 'GET' as 'GET',
         headers: {

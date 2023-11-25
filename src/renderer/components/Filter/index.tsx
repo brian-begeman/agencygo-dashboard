@@ -76,7 +76,7 @@ function FilterByManageEmployeeCreator({
         /> */}
         <MultiSelect
           multiple={false}
-          creatorNames={data?.data}
+          creatorNames={data?.data?.creators}
           selectedValues={selectedValues}
           setSelectedValues={setSelectedValues}
         />
@@ -300,7 +300,7 @@ function FilterByEmployeeInCreator({
             }
             MenuProps={MenuProps}
           >
-            {data?.data.map((name: any) => (
+            {data?.data?.employees?.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
                 <Checkbox checked={employeeId._id === name._id} />
                 <ListItemText primary={name.name} />

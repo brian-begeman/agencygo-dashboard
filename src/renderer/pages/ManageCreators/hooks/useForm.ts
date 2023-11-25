@@ -59,7 +59,6 @@ const useFormCreator = (
 
 
   const onSubmit = (data: any) => {
-    
     if (type === 'add') {
       data.status= true
       data.assignEmployee= selectedValues
@@ -181,7 +180,7 @@ const useFormCreator = (
 
   useEffect(() => {
     if (dataEmployeeRaw?.data) {
-      const employeeRes = dataEmployeeRaw?.data?.map((item: any) => {
+      const employeeRes = dataEmployeeRaw?.data?.employees.map((item: any) => {
         return {
           label: item?.name,
           // eslint-disable-next-line no-underscore-dangle

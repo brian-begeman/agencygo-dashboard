@@ -51,12 +51,13 @@ export interface ISelectedEmployee {
 const useDataEmployees = () => {
   const [agencies, setAgencies] = useState<IAgencyList[]>([]);
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
+  const [totalEmployeesCount, setTotalEmployeesCount]= useState<number>()
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
     id: localStorage.getItem('AgencyId') ?? '',
   });
-  const { isLoading, data, refetch, setData } = useQuery({
+  const { isLoading, data, refetch, setData,setCurrnetPage, } = useQuery({
     key: 'get-employee',
     params: selectedAgency,
   });
@@ -103,7 +104,7 @@ const useDataEmployees = () => {
 
   useEffect(() => {
     if (data?.data) {
-      const employeesRes = data?.data?.map((item: any) => {
+      const employeesRes = data?.data?.employees?.map((item: any) => {
         const tempAssignedCreators = Array.isArray(item.creatorDetail)
           ? Array.from(item.creatorDetail)
           : []; 
@@ -129,8 +130,8 @@ const useDataEmployees = () => {
           agencyId: item?.agencyId,
         };
       });
-      console.log(employeesRes,">>>>>..employeesres");
       setEmployees(employeesRes || []);
+      setTotalEmployeesCount(data?.data?.totalDocument)
     }
   }, [data,data?.data]);
   
@@ -149,6 +150,8 @@ const useDataEmployees = () => {
     setSelectedAgency,
     setSelectedEmployee,
     handleSearch,
+    setCurrnetPage,
+    totalEmployeesCount
   };
 };
 

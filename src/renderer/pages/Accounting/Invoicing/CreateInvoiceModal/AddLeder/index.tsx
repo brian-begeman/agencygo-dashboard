@@ -29,8 +29,6 @@ export default function AddLeder({ open, setOpen, name }: any) {
   const { data } = useContext(MyInvoiceContext);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // console.log(data, '====><><><><><><====');
-
   const handlePDF = async () => {
     const options = {
       method: 'POST',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
@@ -9,9 +9,10 @@ import MultiSelectDropdown, {
   ModalFooter,
 } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { Stack } from '@mui/system';
-import { roleList,groupList, frequencyList, scheduleList } from './constant';
+import { roleList, groupList, frequencyList, scheduleList } from './constant';
 import fetchReq from 'utils/fetch';
 import { useFormEmployee } from './hooks/useForm';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 interface $Props {
   open: boolean;
@@ -44,6 +45,7 @@ export default function AddEmployeeModal({
     type,
     selectedEmployee
   );
+  const { userData } = useContext(AuthContext);
   const [agencies, setagencies] = useState<
     {
       label: string;
@@ -81,7 +83,7 @@ export default function AddEmployeeModal({
     setValue('payInterval', '');
     setValue('commission', '');
     setValue('shiftSchedular', '');
-    setValue('assignCreator','')
+    setValue('assignCreator', '');
   };
 
   const handleModalClose = () => {
@@ -118,9 +120,9 @@ export default function AddEmployeeModal({
       .catch((err) => {
         console.log(err);
       });
-  };  
+  };
   const getCreators = () => {
-    const endpoint = 'creators';
+    const endpoint = `creators/${userData?.agency?._id}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -131,9 +133,8 @@ export default function AddEmployeeModal({
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
         setcreators([]);
-        res.data.map((item: any) => {
+        res.data?.creators?.map((item: any) => {
           let tempdata = {
             value: item._id,
             label: item.creatorName,
@@ -219,9 +220,8 @@ export default function AddEmployeeModal({
                 />
               </Box>
             </Box>
-            <Box sx={{ display: 'flex', gap: '20px'}}>
-             
-              <Box sx={{width:'100%'}}>
+            <Box sx={{ display: 'flex', gap: '20px' }}>
+              <Box sx={{ width: '100%' }}>
                 <InputWithLabel
                   label="Commission"
                   inputIdentifierName="commission"

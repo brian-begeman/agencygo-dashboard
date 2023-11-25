@@ -76,11 +76,13 @@ const useDataCreators = () => {
   });
 
   useEffect(() => {
+    
     const creatorsRes =
       data?.data?.creators?.map((item: any) => ({
         ...item,
         id: item?._id,
       })) || [];
+      
     setCreators(creatorsRes);
     setTotalCreatorsCount (data?.data?.totalDocument)
   }, [data]);
