@@ -24,7 +24,7 @@ import CandleSvg from 'renderer/assets/svg/CandleSvg';
 import PageAside from 'renderer/components/PageAside';
 import theme from 'renderer/styles/muiTheme';
 // import CloseCircleSvg from 'renderer/assets/svg/CloseCircleSvg';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -34,6 +34,7 @@ import styles from './styles.module.css';
 import { useLocation } from 'react-router-dom';
 import MultiSelect from '../Dropdown';
 import useQuery from 'renderer/hooks/useQuery';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
@@ -75,7 +76,7 @@ function FilterByManageEmployeeCreator({
         /> */}
         <MultiSelect
           multiple={false}
-          creatorNames={data?.data}
+          creatorNames={data?.data?.creators}
           selectedValues={selectedValues}
           setSelectedValues={setSelectedValues}
         />
@@ -185,7 +186,6 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
   const [collapse, setCollapse] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // setChipData({})
     setStatus(event.target.value);
   };
 
@@ -197,7 +197,7 @@ function FilterByStatus({ status, setStatus, title, options }: $ByStatusProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '12px',
+          marginBottom: '5px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -268,7 +268,6 @@ function FilterByEmployeeInCreator({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: 'pointer',
-          marginBottom: '12px',
         }}
         onClick={() => setCollapse(!collapse)}
       >
@@ -277,8 +276,8 @@ function FilterByEmployeeInCreator({
         </Typography>
         {!collapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Box>
-      <Collapse in={!collapse} sx={{ marginBottom: '12px' }}>
-        <FormControl sx={{ width: 250, marginBottom: '30px' }}>
+      <Collapse in={!collapse}>
+        <FormControl sx={{ width: 250 }}>
           <Select
             sx={{
               color: '#fff !important',
@@ -295,17 +294,13 @@ function FilterByEmployeeInCreator({
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             value={employeeId.name}
-            placeholder="asdfsadf"
             onChange={(e) => handleChange(e)}
-            // renderValue={(selected: any) =>
-            //   selected.name != '' ? selected.name : 'Select employee name'
-            // }
             renderValue={(selected: any) =>
-              selected.name !== '' ? selected.name : 'placeholder text'
+              selected.name !== '' ? selected.name : 'Select employee'
             }
             MenuProps={MenuProps}
           >
-            {data?.data.map((name: any) => (
+            {data?.data?.employees?.map((name: any) => (
               <MenuItem key={name} value={name} sx={{ display: 'flex' }}>
                 <Checkbox checked={employeeId._id === name._id} />
                 <ListItemText primary={name.name} />
@@ -333,8 +328,10 @@ const initFiltersState = [
 interface $FilterProps {
   handleSearch?: any;
   refetch?: any;
+  setCurrnetPage?: any;
 }
-function Filter({ handleSearch, refetch }: $FilterProps) {
+function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
+  const { userData } = useContext(AuthContext);
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
   const [employeeSearch, setEmployeeSearch] = useState('');
@@ -361,49 +358,58 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     setEmployeeSearch('');
     refetch('');
     setChipData([]);
+    setCurrnetPage(1);
 
     // setFilters(filters.filter((filter) => filter.label !== id));
   };
 
   const handleFilterData = () => {
+    setCurrnetPage(1);
     const data = {};
     if (location.pathname === '/creators') {
       if (creatorSearch != '') {
-        Object.assign(data, { creator: creatorSearch });
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
+          creator: creatorSearch,
+        });
       }
       if (status != '') {
-        Object.assign(data, { status: status == 'Activated' ? true : false });
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
+          status: status == 'Activated' ? true : false,
+        });
       }
       if (linkStatus != '') {
         Object.assign(data, {
+          agencyID: userData?.agency?._id,
           isLinkOnlyFans: linkStatus == 'Linked' ? true : false,
         });
       }
       if (employeeId && Object.values(employeeId).length) {
         Object.assign(data, {
+          agencyID: userData?.agency?._id,
           employeeId: employeeId._id,
+        });
+      } else {
+        Object.assign(data, {
+          agencyID: userData?.agency?._id,
         });
       }
     } else {
       if (selectedValues.length) {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           creator: selectedValues.toString(),
         });
       }
       if (status != '') {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           status: status == 'inactive' ? 'inactive' : 'active',
         });
       }
       if (employeeSearch != '') {
         Object.assign(data, {
-          agencyId: '654dcc70179b1ae7635e43f8',
           name: employeeSearch,
         });
-      } else {
-        Object.assign(data, { agencyId: '654dcc70179b1ae7635e43f8' });
       }
     }
     handleSearch(data);
@@ -419,7 +425,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     <PageAside>
       <Box
         sx={{
-          padding: '20px',
+          padding: '10px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -455,7 +461,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             display: 'flex',
             justifyContent: 'center',
             gap: '20px',
-            margin: '10px,10px',
           }}
         >
           <Button variant="outlined" onClick={onRemoveFilter}>
@@ -501,8 +506,8 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           ))}
         </Stack> */}
       </Box>
-      <Box padding="12px 16px 12px 16px">
-        {location.pathname != '/creators' && (
+      {location.pathname != '/creators' && (
+        <Box padding="12px 16px 12px 16px">
           <>
             <FilterByEmployee
               employeeSearch={employeeSearch}
@@ -515,10 +520,10 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
               }}
             />
           </>
-        )}
-      </Box>
+        </Box>
+      )}
 
-      <Box padding="0px 16px 0px 16px">
+      <Box padding="0px 12px 0px 12px">
         {location.pathname === '/creators' ? (
           <FilterByCreator
             creatorSearch={creatorSearch}
@@ -541,11 +546,11 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Divider
           sx={{
             background: theme.palette.primary.contrastText,
-            marginTop: '11px',
+            marginTop: '10px',
           }}
         />
       </Box>
-      <Box padding="12px 16px 12px 16px">
+      <Box padding="5px 16px 2px 16px">
         <FilterByStatus
           title="By Status"
           status={status}
@@ -559,12 +564,12 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
         <Divider
           sx={{
             background: theme.palette.primary.contrastText,
-            marginTop: '11px',
+            marginTop: '5px',
           }}
         />
       </Box>
       {location.pathname === '/creators' && (
-        <Box padding="12px 16px 12px 16px">
+        <Box padding="5px 16px 0px 16px">
           <FilterByStatus
             title="By Link Status"
             status={linkStatus}
@@ -574,7 +579,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           <Divider
             sx={{
               background: theme.palette.primary.contrastText,
-              marginTop: '11px',
+              marginTop: '5px',
             }}
           />
         </Box>
@@ -602,12 +607,6 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
             title="By Employee name"
             setEmployeeId={setEmployeeId}
             employeeId={employeeId}
-          />
-          <Divider
-            sx={{
-              background: theme.palette.primary.contrastText,
-              marginTop: '11px',
-            }}
           />
         </Box>
       )}

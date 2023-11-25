@@ -48,7 +48,6 @@ export default function AssignCreatorModal({
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
         handleClose();
         refetch();
       })
@@ -88,7 +87,7 @@ export default function AssignCreatorModal({
           >
             <MultiSelect
               multiple={true}
-              creatorNames={data?.data}
+              creatorNames={data?.data?.creators}
               selectedValues={selectedValues}
               setSelectedValues={setSelectedValues}
             />
