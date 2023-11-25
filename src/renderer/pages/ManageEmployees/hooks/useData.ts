@@ -57,7 +57,7 @@ const useDataEmployees = () => {
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
     id: localStorage.getItem('AgencyId') ?? '',
   });
-  const { isLoading, data, refetch, setData,setCurrnetPage, } = useQuery({
+  const { isLoading, data, refetch, setData,setCurrnetPage,currentPage ,paginationLimit } = useQuery({
     key: 'get-employee',
     params: selectedAgency,
   });
@@ -84,7 +84,7 @@ const useDataEmployees = () => {
       .map((key) => `${key}=${(data[key])}`)
       .join('&');
 
-    let endpoint = `employee/search/data?${queryString}`;
+    let endpoint = `employee/search/data?${queryString}&page=${currentPage}&limit=${paginationLimit}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {

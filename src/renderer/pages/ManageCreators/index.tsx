@@ -229,7 +229,11 @@ export default function ManageCreators() {
         </PageTopbar>
 
         <Stack direction="row" sx={{ height: '85%' }}>
-          <Filter handleSearch={handleSearch} refetch={handleSearch} />
+          <Filter
+            handleSearch={handleSearch}
+            refetch={handleSearch}
+            setCurrnetPage={setCurrnetPage}
+          />
           <FilterTable
             isEmptyContent={!creators.length}
             tableHeaders={creatorsTableHeaders}

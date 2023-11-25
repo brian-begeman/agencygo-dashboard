@@ -273,7 +273,7 @@ export default function ManageEmployees() {
 
   return (
     <Dashboard>
-      <section className={styles.wrapper} style={{ height: 'auto' }}>
+      <section className={styles.wrapper}>
         <PageTopbar>
           <Stack
             alignItems="center"
@@ -412,8 +412,12 @@ export default function ManageEmployees() {
           </Stack>
         </PageTopbar>
 
-        <Stack direction="row" sx={{ height: '100%' }}>
-          <Filter handleSearch={handleSearch} refetch={refetch} />
+        <Stack direction="row" sx={{ height: '85%' }}>
+          <Filter
+            handleSearch={handleSearch}
+            refetch={refetch}
+            setCurrnetPage={setCurrnetPage}
+          />
           <FilterTable
             isEmptyContent={!employees.length}
             tableHeaders={employeesTableHeaders}

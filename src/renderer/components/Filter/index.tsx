@@ -328,8 +328,9 @@ const initFiltersState = [
 interface $FilterProps {
   handleSearch?: any;
   refetch?: any;
+  setCurrnetPage?: any;
 }
-function Filter({ handleSearch, refetch }: $FilterProps) {
+function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
   const { userData } = useContext(AuthContext);
   const [filters, setFilters] = useState(initFiltersState);
   const [creatorSearch, setCreatorSearch] = useState('');
@@ -357,11 +358,13 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
     setEmployeeSearch('');
     refetch('');
     setChipData([]);
+    setCurrnetPage(1);
 
     // setFilters(filters.filter((filter) => filter.label !== id));
   };
 
   const handleFilterData = () => {
+    setCurrnetPage(1);
     const data = {};
     if (location.pathname === '/creators') {
       if (creatorSearch != '') {
