@@ -267,10 +267,7 @@ function AppRoutes() {
     <Routes>
       {isLogin ? (
         <>
-          <Route
-            path="/"
-            element={<Navigate to="/manager-suite/notifications" />}
-          />
+          <Route path="/" element={<Navigate to="/home" />} />
           {ROUTES.map(({ path, element, nestedRoutes }) =>
             nestedRoutes ? (
               <Route key={path} path={path} element={element}>

@@ -1,13 +1,6 @@
 import { KeyboardArrowUp } from '@mui/icons-material';
-import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
-import ArchiveAddSvg from 'renderer/assets/svg/ArchiveAddSvg';
-import OnlyFansCircleBlue from 'renderer/assets/svg/OnlyFansCircleBlueSvg';
-import theme from 'renderer/styles/muiTheme';
-import WalletAddSvg from 'renderer/assets/svg/WalletAddSvg';
-import UserAdd from 'renderer/assets/svg/UserAddSvg';
-import SubtitleSvg from 'renderer/assets/svg/SubtitleSvg';
+import { Box, Divider, Stack, Typography, useTheme, Grid } from '@mui/material';
 import EarningsCard from 'renderer/components/EarningsCard';
-import styles from './styles.module.css';
 import ButtonGroup from 'renderer/components/ButtonGroup';
 import { useState } from 'react';
 import SubscriptionSvg from 'renderer/assets/svg/NewMessageSvg';
@@ -16,6 +9,7 @@ import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import WalletSvg from 'renderer/assets/svg/WalletSvg';
 import PersonSvg from 'renderer/assets/svg/Person';
 import StreamSvg from 'renderer/assets/svg/Stream';
+import { TotalEarningsChart } from './Chart';
 
 const earningsInitJson = [
   {
@@ -25,7 +19,7 @@ const earningsInitJson = [
   },
   {
     title: 'Post ($)',
-    amount: '0.00',
+    amount: '3444.30',
     icon: <ChatSvg />,
   },
   {
@@ -35,17 +29,17 @@ const earningsInitJson = [
   },
   {
     title: 'Tips ($)',
-    amount: '6.00',
+    amount: '45.46',
     icon: <WalletSvg />,
   },
   {
     title: 'Referrals ($)',
-    amount: '0.00',
+    amount: '780.43',
     icon: <PersonSvg />,
   },
   {
     title: 'Streams ($)',
-    amount: '0.00',
+    amount: '5634.34',
     icon: <StreamSvg />,
   },
 ];
@@ -82,46 +76,64 @@ export default function Earnings() {
         />
       </Box>
       <Stack flexDirection="row" gap="20px">
-        <Stack
-          spacing={5}
-          borderRadius="16px"
-          sx={{
-            padding: '32px',
-            border: `1px solid ${theme.palette.primary.contrastText}`,
-            minWidth: '250px',
-          }}
-        >
-          <OnlyFansCircleBlue />
-          <Divider
-            sx={{ backgroundColor: theme.palette.primary.contrastText }}
-          />
-          <Stack flexDirection="row" alignItems="center">
-            <Typography>Total Earnings</Typography>
-            <KeyboardArrowUp
+        <Grid spacing={3} container>
+          <Grid item md={5}>
+            <Box
+              padding={3}
+              borderRadius={2}
               sx={{
-                color: theme.palette.primary.light,
-                marginLeft: '30px',
-                fontSize: '14px',
+                background: '#181818',
               }}
-            />
-            <Typography color={theme.palette.info.main} fontSize="14px">
-              12.7%
-            </Typography>
-          </Stack>
-          <Typography variant="h3" fontWeight="700" fontSize={'36px'}>
-            $473.44
-          </Typography>
-        </Stack>
-        <Box width="100%" className={styles.earningsContainer}>
-          {earningsInitJson.map((item) => (
-            <EarningsCard
-              key={item.title}
-              icon={item.icon}
-              title={item.title}
-              amount={item.amount}
-            />
-          ))}
-        </Box>
+            >
+              <Grid container spacing={1}>
+                {earningsInitJson.map((item) => (
+                  <Grid item md={6}>
+                    <EarningsCard
+                      key={item.title}
+                      title={item.title}
+                      amount={item.amount}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Grid>
+
+          <Grid item md={7}>
+            <Box
+              borderRadius="16px"
+              sx={{
+                padding: '32px',
+                minWidth: '250px',
+                background: '#181818',
+              }}
+            >
+              <Box
+                sx={{
+                  marginBottom: 5,
+                }}
+              >
+                <Stack flexDirection="row" alignItems="center" marginBottom={2}>
+                  <Typography>Total Earnings</Typography>
+                  <KeyboardArrowUp
+                    sx={{
+                      color: theme.palette.primary.light,
+                      marginLeft: '30px',
+                      fontSize: '14px',
+                    }}
+                  />
+                  <Typography color={theme.palette.info.main} fontSize="14px">
+                    12.7%
+                  </Typography>
+                </Stack>
+                <Typography variant="h3" fontWeight="700" fontSize={'36px'}>
+                  $473.44
+                </Typography>
+              </Box>
+              <TotalEarningsChart />
+            </Box>
+          </Grid>
+        </Grid>
       </Stack>
     </Box>
   );
