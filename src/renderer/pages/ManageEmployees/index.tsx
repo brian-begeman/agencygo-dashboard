@@ -533,7 +533,7 @@ export default function ManageEmployees() {
                               gap={'10px'}
                               alignItems={'center'}
                             >
-                              <Typography>Inactive</Typography>
+                              <Typography color="yellow">Inactive</Typography>
                               <Typography
                                 color={'#04A1FF'}
                                 sx={{ cursor: 'pointer' }}
@@ -599,7 +599,7 @@ export default function ManageEmployees() {
                                       activated === 'deactivate'
                                         ? 'gray'
                                         : isDarkTheme
-                                        ? '#fff'
+                                        ? 'red'
                                         : '#000'
                                     }
                                   >
