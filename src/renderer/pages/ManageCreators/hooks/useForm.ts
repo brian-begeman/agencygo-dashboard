@@ -166,6 +166,7 @@ const useFormCreator = (
       // setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('creatorImage',selectedCreator?.creatorImage);
       setValue('agencyComission', selectedCreator?.agencyComission);
+      setValue('creatorComission',selectedCreator?.creatorComission);
       setSelectedValues(selectedCreator?.assignEmployee?.map((val) => val._id));
       setCreatorImage(selectedCreator?.creatorImage)
       setCreatorStatus(selectedCreator?.status)
@@ -178,6 +179,8 @@ const useFormCreator = (
 
   useEffect(() => {
     if (dataEmployeeRaw?.data) {
+      console.log(dataEmployeeRaw,"dataEmployeeRaw99999999999");
+      
       const employeeRes = dataEmployeeRaw?.data?.employees.map((item: any) => {
         return {
           label: item?.name,

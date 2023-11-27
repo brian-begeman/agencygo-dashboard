@@ -257,6 +257,8 @@ export default function ManageCreators() {
                   autoRelink,
                   creatorImage,
                   ofcreds,
+                  creatorComission,
+                  agencyComission,
                   proxy,
                 }) => (
                   <>
@@ -366,6 +368,8 @@ export default function ManageCreators() {
                                 activated,
                                 assignEmployee,
                                 creatorImage,
+                                creatorComission,
+                                agencyComission,
                                 status,
                                 ofcreds,
                                 proxy,
