@@ -12,23 +12,23 @@ async function createAttendance(payload: any) {
       withAuth: true,
       body: JSON.stringify(payload),
     };
-    let responce = await fetchReq(endPoint, options);
-    return responce;
+    let response = await fetchReq(endPoint, options);
+    return response.json();
   } catch (error: any) {
     throw new Error(error?.message);
   }
 }
 
 // Update Attendance
-async function updateAttendance(data: any) {
-  const endPoint = 'employee/' + data.id;
+async function updateAttendance(payload: any, attId: String) {
+  const endPoint = `attendence/update/empAttendance/${attId}`;
   const options = {
     method: 'PUT' as 'PUT',
     headers: {
       'content-type': 'application/json',
     },
     withAuth: true,
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   };
   let responce = await fetchReq(endPoint, options);
   let resp = await responce.json();
@@ -36,12 +36,11 @@ async function updateAttendance(data: any) {
 }
 
 // Get Emp Attendance
-async function getEmpAttendance(data: any) {
-  const endPoint = 'employee/' + data.id;
+async function getEmpAttendance(empID: any) {
+  const endPoint = 'attendence/getAttandanceByEmpId/' + empID;
   const options = {
     method: 'GET',
     withAuth: true,
-    body: JSON.stringify(data),
   };
   let responce = await fetchReq(endPoint, options);
   let resp = await responce.json();

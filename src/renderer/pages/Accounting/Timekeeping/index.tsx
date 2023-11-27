@@ -16,6 +16,13 @@ export default function Timekeeping() {
   const isDarkTheme = theme.palette.mode === 'dark';
   const [isDisable, setIsDisable] = useState(true);
 
+  const [attandaceData, setAttendanceData] = useState([]);
+
+  const attendanceHandler = (param: any) => {
+    console.log('param', param);
+    setAttendanceData([param]);
+  };
+
   return (
     <>
       <Stack sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
@@ -95,14 +102,14 @@ export default function Timekeeping() {
           width={'30%'}
           sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
         >
-          <Attendance />
+          <Attendance attendanceHandler={(e) => attendanceHandler(e)} />
         </Stack>
 
         <Stack
           width={'70%'}
           sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
         >
-          <AttendenceTrackTable />
+          <AttendenceTrackTable attandaceData={attandaceData} />
         </Stack>
       </Box>
 
@@ -110,7 +117,7 @@ export default function Timekeeping() {
         sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}
         padding="15px 10px 12px 10px"
       >
-        <TimeSheetTable />
+        <TimeSheetTable attandaceData={attandaceData} />
       </Stack>
     </>
   );
