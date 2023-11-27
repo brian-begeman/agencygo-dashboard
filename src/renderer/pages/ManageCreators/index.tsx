@@ -271,7 +271,7 @@ export default function ManageCreators() {
                               style={{ borderRadius: '50%' }}
                             />
                           ) : (
-                            <Avatar />
+                            <Avatar width={'30px'} height={'30px'} />
                           )}
 
                           <Typography variant="h6" fontSize="18px">
