@@ -43,7 +43,7 @@ import ChatMessage from './pages/ChatScreen';
 import ContentHub from './pages/ContentHub';
 import Browser from './pages/Browser';
 import { useLocation } from 'react-router-dom';
-import Timekeeping from "./pages/Accounting/Timekeeping";
+import Timekeeping from './pages/Accounting/Timekeeping';
 
 const ROUTES = [
   {

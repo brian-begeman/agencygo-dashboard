@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './style.css'; // Make sure you have an Attendance.css file
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { createAttendance, updateAttendance } from 'services/attendance';
+import { AuthContext } from 'renderer/contexts/AuthContext';
+import moment from 'moment';
 
 // ProgressBar Component
 const ProgressBar = ({ time, isOnBreak }) => {
@@ -59,13 +62,47 @@ const Attendance = () => {
   const [time, setTime] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const [notes, setNotes] = useState('');
   const [notesArray, setNotesArray] = useState([]);
+  const [breaksArray, setBreaksArray] = useState([]);
+  const [createData, setCreateData] = useState({
+    startDateTime: '',
+    endDateTime: '',
+    notes: '',
+  });
+  const [breakTimerActive, setBreakTimerActive] = useState(false);
+  const [breakTime, setBreakTime] = useState(0);
+  const [breakProgress, setBreakProgress] = useState(0);
 
+  const shiftStart = 10 * 60 * 60; // 10am in seconds
+  const shiftEnd = 19 * 60 * 60; // 7pm in seconds
+  const shiftDuration = shiftEnd - shiftStart;
+  const totalSegments = 21;
+  const segmentTime = shiftDuration / totalSegments;
+
+  // State Functions
+  const setStateFn = (setState, key, value) => {
+    setState((prevState) => {
+      return { ...prevState, [key]: value };
+    });
+  };
   const saveNotes = () => {
-    setNotesArray([...notesArray, notes]);
+    setNotesArray([...notesArray, createData.notes]);
+  };
+  const saveBreaks = () => {
+    console.log('breakTime==>', breakTime);
+    console.log('breaksArray==>', breaksArray);
+
+    if (breakTime === 0) {
+      setBreaksArray([...breaksArray, breakTime]);
+    } else {
+      setBreaksArray([
+        ...breaksArray,
+        breakTime - breaksArray[breaksArray.length - 1],
+      ]);
+    }
   };
 
+  // Clock in timer
   useEffect(() => {
     let interval = null;
 
@@ -80,24 +117,59 @@ const Attendance = () => {
     return () => clearInterval(interval);
   }, [timerActive]);
 
+  // Break timer
+  useEffect(() => {
+    let interval = null;
+    if (breakTimerActive) {
+      interval = setInterval(() => {
+        setBreakTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [breakTimerActive]);
+
+  useEffect(() => {
+    let interval = null;
+    if (breakTimerActive) {
+      interval = setInterval(() => {
+        setBreakProgress((prevProgress) => {
+          const newProgress = prevProgress + 100 / totalSegments;
+          return newProgress > 100 ? 100 : newProgress;
+        });
+      }, segmentTime * 1000); // Update every segmentTime seconds
+    }
+
+    if (breakProgress >= 100) {
+      clearInterval(interval); // Stop the interval when progress reaches 100%
+    }
+
+    return () => clearInterval(interval);
+  }, [breakTimerActive]);
+
   const clockIn = () => {
     setClockedIn(true);
     setTimerActive(true);
+    createAttendanceData();
+    setStateFn(setCreateData, 'startDateTime', moment().format());
   };
-
   const clockOut = () => {
     setClockedIn(false);
     setTimerActive(false);
+    setStateFn(setCreateData, 'endDateTime', moment().format());
+    saveBreaks();
   };
-
   const startBreak = () => {
     setOnBreak(true);
     setTimerActive(false);
+    setBreakTimerActive(true);
   };
-
   const endBreak = () => {
     setOnBreak(false);
     setTimerActive(true);
+    setBreakTimerActive(false);
+    saveBreaks();
   };
 
   // Convert seconds into hours, minutes, and seconds
@@ -112,6 +184,26 @@ const Attendance = () => {
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+
+  // Api Calls
+  const { userData } = useContext(AuthContext);
+
+  const createAttendanceData = async () => {
+    const payload = {
+      employeeId: userData?._id ?? '654de7f6af3ec91f3cbd0000',
+      startDateTime: createData.startDateTime,
+      breakTime: breaksArray,
+      notes: notesArray,
+      totalHours: time,
+      breakHours: breakTime,
+    };
+    try {
+      const response = await createAttendance(payload);
+      console.log('Response', response);
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
 
   return (
     <Box className="attendance-container">
@@ -182,9 +274,12 @@ const Attendance = () => {
             type="text"
             placeholder="Add time sheet notes"
             style={{ fontSize: 12 }}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e) => setStateFn(setCreateData, 'notes', e.target.value)}
           />
-          <button className="add-note" onClick={() => saveNotes(notes)}>
+          <button
+            className="add-note"
+            onClick={() => saveNotes(createData.notes)}
+          >
             Add note
           </button>
         </div>
