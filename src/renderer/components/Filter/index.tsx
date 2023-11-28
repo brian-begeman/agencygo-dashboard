@@ -403,7 +403,12 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
       }
       if (status != '') {
         Object.assign(data, {
-          status: status == 'inactive' ? 'inactive' : 'active',
+          status:
+            status == 'Inactive'
+              ? 'inactive'
+              : status == 'Deactivated'
+              ? 'deactivate'
+              : 'active',
         });
       }
       if (employeeSearch != '') {
@@ -558,7 +563,7 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
           options={
             location.pathname === '/creators'
               ? ['Activated', 'Deactivated']
-              : ['active', 'inactive']
+              : ['Activated', 'Inactive', 'Deactivated']
           }
         />
         <Divider
