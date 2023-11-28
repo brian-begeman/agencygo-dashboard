@@ -23,6 +23,8 @@ interface IEmployeeList {
   agencyId: string;
   commission:number;
   payRate:number;
+  payInterval:string;
+  shiftSchedular:string;
   assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
@@ -45,6 +47,8 @@ export interface ISelectedEmployee {
   agencyId: string;
   payRate:number;
   commission:number;
+  payInterval:string;
+  shiftSchedular:string;
   assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
@@ -111,9 +115,8 @@ const useDataEmployees = () => {
            
         return {
           name: item?.name || '',
-          imageSrc: '',
           assignedCreatorsForDropdown: tempAssignedCreators.length
-          && tempAssignedCreators.map((ta:any) => ta?.creatorName).join(', '),
+          ? tempAssignedCreators.map((ta:any) => ta._id):[],
           assignedCreatorsText: tempAssignedCreators.length
             ? tempAssignedCreators.map((ta:any) => ta?.creatorName).join(', ')
             : '+ Please click to set',
@@ -125,6 +128,8 @@ const useDataEmployees = () => {
           commission:item?.commission,
           email: item?.email || '',
           roleRaw: item?.role || '',
+          shiftSchedular:item?.shiftSchedular||'',
+          payInterval:item?.payInterval||'',
           // eslint-disable-next-line no-underscore-dangle
           id: item?._id || '',
           agencyId: item?.agencyId,

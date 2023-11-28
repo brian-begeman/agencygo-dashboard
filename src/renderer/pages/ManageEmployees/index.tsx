@@ -56,6 +56,8 @@ export default function ManageEmployees() {
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
   const [subGroups, setSubGroups] = useState([]);
+  const [selectedValues, setSelectedValues] = useState<any>([]);
+
   const {
     agencies,
     refetch,
@@ -442,6 +444,8 @@ export default function ManageEmployees() {
                     commission,
                     id,
                     agencyId,
+                    payInterval,
+                    shiftSchedular,
                     assignedCreatorsForDropdown,
                   }) => {
                     return (
@@ -487,6 +491,7 @@ export default function ManageEmployees() {
                               setOpenAssignCreatorModal(
                                 !openAssignCreatorModal
                               );
+                              setSelectedValues(assignedCreatorsForDropdown);
                             }
                           }}
                         >
@@ -554,8 +559,7 @@ export default function ManageEmployees() {
                             direction="row"
                             alignItems="center"
                           >
-                            {activated === 'active' ||
-                            activated === 'deactivate' ? (
+                            {activated === 'active' ? (
                               <>
                                 <ButtonBase
                                   onClick={() => {
@@ -567,6 +571,8 @@ export default function ManageEmployees() {
                                       agencyId,
                                       payRate,
                                       commission,
+                                      payInterval,
+                                      shiftSchedular,
                                       assignedCreatorsForDropdown,
                                     });
                                     setFormType('edit');
@@ -630,6 +636,8 @@ export default function ManageEmployees() {
               open={openAssignCreatorModal}
               setOpen={setOpenAssignCreatorModal}
               refetch={refetch}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
               id={id}
             />
           )}

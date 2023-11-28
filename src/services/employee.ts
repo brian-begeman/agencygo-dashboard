@@ -146,7 +146,7 @@ async function dectivateEmployee(data: any) {
     status: 'deactivate',
   };
   const options = {
-    method: 'PUT' as 'PUT',
+    method: 'PATCH' as 'PATCH',
     headers: {
       'content-type': 'application/json',
     },

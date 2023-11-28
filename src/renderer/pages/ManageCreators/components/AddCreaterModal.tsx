@@ -419,6 +419,7 @@ export default function AddCreaterModal({
           </FormGroup>
         </form>
       </Box>
+
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
