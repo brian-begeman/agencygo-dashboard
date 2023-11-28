@@ -341,7 +341,7 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
 
   const [status, setStatus] = useState('');
   const [linkStatus, setLinkStatus] = useState('');
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState('');
 
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
