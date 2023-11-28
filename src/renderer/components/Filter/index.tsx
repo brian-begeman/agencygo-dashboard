@@ -38,13 +38,16 @@ import { AuthContext } from 'renderer/contexts/AuthContext';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
+  setSelectedValues?: (e: any) => void;
+  selectedValues?: string;
 }
 
 function FilterByManageEmployeeCreator({
   label = 'By Creator',
+  setSelectedValues,
+  selectedValues,
 }: $ByManageEmployeeCreatorProps) {
   const [collapse, setCollapse] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -545,7 +548,10 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
               selectedValues={selectedValues}
               setSelectedValues={setSelectedValues}
             /> */}
-            <FilterByManageEmployeeCreator />
+            <FilterByManageEmployeeCreator
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
           </>
         )}
         <Divider
