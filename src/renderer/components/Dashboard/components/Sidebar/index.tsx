@@ -14,7 +14,7 @@ import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 import Message from 'renderer/assets/svg/messageSvg';
 import ContentHubSvg from 'renderer/assets/svg/ContentHubSvg';
-import { Drawer, IconButton, useTheme } from '@mui/material';
+import { Box, Drawer, IconButton, useTheme } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -273,6 +273,7 @@ function SideBar() {
 
   return (
     <div className={`${classes.sidebar} ${mode}`}>
+      <Box>
       <BrandLogo />
       <MenuIcon
         onClick={open ? handleDrawerClose : handleDrawerOpen}
@@ -301,7 +302,7 @@ function SideBar() {
           },
         }}
       >
-        <div className={classes.toolbar}>
+        <div className={classes.toolbar} >
           {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
             {theme.direction === 'rtl' ? (
               open ? (
@@ -335,6 +336,7 @@ function SideBar() {
           })}
         </div>
       </Drawer>
+      </Box>
     </div>
   );
 }

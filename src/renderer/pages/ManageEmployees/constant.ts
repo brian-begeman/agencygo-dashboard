@@ -48,4 +48,15 @@ export const scheduleList = [
     label: 'Night',
     value: 'night',
   },
-]
+];
+
+export const antyBrowserProfileStatusList = [
+  {
+    label: 'Ready',
+    value: 'ready',
+  },
+  {
+    label: 'Banned',
+    value: 'banned',
+  },
+];

@@ -42,7 +42,6 @@ export default function SearchUsers() {
       if (response.ok) {
         const data = await response.json();
         setAllUsers(data?.data);
-        console.log(data, 'get user Data');
       } else {
         console.error('Failed to fetch users');
       }
@@ -51,16 +50,12 @@ export default function SearchUsers() {
     }
   };
 
-
-
   useEffect(() => {
     // Fetch all users when the component mounts
     getUsers();
   }, []);
 
-
-   const [selectName,setSelectName]=useState<any>('')
-
+  const [selectName, setSelectName] = useState<any>('');
 
   return (
     <aside
@@ -80,21 +75,26 @@ export default function SearchUsers() {
         </SearchInput>
       </div>
       {allUsers.map((item: any, index: any) => (
-      <div style={{ background: item?.firstName === selectName ? '#04A1FF' : '' }} key={item?._id} >
-        <UserCardWImage
-          data={item}
-          id={item._id}
-          name={`${item?.firstName} ${item?.lastName}`}
-          notificationCount={item?.notificationCount}
-          messageCount={item?.messageCount}
-          key={item?._id} // Use a unique key, such as _id
-          profileImage={''}
-          selected={false}
-          onClick={() => {}}
-          autoRelink={false}
-          selectName={setSelectName}
+        <div
+          style={{
+            background: item?.firstName === selectName ? '#04A1FF' : '',
+          }}
+          key={item?._id}
+        >
+          <UserCardWImage
+            data={item}
+            id={item._id}
+            name={`${item?.firstName} ${item?.lastName}`}
+            notificationCount={item?.notificationCount}
+            messageCount={item?.messageCount}
+            key={item?._id} // Use a unique key, such as _id
+            profileImage={''}
+            selected={false}
+            onClick={() => {}}
+            autoRelink={false}
+            selectName={setSelectName}
           />
-          </div>
+        </div>
       ))}
     </aside>
   );

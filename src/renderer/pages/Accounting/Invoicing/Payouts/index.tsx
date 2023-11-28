@@ -189,11 +189,8 @@ const Payouts = () => {
   const handlePDF = async (data: any) => {
     console.log(data);
 
-
-
-      window.location.href = data;
-      // setpdfURl(responseData.data)
-
+    window.location.href = data;
+    // setpdfURl(responseData.data)
   };
   // const handlePDF = async (data: any) => {
   //   console.log(data);
@@ -216,10 +213,8 @@ const Payouts = () => {
     console.log(istrue);
     setSelectedStatu((istrue: any) => (istrue ? true : false));
   };
- const theme = useTheme();
- const isDarkTheme = theme.palette.mode === 'dark';
-
-
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <>
@@ -233,11 +228,7 @@ const Payouts = () => {
           backgroundColor: isDarkTheme ? '#121212' : '#fff',
         }}
       >
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-
-        >
+        <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize="22px">Invoicing</Typography>
           <Box>
             <Select
@@ -320,7 +311,7 @@ const Payouts = () => {
                     >
                       {item?.delivery === true ? 'Successfull' : 'Pending'}
                     </TableCell>
-                    <TableCell>{item?.createdAt }</TableCell>
+                    <TableCell>{item?.createdAt}</TableCell>
                     <TableCell
                       scope="row"
                       sx={{
@@ -388,7 +379,13 @@ const Payouts = () => {
                           // onClick={() => handlePDF(item?.pdfUrl)}
                           sx={{ cursor: 'pointer' }}
                         >
-                          <a href={item?.pdfUrl} target="_blank" rel="noopener noreferrer"><DownloadSvgIcon /></a>
+                          <a
+                            href={item?.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <DownloadSvgIcon />
+                          </a>
                         </Box>
                       </Box>
                     </TableCell>
