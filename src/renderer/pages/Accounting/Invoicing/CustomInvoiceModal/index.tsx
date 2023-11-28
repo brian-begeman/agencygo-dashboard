@@ -83,7 +83,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
       aria-describedby="modal-modal-description"
     >
       <form onSubmit={handleSubmit}>
-        <Box sx={{...style, backgroundColor: isDarkTheme? "#000" : "#fff"}}>
+        <Box sx={{...style, backgroundColor: isDarkTheme ? '#111' : '#fff'}}>
           <Box
             sx={{display: 'flex',justifyContent: 'space-between', alignItems: 'center', margin: '10px 0px'}}>
             <Typography> Create Invoice </Typography>

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Switch, styled } from '@mui/material';
 import './Addleder.css';
+import { MyInvoiceContext } from '../../context/context';
 
 const style = {
   position: 'absolute',
@@ -24,7 +25,7 @@ const style = {
 export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const { data, creatorInvoices, setCreatorInvoices } = useContext(MyInvoiceContext);
 
   const handlePDF = async () => {
     const options = {
@@ -41,7 +42,9 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
         options
       );
       const responseData = await response.json();
-
+      const invoices = [...creatorInvoices]
+      invoices.push(responseData?.data?.invoicing);
+      setCreatorInvoices([...invoices])
       console.log(responseData.data);
       if (responseData?.data?.pdfUrl) {
         setOpen(false)
@@ -61,8 +64,6 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
   };
 
   const handleContactChange = (event: any) => {
-    console.log(invoiceDetails);
-
     setInvoiceDetails({
       ...invoiceDetails,
       [event.target.name]: event.target.value,

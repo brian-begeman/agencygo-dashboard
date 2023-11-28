@@ -25,10 +25,12 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
     const length = allUsers.length;
     if (length > 0) {
       // Automatically set the first user in the list as the default selected user
-      setData({
+      setData((prevData: any) => ({
+        ...prevData,
         ...(allUsers[length-length] as {}), 
         currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
-        agencyPer: data?.agencyPer?? agencyCreatorSplit()});
+        agencyPer: data?.agencyPer?? agencyCreatorSplit()
+      }))
     }
   }, [allUsers])
 
