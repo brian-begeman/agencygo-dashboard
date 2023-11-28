@@ -118,7 +118,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
     }
   };
 
-  const modalData = [
+  const invoiceTemplates = [
     {
       id: 1,
       icon: true,
@@ -194,7 +194,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
             flexWrap={'wrap'}
             gap={'10px'}
           >
-            {modalData.map((template) => (
+            {invoiceTemplates.map((template) => (
               <Box>
                 <Stack
                   key={template.id}

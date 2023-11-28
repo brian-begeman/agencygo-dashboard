@@ -52,7 +52,7 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
 
     try {
       const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template3`,
+        `http://localhost:3000/invoicing/create?templateName=template2`,
         options
       );
       const responseData = await response.json();

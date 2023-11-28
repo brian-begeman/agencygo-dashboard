@@ -103,7 +103,6 @@ const isDarkTheme = theme.palette.mode === 'dark';
             <MenuItem
               value={'Current invoice settings'}
               sx={{ fontWeight: 500, fontSize: '11px' }}
-              onClick={() => setCustomInvoiceModalOpen(true)}
             >
               Current Invoice Setting
             </MenuItem>
@@ -181,6 +180,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
           open={isCustomInvoiceModalOpen}
           setOpen={setCustomInvoiceModalOpen}
           userData={customer}
+          setCreateInvoiceModalOpen={setCreateInvoiceModalOpen}
         />
       )}
     </Box>
