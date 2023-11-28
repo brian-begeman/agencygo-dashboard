@@ -89,9 +89,9 @@ const ChatterSales = () => {
     <Box
       sx={{
         backgroundColor: isDarkTheme ? '#000' : '#fff',
-        borderRadius: '16px',
         padding: '20px',
         gap: '20px',
+        borderRadius:'16px'
       }}
     >
       <Typography

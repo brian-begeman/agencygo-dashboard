@@ -1,20 +1,18 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Switch, styled } from '@mui/material';
-import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
-import { useContext, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
+import { Switch, styled } from '@mui/material';
 import './Addleder.css';
-import { MyInvoiceContext } from '../../context/context';
+
 const style = {
   position: 'absolute',
-  top: '50%',
+  top: '47%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 800,
-  height: 750,
+  height: 730,
   borderRadius: '10px',
   backgroundColor: 'white', // Changed "bgcolor" to "backgroundColor"
   color: 'black',
@@ -23,13 +21,10 @@ const style = {
   scrollBehavior: 'smooth',
 };
 
-const frequencyFilter = ['Daily', 'Weekly', 'Biweekly', 'Monthly', 'Yearly'];
-export default function AddLeder({ open, setOpen, name }: any) {
+export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
-  const { data } = useContext(MyInvoiceContext);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // console.log(data, '====><><><><><><====');
 
   const handlePDF = async () => {
     const options = {
@@ -37,7 +32,7 @@ export default function AddLeder({ open, setOpen, name }: any) {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(invoicedetails),
+      body: JSON.stringify(invoiceDetails),
     };
 
     try {
@@ -48,95 +43,32 @@ export default function AddLeder({ open, setOpen, name }: any) {
       const responseData = await response.json();
 
       console.log(responseData.data);
-
-      window.location.href = responseData.data;
-      // setpdfURl(responseData.data)
+      if (responseData?.data?.pdfUrl) {
+        setOpen(false)
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // useEffect(()=>{
-  //   handlePDF
-
-  const pdfData = {
-    userName: data?.firstName,
-    companyName: '',
-    clientCompanyName: '',
-    companyAddress: '',
-    companyContact: '',
-    contactDetails: '',
-    description: '',
-    qty: 11,
-    unitPrice: 12.11,
-    total: 0,
-    userId: data?._id,
-    employeeId: data?._id,
-    email: data?.email,
-    amount: 0,
-    status: true,
-    address: 'test',
-    invoiceNo: 'INC0001',
-    paymentTerms: 'test',
-    contactName: 'test',
-    nameDept: 'test',
-    addresss: 'test',
-    phone: 'test',
-    invoiceTitle: 'test',
-    paymentInstructions: 'test',
-    subtotal: 0,
-    discount: 0,
-    subtotalLessDiscount: 0,
-    taxRate: 'test',
-    totalTax: 0,
-    shippingHandling: 0,
-    balanceDue: '$25310',
-    date: '2023-11-06',
-    addressShipTo: 'test',
-    phoneShipTo: 'test',
-  };
-  // },[name])
   const truevalue = true;
   const falsevalue = false;
+  const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
+  const [editpdf, setEditpdf] = useState({...initialPdfValue});
 
-  const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
-
-  const [editpdf, setEditpdf] = useState({
-    companyName: false,
-    clientCompanyName: false,
-    companyAddress: false,
-    companyContact: false,
-    contactDetails: false,
-    description: false,
-    qty: false,
-    unitPrice: false,
-  });
   const handleContactClick = (field: any, value: any) => {
-    setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
-    console.log(invoicedetails);
+    console.log(invoiceDetails);
 
-    setInvoiceDeails({
-      ...invoicedetails,
+    setInvoiceDetails({
+      ...invoiceDetails,
       [event.target.name]: event.target.value,
     });
-    // console.log(invoicedetails, '===>>invoice data');
   };
 
-  useEffect(() => {
-    if (!invoicedetails?.unitPrice?.length === null) {
-      setInvoiceDeails({
-        ...invoicedetails,
-        ['total']: invoicedetails?.unitPrice * invoicedetails?.qty,
-      });
-    }
-    const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
-    return () => clearInterval(intervalId);
-  }, [invoicedetails?.unitPrice]);
-
-  // right side end
   return (
     <Modal
       className="boxsize"
@@ -147,28 +79,29 @@ export default function AddLeder({ open, setOpen, name }: any) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography
+        <Box
+          style={{
+            backgroundColor: '#f3f3f3',
+            color: 'black',
+            overflowY: 'auto',
+          }}
+        >
+           <Typography
           style={{
             float: 'right',
-            background: '#c9adad',
-            padding: '2px',
+            background: '#fff',
+            padding: '2px 8px',
             marginBottom: '5px',
+            borderRadius: '100%',
+          margin: '2px'
           }}
           onClick={handleClose}
           sx={{ cursor: 'pointer' }}
         >
           X
         </Typography>
-
-        <div
-          style={{
-            backgroundColor: 'white',
-            color: 'black',
-            overflowY: 'auto',
-          }}
-        >
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-
+          
           <div
             style={{
               display: 'flex',
@@ -203,295 +136,193 @@ export default function AddLeder({ open, setOpen, name }: any) {
               </div>
               <div style={{ lineHeight: '4px', marginLeft: '10px' }}>
                 <h3>
-                  {data?.firstName} {data?.lastName}
+                  {pdfData?.userName}
                 </h3>
                 <h3>Address</h3>
-                <h3>{data?.email}</h3>
+                <h3>{pdfData?.email}</h3>
               </div>
             </div>
 
             <div>
               <h2>INVOICE</h2>
-              <h4>DATE: {currentDate.toLocaleString()}</h4>
+              <h4>DATE: {pdfData?.date}</h4>
               <h4>INVOICE No. {'INC0001'}</h4>
             </div>
           </div>
-
+          <div style={{background: '#ffffff',}}>
           {/* secound box */}
-          <div style={{ padding: '20px' }}>
-            <div
-              style={{
-                color: 'bfbfbf',
-                display: 'flex',
-                justifyContent: 'end',
-              }}
-            >
-              &lt;Payment terms due on receipt, due in X days&gt;
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                color: '#333f4f',
-              }}
-            >
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Bill To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-                <h3
-                  onClick={() => handleContactClick('companyName', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyName ? (
-                    <input
-                      type="text"
-                      name="companyName"
-                      value={invoicedetails?.companyName}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('companyName', falsevalue)
-                      }
-                    />
-                  ) : (
-                    invoicedetails?.companyName || '< Contact Name >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('clientCompanyName', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.clientCompanyName ? (
-                    <input
-                      type="text"
-                      name="clientCompanyName"
-                      value={invoicedetails?.clientCompanyName}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('clientCompanyName', falsevalue)
-                      }
-                    />
-                  ) : (
-                    invoicedetails?.clientCompanyName ||
-                    '<Client Company Name >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyAddress', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyAddress ? (
-                    <input
-                      type="text"
-                      name="companyAddress"
-                      value={invoicedetails?.companyAddress}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyAddress', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.companyAddress || '<Address >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('companyContact', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.companyContact ? (
-                    <input
-                      type="text"
-                      name="companyContact"
-                      value={invoicedetails?.companyContact}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('companyContact', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.companyContact || '<Phone >'
-                  )}
-                </h3>
-                <h3
-                  onClick={() =>
-                    handleContactClick('contactDetails', truevalue)
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf?.contactDetails ? (
-                    <input
-                      type="text"
-                      name="contactDetails"
-                      value={invoicedetails?.contactDetails}
-                      onChange={handleContactChange}
-                      onBlur={() => () =>
-                        handleContactClick('contactDetails', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.contactDetails || '<Email >'
-                  )}
-                </h3>
-              </div>
+            <div style={{ padding: '20px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  color: '#333f4f',
+                }}
+              >
+                <div>
+                  <h2 style={{ color: '#1f3864' }}>Bill To</h2>
+                  <div
+                    style={{ height: '3px', backgroundColor: '#bfbfbf' }}
+                  ></div>
+                  <h3
+                    onClick={() => handleContactClick('companyName', truevalue)}
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
+                  >
+                    {editpdf?.companyName ? (
+                      <input
+                        type="text"
+                        name="companyName"
+                        value={invoiceDetails?.companyName}
+                        onChange={handleContactChange}
+                        onBlur={() =>
+                          handleContactClick('companyName', falsevalue)
+                        }
+                      />
+                    ) : (
+                      invoiceDetails?.companyName || '< Contact Name >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('clientCompanyName', truevalue)
+                    }
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
+                  >
+                    {editpdf?.clientCompanyName ? (
+                      <input
+                        type="text"
+                        name="clientCompanyName"
+                        value={invoiceDetails?.clientCompanyName}
+                        onChange={handleContactChange}
+                        onBlur={() =>
+                          handleContactClick('clientCompanyName', falsevalue)
+                        }
+                      />
+                    ) : (
+                      invoiceDetails?.clientCompanyName ||
+                      '<Client Company Name >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('companyAddress', truevalue)
+                    }
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
+                  >
+                    {editpdf?.companyAddress ? (
+                      <input
+                        type="text"
+                        name="companyAddress"
+                        value={invoiceDetails?.companyAddress}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('companyAddress', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.companyAddress || '<Address >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('companyContact', truevalue)
+                    }
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
+                  >
+                    {editpdf?.companyContact ? (
+                      <input
+                        type="text"
+                        name="companyContact"
+                        value={invoiceDetails?.companyContact}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('companyContact', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.companyContact || '<Phone >'
+                    )}
+                  </h3>
+                  <h3
+                    onClick={() =>
+                      handleContactClick('contactDetails', truevalue)
+                    }
+                    style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
+                  >
+                    {editpdf?.contactDetails ? (
+                      <input
+                        type="text"
+                        name="contactDetails"
+                        value={invoiceDetails?.contactDetails}
+                        onChange={handleContactChange}
+                        onBlur={() => () =>
+                          handleContactClick('contactDetails', falsevalue)}
+                      />
+                    ) : (
+                      invoiceDetails?.contactDetails || '<Email >'
+                    )}
+                  </h3>
+                </div>
 
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Ship To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-                <h3>
-                  &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
-                </h3>
-                <h3>
-                  &lt;
-                  {invoicedetails?.clientCompanyName || 'Client Company Name'}
-                  &gt;
-                </h3>
-                <h3>
-                  {' '}
-                  &lt;{invoicedetails?.companyAddress || ' Address '}&gt;
-                </h3>
-                <h3>&lt;{invoicedetails?.companyContact || ' phone '}&gt;</h3>
-                <h3>&lt;{invoicedetails?.contactDetails || '  Email '}&gt;</h3>
+                <div>
+                  <h2 style={{ color: '#1f3864' }}>Ship To</h2>
+                  <div
+                    style={{ height: '3px', backgroundColor: '#bfbfbf' }}
+                  ></div>
+                  <h3>
+                    &lt;{invoiceDetails?.companyName || '  Name / Dept '}&gt;
+                  </h3>
+                  <h3>
+                    &lt;
+                    {invoiceDetails?.clientCompanyName || 'Client Company Name'}
+                    &gt;
+                  </h3>
+                  <h3>
+                    {' '}
+                    &lt;{invoiceDetails?.companyAddress || ' Address '}&gt;
+                  </h3>
+                  <h3>&lt;{invoiceDetails?.companyContact || ' phone '}&gt;</h3>
+                  <h3>&lt;{invoiceDetails?.contactDetails || '  Email '}&gt;</h3>
+                </div>
               </div>
             </div>
-          </div>
 
           {/* third  */}
 
-          <div style={{ padding: '20px' }}>
-            <table style={{ border: '1' }}>
-              <tr style={{ backgroundColor: 'tomato ' }}>
-                <th style={{ backgroundColor: 'tomato' }}>DESCRIPTION</th>
-                <th style={{ backgroundColor: 'tomato' }}>QTY</th>
-                <th style={{ backgroundColor: 'tomato' }}>UNIT PRICE</th>
-                <th style={{ backgroundColor: 'tomato' }}>TOTAL</th>
-              </tr>
-              <tr>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('description', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {editpdf.description ? (
-                      <input
-                        type="text"
-                        name="description"
-                        value={invoicedetails?.description}
-                        onChange={handleContactChange}
-                        onBlur={() =>
-                          handleContactClick('description', falsevalue)
-                        }
-                      />
-                    ) : (
-                      invoicedetails?.description || 'Item 1'
-                    )}
-                  </p>
-                </td>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('qty', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {editpdf.qty ? (
-                      <input
-                        type="number"
-                        name="qty"
-                        value={invoicedetails?.qty}
-                        onChange={handleContactChange}
-                        onBlur={() => handleContactClick('qty', falsevalue)}
-                      />
-                    ) : (
-                      invoicedetails?.qty || '0'
-                    )}
-                  </p>
-                </td>
-                <td>
-                  <p
-                    onClick={() => handleContactClick('unitPrice', truevalue)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    $
-                    {editpdf.unitPrice ? (
-                      <input
-                        type="number"
-                        name="unitPrice"
-                        value={invoicedetails?.unitPrice}
-                        onChange={handleContactChange}
-                        onBlur={() =>
-                          handleContactClick('unitPrice', falsevalue)
-                        }
-                      />
-                    ) : (
-                      invoicedetails?.unitPrice || '0'
-                    )}
-                  </p>
-                </td>
-                <td>${invoicedetails?.qty * invoicedetails?.unitPrice}</td>
-              </tr>
-              <tr style={{ backgroundColor: 'f3f3f3' }}>
-                <td>Item 2</td>
-                <td>0</td>
-                <td>$0.00</td>
-                <td>$0.00</td>
-              </tr>
-              <tr>
-                <td>Item 3</td>
-                <td>2</td>
-                <td>$0.00</td>
-                <td>$0.00</td>
-              </tr>
-            </table>
-          </div>
-
-          {/* fourth */}
-
-          <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              padding: ' 20px ',
-              color: '#333f4f',
-            }}
-          >
             <div
               style={{
-                width: '60%',
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'end',
+                width: '100%',
+                padding: ' 20px ',
+                color: '#333f4f',
               }}
             >
-              Remarks / Payment Instructions
-            </div>
-            <div style={{ width: '40%', display: 'flex' }}>
-              <div>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                {/* <h2>$ Balance due</h2> */}
-              </div>
-
-              <div>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h2 style={{ backgroundColor: 'pink', height: '50px' }}>
-                  ${invoicedetails?.qty * invoicedetails?.unitPrice}
-                </h2>
-              </div>
-              <div style={{ height: '4px', backgroundColor: 'black' }}></div>
+              <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
+                ${pdfData.amount}
+              </h2>
             </div>
           </div>
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-        </div>
-        <Button onClick={handlePDF}>Create</Button>
+        </Box>
+        
+        <div style={{
+            float: 'right',
+           padding:'10px 10px'
+          }}
+          >
+            {!viewOnly && 
+            <Button variant="contained" sx={{ color: '#fff', textTransform: 'capitalize', marginRight: '4px'  }} 
+            onClick={handlePDF}>
+              Create Invoice
+            </Button>}
+
+            
+            <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
+            onClick={()=> {setInvoiceDetails(pdfData); setEditpdf(initialPdfValue);setOpen(false)}}
+            >
+              Close
+            </Button>
+          </div>
       </Box>
     </Modal>
   );

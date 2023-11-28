@@ -6,6 +6,7 @@ import styles from './styles.module.css';
 import { useContext, useEffect, useState } from 'react';
 
 import { MyInvoiceContext } from 'renderer/pages/Accounting/Invoicing/context/context';
+import { agencyCreatorSplit, randomNumber } from 'renderer/pages/Accounting/Invoicing';
 
 interface $Props {
   name: string;
@@ -13,10 +14,8 @@ interface $Props {
   notificationCount?: number;
   data: any;
   id: string;
-
   messageCount?: number;
   selected: boolean;
-  onClick: () => void;
   autoRelink: boolean;
 }
 export default function UserCardWImage({
@@ -25,11 +24,9 @@ export default function UserCardWImage({
   profileImage,
   data,
   id,
-
   notificationCount,
   messageCount,
   selected,
-  onClick,
 }: $Props) {
   // const [selected, setSelected] = useState(false);
   const cardClass = selected
@@ -43,6 +40,7 @@ export default function UserCardWImage({
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+ 
   return (
     <Box
       // spacing={1}
@@ -50,7 +48,14 @@ export default function UserCardWImage({
       justifyContent={'space-between'}
       alignItems={'center'}
       className={cardClass}
-      onClick={onClick}
+      onClick={() => {
+        setData({
+          ...data, 
+          currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
+          agencyPer: data?.agencyPer?? agencyCreatorSplit()
+        });
+        console.log("Selected creator:", data)
+      }}
     >
       {profileImage !== '' ? (
         <img
@@ -68,14 +73,8 @@ export default function UserCardWImage({
         width={'100%'}
       >
         <Typography
-          onClick={() => {
-            console.log('set===== data', data);
-
-            setData(data);
-          }}
           variant="h3"
-          color="#fff"
-          fontSize={'14px'}
+          fontSize={'18px'}
           sx={{ cursor: 'pointer' }}
           fontWeight={500}
         >

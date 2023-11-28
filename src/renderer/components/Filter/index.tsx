@@ -412,7 +412,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
           padding: '20px',
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+        
         }}
       >
         <CandleSvg />
@@ -420,7 +420,7 @@ function Filter({ handleSearch, refetch }: $FilterProps) {
       </Box>
 
       <Box>
-        <Typography> Applied Filters</Typography>
+        <Typography marginLeft={'20px'}> Applied Filters</Typography>
         <Box
           sx={{
             borderBottom: `1px solid ${theme.palette.primary.contrastText}`,

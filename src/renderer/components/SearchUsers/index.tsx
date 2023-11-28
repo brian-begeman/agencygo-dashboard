@@ -1,60 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchInput from 'renderer/components/SearchInput';
-import managers from 'renderer/utils/managerSuiteConstant';
 import UserCardWImage from 'renderer/components/UserCardWImage';
 import styles from './styles.module.css';
 import { useTheme } from '@mui/material';
-import useQuery from 'renderer/hooks/useQuery';
 
 import ProfilePic from 'renderer/assets/png/profile.jpg';
+import { MyInvoiceContext } from 'renderer/pages/Accounting/Invoicing/context/context';
+import { agencyCreatorSplit, randomNumber } from 'renderer/pages/Accounting/Invoicing';
 
-export default function SearchUsers() {
+interface Props {
+  allUsers: [];
+  getUsers: ()=>{}
+}
+
+export default function SearchUsers({allUsers, getUsers}: Props) {
   const [search, setSearch] = useState('');
-  const { isLoading, data } = useQuery({ key: 'get-creator' });
-  const [selectedCreator, setSelectedCreator] = useState('');
-  const [allUsers, setAllUsers] = useState<any>([]);
-
-  const onSearch = (value: string) => {
-    setSearch(value);
-
-    if (value === '') {
-      // If the search value is empty, show all users
-      setAllUsers(allUsers);
-    } else {
-      // Filter the users based on the search input
-      const filteredUsers = allUsers.filter((item: any) => {
-        return item.firstName.toLowerCase().includes(value.toLowerCase());
-      });
-      setAllUsers(filteredUsers);
-    }
-  };
-
+  const [filteredUsers, setFilteredUsers] = useState<any>([]);
+  const {data, setData } = useContext<any>(MyInvoiceContext);
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-  const handleCreatorSelection = (creator: any) => {
-    setSelectedCreator(creator);
-  };
+  useEffect(()=>{
+    setFilteredUsers(allUsers??[])
+    const length = allUsers.length;
+    if (length > 0) {
+      // Automatically set the first user in the list as the default selected user
+      setData({
+        ...(allUsers[length-length] as {}), 
+        currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
+        agencyPer: data?.agencyPer?? agencyCreatorSplit()});
+    }
+  }, [allUsers])
 
-  const getUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/users');
-      if (response.ok) {
-        const data = await response.json();
-        setAllUsers(data?.data);
-        console.log(data, 'get user Data');
-      } else {
-        console.error('Failed to fetch users');
-      }
-    } catch (error) {
-      console.error(error);
+  const onSearch = (value: string) => {
+    setSearch(value);
+    if (value === '') {
+      // If the search value is empty, show all users
+      setFilteredUsers(allUsers??[]);
+    } else {
+      // Filter the users based on the search input
+      const usersFromSearch = allUsers.filter((item: any) => {
+        return item.firstName.toLowerCase().includes(value.toLowerCase());
+      });
+      setFilteredUsers(usersFromSearch);
     }
   };
 
-  useEffect(() => {
-    // Fetch all users when the component mounts
-    getUsers();
-  }, []);
+
   return (
     <aside
       className={styles.aside}
@@ -72,7 +64,8 @@ export default function SearchUsers() {
           <SearchInput.ReloadButton onRefresh={getUsers} />
         </SearchInput>
       </div>
-      {allUsers.map((item: any, index: any) => (
+      {filteredUsers.map((item: any, index: any) => (
+      <div style={{ background: item?._id === data?._id ? '#04A1FF' : '' }} key={item?._id} >
         <UserCardWImage
           data={item}
           id={item._id}
@@ -82,9 +75,9 @@ export default function SearchUsers() {
           key={item?._id} // Use a unique key, such as _id
           profileImage={''}
           selected={false}
-          onClick={() => {}}
           autoRelink={false}
-        />
+          />
+          </div>
       ))}
     </aside>
   );
