@@ -56,6 +56,8 @@ export default function ManageEmployees() {
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
   const [subGroups, setSubGroups] = useState([]);
+  const [selectedValues, setSelectedValues] = useState<any>([]);
+
   const {
     agencies,
     refetch,
@@ -119,7 +121,17 @@ export default function ManageEmployees() {
       { title: 'Delete', function: handleDelete },
       { title: 'Reset Password', function: resetPassword },
     ];
-    return tabData;
+
+    const tabOnDeactive = [
+      {
+        title: 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+    ];
+    return status === 'active' || status === 'inactive'
+      ? tabData
+      : tabOnDeactive;
   };
 
   const handleDeactivate = (id: any, status: any) => {
@@ -134,6 +146,7 @@ export default function ManageEmployees() {
   };
 
   const handleActivate = (id: any, status: any) => {
+    console.log(id, status, 'asdfasfsadfs5555555555555555');
     mutateActivate(
       { id, status },
       {
@@ -442,6 +455,8 @@ export default function ManageEmployees() {
                     commission,
                     id,
                     agencyId,
+                    payInterval,
+                    shiftSchedular,
                     assignedCreatorsForDropdown,
                   }) => {
                     return (
@@ -487,6 +502,7 @@ export default function ManageEmployees() {
                               setOpenAssignCreatorModal(
                                 !openAssignCreatorModal
                               );
+                              setSelectedValues(assignedCreatorsForDropdown);
                             }
                           }}
                         >
@@ -533,7 +549,7 @@ export default function ManageEmployees() {
                               gap={'10px'}
                               alignItems={'center'}
                             >
-                              <Typography>Inactive</Typography>
+                              <Typography color="yellow">Inactive</Typography>
                               <Typography
                                 color={'#04A1FF'}
                                 sx={{ cursor: 'pointer' }}
@@ -554,8 +570,7 @@ export default function ManageEmployees() {
                             direction="row"
                             alignItems="center"
                           >
-                            {activated === 'active' ||
-                            activated === 'deactivate' ? (
+                            {activated === 'active' ? (
                               <>
                                 <ButtonBase
                                   onClick={() => {
@@ -567,6 +582,8 @@ export default function ManageEmployees() {
                                       agencyId,
                                       payRate,
                                       commission,
+                                      payInterval,
+                                      shiftSchedular,
                                       assignedCreatorsForDropdown,
                                     });
                                     setFormType('edit');
@@ -590,7 +607,7 @@ export default function ManageEmployees() {
                               </>
                             ) : (
                               <>
-                                <ButtonBase
+                                {/* <ButtonBase
                                   onClick={() => handleDelete(id, activated)}
                                 >
                                   <Typography
@@ -599,12 +616,20 @@ export default function ManageEmployees() {
                                       activated === 'deactivate'
                                         ? 'gray'
                                         : isDarkTheme
-                                        ? '#fff'
+                                        ? 'red'
                                         : '#000'
                                     }
                                   >
                                     Delete
                                   </Typography>
+                                </ButtonBase> */}
+                                <ButtonBase>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
                                 </ButtonBase>
                               </>
                             )}
@@ -630,6 +655,8 @@ export default function ManageEmployees() {
               open={openAssignCreatorModal}
               setOpen={setOpenAssignCreatorModal}
               refetch={refetch}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
               id={id}
             />
           )}

@@ -21,7 +21,7 @@ const useFormCreator = (
   >([]);
   const { userData } = useContext(AuthContext);
   const [selectedValues, setSelectedValues] = useState<any>([]);
-  const [creatorImage, setCreatorImage] = useState('');
+  const [creatorImage, setCreatorImage] = useState<any>('');
   const [creatorStatus,setCreatorStatus] = useState<any>(true)
   const { data: dataEmployeeRaw } = useQuery({
     key: 'get-employee',
@@ -47,8 +47,8 @@ const useFormCreator = (
     assignEmployee: Yup.array(),
     internalNotes: Yup.string(),
     autoRelink: Yup.boolean(),
-    agencyComission: Yup.number(),
-    creatorComission: Yup.number(),
+    agencyComission: Yup.number().min(0).max(100),
+    creatorComission: Yup.number().min(0).max(100),
     // isAgencyProxy:Yup.boolean(), 
   });
 
@@ -56,7 +56,6 @@ const useFormCreator = (
     useForm({
       resolver: yupResolver(validationSchema),
     });
-
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
@@ -67,9 +66,9 @@ const useFormCreator = (
         password: data?.password,
       };
       data.ofcreds=ofCredsObj
-      
       const formdata = new FormData();
-    formdata.append('creatorImage', data.creatorImage);
+      {data.creatorImage &&
+    formdata.append('creatorImage', data.creatorImage)}
     formdata.append('creatorName', data.creatorName);
     formdata.append('autoRelink',  data.autoRelink);
     formdata.append('gender', data.gender);
@@ -91,10 +90,10 @@ const useFormCreator = (
       fetchReq(endpoint, options)
         .then((response) => response.json())
         .then((res) => {
-          if ((res.message = 'creator added successfully')) {
+          if (res.message == 'creator added successfully') {
             callback();
             setSelectedValues([]);
-            setCreatorImage("")
+            setCreatorImage('')
             reset();
           }
         })
@@ -110,7 +109,7 @@ const useFormCreator = (
       };
       data.ofcreds=ofCredsObj
       const formdata = new FormData();
-      formdata.append('creatorImage', data.creatorImage);
+      formdata.append('creatorImage', data.creatorImage)
       formdata.append('creatorName', data.creatorName);
       formdata.append('autoRelink',  data.autoRelink);
       formdata.append('gender', data.gender);
@@ -121,7 +120,6 @@ const useFormCreator = (
       formdata.append('creatorComission',data.creatorComission);
       formdata.append('agencyId',userData?.agency?._id);  
       formdata.append('assignEmployee',JSON.stringify(data.assignEmployee));
-
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {
         method: 'PATCH' as 'PATCH',
@@ -137,7 +135,7 @@ const useFormCreator = (
           if (res.message == 'creator updated successfully') {
             callback();
             setSelectedValues([]);
-            setCreatorImage("")
+            setCreatorImage(null)
             reset();
           }
         })
@@ -167,7 +165,8 @@ const useFormCreator = (
       setValue('autoRelink', selectedCreator?.autoRelink);
       // setValue('isAgencyProxy', selectedCreator?.proxy);
       setValue('creatorImage',selectedCreator?.creatorImage);
-      // setValue('agencyComission', selectedCreator?.agencyComission);
+      setValue('agencyComission', selectedCreator?.agencyComission);
+      setValue('creatorComission',selectedCreator?.creatorComission);
       setSelectedValues(selectedCreator?.assignEmployee?.map((val) => val._id));
       setCreatorImage(selectedCreator?.creatorImage)
       setCreatorStatus(selectedCreator?.status)
@@ -180,6 +179,8 @@ const useFormCreator = (
 
   useEffect(() => {
     if (dataEmployeeRaw?.data) {
+      console.log(dataEmployeeRaw,"dataEmployeeRaw99999999999");
+      
       const employeeRes = dataEmployeeRaw?.data?.employees.map((item: any) => {
         return {
           label: item?.name,

@@ -39,6 +39,8 @@ export interface ICreatorList {
   status: boolean;
   ofcreds: IOfManagerCred;
   proxy: ICreatorProxy;
+  creatorComission:number,
+  agencyComission:number,
 }
 
 export interface IOfCredsProps {

@@ -1,6 +1,11 @@
 import React from 'react';
 
-function AvatarSvg({ width, height }) {
+interface AvatarProps {
+  width?: string;
+  height?: string;
+}
+
+function AvatarSvg({ width, height }: AvatarProps) {
   return (
     <svg
       width={width || '32'}

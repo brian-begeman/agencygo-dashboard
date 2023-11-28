@@ -38,13 +38,16 @@ import { AuthContext } from 'renderer/contexts/AuthContext';
 
 interface $ByManageEmployeeCreatorProps {
   label?: string;
+  setSelectedValues?: (e: any) => void;
+  selectedValues?: string;
 }
 
 function FilterByManageEmployeeCreator({
   label = 'By Creator',
+  setSelectedValues,
+  selectedValues,
 }: $ByManageEmployeeCreatorProps) {
   const [collapse, setCollapse] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([]);
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -338,7 +341,7 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
 
   const [status, setStatus] = useState('');
   const [linkStatus, setLinkStatus] = useState('');
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState('');
 
   const { isLoading, data } = useQuery({ key: 'get-creator' });
   const [employeeId, setEmployeeId] = React.useState<any>({});
@@ -403,7 +406,12 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
       }
       if (status != '') {
         Object.assign(data, {
-          status: status == 'inactive' ? 'inactive' : 'active',
+          status:
+            status == 'Inactive'
+              ? 'inactive'
+              : status == 'Deactivated'
+              ? 'deactivate'
+              : 'active',
         });
       }
       if (employeeSearch != '') {
@@ -540,7 +548,10 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
               selectedValues={selectedValues}
               setSelectedValues={setSelectedValues}
             /> */}
-            <FilterByManageEmployeeCreator />
+            <FilterByManageEmployeeCreator
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
+            />
           </>
         )}
         <Divider
@@ -558,7 +569,7 @@ function Filter({ handleSearch, refetch, setCurrnetPage }: $FilterProps) {
           options={
             location.pathname === '/creators'
               ? ['Activated', 'Deactivated']
-              : ['active', 'inactive']
+              : ['Activated', 'Inactive', 'Deactivated']
           }
         />
         <Divider

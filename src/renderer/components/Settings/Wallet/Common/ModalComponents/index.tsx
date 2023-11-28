@@ -31,7 +31,7 @@ interface InputWithLabelProps {
   inputIdentifierName: string;
   placeholder: string;
   value?: string;
-  
+
   errors?: any;
   required?: boolean;
   inputStyle?: any;
@@ -346,7 +346,7 @@ any) {
           onChange={handleOnChange}
         >
           {options?.map((val: any) => {
-            return <MenuItem  value={val?.value}>{val?.label}</MenuItem>;
+            return <MenuItem value={val?.value}>{val?.label}</MenuItem>;
           })}
         </Select>
       </FormControl>

@@ -257,6 +257,8 @@ export default function ManageCreators() {
                   autoRelink,
                   creatorImage,
                   ofcreds,
+                  creatorComission,
+                  agencyComission,
                   proxy,
                 }) => (
                   <>
@@ -271,7 +273,7 @@ export default function ManageCreators() {
                               style={{ borderRadius: '50%' }}
                             />
                           ) : (
-                            <Avatar />
+                            <Avatar width={'30px'} height={'30px'} />
                           )}
 
                           <Typography variant="h6" fontSize="18px">
@@ -355,6 +357,8 @@ export default function ManageCreators() {
                       <TableCell align="right">
                         <Stack spacing={2} direction="row" alignItems="center">
                           <ButtonBase
+                            disabled={!status}
+                            style={{ color: status ? 'white' : 'gray' }}
                             onClick={() => {
                               setFormType('edit');
                               setSelectedCreator({
@@ -366,6 +370,8 @@ export default function ManageCreators() {
                                 activated,
                                 assignEmployee,
                                 creatorImage,
+                                creatorComission,
+                                agencyComission,
                                 status,
                                 ofcreds,
                                 proxy,

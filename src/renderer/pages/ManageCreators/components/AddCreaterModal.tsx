@@ -140,6 +140,7 @@ export default function AddCreaterModal({
 
   const handleModalClose = () => {
     setSelectedValues([]);
+    setCreatorImage('');
     setOpen(false);
   };
 
@@ -148,14 +149,15 @@ export default function AddCreaterModal({
   //   if (file) {
   //     console.log('file ******', URL.createObjectURL(file));
   //   }
+
   // };
 
   useEffect(() => {
-    if (type === 'add') {
+    if (type == 'add') {
       setValue('agencyComission', 10);
       setValue('creatorComission', 10);
     }
-  });
+  }, [type]);
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -290,8 +292,8 @@ export default function AddCreaterModal({
                   }}
                   label=""
                   type="number"
-                  // min=1
-                  // value="10"
+                  max={10}
+                  min={1}
                   inputIdentifierName="agencyComission"
                   placeholder="Agency %"
                   register={register as any}
@@ -303,8 +305,8 @@ export default function AddCreaterModal({
                   }}
                   label=" "
                   type="number"
-                  // max= 10
-                  // min= 1
+                  max={10}
+                  min={1}
                   inputIdentifierName="creatorComission"
                   placeholder="Creator %"
                   register={register as any}
@@ -417,6 +419,7 @@ export default function AddCreaterModal({
           </FormGroup>
         </form>
       </Box>
+
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}
