@@ -44,9 +44,9 @@ export default function UserCardWImage({
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-  const selctfunction = (data: any) => {
-    selectName(data);
-  };
+  // const selctfunction = (data: any) => {
+  //   selectName(data);
+  // };
   return (
     <Box
       // spacing={1}
@@ -55,9 +55,9 @@ export default function UserCardWImage({
       alignItems={'center'}
       className={cardClass}
       onClick={() => {
-        onClick;
-        selctfunction(data?.firstName);
-        setData(data);
+        onClick();
+        // selctfunction(data?.firstName);
+        // setData(data);
       }}
     >
       {profileImage !== '' ? (
@@ -77,7 +77,7 @@ export default function UserCardWImage({
       >
         <Typography
           onClick={() => {
-            setData(data);
+            onClick();
           }}
           variant="h3"
           fontSize={'18px'}
