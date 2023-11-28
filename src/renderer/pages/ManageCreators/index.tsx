@@ -357,6 +357,8 @@ export default function ManageCreators() {
                       <TableCell align="right">
                         <Stack spacing={2} direction="row" alignItems="center">
                           <ButtonBase
+                            disabled={!status}
+                            style={{ color: status ? 'white' : 'gray' }}
                             onClick={() => {
                               setFormType('edit');
                               setSelectedCreator({
