@@ -121,7 +121,17 @@ export default function ManageEmployees() {
       { title: 'Delete', function: handleDelete },
       { title: 'Reset Password', function: resetPassword },
     ];
-    return tabData;
+
+    const tabOnDeactive = [
+      {
+        title: 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+    ];
+    return status === 'active' || status === 'inactive'
+      ? tabData
+      : tabOnDeactive;
   };
 
   const handleDeactivate = (id: any, status: any) => {
@@ -136,6 +146,7 @@ export default function ManageEmployees() {
   };
 
   const handleActivate = (id: any, status: any) => {
+    console.log(id, status, 'asdfasfsadfs5555555555555555');
     mutateActivate(
       { id, status },
       {
@@ -596,7 +607,7 @@ export default function ManageEmployees() {
                               </>
                             ) : (
                               <>
-                                <ButtonBase
+                                {/* <ButtonBase
                                   onClick={() => handleDelete(id, activated)}
                                 >
                                   <Typography
@@ -611,6 +622,14 @@ export default function ManageEmployees() {
                                   >
                                     Delete
                                   </Typography>
+                                </ButtonBase> */}
+                                <ButtonBase>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
                                 </ButtonBase>
                               </>
                             )}
