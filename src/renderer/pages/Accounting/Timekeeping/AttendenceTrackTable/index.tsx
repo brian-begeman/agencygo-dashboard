@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@emotion/react';
 import {
   Box,
@@ -13,17 +13,45 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import moment from 'moment';
 import CreateIcon from '@mui/icons-material/Create';
 
-const AttendenceTrackTable = () => {
+import { getAllTimeSheets } from 'services/attendance';
+import { $trackprops, AttendanceTrackData } from '../Types/index.types';
+
+const AttendenceTrackTable = ({ refresh }: $trackprops) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+
+  const [attedndanceTrackData, setAttendanceTrackData] = useState([]);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+  };
+
+  const getData = async () => {
+    try {
+      const response = await getAllTimeSheets();
+      if (response.ack === 1) {
+        setAttendanceTrackData(response.data);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getData();
+  }, [refresh]);
 
   return (
     <Box>
       <div className="attendance-container">
         <div className="attendence-tbl-head">
-          <div className="attendance-header mb-0">Attendence Check</div>
+          <div className="attendance-header mb-0">Todays Timesheet</div>
           <div>
             <FormControl
               sx={{
@@ -64,37 +92,51 @@ const AttendenceTrackTable = () => {
             <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>Time Sheet Notes</TableCell>
                 <TableCell>Total Hours</TableCell>
                 <TableCell>Break Hours</TableCell>
                 <TableCell>Edit Log</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell sx={{ color: '#FFFFFF' }}>20/04/2023</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>
-                  This is a dummy timesheet name
-                </TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>06:59:04 Hrs</TableCell>
-                <TableCell sx={{ color: '#FFFFFF' }}>06:59:04 Hrs</TableCell>
+              {attedndanceTrackData &&
+                attedndanceTrackData?.map((e: AttendanceTrackData, i) => {
+                  return (
+                    <TableRow
+                      sx={{
+                        '& td, & th': {
+                          borderTop: 0,
+                          borderRight: 0,
+                          borderLeft: 0,
+                          borderColor: '#333',
+                        },
+                      }}
+                    >
+                      <TableCell sx={{ color: '#FFFFFF' }}>
+                        {moment(e.startDateTime).format('DD/MM/YYYY')}
+                      </TableCell>
 
-                <TableCell sx={{ color: '#04A1FF' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                    }}
-                  >
-                    <Box sx={{ cursor: 'pointer', color: '#04A1FF' }}>
-                      <CreateIcon style={{ color: '#04A1FF' }} />
-                    </Box>
-                  </Box>
-                </TableCell>
-              </TableRow>
+                      <TableCell sx={{ color: '#FFFFFF' }}>
+                        {formatTime(e.totalHours)}Hrs
+                      </TableCell>
+                      <TableCell sx={{ color: '#FFFFFF' }}>
+                        {formatTime(e.breakHours)}Hrs
+                      </TableCell>
+                      <TableCell sx={{ color: '#04A1FF' }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                          }}
+                        >
+                          <Box sx={{ cursor: 'pointer', color: '#04A1FF' }}>
+                            <CreateIcon style={{ color: '#04A1FF' }} />
+                          </Box>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

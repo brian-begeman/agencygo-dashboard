@@ -1,95 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css'; // Make sure you have an Attendance.css file
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { createAttendance, updateAttendance } from 'services/attendance';
-import { AuthContext } from 'renderer/contexts/AuthContext';
 import moment from 'moment';
 
-// ProgressBar Component
-const ProgressBar = ({ timeline, shiftDuration }) => {
-  let progressedWidth = 0;
-  return (
-    <>
-      <div style={{ width: '100%' }}>
-        {timeline.map((t) => {
-          if (t.endTime != null) {
-            const widthDiff = t.endTime - t.startTime;
-            const width = (widthDiff / 1000 / shiftDuration) * 100;
-
-            progressedWidth += width;
-            return (
-              <div
-                style={{
-                  width: `${width}%`,
-                  borderTop: 'dashed',
-                  float: 'left',
-                  borderColor: t.type == 'break' ? 'red' : 'green',
-                }}
-              ></div>
-            );
-          } else {
-            const widthDiff: number = new Date().valueOf() - t.startTime;
-            const width = (widthDiff / 1000 / shiftDuration) * 100;
-            progressedWidth += width;
-            return (
-              <div
-                style={{
-                  width: `${width}%`,
-                  borderTop: 'dashed',
-                  float: 'left',
-                  borderColor: t.type == 'break' ? 'red' : 'green',
-                }}
-              ></div>
-            );
-          }
-        })}
-      </div>
-
-      <div
-        style={{
-          width: `${100 - progressedWidth}%`,
-          borderTop: 'dashed',
-          float: 'left',
-          borderColor: 'gray',
-        }}
-      ></div>
-    </>
-  );
-};
+import { createAttendance, updateAttendance } from 'services/attendance';
+import { $props, CreateData, TimeLine } from '../Types/index.types';
+import ProgressBar from '../Timebar';
 
 // Attendance Component
-const Attendance = ({ attendanceHandler }) => {
-  interface TimeLine {
-    startTime: Date;
-    type: 'working' | 'break';
-    endTime: Date | null;
-  }
+const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const [isClockedIn, setClockedIn] = useState(false);
   const [isOnBreak, setOnBreak] = useState(false);
   const [timerActive, setTimerActive] = useState(false);
-
   const [time, setTime] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  const [notesArray, setNotesArray] = useState<String[]>([]);
-  const [breaksArray, setBreaksArray] = useState([]);
-  const [createData, setCreateData] = useState({
-    startDateTime: '',
-    endDateTime: '',
+  const [notesArray, setNotesArray] = useState<string[]>([]);
+  const [breaksArray, setBreaksArray] = useState<number[]>([]);
+  const [createData, setCreateData] = useState<CreateData>({
+    startDateTime: moment(),
+    endDateTime: moment(),
     notes: '',
     attendanceData: {},
   });
   const [breakTimerActive, setBreakTimerActive] = useState(false);
-  const [breakTime, setBreakTime] = useState(0);
-  const [breakProgress, setBreakProgress] = useState(0);
+  const [breakTime, setBreakTime] = useState<number>(0);
   const [timeline, setTimeline] = useState<TimeLine[]>([]);
 
-  const shiftStart = 10 * 60 * 60; // 10am in seconds
-  const shiftEnd = 19 * 60 * 60; // 7pm in seconds
-  const shiftDuration = shiftEnd - shiftStart;
-  const totalSegments = 21;
-  const segmentTime = shiftDuration / totalSegments;
   const nowTime = `${moment().format('YYYY-MM-DD HH:mm:ss')}`;
 
   // State Functions
@@ -98,12 +34,11 @@ const Attendance = ({ attendanceHandler }) => {
       return { ...prevState, [key]: value };
     });
   };
-
   const saveNotes = () => {
     const newNotes = [...notesArray, createData.notes];
     setNotesArray(newNotes);
     setStateFn(setCreateData, 'notes', '');
-    updateAttendanceData(true, newNotes);
+    updateAttendanceData({ isNote: true, notes: newNotes });
   };
   const saveBreaks = () => {
     if (breaksArray.length === 0) {
@@ -123,14 +58,13 @@ const Attendance = ({ attendanceHandler }) => {
     if (timerActive) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-        setProgress((prevTime) => prevTime + 1);
       }, 1000);
       setStateFn(setCreateData, 'endDateTime', nowTime);
     } else {
       clearInterval(interval);
     }
     if (time === shiftDuration) {
-      updateAttendanceData();
+      updateAttendanceData({});
       clearInterval(interval);
     }
     return () => clearInterval(interval);
@@ -138,7 +72,7 @@ const Attendance = ({ attendanceHandler }) => {
 
   // Break timer
   useEffect(() => {
-    let interval = null;
+    let interval: null | any = null;
     if (breakTimerActive) {
       interval = setInterval(() => {
         setBreakTime((prevTime) => prevTime + 1);
@@ -167,16 +101,26 @@ const Attendance = ({ attendanceHandler }) => {
     setClockedIn(false);
     setTimerActive(false);
     saveBreaks();
-    updateAttendanceData();
+    timeline[timeline.length - 1].endTime = new Date();
+    // timeline[timeline.length - 1] = {
+    //   ...timeline[timeline.length - 1],
+    //   endTime: new Date(),
+    // };
+    setTimeline([...timeline]);
+    updateAttendanceData({ timeline });
+
+    toggleRefresh();
   };
   const startBreak = () => {
     setOnBreak(true);
     setTimerActive(false);
     setBreakTimerActive(true);
-    timeline[timeline.length - 1] = {
-      ...timeline[timeline.length - 1],
-      endTime: new Date(),
-    };
+    timeline[timeline.length - 1].endTime = new Date();
+
+    // timeline[timeline.length - 1] = {
+    //   ...timeline[timeline.length - 1],
+    //   endTime: new Date(),
+    // };
     let newTimeLine: TimeLine = {
       startTime: new Date(),
       type: 'break',
@@ -189,11 +133,11 @@ const Attendance = ({ attendanceHandler }) => {
     setTimerActive(true);
     setBreakTimerActive(false);
     saveBreaks();
-    updateAttendanceData();
-    timeline[timeline.length - 1] = {
-      ...timeline[timeline.length - 1],
-      endTime: new Date(),
-    };
+    timeline[timeline.length - 1].endTime = new Date();
+    // timeline[timeline.length - 1] = {
+    //   ...timeline[timeline.length - 1],
+    //   endTime: new Date(),
+    // };
     setTimeline([
       ...timeline,
       {
@@ -202,6 +146,7 @@ const Attendance = ({ attendanceHandler }) => {
         endTime: null,
       },
     ]);
+    updateAttendanceData({ timeline });
   };
 
   // Convert seconds into hours, minutes, and seconds
@@ -217,55 +162,52 @@ const Attendance = ({ attendanceHandler }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-  // Api Calls
-  const { userData } = useContext(AuthContext);
-
   const createAttendanceData = async () => {
     const payload = {
-      employeeId: userData?._id ?? '654de7f6af3ec91f3cbd0000',
       startDateTime: createData.startDateTime,
       breakTime: breaksArray,
       notes: notesArray,
       totalHours: time,
       breakHours: breakTime,
+      timeLine: timeline,
     };
     try {
       const response = await createAttendance(payload);
       if (response.ack === 1) {
         setStateFn(setCreateData, 'attendanceData', response.data.data);
-        attendanceHandler(response.data.data);
       }
-    } catch (error) {
-      console.log('Error', error);
-    }
+    } catch (error) {}
   };
-  const updateAttendanceData = async (isNote = false, notes: String[] = []) => {
+  const updateAttendanceData = async ({
+    isNote = false,
+    notes = [],
+    timeline,
+  }: {
+    isNote?: boolean;
+    notes?: string[];
+    timeline?: TimeLine[];
+  }) => {
     const payload = {
-      employeeId: userData?._id ?? '654de7f6af3ec91f3cbd0000',
       startDateTime: moment(createData.startDateTime).format(
         'YYYY-MM-DD HH:mm:ss'
       ),
       endDateTime: moment(createData.endDateTime).isValid()
         ? moment(createData.endDateTime).format('YYYY-MM-DD HH:mm:ss')
         : null,
-      breakTime: timeline
-        .filter((e) => e.type === 'break')
-        .map((e) => ({ startTime: e.startTime, endTime: e.endTime })),
+      ...(timeline &&
+        timeline.length > 0 && {
+          breakTime: timeline
+            .filter((e) => e.type === 'break')
+            .map((e) => ({ startTime: e.startTime, endTime: e.endTime })),
+        }),
       notes: isNote ? notes : notesArray,
       totalHours: time,
       breakHours: breakTime,
+      timeLine: timeline,
     };
     try {
-      const response = await updateAttendance(
-        payload,
-        createData.attendanceData._id
-      );
-      if (response.ack === 1) {
-        attendanceHandler(response.data);
-      }
-    } catch (error) {
-      console.log('Error', error);
-    }
+      await updateAttendance(payload, createData.attendanceData._id);
+    } catch (error) {}
   };
 
   return (
@@ -340,10 +282,7 @@ const Attendance = ({ attendanceHandler }) => {
             value={createData.notes}
             onChange={(e) => setStateFn(setCreateData, 'notes', e.target.value)}
           />
-          <button
-            className="add-note"
-            onClick={() => saveNotes(createData.notes)}
-          >
+          <button className="add-note" onClick={saveNotes}>
             Add note
           </button>
         </div>

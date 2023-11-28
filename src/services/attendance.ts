@@ -36,15 +36,45 @@ async function updateAttendance(payload: any, attId: String) {
 }
 
 // Get Emp Attendance
-async function getEmpAttendance(empID: any) {
-  const endPoint = 'attendence/getAttandanceByEmpId/' + empID;
-  const options = {
-    method: 'GET',
-    withAuth: true,
-  };
-  let responce = await fetchReq(endPoint, options);
-  let resp = await responce.json();
-  return resp;
+async function getEmpAttendance(startDate, endDate) {
+  try {
+    let endPoint = ``;
+    if (startDate !== null && endDate !== null) {
+      endPoint = `attendence/getAttendanceByEmpId/${startDate}/${endDate}`;
+    } else {
+      endPoint = `attendence/getAttendanceByEmpId`;
+    }
+    const options = {
+      method: 'GET' as 'GET',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
 }
 
-export { createAttendance, updateAttendance, getEmpAttendance };
+// Get All Attendance
+async function getAllTimeSheets() {
+  try {
+    let endPoint = `attendence/getTodaysTimsheets`;
+    const options = {
+      method: 'GET' as 'GET',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
+export {
+  createAttendance,
+  updateAttendance,
+  getEmpAttendance,
+  getAllTimeSheets,
+};

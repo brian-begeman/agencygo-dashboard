@@ -50,11 +50,13 @@
 
 .add-notes input {
   margin-right: 10px;
-  width: 150px;
+  width: 160px;
   height: 35px;
   border-radius: 5px;
   background-color: #000;
   color: #fff;
+  border: 1px grey solid;
+  padding-left: 7px;
 }
 .clock-out {
   background-color: #f44336; /* Red */
@@ -210,18 +212,28 @@
 
 .left-date-picker .MuiInput-root input {
   background-color: #000;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0px;
-  width: 85px;
+  width: 95px;
+  margin-right: -10px;
 }
 
-.left-date-picker .MuiInput-root .MuiInputAdornment-root {
+.left-date-picker svg {
   display: none;
+}
+.left-date-picker .MuiInput-root button {
+  background-color: transparent;
+  width: 103px;
+  right: 11px;
+  position: absolute;
+}
+.left-date-picker .MuiInput-root button:hover {
+  background-color: transparent;
 }
 
 .right-date-picker .MuiInputBase-root input {
   background-color: #000;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0px;
   border: none;
   width: 80px;
