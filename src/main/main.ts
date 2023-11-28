@@ -201,6 +201,11 @@ app.on('window-all-closed', () => {
   }
 });
 
+ipcMain.handle("copy-to-clipboard", async (event, text) => {
+  console.log(text);
+  clipboard.writeText(text);
+});
+
 const main = async () => {
   try {
     await pie.initialize(app);

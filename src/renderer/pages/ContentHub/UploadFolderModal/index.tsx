@@ -9,6 +9,7 @@ import theme from 'renderer/styles/muiTheme';
 import Dropzone from 'react-dropzone';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -97,6 +98,7 @@ export default function UploadFolderModal({
     setNewFolder(e.target.value);
   };
   const onDrop = (acceptedFiles: File[]) => {
+    console.log(acceptedFiles);
     setSelectedFiles(acceptedFiles);
     console.log('Selected Files:', acceptedFiles);
   };
@@ -275,7 +277,7 @@ export default function UploadFolderModal({
               />
             </Box>
           )}
-          <Dropzone minSize={1000000} maxSize={104857600} onDrop={onDrop}>
+          <Dropzone minSize={0} maxSize={104857600} onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (
               <section>
                 <div {...getRootProps()}>
