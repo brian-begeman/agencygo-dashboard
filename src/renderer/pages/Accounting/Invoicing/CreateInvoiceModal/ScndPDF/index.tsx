@@ -86,6 +86,7 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
             borderRadius: '5px'
           }}
         >
+          {/* First box */}
           <div
             style={{
               display: 'flex',
@@ -336,6 +337,7 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
             </Button> 
           </Box>
         </div>
+        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

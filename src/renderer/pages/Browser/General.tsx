@@ -56,10 +56,7 @@ const General = ({
     tags: [],
     proxy: '',
   });
-  const [errors, setErrors] = useState({
-    name: '',
-    status: '',
-  });
+  const [errors, setErrors] = useState({});
 
   const validateProxyString = (proxyUrl) => {
     const proxyPattern = /^((.*?):(\d+))(@(.+?):(.+))?$/;
@@ -108,44 +105,24 @@ const General = ({
 
   const validateFields = () => {
     let isValid = true;
-    const newErrors = { ...errors };
+    const newErrors = {};
 
-    if (!newData.name.trim()) {
+    if (!newData.name) {
       newErrors.name = 'Name is required';
       isValid = false;
-    } else {
-      newErrors.name = '';
     }
 
-    if (!newData.status.trim()) {
-      newErrors.status = 'Status is required';
-      isValid = false;
-    } else {
-      newErrors.status = '';
-    }
-
-    if (!newData?.tags || !newData.tags?.length) {
-      newErrors.tags = 'Tags are required';
-      isValid = false;
-    } else {
-      newErrors.status = '';
-    }
-
-    if (selectedproxy === 'set-proxy' && !newData.proxy) {
-      newErrors.proxy = 'Proxy url is not added';
-      isValid = false;
-    } else {
-      if (!validateProxyString(newData.proxy)) {
+    if (selectedproxy === 'set-proxy') {
+      if (!newData.proxy) {
+        newErrors.proxy = 'Proxy url is not added';
+        isValid = false;
+      } else if (!validateProxyString(newData.proxy)) {
         newErrors.proxy = 'Proxy url is not valid';
         isValid = false;
-      } else {
-        newErrors.proxy = '';
       }
     }
 
-    // Validate other fields similarly if needed
-
-    setErrors(newErrors);
+    setErrors(Object.assign(errors, newErrors));
     return isValid;
   };
 
@@ -154,7 +131,7 @@ const General = ({
     const match = proxyString.match(proxyPattern);
 
     if (!match) {
-      throw new Error('Invalid proxy string format');
+      return false;
     }
 
     const result = {
@@ -176,8 +153,22 @@ const General = ({
     // Validate fields before submission
     const isValid = validateFields();
 
+    function delay(delayInMilliseconds: number) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, delayInMilliseconds);
+      });
+    }
+
+    await delay(100);
+    console.log({ isValid, errors, newData });
+
     if (!isValid) {
-      alert('Form is invalid');
+      for (const key in errors) {
+        if (errors[key] !== '') {
+          alert(errors[key]);
+          break;
+        }
+      }
       return;
     }
 
@@ -221,10 +212,6 @@ const General = ({
     event: React.MouseEvent<HTMLElement>,
     proxy: string
   ) => {
-    setNewData((prevData) => ({
-      ...prevData,
-      proxy: proxy,
-    }));
     setselectedproxy(proxy);
   };
 

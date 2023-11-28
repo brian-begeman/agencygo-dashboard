@@ -31,6 +31,7 @@ function getDivBounds(divId: string) {
 
 export default function ManagerSuite() {
   const agencyId = localStorage.getItem('AgencyId');
+
   const [search, setSearch] = useState('');
   // const [ selectedCreator,setSelectedCreator]=useState()
   const {
@@ -63,7 +64,7 @@ export default function ManagerSuite() {
       page,
     });
   }
-  console.log('creators', creators);
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>

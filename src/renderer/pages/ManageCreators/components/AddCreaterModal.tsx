@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Checkbox,
@@ -94,6 +94,8 @@ export default function AddCreaterModal({
     control,
     isLoading,
     isAutoRelink,
+    creatorImage,
+    setCreatorImage,
     toggleAutoRelink,
     setEmployeeOptions,
     setValue,
@@ -132,22 +134,34 @@ export default function AddCreaterModal({
 
   const cancelHandler = () => {
     setSelectedValues([]);
+    setCreatorImage('');
     setOpen(false);
   };
 
   const handleModalClose = () => {
     setSelectedValues([]);
+    setCreatorImage('');
     setOpen(false);
   };
 
-  const handleChangeFile = (file: File | undefined) => {
-    console.log('file ******', file);
-    if (file) {
-      console.log('file ******', URL.createObjectURL(file));
+  // const handleChangeFile = (file: File | undefined) => {
+  //   console.log('file ******', file);
+  //   if (file) {
+  //     console.log('file ******', URL.createObjectURL(file));
+  //   }
+
+  // };
+
+  useEffect(() => {
+    if (type == 'add') {
+      setValue('agencyComission', 10);
+      setValue('creatorComission', 10);
     }
-  };
+  }, [type]);
+
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+
   return (
     <Overlay
       heading={`${type == 'add' ? 'Add' : 'Edit'} Creators`}
@@ -183,7 +197,13 @@ export default function AddCreaterModal({
                 type == 'add' ? 'Add' : 'Edit'
               } Headshot`}</Typography>
               <Box>
-                <ImageUpload handleChangeFile={handleChangeFile} />
+                <ImageUpload
+                  creatorImage={creatorImage}
+                  setCreatorImage={setCreatorImage}
+                  register={register as any}
+                  setValue={setValue}
+                  // handleChangeFile={handleChangeFile}
+                />
               </Box>
             </Box>
             <InputWithLabel
@@ -227,7 +247,7 @@ export default function AddCreaterModal({
               placeholder="Select gender"
               register={register as any}
             />
-            <DropdownWithLabel
+            {/* <DropdownWithLabel
               selectStyle={{
                 border: '1px solid #292929',
                 backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
@@ -237,20 +257,17 @@ export default function AddCreaterModal({
               options={genderList}
               placeholder="Select Employee"
               register={register as any}
-            />
-            {/* <MultiSelectDropdown
+            /> */}
+            <MultiSelectDropdown
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
-                console.log(selected, 'selectedselected');
                 setValue('assignEmployee', selected);
                 setSelectedValues(selected);
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
-
-              
-            /> */}
+            />
             <InputWithLabel
               inputStyle={{
                 border: '1px solid #292929',
@@ -274,9 +291,12 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=""
-                  inputIdentifierName="agency"
+                  type="number"
+                  max={10}
+                  min={1}
+                  inputIdentifierName="agencyComission"
                   placeholder="Agency %"
-                  // register={register as any}
+                  register={register as any}
                 />
                 <InputWithLabel
                   inputStyle={{
@@ -284,10 +304,12 @@ export default function AddCreaterModal({
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
                   label=" "
-                  inputIdentifierName="creator"
+                  type="number"
+                  max={10}
+                  min={1}
+                  inputIdentifierName="creatorComission"
                   placeholder="Creator %"
-
-                  // register={register as any}
+                  register={register as any}
                 />
               </Box>
             </Box>
@@ -397,6 +419,7 @@ export default function AddCreaterModal({
           </FormGroup>
         </form>
       </Box>
+
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}

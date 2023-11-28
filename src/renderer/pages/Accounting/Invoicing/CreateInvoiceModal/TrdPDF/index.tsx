@@ -284,6 +284,7 @@ export default function TrdPDF({ open, setOpen, pdfData, initialPdfValue, viewOn
             </Button> 
           </Box>
         </div>
+        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

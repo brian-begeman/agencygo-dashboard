@@ -73,6 +73,9 @@ export default function UserCardWImage({
         width={'100%'}
       >
         <Typography
+          onClick={() => {
+            setData(data);
+          }}
           variant="h3"
           fontSize={'18px'}
           sx={{ cursor: 'pointer' }}

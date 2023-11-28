@@ -1,72 +1,145 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { Chart as ChartJS, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import faker from 'faker';
-import theme from 'renderer/styles/muiTheme';
-import { Box, useTheme } from '@mui/material';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(Filler);
 
-export const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
-};
-
-const labels = ['0', '1', '2', '3', '4', '5', '6'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1 })),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ],
-};
-
-export function ChartLine() {
-  const theme = useTheme();
-   const isDarkTheme = theme.palette.mode === 'dark';
+export function TotalEarningsChart() {
   return (
-    <Box
-      sx={{
-        backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
-        maxHeight: '200px',
-        borderRadius: '16px',
+    <Line
+      style={{ width: '100%' }}
+      options={{
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            suggestedMin: 50,
+            suggestedMax: 100,
+            grid: {
+              color: '#111',
+            },
+            ticks: {
+              // Include a dollar sign in the ticks and ensure two decimal places
+              callback: function (value, index, values) {
+                return '$' + value.toFixed(2);
+              },
+            },
+          },
+          x: {
+            grid: {
+              display: false,
+            },
+          },
+        },
       }}
-    >
-      <Line
-        options={options}
-        data={data}
-        style={{ width: '100%', height: '100%' }}
-      />
-    </Box>
+      data={{
+        labels: [
+          '1 Aug',
+          '7 Aug',
+          '14 Aug',
+          '21 Aug',
+          '28 Aug',
+          '1 Sep',
+          '7 Sep',
+        ],
+        datasets: [
+          {
+            label: 'Amount Earned',
+            data: [65, 59, 62, 70, 72, 67, 70],
+            tension: 0.3,
+            borderWidth: 0,
+            fill: true,
+            backgroundColor(context, options) {
+              const chart = context.chart;
+              const { chartArea, ctx } = chart;
+              if (!chartArea) {
+                return;
+              }
+              const gradient = ctx.createLinearGradient(
+                0,
+                chartArea.bottom,
+                0,
+                chartArea.top
+              );
+
+              gradient.addColorStop(0, '#44FA04');
+              gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+              return gradient;
+            },
+          },
+        ],
+      }}
+    />
+  );
+}
+
+export function ChatterSalesChart() {
+  return (
+    <Line
+      style={{ width: '100%', height: '400px' }}
+      options={{
+        plugins: { legend: { display: false } },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            suggestedMin: 50,
+            suggestedMax: 100,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              // Include a dollar sign in the ticks and ensure two decimal places
+              callback: function (value, index, values) {
+                return '$' + value.toFixed(2);
+              },
+            },
+          },
+          x: {
+            grid: {
+              display: false,
+            },
+          },
+        },
+      }}
+      data={{
+        labels: [
+          '1 Aug',
+          '7 Aug',
+          '14 Aug',
+          '21 Aug',
+          '28 Aug',
+          '4 Sep',
+          '11 Sep',
+          '18 Sep',
+          '25 Sep',
+          '2 Oct',
+        ],
+
+        datasets: [
+          {
+            label: 'Amount Earned',
+            data: [65, 59, 62, 70, 72, 75, 68, 66, 71, 74],
+            tension: 0.3,
+            borderWidth: 0,
+            fill: true,
+            backgroundColor(context, options) {
+              const chart = context.chart;
+              const { chartArea, ctx } = chart;
+              if (!chartArea) {
+                return;
+              }
+              const gradient = ctx.createLinearGradient(
+                0,
+                chartArea.bottom,
+                0,
+                chartArea.top
+              );
+              gradient.addColorStop(0, '#04A1FF');
+              gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+              return gradient;
+            },
+          },
+        ],
+      }}
+    />
   );
 }

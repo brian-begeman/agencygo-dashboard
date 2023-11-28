@@ -34,7 +34,6 @@ export default function PromoTacker({ open, setOpen, userData }: any) {
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      console.log(values);
       await handleCreateInvoice(values);
       handleClose();
     },
@@ -52,7 +51,6 @@ export default function PromoTacker({ open, setOpen, userData }: any) {
       const response = await fetch('http://localhost:3000/invoicing', options);
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
       } else {
         console.error('Failed to create the invoice');
       }

@@ -44,7 +44,6 @@ export default function NewProfile({
   const handleCreate = () => {
     // Call handleFormSubmit in General component from NewProfile
     // handleFormSubmitFromNewProfile(formData);
-    console.log('--handleFormSubmitRef.current--', handleFormSubmitRef.current);
     if (handleFormSubmitRef.current) {
       handleFormSubmitRef.current?.handleFormSubmit();
     }
@@ -124,14 +123,6 @@ export default function NewProfile({
             >
               <Box display={'flex'} gap={'10px'} marginTop={'20px'}></Box>
               <Box display={'flex'}>
-                <Button
-                  variant="text"
-                  startIcon={<CachedIcon />}
-                  sx={{ color: '#fff' }}
-                >
-                  New fingerprint
-                </Button>
-
                 <Button
                   variant="text"
                   startIcon={<AddIcon />}

@@ -21,6 +21,10 @@ interface IEmployeeList {
   roleRaw: string;
   id: string;
   agencyId: string;
+  commission:number;
+  payRate:number;
+  payInterval:string;
+  shiftSchedular:string;
   assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
@@ -41,21 +45,27 @@ export interface ISelectedEmployee {
   role: string;
   id: string;
   agencyId: string;
+  payRate:number;
+  commission:number;
+  payInterval:string;
+  shiftSchedular:string;
   assignedCreatorsForDropdown: IAssignedCreatorsToEmployee[];
 }
 
 const useDataEmployees = () => {
   const [agencies, setAgencies] = useState<IAgencyList[]>([]);
   const [employees, setEmployees] = useState<IEmployeeList[]>([]);
+  const [totalEmployeesCount, setTotalEmployeesCount]= useState<number>()
   const [selectedEmployee, setSelectedEmployee] =
     useState<ISelectedEmployee | null>(null);
   const [selectedAgency, setSelectedAgency] = useState<ISelectedAgency | null>({
     id: localStorage.getItem('AgencyId') ?? '',
   });
-  const { isLoading, data, refetch, setData } = useQuery({
+  const { isLoading, data, refetch, setData,setCurrnetPage,currentPage ,paginationLimit } = useQuery({
     key: 'get-employee',
     params: selectedAgency,
   });
+
 
   useEffect(() => {
     // window.electron.ipcRenderer
@@ -73,10 +83,12 @@ const useDataEmployees = () => {
   }, []);
 
   const handleSearch = (data: any) => {
+    data.agencyId=selectedAgency?.id
     const queryString = Object.keys(data)
-      .map((key) => `${key}=${encodeURIComponent(data[key])}`)
+      .map((key) => `${key}=${(data[key])}`)
       .join('&');
-    let endpoint = `employee/search/data?${queryString}`;
+
+    let endpoint = `employee/search/data?${queryString}&page=${currentPage}&limit=${paginationLimit}`;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -96,30 +108,41 @@ const useDataEmployees = () => {
 
   useEffect(() => {
     if (data?.data) {
-      const employeesRes = data?.data?.map((item: any) => {
-        const tempAssignedCreators = Array.from(item.assignedCreators);
+      const employeesRes = data?.data?.employees?.map((item: any) => {
+        const tempAssignedCreators = Array.isArray(item.creatorDetail)
+          ? Array.from(item.creatorDetail)
+          : []; 
+           
         return {
           name: item?.name || '',
-          imageSrc: '',
-          assignedCreatorsForDropdown: item.assignedCreators,
+          assignedCreatorsForDropdown: tempAssignedCreators.length
+          ? tempAssignedCreators.map((ta:any) => ta._id):[],
           assignedCreatorsText: tempAssignedCreators.length
-            ? tempAssignedCreators.map((ta) => ta?.name).join(', ')
+            ? tempAssignedCreators.map((ta:any) => ta?.creatorName).join(', ')
             : '+ Please click to set',
           role: item?.role
             ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
             : '',
           activated: item?.status,
+          payRate:item?.payRate,
+          commission:item?.commission,
           email: item?.email || '',
           roleRaw: item?.role || '',
+          shiftSchedular:item?.shiftSchedular||'',
+          payInterval:item?.payInterval||'',
           // eslint-disable-next-line no-underscore-dangle
           id: item?._id || '',
           agencyId: item?.agencyId,
         };
       });
       setEmployees(employeesRes || []);
+      setTotalEmployeesCount(data?.data?.totalDocument)
     }
-  }, [data, data?.data]);
-
+  }, [data,data?.data]);
+  
+  
+  
+  
   return {
     isLoading,
     data,
@@ -132,6 +155,8 @@ const useDataEmployees = () => {
     setSelectedAgency,
     setSelectedEmployee,
     handleSearch,
+    setCurrnetPage,
+    totalEmployeesCount
   };
 };
 

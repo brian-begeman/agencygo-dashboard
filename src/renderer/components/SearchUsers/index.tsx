@@ -32,20 +32,26 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
     }
   }, [allUsers])
 
-  const onSearch = (value: string) => {
-    setSearch(value);
-    if (value === '') {
-      // If the search value is empty, show all users
-      setFilteredUsers(allUsers??[]);
-    } else {
-      // Filter the users based on the search input
-      const usersFromSearch = allUsers.filter((item: any) => {
-        return item.firstName.toLowerCase().includes(value.toLowerCase());
-      });
-      setFilteredUsers(usersFromSearch);
+  const getUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/users');
+      if (response.ok) {
+        const data = await response.json();
+        setAllUsers(data?.data);
+      } else {
+        console.error('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  useEffect(() => {
+    // Fetch all users when the component mounts
+    getUsers();
+  }, []);
+
+  const [selectName, setSelectName] = useState<any>('');
 
   return (
     <aside
@@ -64,20 +70,27 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
           <SearchInput.ReloadButton onRefresh={getUsers} />
         </SearchInput>
       </div>
-      {filteredUsers.map((item: any, index: any) => (
-      <div style={{ background: item?._id === data?._id ? '#04A1FF' : '' }} key={item?._id} >
-        <UserCardWImage
-          data={item}
-          id={item._id}
-          name={`${item?.firstName} ${item?.lastName}`}
-          notificationCount={item?.notificationCount}
-          messageCount={item?.messageCount}
-          key={item?._id} // Use a unique key, such as _id
-          profileImage={''}
-          selected={false}
-          autoRelink={false}
+      {allUsers.map((item: any, index: any) => (
+        <div
+          style={{
+            background: item?.firstName === selectName ? '#04A1FF' : '',
+          }}
+          key={item?._id}
+        >
+          <UserCardWImage
+            data={item}
+            id={item._id}
+            name={`${item?.firstName} ${item?.lastName}`}
+            notificationCount={item?.notificationCount}
+            messageCount={item?.messageCount}
+            key={item?._id} // Use a unique key, such as _id
+            profileImage={''}
+            selected={false}
+            onClick={() => {}}
+            autoRelink={false}
+            selectName={setSelectName}
           />
-          </div>
+        </div>
       ))}
     </aside>
   );

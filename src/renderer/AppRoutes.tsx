@@ -43,6 +43,7 @@ import ChatMessage from './pages/ChatScreen';
 import ContentHub from './pages/ContentHub';
 import Browser from './pages/Browser';
 import { useLocation } from 'react-router-dom';
+import Timekeeping from './pages/Accounting/Timekeeping';
 
 const ROUTES = [
   {
@@ -147,6 +148,12 @@ const ROUTES = [
         element: <BookKeeping />,
         pathName: 'Book Keeping',
         nestedLink: '/accounting/book-keeping',
+      },
+      {
+        path: 'time-keeping',
+        element: <Timekeeping />,
+        pathName: 'Time Keeping',
+        nestedLink: '/accounting/time-keeping',
       },
     ],
   },
@@ -267,10 +274,7 @@ function AppRoutes() {
     <Routes>
       {isLogin ? (
         <>
-          <Route
-            path="/"
-            element={<Navigate to="/manager-suite/notifications" />}
-          />
+          <Route path="/" element={<Navigate to="/home" />} />
           {ROUTES.map(({ path, element, nestedRoutes }) =>
             nestedRoutes ? (
               <Route key={path} path={path} element={element}>

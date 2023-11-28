@@ -51,8 +51,8 @@ const InvoicingTopContainer = ({allUsers}: Props) => {
     },
   ];
 
-const theme = useTheme();
-const isDarkTheme = theme.palette.mode === 'dark';
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Box margin={'10px 0px'}>
@@ -72,14 +72,13 @@ const isDarkTheme = theme.palette.mode === 'dark';
             value={selectData}
             onChange={(e) => setSelectedData(e.target.value)}
             sx={{
-              
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
-                
+                borderColor: theme.palette.secondary.light,
               },
               height: '100%',
               padding: '0px 0px',
-              ' & .MuiOutlinedInput-input':
+              ' & .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input':
                 {
                   padding: '4px 8px',
                 },
@@ -89,7 +88,7 @@ const isDarkTheme = theme.palette.mode === 'dark';
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.contrastText,
               },
-             
+
               '& .MuiSelect-select': {
                 display: 'flex',
                 gap: '5px',
