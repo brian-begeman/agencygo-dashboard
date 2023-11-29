@@ -37,7 +37,7 @@ const initialPdfValue = {
 export default function CreateInvoiceModal({ open, setOpen }: any) {
   const handleClose = () => setOpen(false);
   const [pdfURL, setpdfURl] = useState('');
-  const { data } = useContext(MyInvoiceContext);
+  const { data, creatorInvoices, setCreatorInvoices } = useContext(MyInvoiceContext);
 
   const [viewOnly, setViewOnly] = useState<any>(false);
   const [selectedTemplate, setSelectedTemplate] = useState<any>('')
@@ -94,27 +94,39 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
     setViewOnly(false);
   };
 
-  const handlePDF = async (name: any) => {
+  const submitInvoice = async ( invoiceDetails:any) => {
     const options = {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(invoiceDetails),
     };
-    try {
+
+    const allFieldsFilled =  invoiceDetails.contactDetails != '' && invoiceDetails.companyName != '' && 
+    invoiceDetails.companyAddress!= '' && invoiceDetails.clientCompanyName != ''  && invoiceDetails.companyContact != '';
+
+    
+    if(allFieldsFilled){
+      try {
       const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=${name}`,
+        `http://localhost:3000/invoicing/create?templateName=${selectedTemplate}`,
         options
       );
       const responseData = await response.json();
-
+      const invoices = [...creatorInvoices]
+      invoices.push(responseData?.data?.invoicing);
+      setCreatorInvoices([...invoices])
       console.log(responseData.data);
-
-      window.location.href = responseData.data;
-      setpdfURl(responseData.data);
+      if (responseData?.data?.pdfUrl) {
+        setOpen(false)
+      }
+      // window.location.href = responseData.data;
     } catch (error) {
       console.log(error);
+    }
+    }else{
+      // alert("Please fill all the fields!")
     }
   };
 
@@ -233,10 +245,10 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
           </Box>
         </Box>
       </Modal>
-      <AddLeder open={selectedTemplate === 'template1'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
-      <ScndPDF open={selectedTemplate === 'template2'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly}  />
-      <TrdPDF open={selectedTemplate === 'template3'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
-      <FourthPDF open={selectedTemplate === 'template4'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
+      <AddLeder submitInvoice={submitInvoice} open={selectedTemplate === 'template1'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
+      <ScndPDF submitInvoice={submitInvoice} open={selectedTemplate === 'template2'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly}  />
+      <TrdPDF submitInvoice={submitInvoice} open={selectedTemplate === 'template3'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
+      <FourthPDF submitInvoice={submitInvoice} open={selectedTemplate === 'template4'} setOpen={setSelectedTemplate} pdfData={pdfData} initialPdfValue={initialPdfValue} viewOnly={viewOnly} />
     </>
   );
 }

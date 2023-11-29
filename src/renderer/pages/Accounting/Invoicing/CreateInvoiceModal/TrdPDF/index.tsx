@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function TrdPDF({ open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
+export default function TrdPDF({ submitInvoice, open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
   const [editDate, setEditDate] = useState(false);
   const [newDate, setNewDate] = useState(pdfData?.date);
 
@@ -37,30 +37,6 @@ export default function TrdPDF({ open, setOpen, pdfData, initialPdfValue, viewOn
     });
   };
 
-  const handlePDF = async () => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(invoicedetails),
-    };
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template3`,
-        options
-      );
-      const responseData = await response.json();
-
-      console.log(responseData.data);
-
-      window.location.href = responseData.data;
-      // setpdfURl(responseData.data)
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const handleClose = () => {
     setEditDate(false);
     setOpen(false);
@@ -271,7 +247,7 @@ export default function TrdPDF({ open, setOpen, pdfData, initialPdfValue, viewOn
           {!viewOnly &&<Button
             variant="contained"
             sx={{ color: '#fff', textTransform: 'capitalize' }}
-            onClick={handlePDF}
+            onClick={()=>submitInvoice(invoicedetails)}
           >
             Create Invoice
           </Button>}
