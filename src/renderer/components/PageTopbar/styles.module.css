@@ -6,5 +6,17 @@
   padding: 28px;
   position: relative;
   justify-content: space-between;
+}
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.header::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.header {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

@@ -11,12 +11,12 @@ import lightTheme from './styles/muiTheme';
 import darkTheme from './styles/MuiThemeDark';
 
 export default function App() {
-  const [currentTheme,setTheme]=useState(true)
+  const [currentTheme, setTheme] = useState(true);
 
   useEffect(() => {
-    let theme=localStorage.getItem('theme')
-    if(theme===null||theme===undefined||theme===""){
-      localStorage.setItem('theme','dark')
+    let theme = localStorage.getItem('theme');
+    if (theme === null || theme === undefined || theme === '') {
+      localStorage.setItem('theme', 'dark');
     }
   }, []);
 
@@ -25,16 +25,15 @@ export default function App() {
     setTheme(theme === 'dark');
   });
 
-   const theme = currentTheme ? darkTheme : lightTheme;
-   
-console.log("curTheme",currentTheme)
+  const theme = currentTheme ? darkTheme : lightTheme;
+
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <Router>
           <CssBaseline />
           {/*<Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />*/}
-          <AppRoutes  />
+          <AppRoutes />
         </Router>
       </AuthProvider>
     </ThemeProvider>

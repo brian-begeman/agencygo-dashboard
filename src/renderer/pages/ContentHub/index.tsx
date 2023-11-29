@@ -117,6 +117,8 @@ export default function ContentHub() {
     },
   });
 
+  console.log('data', data);
+
   const createNewFolderInS3 = async (folderName) => {
     const folderWithManagerId = `${selectedCreator}/${folderName}/`;
     console.log('folder', folderWithManagerId);
@@ -154,7 +156,7 @@ export default function ContentHub() {
 
       await s3Client.send(new DeleteObjectsCommand(deleteObjectsCommand));
       console.log('Folder deleted successfully.');
-      // setRows([])
+      setRows([])
       await getFolderList();
     } catch (error) {
       console.error('Error deleting folder:', error);
@@ -339,8 +341,8 @@ export default function ContentHub() {
 
   useEffect(() => {
     // Select the first manager when the component mounts
-    if (!selectedCreator && data?.data.length > 0) {
-      handleManagerSelection(data.data[0]._id);
+    if (!selectedCreator && data?.data?.creators.length > 0) {
+      handleManagerSelection(data.data.creators[0]._id);
     }
   }, [data]);
 
@@ -851,7 +853,7 @@ export default function ContentHub() {
               </div>
 
               {data?.data &&
-                data.data.map((c) => (
+                data.data.creators.map((c) => (
                   <UserCardWImage
                     key={c._id}
                     name={c.creatorName}

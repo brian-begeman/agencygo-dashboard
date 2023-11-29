@@ -11,7 +11,7 @@ import {
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import styles from './styles.module.css';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import AddEmployeeModal from './AddEmployeeModal';
@@ -33,6 +33,7 @@ import GroupTreeData from './components/GroupTreeData';
 import EditSubGroupModal from './components/EditSubGroupModal';
 import DeleteSubGroupModal from './components/DeleteSubGroupModal';
 import AddGroupToAgencyModal from './components/AddGroupToAgencyModal';
+import PaginationPage from 'renderer/components/Pagination';
 
 const employeesTableHeaders = [
   'Employees',
@@ -55,6 +56,8 @@ export default function ManageEmployees() {
   const [openAssignCreatorModal, setOpenAssignCreatorModal] = useState(false);
   const [assigneeName, setAssigneeName] = useState<string>('');
   const [subGroups, setSubGroups] = useState([]);
+  const [selectedValues, setSelectedValues] = useState<any>([]);
+
   const {
     agencies,
     refetch,
@@ -65,6 +68,8 @@ export default function ManageEmployees() {
     setSelectedAgency,
     selectedAgency,
     handleSearch,
+    setCurrnetPage,
+    totalEmployeesCount,
   } = useDataEmployees();
   const {
     selectedGroup,
@@ -116,7 +121,17 @@ export default function ManageEmployees() {
       { title: 'Delete', function: handleDelete },
       { title: 'Reset Password', function: resetPassword },
     ];
-    return tabData;
+
+    const tabOnDeactive = [
+      {
+        title: 'Activate',
+        function: handleActivate,
+      },
+      { title: 'Delete', function: handleDelete },
+    ];
+    return status === 'active' || status === 'inactive'
+      ? tabData
+      : tabOnDeactive;
   };
 
   const handleDeactivate = (id: any, status: any) => {
@@ -124,7 +139,6 @@ export default function ManageEmployees() {
       { id, status },
       {
         onSuccess: (resp) => {
-          console.log(resp);
           refetch();
         },
       }
@@ -132,11 +146,11 @@ export default function ManageEmployees() {
   };
 
   const handleActivate = (id: any, status: any) => {
+    console.log(id, status, 'asdfasfsadfs5555555555555555');
     mutateActivate(
       { id, status },
       {
         onSuccess: (resp) => {
-          console.log(resp);
           refetch();
         },
       }
@@ -260,6 +274,16 @@ export default function ManageEmployees() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+  const pageCount = useMemo(() => {
+    if (totalEmployeesCount && totalEmployeesCount > 10) {
+      return Math.ceil(totalEmployeesCount / 10);
+    }
+  }, [totalEmployeesCount]);
+
+  const handleGetCurrentPage = (e: any, page: any) => {
+    setCurrnetPage(page);
+  };
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -345,7 +369,12 @@ export default function ManageEmployees() {
           <Stack
             flexDirection="row"
             gap="8px"
-            sx={{ position: 'absolute', bottom: 0 }}
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              paddingBottom: '5px',
+              paddingRight: '5px',
+            }}
           >
             {group?.map((link: any, index: number) => (
               <>
@@ -381,11 +410,12 @@ export default function ManageEmployees() {
                   }
                   endIcon={
                     <span>
-                      <MoreVertIcon sx={{ color: '#fff', fontSize: 15 }} />
+                      <MoreVertIcon sx={{ fontSize: 15, color: '#fff' }} />
                     </span>
                   }
                   isActiveLink={link._id == selectedAgency?.id ? true : false}
                   onClick={() => {
+                    setCurrnetPage(1);
                     setSelectedAgency({ id: link._id });
                   }}
                   isLink
@@ -395,42 +425,88 @@ export default function ManageEmployees() {
           </Stack>
         </PageTopbar>
 
-        <Stack direction="row" sx={{ height: '100%' }}>
-          <Filter handleSearch={handleSearch} refetch={refetch} />
+        <Stack direction="row" sx={{ height: '85%' }}>
+          <Filter
+            handleSearch={handleSearch}
+            refetch={refetch}
+            setCurrnetPage={setCurrnetPage}
+          />
           <FilterTable
             isEmptyContent={!employees.length}
             tableHeaders={employeesTableHeaders}
+            pagination={
+              <PaginationPage
+                count={pageCount}
+                handleGetCurrentPage={handleGetCurrentPage}
+              />
+            }
           >
             <>
-              {employees.map(
-                ({
-                  name,
-                  assignedCreatorsText,
-                  role,
-                  activated,
-                  email,
-                  roleRaw,
-                  id,
-                  agencyId,
-                  assignedCreatorsForDropdown,
-                }) => {
-                  return (
-                    <TableRow
-                      key={id}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
-                    >
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                        scope="row"
-                      >
-                        <Stack spacing={1} direction="row" alignItems="center">
+              {employees &&
+                employees.map(
+                  ({
+                    name,
+                    assignedCreatorsText,
+                    role,
+                    activated,
+                    email,
+                    roleRaw,
+                    payRate,
+                    commission,
+                    id,
+                    agencyId,
+                    payInterval,
+                    shiftSchedular,
+                    assignedCreatorsForDropdown,
+                  }) => {
+                    return (
+                      <TableRow key={id}>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                          }}
+                          scope="row"
+                        >
+                          <Stack
+                            spacing={1}
+                            direction="row"
+                            alignItems="center"
+                          >
+                            <Typography
+                              variant="h6"
+                              fontSize="18px"
+                              color={
+                                activated === 'deactivate'
+                                  ? 'gray'
+                                  : isDarkTheme
+                                  ? '#fff'
+                                  : '#000'
+                              }
+                            >
+                              {name}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                            color: '#fff',
+                            width: '300px',
+                          }}
+                          onClick={() => {
+                            setAssigneeName(name);
+                            setId(id);
+                            if (activated === 'deactivate') {
+                              setOpenAssignCreatorModal(false);
+                            } else {
+                              setOpenAssignCreatorModal(
+                                !openAssignCreatorModal
+                              );
+                              setSelectedValues(assignedCreatorsForDropdown);
+                            }
+                          }}
+                        >
                           <Typography
-                            variant="h6"
-                            fontSize="18px"
                             color={
                               activated === 'deactivate'
                                 ? 'gray'
@@ -439,144 +515,130 @@ export default function ManageEmployees() {
                                 : '#000'
                             }
                           >
-                            {name}
+                            {assignedCreatorsText}
                           </Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                          color: '#fff',
-                          width: '300px',
-                        }}
-                        onClick={() => {
-                          setAssigneeName(name);
-                          setId(id);
-                          if (activated === 'deactivate') {
-                            setOpenAssignCreatorModal(false);
-                          } else {
-                            setOpenAssignCreatorModal(!openAssignCreatorModal);
-                          }
-                        }}
-                      >
-                        <Typography
-                          color={
-                            activated === 'deactivate'
-                              ? 'gray'
-                              : isDarkTheme
-                              ? '#fff'
-                              : '#000'
-                          }
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                            color: '#fff',
+                          }}
                         >
-                          {assignedCreatorsText}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                          color: '#fff',
-                        }}
-                      >
-                        <Typography
-                          color={
-                            activated === 'deactivate'
-                              ? 'gray'
-                              : isDarkTheme
-                              ? '#fff'
-                              : '#000'
-                          }
-                        >
-                          {role}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                      >
-                        {activated === 'deactivate' && <DeactivatedSvg />}
-                        {activated === 'active' && <Activated />}
-                        {activated === 'inactive' && (
-                          <Box
-                            display={'flex'}
-                            gap={'10px'}
-                            alignItems={'center'}
+                          <Typography
+                            color={
+                              activated === 'deactivate'
+                                ? 'gray'
+                                : isDarkTheme
+                                ? '#fff'
+                                : '#000'
+                            }
                           >
-                            <Typography>Inactive</Typography>
-                            <Typography
-                              color={'#04A1FF'}
-                              sx={{ cursor: 'pointer' }}
-                              onClick={() => handleResend(id)}
+                            {role}
+                          </Typography>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                          }}
+                        >
+                          {activated === 'deactivate' && <DeactivatedSvg />}
+                          {activated === 'active' && <Activated />}
+                          {activated === 'inactive' && (
+                            <Box
+                              display={'flex'}
+                              gap={'10px'}
+                              alignItems={'center'}
                             >
-                              Resend
-                            </Typography>
-                          </Box>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          borderColor: theme.palette.primary.contrastText,
-                        }}
-                      >
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          {activated === 'active' ||
-                          activated === 'deactivate' ? (
-                            <>
-                              <ButtonBase
-                                onClick={() => {
-                                  setSelectedEmployee({
-                                    name,
-                                    role: roleRaw,
-                                    email,
-                                    id,
-                                    agencyId,
-                                    assignedCreatorsForDropdown,
-                                  });
-                                  setFormType('edit');
-                                  setOpenAddEmployee(true);
-                                }}
+                              <Typography color="yellow">Inactive</Typography>
+                              <Typography
+                                color={'#04A1FF'}
+                                sx={{ cursor: 'pointer' }}
+                                onClick={() => handleResend(id)}
                               >
-                                <Typography variant="body1">Edit</Typography>
-                              </ButtonBase>
-                              <ButtonBase>
-                                <Typography variant="body1">
-                                  <Box onClick={() => handleClick(id, email)}>
-                                    <MenuButton
-                                      title="More"
-                                      tabData={getOptions(activated)}
-                                      id={id}
-                                      status={activated}
-                                    />
-                                  </Box>
-                                </Typography>
-                              </ButtonBase>
-                            </>
-                          ) : (
-                            <>
-                              <ButtonBase
-                                onClick={() => handleDelete(id, activated)}
-                              >
-                                <Typography
-                                  variant="body1"
-                                  color={
-                                    activated === 'deactivate'
-                                      ? 'gray'
-                                      : isDarkTheme
-                                      ? '#fff'
-                                      : '#000'
-                                  }
-                                >
-                                  Delete
-                                </Typography>
-                              </ButtonBase>
-                            </>
+                                Resend
+                              </Typography>
+                            </Box>
                           )}
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              )}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderColor: theme.palette.primary.contrastText,
+                          }}
+                        >
+                          <Stack
+                            spacing={1}
+                            direction="row"
+                            alignItems="center"
+                          >
+                            {activated === 'active' ? (
+                              <>
+                                <ButtonBase
+                                  onClick={() => {
+                                    setSelectedEmployee({
+                                      name,
+                                      role: roleRaw,
+                                      email,
+                                      id,
+                                      agencyId,
+                                      payRate,
+                                      commission,
+                                      payInterval,
+                                      shiftSchedular,
+                                      assignedCreatorsForDropdown,
+                                    });
+                                    setFormType('edit');
+                                    setOpenAddEmployee(true);
+                                  }}
+                                >
+                                  <Typography variant="body1">Edit</Typography>
+                                </ButtonBase>
+                                <ButtonBase>
+                                  <Typography variant="body1">
+                                    <Box onClick={() => handleClick(id, email)}>
+                                      <MenuButton
+                                        title="More"
+                                        tabData={getOptions(activated)}
+                                        id={id}
+                                        status={activated}
+                                      />
+                                    </Box>
+                                  </Typography>
+                                </ButtonBase>
+                              </>
+                            ) : (
+                              <>
+                                {/* <ButtonBase
+                                  onClick={() => handleDelete(id, activated)}
+                                >
+                                  <Typography
+                                    variant="body1"
+                                    color={
+                                      activated === 'deactivate'
+                                        ? 'gray'
+                                        : isDarkTheme
+                                        ? 'red'
+                                        : '#000'
+                                    }
+                                  >
+                                    Delete
+                                  </Typography>
+                                </ButtonBase> */}
+                                <ButtonBase>
+                                  <MenuButton
+                                    title="More"
+                                    tabData={getOptions(activated)}
+                                    id={id}
+                                    status={activated}
+                                  />
+                                </ButtonBase>
+                              </>
+                            )}
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                )}
             </>
           </FilterTable>
           {open && (
@@ -593,6 +655,8 @@ export default function ManageEmployees() {
               open={openAssignCreatorModal}
               setOpen={setOpenAssignCreatorModal}
               refetch={refetch}
+              selectedValues={selectedValues}
+              setSelectedValues={setSelectedValues}
               id={id}
             />
           )}

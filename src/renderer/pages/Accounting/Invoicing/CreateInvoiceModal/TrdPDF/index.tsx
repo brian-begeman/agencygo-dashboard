@@ -261,6 +261,7 @@ export default function TrdPDF({ submitInvoice, allFieldsFilled, open, setOpen, 
             </Button> 
           </Box>
         </div>
+        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

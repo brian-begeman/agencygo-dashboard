@@ -105,11 +105,7 @@ const Payouts = () => {
           backgroundColor: isDarkTheme ? '#121212' : '#fff',
         }}
       >
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-
-        >
+        <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize="22px">Invoicing</Typography>
           <Box>
             <Select
@@ -192,7 +188,7 @@ const Payouts = () => {
                     >
                       {item?.delivery === true ? 'Successfull' : 'Pending'}
                     </TableCell>
-                    <TableCell>{item?.createdAt }</TableCell>
+                    <TableCell>{item?.createdAt}</TableCell>
                     <TableCell
                       scope="row"
                       sx={{
@@ -241,7 +237,13 @@ const Payouts = () => {
                         <Box
                           sx={{ cursor: 'pointer' }}
                         >
-                          <a href={item?.pdfUrl} target="_blank" rel="noopener noreferrer"><DownloadSvgIcon /></a>
+                          <a
+                            href={item?.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <DownloadSvgIcon />
+                          </a>
                         </Box>
                       </Box>
                     </TableCell>

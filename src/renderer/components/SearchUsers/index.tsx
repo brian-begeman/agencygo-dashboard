@@ -79,7 +79,7 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
           selected={false}
           autoRelink={false}
           />
-          </div>
+        </div>
       ))}
     </aside>
   );

@@ -14,7 +14,7 @@ import classes from './styles.module.css';
 import AccountingSvg from 'renderer/assets/svg/AccountingSvg';
 import Message from 'renderer/assets/svg/messageSvg';
 import ContentHubSvg from 'renderer/assets/svg/ContentHubSvg';
-import { Drawer, IconButton, useTheme } from '@mui/material';
+import { Box, Drawer, IconButton, useTheme } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -131,6 +131,11 @@ const sideBarMenuConst = [
         label: 'Book Keeping',
         value: 'book-keeping',
         link: '/accounting/book-keeping',
+      },
+      {
+        label: 'Time Keeping',
+        value: 'time-keeping',
+        link: '/accounting/time-keeping',
       },
     ],
   },
@@ -273,36 +278,37 @@ function SideBar() {
 
   return (
     <div className={`${classes.sidebar} ${mode}`}>
-      <BrandLogo />
-      <MenuIcon
-        onClick={open ? handleDrawerClose : handleDrawerOpen}
-        sx={{ marginLeft: '22px', marginTop: '10px' ,color:'#fff'}}
-      />
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        open={open}
-        PaperProps={{
-          sx: {
-            width: open ? '240px' : '64px', // Adjust width for the mini variant
-            transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-            overflowX: 'hidden',
-            backgroundColor: isDarkTheme ? '#0C0C0C' : '#04a1ff',
-          },
-        }}
-        sx={{
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: open ? '240px' : '64px', // Adjust width for the mini variant
-            transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-            overflowX: 'hidden',
-            border: 'none',
-            position: 'relative',
-          },
-        }}
-      >
-        <div className={classes.toolbar}>
-          {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
+      <Box>
+        <BrandLogo />
+        <MenuIcon
+          onClick={open ? handleDrawerClose : handleDrawerOpen}
+          sx={{ marginLeft: '22px', marginTop: '10px', color: '#fff' }}
+        />
+        <Drawer
+          variant="permanent"
+          anchor="left"
+          open={open}
+          PaperProps={{
+            sx: {
+              width: open ? '240px' : '64px', // Adjust width for the mini variant
+              transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+              overflowX: 'hidden',
+              backgroundColor: isDarkTheme ? '#0C0C0C' : '#04a1ff',
+            },
+          }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: open ? '240px' : '64px', // Adjust width for the mini variant
+              transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+              overflowX: 'hidden',
+              border: 'none',
+              position: 'relative',
+            },
+          }}
+        >
+          <div className={classes.toolbar}>
+            {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
             {theme.direction === 'rtl' ? (
               open ? (
                 <ChevronRightIcon />
@@ -315,26 +321,27 @@ function SideBar() {
               <ChevronRightIcon />
             )}
           </IconButton> */}
-        </div>
-        <div className={classes.sidebarNavWrapper}>
-          {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
-            return (
-              <NewSideBar
-                handlePopoverOpen={handlePopoverOpen}
-                handlePopoverClose={handlePopoverClose}
-                name={name}
-                icon={icon}
-                menu={menu}
-                currentNavItemHovered={currentNavItemHovered}
-                index={index}
-                link={link}
-                key={name}
-                open={open}
-              />
-            );
-          })}
-        </div>
-      </Drawer>
+          </div>
+          <div className={classes.sidebarNavWrapper}>
+            {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
+              return (
+                <NewSideBar
+                  handlePopoverOpen={handlePopoverOpen}
+                  handlePopoverClose={handlePopoverClose}
+                  name={name}
+                  icon={icon}
+                  menu={menu}
+                  currentNavItemHovered={currentNavItemHovered}
+                  index={index}
+                  link={link}
+                  key={name}
+                  open={open}
+                />
+              );
+            })}
+          </div>
+        </Drawer>
+      </Box>
     </div>
   );
 }
