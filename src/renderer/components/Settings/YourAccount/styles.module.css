@@ -8,26 +8,32 @@
   height: 100px;
   border-radius: 8px;
 }
+
 .profilePicWrap {
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  justify-content: end;
+  padding-bottom: 10px;
+  gap: 5px;
 }
 
-.changePictureTextWrapper {
+/* .changePictureTextWrapper {
   margin-left: 8px;
-}
+} */
 
 .changePictureText {
   color: #37de8f;
   font-size: 12px;
   font-weight: 600;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 }
 
 .changePictureTextWrapper {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
+  gap: 10px;
 }
 
 .changePictureIcon {
@@ -52,6 +58,7 @@
   padding-bottom: 20px;
   border-bottom: 1px solid #292929;
 }
+
 .profileNameText {
   font-size: 24px;
   font-weight: 600;
@@ -71,8 +78,11 @@
 .inputWrap:focus {
   outline: none;
 }
+
 .passwordChangeWrapper {
-  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .inputListWrapper {
@@ -82,6 +92,18 @@
 }
 
 .buttonWrapper {
-  width: 290px;
-  padding-top: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: end;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.passwordheading {
+  text-transform: capitalize;
+  padding: 5px 0px;
+}
+
+.savebutton {
+  color: #fff;
 }

@@ -4,10 +4,13 @@ import ChangepictureSvg from 'renderer/assets/svg/ChangePictureSvg';
 
 import ProfilePic from 'renderer/assets/png/profile.jpg';
 import EditSvg from 'renderer/assets/svg/EditSvg';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, ButtonBase, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import classes from './styles.module.css';
 import { InputWithLabel } from '../Wallet/Common/ModalComponents';
 import fetchReq from 'utils/fetch';
+import AddEmployeeModal from 'renderer/pages/ManageEmployees/AddEmployeeModal';
+import ChangePasswordModal from './ChangePassowrdModal';
+import ButtonEle from 'renderer/components/Button';
 
 interface InputProps {
   placeholder: string;
@@ -32,13 +35,24 @@ function Input(props: InputProps) {
   );
 }
 function YourAccount() {
+  const [OpenAddEmployee,setOpenAddEmployee]=useState<boolean>(false)
   const [password, setPassword] = useState({
     confirmPassword: '',
     newPassword: '',
     prevPassword: '',
   });
   const token = localStorage.getItem('Authorization');
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState({
+    user: {
+      firstName: '',
+      email: '',
+    },
+    agency: {
+      agencyName: '',
+    },
+  });
+
+  const [editUserDetail, setEditUserDetail] = useState(false);
   const handleOnChange = (value: string, name: string) => {
     setPassword((prevPassword) => ({
       ...prevPassword,
@@ -53,7 +67,7 @@ function YourAccount() {
     password.newPassword &&
     password.confirmPassword === password.newPassword;
 
-  const userDetail = () => {
+  const fetchUserDetail = () => {
     let endpoint = 'verify';
     let options = {
       method: 'GET' as 'GET',
@@ -76,31 +90,58 @@ function YourAccount() {
   };
 
   useEffect(() => {
-    userDetail();
+    fetchUserDetail();
   }, []);
 
+  const handelAccountDetail=()=>{
+    console.log("hello");
+    
+  }
   console.log(userData, 'userDatauserData000000000000000000');
 
   return (
+    <>
+    {
+      userData && (
     <div className={classes.wrapper}>
       <div className={classes.profilePicWrap}>
-        <img
+        {/* <img
           src={ProfilePic}
           alt="profile pic"
           className={classes.profilePicImage}
-        />
+        /> */}
 
-        <div className={classes.changePictureTextWrapper}>
-          <div className={classes.changePictureText}>Change Picture</div>
+        {/* <div className={classes.changePictureTextWrapper}>
+        <div className={classes.changePictureText}>Change Picture</div>
           <div className={classes.changePictureIcon}>
-            <ChangepictureSvg />
+          <ChangepictureSvg />
           </div>
-        </div>
+        </div> */}{
+          !editUserDetail ?(
+            <>
+             <Button size="small" variant='outlined' sx={{textTransform:"capitalize"}}  onClick={()=>setOpenAddEmployee(!OpenAddEmployee)}>Change Password</Button>
+             <Button variant='contained' sx={{color:"#fff"}} onClick={()=>setEditUserDetail(true)}>
+            Edit
+           </Button>
+             </> 
+          ):(
+         <>
+           <Button size="small" variant='outlined' className={classes.passwordheading} onClick={()=>setEditUserDetail(false)}>Cancle</Button>
+
+           <Button size="small" variant='contained' sx={{color:"#fff"}} className={classes.savebutton} onClick={()=>handelAccountDetail()}>Save</Button>
+
+
+           </>
+          )
+        }
+       
       </div>
-      <div className={classes.nameWrap}>
+      {/* <div className={classes.nameWrap}>
         <div className={classes.profileNameText}>John Doe</div>
-        <EditSvg />
-      </div>
+        <IconButton aria-label="edit" onClick={()=>setEditUserDetail(true)}>
+       <EditSvg />
+      </IconButton>
+      </div> */}
       <Box
         sx={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}
       >
@@ -108,12 +149,30 @@ function YourAccount() {
           <Typography>Personal Info</Typography>
           <Stack gap={'10px'}>
             <Typography color={'gray'}>Picture</Typography>
-            <img src="" width={'100ppx'} height={'100px'}></img>
+            <div className={classes.changePictureTextWrapper}>
+            <img src={ProfilePic} className={classes.profilePicImage} ></img>
+        <div className={classes.changePictureText}>Change Picture
+          <div className={classes.changePictureIcon}>
+          <ChangepictureSvg />
+          </div>
+          </div>
+        </div>
             <Typography color={'gray'}>User Name</Typography>
             <input
               placeholder="Enter group name"
-              // value={groupName}
-              // onChange={(e) => setGroupName(e.target.value)}
+              value={userData?.user?.firstName}
+              disabled={!editUserDetail}
+              onChange={(e) =>
+                setUserData((prev: any) => {
+                  return {
+                    ...prev,
+                    user: {
+                      ...prev.user,
+                      firstName: e.target.value,
+                    },
+                  };
+                })
+              }
               style={{
                 borderRadius: '3px',
                 border: '1px solid #aaa',
@@ -128,8 +187,19 @@ function YourAccount() {
             <Typography color={'gray'}>E-mail</Typography>
             <input
               placeholder="Enter group name"
-              // value={groupName}
-              // onChange={(e) => setGroupName(e.target.value)}
+              value={userData?.user?.email}
+              disabled={!editUserDetail}
+              onChange={(e) =>
+                setUserData((prev: any) => {
+                  return {
+                    ...prev,
+                    user: {
+                      ...prev.user,
+                      email: e.target.value,
+                    },
+                  };
+                })
+              }
               style={{
                 borderRadius: '3px',
                 border: '1px solid #aaa',
@@ -147,12 +217,30 @@ function YourAccount() {
           <Typography>Agency Info</Typography>
           <Stack gap={'10px'}>
             <Typography color={'gray'}>Picture</Typography>
-            <img src="" width={'100ppx'} height={'100px'}></img>
-            <Typography color={'gray'}>Agency Name</Typography>
+            <div className={classes.changePictureTextWrapper}>
+            <img src={ProfilePic} className={classes.profilePicImage} ></img>
+        <div className={classes.changePictureText}>Change Picture
+          <div className={classes.changePictureIcon}>
+          <ChangepictureSvg />
+          </div>
+          </div>
+        </div>
+        <Typography color={'gray'}>Agency Name</Typography>
             <input
               placeholder="Enter group name"
-              // value={groupName}
-              // onChange={(e) => setGroupName(e.target.value)}
+              value={userData?.agency?.agencyName}
+              disabled={!editUserDetail}
+              onChange={(e) =>
+                setUserData((prev: any) => {
+                  return {
+                    ...prev,
+                    agency: {
+                      ...prev.agency,
+                      agencyName: e.target.value,
+                    },
+                  };
+                })
+              }
               style={{
                 borderRadius: '3px',
                 border: '1px solid #aaa',
@@ -167,8 +255,9 @@ function YourAccount() {
             <Typography color={'gray'}>E-mail</Typography>
             <input
               placeholder="Enter group name"
-              // value={groupName}
-              // onChange={(e) => setGroupName(e.target.value)}
+              value={userData?.user?.email}
+                  disabled={!editUserDetail}
+                  // onChange={(e) => setGroupName(e.target.value)}
               style={{
                 borderRadius: '3px',
                 border: '1px solid #aaa',
@@ -183,46 +272,18 @@ function YourAccount() {
           </Stack>
         </Stack>
       </Box>
-      {/* <div className={classes.passwordChangeWrapper}>
-        <div className={classes.inputListWrapper}>
-          <Input
-            placeholder="Previous password"
-            name="prevPassword"
-            handleOnChange={handleOnChange}
-            value={password.prevPassword}
-    
-          />
-          <Input
-            placeholder="New password"
-            name="newPassword"
-            handleOnChange={handleOnChange}
-            value={password.newPassword}
-          />
-          <Input
-            placeholder="Confirm password"
-            name="confirmPassword"
-            handleOnChange={handleOnChange}
-            value={password.confirmPassword}
-          />
-        </div>
-        <div className={classes.buttonWrapper}>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              backgroundColor: 'your-desired-color-here',
-              '&.Mui-disabled': {
-                backgroundColor: 'rgba(4, 161, 255, 0.32)',
-              },
-            }}
-          >
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Save
-            </Typography>
-          </Button>
-        </div>
-      </div> */}
+     
+     <ChangePasswordModal
+     open={OpenAddEmployee}
+     setOpen={setOpenAddEmployee}
+     handleOnChange={handleOnChange}
+     password={password}
+     enableButton={enableButton}
+     setPassword={setPassword}
+     />
     </div>
+     )}
+    </>
   );
 }
 
