@@ -110,7 +110,7 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
         </div>
       </div>
 
-      <TableContainer>
+      <TableContainer style={{ maxHeight: 420 }}>
         <Table
           className="timesheet-table"
           sx={{

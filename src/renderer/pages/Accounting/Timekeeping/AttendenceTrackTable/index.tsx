@@ -79,7 +79,7 @@ const AttendenceTrackTable = ({ refresh }: $trackprops) => {
           </div>
         </div>
 
-        <TableContainer>
+        <TableContainer style={{ maxHeight: 300 }}>
           <Table
             className="timesheet-table"
             sx={{

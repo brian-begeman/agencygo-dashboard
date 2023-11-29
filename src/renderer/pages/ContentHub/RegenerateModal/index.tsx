@@ -30,10 +30,7 @@ export default function RegenerateModal({ open, dialogOpenClose, link }: any) {
 
 
   const onClick = () => {
-    window.electron.ipcRenderer.sendMessage('copy-to-clipboard', {
-      link: link,
-    });
-  
+    window.electron.copyToClipboard(link);
 
     dialogOpenClose(false);
   };
@@ -74,7 +71,7 @@ export default function RegenerateModal({ open, dialogOpenClose, link }: any) {
               style={{ flex: 1, marginRight: '-31px' }}
               type="text"
               placeholder=""
-             
+
               className={styles.inputWrap}
               readonly={'true'}
               value={link}
