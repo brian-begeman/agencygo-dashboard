@@ -10,10 +10,10 @@ import { agencyCreatorSplit, randomNumber } from 'renderer/pages/Accounting/Invo
 
 interface Props {
   allUsers: [];
-  getUsers: ()=>{}
+  setAllUsers: ()=>{}
 }
 
-export default function SearchUsers({allUsers, getUsers}: Props) {
+export default function SearchUsers({allUsers, setAllUsers}: Props) {
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<any>([]);
   const {data, setData } = useContext<any>(MyInvoiceContext);

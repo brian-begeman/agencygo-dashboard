@@ -25,6 +25,7 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
   const handleClose = () => setOpen(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
+
   const handlePDF = async () => {
     const options = {
       method: 'POST',
@@ -41,70 +42,15 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
       );
       const responseData = await response.json();
 
-<<<<<<< HEAD
       console.log(responseData.data);
       if (responseData?.data?.pdfUrl) {
         setOpen(false)
       }
-=======
-      // console.log(responseData.data);
-      if (responseData?.data?.pdfUrl) {
-        setOpen(false);
-      }
-      // window.location.href = responseData.data;
-      // setpdfURl(responseData.data)
->>>>>>> feat/timekeeping
     } catch (error) {
       console.log(error);
     }
   };
 
-<<<<<<< HEAD
-=======
-  // useEffect(()=>{
-  //   handlePDF
-
-  const pdfData = {
-    userName: data?.firstName,
-    companyName: '',
-    clientCompanyName: '',
-    companyAddress: '',
-    companyContact: '',
-    contactDetails: '',
-    description: '',
-    qty: 11,
-    unitPrice: 12.11,
-    total: 0,
-    userId: data?._id,
-    employeeId: data?._id,
-    email: data?.email,
-    amount: 0,
-    status: true,
-    invoiceNo: 'INC0001',
-    address: 'test',
-
-    paymentTerms: 'test',
-    contactName: 'test',
-    amonut: 0,
-    delivery: true,
-    nameDept: 'test',
-    addresss: 'test',
-    phone: 'test',
-    invoiceTitle: 'test',
-    paymentInstructions: 'test',
-    subtotal: 0,
-    discount: 0,
-    subtotalLessDiscount: 0,
-    taxRate: 'test',
-    totalTax: 0,
-    shippingHandling: 0,
-    balanceDue: '$25310',
-    date: '2023-11-06',
-    addressShipTo: 'test',
-    phoneShipTo: 'test',
-  };
-  // },[name])
->>>>>>> feat/timekeeping
   const truevalue = true;
   const falsevalue = false;
   const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
@@ -133,20 +79,13 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-<<<<<<< HEAD
         <Box
           style={{
             backgroundColor: '#f3f3f3',
-=======
-        <div
-          style={{
-            backgroundColor: 'white',
->>>>>>> feat/timekeeping
             color: 'black',
             overflowY: 'auto',
           }}
         >
-<<<<<<< HEAD
            <Typography
           style={{
             float: 'right',
@@ -161,10 +100,8 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
         >
           X
         </Typography>
-=======
->>>>>>> feat/timekeeping
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-
+          
           <div
             style={{
               display: 'flex',
@@ -198,23 +135,16 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
                 LOGO
               </div>
               <div style={{ lineHeight: '4px', marginLeft: '10px' }}>
-<<<<<<< HEAD
                 <h3>
                   {pdfData?.userName}
                 </h3>
                 <h3>Address</h3>
                 <h3>{pdfData?.email}</h3>
-=======
-                <h3> Your Company Name</h3>
-                <h3>Address</h3>
-                <h3>Your Contact Details</h3>
->>>>>>> feat/timekeeping
               </div>
             </div>
 
             <div>
               <h2>INVOICE</h2>
-<<<<<<< HEAD
               <h4>DATE: {pdfData?.date}</h4>
               <h4>INVOICE No. {'INC0001'}</h4>
             </div>
@@ -353,114 +283,6 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
                   <h3>&lt;{invoiceDetails?.companyContact || ' phone '}&gt;</h3>
                   <h3>&lt;{invoiceDetails?.contactDetails || '  Email '}&gt;</h3>
                 </div>
-=======
-              <h4>DATE</h4>
-              <h4>INVOICE No.</h4>
-            </div>
-          </div>
-
-          {/* secound box */}
-          <div style={{ padding: '20px' }}>
-            <div
-              style={{
-                color: 'bfbfbf',
-                display: 'flex',
-                justifyContent: 'end',
-              }}
-            >
-              &lt;Payment terms due on receipt, due in X days&gt;
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                color: '#333f4f',
-              }}
-            >
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Bill To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-
-                <h3 onClick={handleContactClick} style={{ cursor: 'pointer' }}>
-                  {editContact ? (
-                    <input
-                      type="text"
-                      value={newContact}
-                      onChange={handleContactChange}
-                      onBlur={() => seteditContact(false)}
-                    />
-                  ) : (
-                    newContact || '< Contact Name >'
-                  )}
-                </h3>
-                <h3 onClick={handleClientClick} style={{ cursor: 'pointer' }}>
-                  {editClient ? (
-                    <input
-                      type="text"
-                      value={newClient}
-                      onChange={handleClientChange}
-                      onBlur={() => seteditClient(false)}
-                    />
-                  ) : (
-                    newClient || '<Client Company Name >'
-                  )}
-                </h3>
-
-                <h3 onClick={handleAddressClick} style={{ cursor: 'pointer' }}>
-                  {editAddress ? (
-                    <input
-                      type="text"
-                      value={newAddress}
-                      onChange={handleAddressChange}
-                      onBlur={() => seteditAddress(false)}
-                    />
-                  ) : (
-                    newAddress || '<Address >'
-                  )}
-                </h3>
-
-                <h3>&lt;Phone &gt;</h3>
-
-                <h3>&lt;Email &gt;</h3>
-              </div>
-
-              <div>
-                <h2 style={{ color: '#1f3864' }}>Ship To</h2>
-                <div
-                  style={{ height: '3px', backgroundColor: '#bfbfbf' }}
-                ></div>
-                <h3>&lt; Name / Dept&gt;</h3>
-                <h3>&lt;Client Company Name&gt;</h3>
-                <h3>&lt;Address &gt;</h3>
-                <h3 onClick={handlePhoneClick} style={{ cursor: 'pointer' }}>
-                  {editPhone ? (
-                    <input
-                      type="text"
-                      value={newPhone}
-                      onChange={handlePhoneChange}
-                      onBlur={() => seteditPhone(false)}
-                    />
-                  ) : (
-                    newPhone || '<Phone >'
-                  )}
-                </h3>{' '}
-                {/* fourth */}
-                <h3 onClick={handleEmailClick} style={{ cursor: 'pointer' }}>
-                  {editEmail ? (
-                    <input
-                      type="text"
-                      value={newEmail}
-                      onChange={handleEmailChange}
-                      onBlur={() => seteditEmail(false)}
-                    />
-                  ) : (
-                    newEmail || '<Email >'
-                  )}
-                </h3>
->>>>>>> feat/timekeeping
               </div>
             </div>
 
@@ -475,7 +297,6 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
                 color: '#333f4f',
               }}
             >
-<<<<<<< HEAD
               <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
                 ${pdfData.amount}
               </h2>
@@ -502,31 +323,6 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
               Close
             </Button>
           </div>
-=======
-              Remarks / Payment Instructions
-            </div>
-            <div style={{ width: '40%', display: 'flex' }}>
-              <div>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                <h3>Subtotal</h3>
-                {/* <h2>$ Balance due</h2> */}
-              </div>
-
-              <div>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h3>_____________0.00</h3>
-                <h2 style={{ backgroundColor: 'pink', height: '50px' }}></h2>
-              </div>
-              <div style={{ height: '4px', backgroundColor: 'black' }}></div>
-            </div>
-          </div>
-          <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-        </div>
->>>>>>> feat/timekeeping
       </Box>
     </Modal>
   );

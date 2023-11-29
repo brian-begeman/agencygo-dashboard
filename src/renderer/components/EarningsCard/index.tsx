@@ -29,7 +29,7 @@ export default function EarningsCard({ title, amount }: $Props) {
           {title}
         </Typography>
         <Typography fontSize="36px" fontWeight={700}>
-          <CountUp end={parseInt(amount)} duration={1} />
+          <CountUp end={parseInt(amount)} duration={1} decimals={2}/>
         </Typography>
       </Stack>
     </Stack>

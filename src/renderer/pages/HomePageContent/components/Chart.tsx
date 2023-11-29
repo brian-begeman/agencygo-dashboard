@@ -3,7 +3,8 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(Filler);
 
-export function TotalEarningsChart() {
+export function TotalEarningsChart(props: { data: { labels: string[]; data: number[]; }}) {
+  const { data } = props;
   return (
     <Line
       style={{ width: '100%' }}
@@ -31,19 +32,11 @@ export function TotalEarningsChart() {
         },
       }}
       data={{
-        labels: [
-          '1 Aug',
-          '7 Aug',
-          '14 Aug',
-          '21 Aug',
-          '28 Aug',
-          '1 Sep',
-          '7 Sep',
-        ],
+        labels: data.labels,
         datasets: [
           {
             label: 'Amount Earned',
-            data: [65, 59, 62, 70, 72, 67, 70],
+            data: data.data,
             tension: 0.3,
             borderWidth: 0,
             fill: true,
