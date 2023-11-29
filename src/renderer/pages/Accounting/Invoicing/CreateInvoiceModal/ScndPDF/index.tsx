@@ -326,7 +326,6 @@ export default function ScndPDF({ submitInvoice, allFieldsFilled, open, setOpen,
             </Button> 
           </Box>
         </div>
-        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );
