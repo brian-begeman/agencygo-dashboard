@@ -23,7 +23,7 @@ const style = {
 const trueValue = true;
 const falseValue = false;
 
-export default function FourthPDF({ submitInvoice, open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
+export default function FourthPDF({ submitInvoice, allFieldsFilled, open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
   const handleClose = () => setOpen(false);
   const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
   const [editPDF, setEditpdf] = useState({...initialPdfValue});
@@ -52,11 +52,9 @@ export default function FourthPDF({ submitInvoice, open, setOpen, pdfData, initi
       <Box sx={style}>
         <div className="">
           <div className="istbox">
-            <div className="left">
               <div className="Juliana">
                 <h1>{pdfData?.userName}</h1>
               </div>
-            </div>
             <div className="right">
               <div className="invoicee">
                 <h1>INVOICE</h1>
@@ -70,7 +68,7 @@ export default function FourthPDF({ submitInvoice, open, setOpen, pdfData, initi
             </div>
           </div>
 
-          <div style={{ padding: '10px 50px' }}>
+          <div style={{ padding: '10px 25px' }}>
             <div
               style={{
                 display: 'flex',
@@ -202,7 +200,8 @@ export default function FourthPDF({ submitInvoice, open, setOpen, pdfData, initi
             </div>
           </div>
 
-          <div style={{display: 'flex', justifyContent: 'end',}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 25px'}}>
+          <Typography color={'error'} height={'5px'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
             <Typography fontSize={'large'} fontWeight={'bold'} bgcolor={'#ffe3fe'} color={'#df287b'} padding={'10px 25px'}>
               ${pdfData?.total}
             </Typography>

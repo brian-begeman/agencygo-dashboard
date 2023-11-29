@@ -22,7 +22,7 @@ const style = {
   scrollBehavior: 'smooth',
 };
 
-export default function AddLeder({ submitInvoice, open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
+export default function AddLeder({ submitInvoice, allFieldsFilled, open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
   const [currentDate, setCurrentDate] = useState(new Date())
 
@@ -249,12 +249,14 @@ export default function AddLeder({ submitInvoice, open, setOpen, pdfData, initia
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'end',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 width: '100%',
                 padding: '10px ',
                 color: '#333f4f',
               }}
             >
+               <Typography color={'error'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
               <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
                 ${pdfData.amount}
               </h2>

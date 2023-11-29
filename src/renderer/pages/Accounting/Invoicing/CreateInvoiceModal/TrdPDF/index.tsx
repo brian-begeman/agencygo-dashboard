@@ -2,7 +2,7 @@ import {useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './TrdPDF.css';
-import { Button} from '@mui/material';
+import { Button, Typography} from '@mui/material';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function TrdPDF({ submitInvoice, open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
+export default function TrdPDF({ submitInvoice, allFieldsFilled, open, setOpen, pdfData, initialPdfValue, viewOnly }: any) {
   const [editDate, setEditDate] = useState(false);
   const [newDate, setNewDate] = useState(pdfData?.date);
 
@@ -241,6 +241,7 @@ export default function TrdPDF({ submitInvoice, open, setOpen, pdfData, initialP
                 </div>
               </div>
             </div>
+            <Typography color={'error'} height={'5px'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
           </div>
 
           <Box sx={{ width: '100%', display: 'flex', padding: '5px', justifyContent: 'end', gap: '4px'}}>

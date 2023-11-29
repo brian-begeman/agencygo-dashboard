@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function ScndPDF({ submitInvoice, open, setOpen, name, pdfData, initialPdfValue, viewOnly }: any) {
+export default function ScndPDF({ submitInvoice, allFieldsFilled, open, setOpen, name, pdfData, initialPdfValue, viewOnly }: any) {
   const handleClose = () => setOpen(false);
 
   const { data } = useContext(MyInvoiceContext);
@@ -309,7 +309,8 @@ export default function ScndPDF({ submitInvoice, open, setOpen, name, pdfData, i
             </div>
           </div>
           
-          <Box sx={{display: 'flex', justifyContent:'end', borderColor: 'red', backgroundColor: '#f1f4ff', padding: '5px', margin: '40px 0px', borderRadius:'2px'}}>
+          <Box sx={{display: 'flex', justifyContent:'space-between', alignItems: 'center', borderColor: 'red', backgroundColor: '#f1f4ff', padding: '5px', margin: '40px 0px', borderRadius:'2px'}}>
+            <Typography color={'error'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
             <Typography variant='h6'>${pdfData?.amount}</Typography>
           </Box>
 
