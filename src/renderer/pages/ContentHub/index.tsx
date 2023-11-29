@@ -988,6 +988,7 @@ export default function ContentHub() {
               open={isUploadFolderModalOpen}
               dialogOpenClose={dialogUploadOpenClose}
               getImagesInFolder={getImagesInFolder}
+              creatorData={data.data.creators}
             />
           )}
         </Box>

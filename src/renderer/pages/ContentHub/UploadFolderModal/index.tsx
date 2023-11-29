@@ -40,6 +40,7 @@ export default function UploadFolderModal({
   selectedCreator,
   loadData,
   getImagesInFolder,
+  creatorData,
 }: any) {
   const [foldername, setfoldername] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -166,6 +167,8 @@ export default function UploadFolderModal({
 
         const payload = {
           createorId: selectedCreator,
+          creatorEmail: creatorData.filter((e) => e._id === selectedCreator)[0]
+            .ofcreds.email,
           fileName: selectedFile.name,
           mimeType: getFileExtension(selectedFile.name),
           imageKey: key,
