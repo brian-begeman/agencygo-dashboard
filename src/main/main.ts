@@ -87,7 +87,10 @@ const installExtensions = async () => {
 
 const createWindow = async () => {
   Store.initRenderer();
-  const winDimens = screen.getPrimaryDisplay().workAreaSize;
+  const winDimens = {
+    width: 1280,
+    height: 770,
+  };
 
   /*  if (!isDebug) {
     await installExtensions();
@@ -111,6 +114,7 @@ const createWindow = async () => {
     resizable: true,
     roundedCorners: true,
     frame: true,
+    // titleBarStyle: 'hiddenInset',
   });
 
   const view1 = new BrowserView({

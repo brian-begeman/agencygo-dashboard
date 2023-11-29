@@ -61,7 +61,7 @@ export default function Earnings() {
     amount: number;
     icon: ReactElement
   }[]>(initalEarnings);
-  const [activeButton, setActiveButton] = useState('thisYear');
+  const [activeButton, setActiveButton] = useState('yesterday');
   const [totalEarnings, setTotalEarnings] = useState<number>(0);
   const [chartData, setChartData] = useState<{
     labels: string[];
