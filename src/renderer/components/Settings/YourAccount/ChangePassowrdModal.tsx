@@ -2,6 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, Typography, useTheme, Input } from '@mui/material';
 import Overlay from '../Wallet/Common/Modal';
 import classes from './styles.module.css';
+import axios from 'axios';
+import { API_URL } from 'config';
+const token = localStorage.getItem('Authorization');
+
+
 
 interface $Props {
   open: boolean;
@@ -29,21 +34,42 @@ export default function ChangePasswordModal({
     });
   };
 
-  const submitPassword = () => {
-    if (password.newPassword == password.confirmPassword) {
-      console.log('password Changed');
-      setOpen(false);
-      setPassword({
-        confirmPassword: '',
-        newPassword: '',
-        prevPassword: '',
-      });
+  const submitPassword = async() => {
+    try{
+      const user_Id = localStorage.getItem("UserId")
+      if (password.newPassword == password.confirmPassword) {
+      const response= await axios.put(`${API_URL}/users/${user_Id}`,
+        {
+          oldPassword:password.prevPassword,
+          newPassword:password.newPassword,
+          confirmNewPassword:password.confirmPassword
+        },
+        {
+          headers: {
+            
+            Authorization: `Bearer ${token}`,
+        }
+      }
+        )
+       console.log("response",response);
+       
+        setOpen(false);
+        setPassword({
+          confirmPassword: '',
+          newPassword: '',
+          prevPassword: '',
+        });
+      }
     }
-  };
+   catch{
+    console.log("Password Not changed");
+   }
+  } 
 
   const handleModalClose = () => {
     setOpen(false);
   };
+
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
