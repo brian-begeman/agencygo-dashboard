@@ -132,11 +132,6 @@ const sideBarMenuConst = [
         value: 'book-keeping',
         link: '/accounting/book-keeping',
       },
-      {
-        label: 'Time Keeping',
-        value: 'time-keeping',
-        link: '/accounting/time-keeping',
-      },
     ],
   },
   {
@@ -226,6 +221,11 @@ const sideBarMenuConst = [
     name: localisation.employees,
     icon: <EmployeSvg />,
     menu: [
+      {
+        label: 'Time Keeping',
+        value: 'time-keeping',
+        link: '/accounting/time-keeping',
+      },
       {
         label: 'Manage Employees',
         value: 'manageEmployees',

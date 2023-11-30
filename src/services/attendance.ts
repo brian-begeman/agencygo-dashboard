@@ -35,6 +35,22 @@ async function updateAttendance(payload: any, attId: String) {
   return resp;
 }
 
+// Update Notes
+async function updateNotes(payload: { notes: string }, attId: String) {
+  const endPoint = `attendence/update/notes/${attId}`;
+  const options = {
+    method: 'PATCH' as 'PATCH',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+    body: JSON.stringify(payload),
+  };
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();
+  return resp;
+}
+
 // Get Emp Attendance
 async function getEmpAttendance(startDate, endDate) {
   try {
@@ -77,4 +93,5 @@ export {
   updateAttendance,
   getEmpAttendance,
   getAllTimeSheets,
+  updateNotes,
 };

@@ -4,7 +4,11 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import moment from 'moment';
 
-import { createAttendance, updateAttendance } from 'services/attendance';
+import {
+  createAttendance,
+  updateAttendance,
+  updateNotes,
+} from 'services/attendance';
 import { $props, CreateData, TimeLine } from '../Types/index.types';
 import ProgressBar from '../Timebar';
 
@@ -14,7 +18,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const [isOnBreak, setOnBreak] = useState(false);
   const [timerActive, setTimerActive] = useState(false);
   const [time, setTime] = useState(0);
-  const [notesArray, setNotesArray] = useState<string[]>([]);
   const [breaksArray, setBreaksArray] = useState<number[]>([]);
   const [createData, setCreateData] = useState<CreateData>({
     startDateTime: moment(),
@@ -34,12 +37,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       return { ...prevState, [key]: value };
     });
   };
-  const saveNotes = () => {
-    const newNotes = [...notesArray, createData.notes];
-    setNotesArray(newNotes);
-    setStateFn(setCreateData, 'notes', '');
-    updateAttendanceData({ isNote: true, notes: newNotes });
-  };
+
   const saveBreaks = () => {
     if (breaksArray.length === 0) {
       setBreaksArray([...breaksArray, breakTime]);
@@ -166,7 +164,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     const payload = {
       startDateTime: createData.startDateTime,
       breakTime: breaksArray,
-      notes: notesArray,
+      notes: createData.notes,
       totalHours: time,
       breakHours: breakTime,
       timeLine: timeline,
@@ -179,12 +177,8 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     } catch (error) {}
   };
   const updateAttendanceData = async ({
-    isNote = false,
-    notes = [],
     timeline,
   }: {
-    isNote?: boolean;
-    notes?: string[];
     timeline?: TimeLine[];
   }) => {
     const payload = {
@@ -200,7 +194,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
             .filter((e) => e.type === 'break')
             .map((e) => ({ startTime: e.startTime, endTime: e.endTime })),
         }),
-      notes: isNote ? notes : notesArray,
       totalHours: time,
       breakHours: breakTime,
       timeLine: timeline,
@@ -208,6 +201,25 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     try {
       await updateAttendance(payload, createData.attendanceData._id);
     } catch (error) {}
+  };
+  const updateNotesData = async () => {
+    try {
+      const payload = {
+        notes: createData.notes,
+      };
+      const response = await updateNotes(
+        payload,
+        createData.attendanceData._id
+      );
+      if (response.ack === 1) {
+        toggleRefresh();
+      }
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
+  const saveNotes = () => {
+    updateNotesData();
   };
 
   return (

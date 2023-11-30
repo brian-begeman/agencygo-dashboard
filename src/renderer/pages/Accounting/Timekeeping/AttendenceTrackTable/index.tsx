@@ -17,13 +17,19 @@ import moment from 'moment';
 import CreateIcon from '@mui/icons-material/Create';
 
 import { getAllTimeSheets } from 'services/attendance';
-import { $trackprops, AttendanceTrackData } from '../Types/index.types';
+import { AttendanceTrackData } from '../Types/index.types';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
-const AttendenceTrackTable = ({ refresh }: $trackprops) => {
+const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
   const [attedndanceTrackData, setAttendanceTrackData] = useState([]);
+  const [timevalue, setTimeValue] = useState<Dayjs | null>(dayjs(new Date()));
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -51,32 +57,29 @@ const AttendenceTrackTable = ({ refresh }: $trackprops) => {
     <Box>
       <div className="attendance-container">
         <div className="attendence-tbl-head">
-          <div className="attendance-header mb-0">Todays Timesheet</div>
-          <div>
-            <FormControl
-              sx={{
-                m: 1,
-                minWidth: 88,
-                bgcolor: isDarkTheme ? '#000' : '#EAF1FF',
-                borderRadius: 3,
+          <div className="attendance-header mb-0">Timesheet Reports</div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div
+              style={{
+                borderRadius: 5,
+                paddingRight: 5,
               }}
-              size="small"
             >
-              <InputLabel id="demo-select-small-label" style={{ fontSize: 14 }}>
-                Today
-              </InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                label="Today"
-                style={{ border: 'none', borderRadius: 10 }}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+              <DemoItem>
+                <DatePicker
+                  className="timesheet-reports-date-picker"
+                  sx={{
+                    bgcolor: isDarkTheme ? '#121212' : '#EAF1FF',
+                    maxWidth: '200px',
+                  }}
+                  value={timevalue}
+                  onChange={(newValue) => {
+                    setTimeValue(moment(newValue.$d).format('YYYY-MM-DD'));
+                  }}
+                />
+              </DemoItem>
+            </div>
+          </LocalizationProvider>
         </div>
 
         <TableContainer style={{ maxHeight: 300 }}>
@@ -92,6 +95,7 @@ const AttendenceTrackTable = ({ refresh }: $trackprops) => {
             <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
               <TableRow>
                 <TableCell>Date</TableCell>
+                <TableCell>User Name</TableCell>
                 <TableCell>Total Hours</TableCell>
                 <TableCell>Break Hours</TableCell>
                 <TableCell>Edit Log</TableCell>
@@ -114,7 +118,9 @@ const AttendenceTrackTable = ({ refresh }: $trackprops) => {
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {moment(e.startDateTime).format('DD/MM/YYYY')}
                       </TableCell>
-
+                      <TableCell sx={{ color: '#FFFFFF' }}>
+                        {'username'}
+                      </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {formatTime(e.totalHours)}Hrs
                       </TableCell>

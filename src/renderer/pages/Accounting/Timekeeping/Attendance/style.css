@@ -276,6 +276,17 @@
   background-color: #000;
 }
 
+.timesheet-reports-date-picker .MuiInputBase-root input {
+  font-size: 14px;
+  padding: 0px;
+  border: none;
+  width: 80px;
+  margin: -13px;
+}
+.timesheet-reports-date-picker .MuiInputBase-root {
+  border: none;
+}
+
 /* Add more specific color styles for segments */
 .green {
   background-color: #4caf50; /* Green */

@@ -123,6 +123,7 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
           <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
             <TableRow>
               <TableCell>Check-in</TableCell>
+              <TableCell>Notes</TableCell>
               <TableCell>Time Sheet Notes</TableCell>
               <TableCell>Check-out Hours</TableCell>
               <TableCell>Total Hours</TableCell>
@@ -147,6 +148,7 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
                     <TableCell sx={{ color: '#FFFFFF' }}>
                       {moment(e.startDateTime).format('dddd, DD, YYYY h:mma')}
                     </TableCell>
+                    <TableCell sx={{ color: '#FFFFFF' }}>{e.notes}</TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>
                       <ProgressBar
                         timeline={e.timeLine}
