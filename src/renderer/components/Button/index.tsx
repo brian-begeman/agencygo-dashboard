@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 interface $Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: 'primary';
   variant?: 'contained' | 'text' | 'outlined';
-  size:'medium' | 'small';
+  size?: 'medium' | 'small';
 }
 
 export default function ButtonEle({
