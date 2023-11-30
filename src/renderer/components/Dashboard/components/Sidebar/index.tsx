@@ -21,6 +21,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NewSideBar from './newSideBar';
 import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
+import { useNavigate } from 'react-router-dom';
 
 const sideBarMenuConst = [
   {
@@ -241,8 +242,9 @@ const sideBarMenuConst = [
 ];
 
 function BrandLogo() {
+  const navigate=useNavigate()
   return (
-    <div className={classes.brandLogo}>
+    <div className={classes.brandLogo} onClick={()=>navigate('/home')}>
       <div className={classes.brandIcon}>
         <BrandLogoSvg />
       </div>
