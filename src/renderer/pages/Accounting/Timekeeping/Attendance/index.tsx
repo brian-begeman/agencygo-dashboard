@@ -11,6 +11,7 @@ import {
 } from 'services/attendance';
 import { $props, CreateData, TimeLine } from '../Types/index.types';
 import ProgressBar from '../Timebar';
+import { createTimeline } from 'services/timeline';
 
 // Attendance Component
 const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
@@ -100,31 +101,32 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setTimerActive(false);
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     setTimeline([...timeline]);
     updateAttendanceData({ timeline });
-
     toggleRefresh();
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
   };
   const startBreak = () => {
     setOnBreak(true);
     setTimerActive(false);
     setBreakTimerActive(true);
     timeline[timeline.length - 1].endTime = new Date();
-
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     let newTimeLine: TimeLine = {
       startTime: new Date(),
       type: 'break',
       endTime: null,
     };
     setTimeline([...timeline, newTimeLine]);
+
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
   };
   const endBreak = () => {
     setOnBreak(false);
@@ -132,10 +134,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setBreakTimerActive(false);
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     setTimeline([
       ...timeline,
       {
@@ -144,6 +142,13 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
         endTime: null,
       },
     ]);
+
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
+
     updateAttendanceData({ timeline });
   };
 
@@ -220,6 +225,14 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   };
   const saveNotes = () => {
     updateNotesData();
+  };
+
+  const saveTimeline = async (payload) => {
+    try {
+      const response = await createTimeline(payload);
+    } catch (error) {
+      console.log('Error', error);
+    }
   };
 
   return (

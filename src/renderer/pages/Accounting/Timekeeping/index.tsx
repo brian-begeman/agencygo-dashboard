@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 
 import AttendenceTrackTable from './AttendenceTrackTable';
 import TimeSheetTable from './TimeSheetTable';
 import Attendance from './Attendance';
 import HeaderBar from './HeaderBar';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 export default function Timekeeping() {
   const theme = useTheme();

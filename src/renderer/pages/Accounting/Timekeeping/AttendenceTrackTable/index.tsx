@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTheme } from '@emotion/react';
 import {
   Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -23,13 +19,33 @@ import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
+import { AuthContext } from 'renderer/contexts/AuthContext';
+import TimesheetEditModal from '../EditModal';
+import { getAllTimlineData, getAllTimlineDataAll } from 'services/timeline';
 
 const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
+  const { userData } = useContext(AuthContext);
 
   const [attedndanceTrackData, setAttendanceTrackData] = useState([]);
-  const [timevalue, setTimeValue] = useState<Dayjs | null>(dayjs(new Date()));
+  const [timevalue, setTimeValue] = useState(null);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editData, setEditData] = useState({});
+
+  const handleClose = (e) => {
+    setEditData(e);
+    setShowEdit(!showEdit);
+  };
+
+  const checkRole = () => {
+    if (
+      userData?.user?.role === 'manager' ||
+      userData?.user?.role === 'admin'
+    ) {
+      return true;
+    }
+  };
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -42,7 +58,7 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
 
   const getData = async () => {
     try {
-      const response = await getAllTimeSheets();
+      const response = await getAllTimlineDataAll();
       if (response.ack === 1) {
         setAttendanceTrackData(response.data);
       }
@@ -58,13 +74,14 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
       <div className="attendance-container">
         <div className="attendence-tbl-head">
           <div className="attendance-header mb-0">Timesheet Reports</div>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <div
-              style={{
-                borderRadius: 5,
-                paddingRight: 5,
-              }}
-            >
+
+          <div
+            style={{
+              padding: '2px 12px',
+            }}
+            className="timesheet-reports-date-picker"
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoItem>
                 <DatePicker
                   className="timesheet-reports-date-picker"
@@ -78,8 +95,8 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
                   }}
                 />
               </DemoItem>
-            </div>
-          </LocalizationProvider>
+            </LocalizationProvider>
+          </div>
         </div>
 
         <TableContainer style={{ maxHeight: 300 }}>
@@ -98,12 +115,13 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
                 <TableCell>User Name</TableCell>
                 <TableCell>Total Hours</TableCell>
                 <TableCell>Break Hours</TableCell>
-                <TableCell>Edit Log</TableCell>
+                {checkRole() && <TableCell>Edit Log</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
               {attedndanceTrackData &&
-                attedndanceTrackData?.map((e: AttendanceTrackData, i) => {
+                attedndanceTrackData.map((e, i) => {
+                  console;
                   return (
                     <TableRow
                       sx={{
@@ -116,30 +134,37 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
                       }}
                     >
                       <TableCell sx={{ color: '#FFFFFF' }}>
-                        {moment(e.startDateTime).format('DD/MM/YYYY')}
+                        {moment(e.startTime).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
-                        {'username'}
+                        {`${e?.user?.[0]?.firstName} ${e?.user?.[0]?.lastName}`}
                       </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
-                        {formatTime(e.totalHours)}Hrs
+                        {e.type == 'working' ? formatTime(e.total) : '00:00:00'}
+                        Hrs
                       </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
-                        {formatTime(e.breakHours)}Hrs
+                        {e.type == 'break' ? formatTime(e.total) : '00:00:00'}
+                        Hrs
                       </TableCell>
-                      <TableCell sx={{ color: '#04A1FF' }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                          }}
-                        >
-                          <Box sx={{ cursor: 'pointer', color: '#04A1FF' }}>
-                            <CreateIcon style={{ color: '#04A1FF' }} />
+                      {checkRole() && (
+                        <TableCell sx={{ color: '#04A1FF' }}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                            }}
+                          >
+                            <Box
+                              sx={{ cursor: 'pointer', color: '#04A1FF' }}
+                              onClick={() => handleClose(e)}
+                            >
+                              <CreateIcon style={{ color: '#04A1FF' }} />
+                            </Box>
                           </Box>
-                        </Box>
-                      </TableCell>
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -147,6 +172,13 @@ const AttendenceTrackTable = ({ refresh }: { refresh: boolean }) => {
           </Table>
         </TableContainer>
       </div>
+      {
+        <TimesheetEditModal
+          showEdit={showEdit}
+          handleClose={handleClose}
+          editData={editData}
+        />
+      }
     </Box>
   );
 };

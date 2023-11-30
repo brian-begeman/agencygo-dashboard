@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -20,15 +21,35 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import ProgressBar from '../Timebar';
 import { getEmpAttendance } from 'services/attendance';
 import { $trackprops, AttendanceTimeSheet } from '../Types/index.types';
+import TimesheetEditModal from '../EditModal';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+  const { userData } = useContext(AuthContext);
+
   const [attedndanceTrackData, setAttendanceTrackData] = useState([]);
   const [valueLeft, setValueLeft] = useState(null);
   const [valueRight, setValueRight] = useState(null);
   const [both, setBoth] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editData, setEditData] = useState({});
+
+  const checkRole = () => {
+    if (
+      userData?.user?.role === 'manager' ||
+      userData?.user?.role === 'admin'
+    ) {
+      return true;
+    }
+  };
+
+  const handleClose = (e) => {
+    setEditData(e);
+    setShowEdit(!showEdit);
+  };
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -127,7 +148,8 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
               <TableCell>Time Sheet Notes</TableCell>
               <TableCell>Check-out Hours</TableCell>
               <TableCell>Total Hours</TableCell>
-              <TableCell>Edit Log</TableCell>
+
+              {checkRole() && <TableCell>Edit Log</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -151,7 +173,7 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
                     <TableCell sx={{ color: '#FFFFFF' }}>{e.notes}</TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>
                       <ProgressBar
-                        timeline={e.timeLine}
+                        timeline={e.timeline || []}
                         shiftDuration={shiftDuration}
                       />
                     </TableCell>
@@ -159,28 +181,47 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
                       {moment(e.endDateTime).format('h:mma')}
                     </TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>
-                      {formatTime(e.totalHours)}Hrs
+                      {formatTime(
+                        e.timeline.length > 0
+                          ? e.timeline.reduce((a, b) => {
+                              return a + b.total;
+                            }, 0)
+                          : '00:00:00'
+                      )}
+                      Hrs
                     </TableCell>
 
-                    <TableCell sx={{ color: '#04A1FF' }}>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                        }}
-                      >
-                        <Box sx={{ cursor: 'pointer' }}>
-                          <CreateIcon style={{ color: '#04A1FF' }} />
+                    {checkRole() && (
+                      <TableCell sx={{ color: '#04A1FF' }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                          }}
+                        >
+                          <Box
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => handleClose(e)}
+                          >
+                            <CreateIcon style={{ color: '#04A1FF' }} />
+                          </Box>
                         </Box>
-                      </Box>
-                    </TableCell>
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })}
           </TableBody>
         </Table>
       </TableContainer>
+      {
+        <TimesheetEditModal
+          showEdit={showEdit}
+          handleClose={handleClose}
+          editData={editData}
+        />
+      }
     </div>
   );
 };
