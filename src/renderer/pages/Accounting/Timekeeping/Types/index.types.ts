@@ -22,12 +22,13 @@ export interface CreateData {
 export interface $trackprops {
   refresh: boolean;
   shiftDuration: number;
+  isEmp: boolean;
 }
 export interface AttendanceTrackData {
   startDateTime: Date;
   endDateTime: Date;
   breakTime: string[];
-  notes: string[];
+  notes: string;
   totalHours: number;
   breakHours: number;
   timeLine: TimeLine[];
@@ -38,4 +39,6 @@ export interface AttendanceTimeSheet {
   endDateTime: Date;
   totalHours: number;
   timeLine: TimeLine[];
+  timeline: TimeLine[];
+  notes: string;
 }
