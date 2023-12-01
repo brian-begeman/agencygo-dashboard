@@ -1,6 +1,5 @@
-const API_URL =
-  // 'http://116.202.210.102:3000';
-  'http://localhost:3000';
+const API_URL = 'http://localhost:3000';
+   // 'http://116.202.210.102:3000';
   // 'https://227b-2405-201-200c-c0e6-84c1-c0f0-449d-9633.ngrok-free.app';
 
   // 'http://ec2-18-190-107-196.us-east-2.compute.amazonaws.com:3000';

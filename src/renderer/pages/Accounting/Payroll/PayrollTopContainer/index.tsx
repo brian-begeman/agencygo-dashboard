@@ -3,41 +3,55 @@ import {
   Button,
   MenuItem,
   Select,
-  Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { useState } from 'react';
-import theme from 'renderer/styles/muiTheme';
-import AvatarSvg from 'renderer/assets/svg/AvatarSvg';
+import { useEffect, useState } from 'react';
 import CreateInvoiceModal from '../CreateModal';
+import { OpenInNew } from '@mui/icons-material';
 
-const PayrollTopContainer = () => {
+type frequency = 'Weekly'|'Biweekly'|'Monthly'|'Annually'
+type status = 'Paid'|'Unpaid'
+type role = 'Admin'|'Manager'|'Employee'
+
+const payrollFrequency = ['Weekly', 'Biweekly', 'Monthly', 'Annually']
+const PayrollTopContainer = ({filterPayrolls}: any) => {
+  
   const [isCreateInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
+  const [selectedFrequency, setSelectedFrequency] = useState('Weekly');
+  const [selectedRole, setSelectedRole] = useState('Roles');
+  const [selectedStatus, setSelectedStatus] = useState('Status');
 
-  const [selectData, setSelectedData] = useState('Current invoice settings');
   const handleOpen = () => setCreateInvoiceModalOpen(true);
+
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
+  useEffect(()=>{
+      filterPayrolls(selectedFrequency, selectedRole, selectedStatus);
+  }, [selectedFrequency, selectedRole, selectedStatus])
 
   return (
     <Box margin={'10px 0px'}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography fontSize="22px">Invoicing</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
+        <Typography fontSize="22px">Payroll</Typography>
         <Button
           variant="contained"
           sx={{ color: '#fff', textTransform: 'capitalize' }}
-          onClick={handleOpen}
-
-        >
+          size='small'
+          startIcon={<OpenInNew />}
+          onClick={handleOpen}>
           Export
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'end',margin:'20px 0px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'end', marginTop:'20px', padding: '10px', borderRadius: '3px', backgroundColor: isDark? '#121212': '#fff' }}>
         <Box display={'flex'} gap={'10px'}>
           <Select
             id="current-invoice-settings"
-            value={'Weekly'}
-            onChange={(e) => setSelectedData(e.target.value)}
+            value={selectedFrequency}
+            onChange={(e) => setSelectedFrequency(e.target.value)}
             sx={{
-             
+              borderRadius: '5px',
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
@@ -60,37 +74,19 @@ const PayrollTopContainer = () => {
               },
             }}
           >
-            <MenuItem
-              value={'Weekly'}
-              sx={{ fontWeight: 500 }}
-            >
-              Weekly
-            </MenuItem>
-            <MenuItem
-              value={'Biweekly'}
-              sx={{ fontWeight: 500 }}
-            >
-              Biweekly
-            </MenuItem>
-            <MenuItem
-              value={'Monthly'}
-              sx={{ fontWeight: 500 }}
-            >
-              Monthly
-            </MenuItem>
-            <MenuItem
-              value={'Annually'}
-              sx={{ fontWeight: 500 }}
-            >
-              Annually
-            </MenuItem>
+            
+            {payrollFrequency.map((item) => {
+              return <MenuItem key={item} value={item} sx={{ fontWeight: 500 }}>
+                        {item}
+                    </MenuItem>
+            })}
           </Select>
           <Select
             id="current-invoice-settings"
-            value={'Roles'}
-            onChange={(e) => setSelectedData(e.target.value)}
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
             sx={{
-             
+              borderRadius: '5px',
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
@@ -120,19 +116,19 @@ const PayrollTopContainer = () => {
               Roles
             </MenuItem>
             <MenuItem
-              value={'Admin'}
+              value={'admin'}
               sx={{ fontWeight: 500 }}
             >
               Admin
             </MenuItem>
             <MenuItem
-              value={'Manager'}
+              value={'manager'}
               sx={{ fontWeight: 500 }}
             >
               Manager
             </MenuItem>
             <MenuItem
-              value={'Employee'}
+              value={'employee'}
               sx={{ fontWeight: 500 }}
             >
               Employee
@@ -140,10 +136,10 @@ const PayrollTopContainer = () => {
           </Select>
           <Select
             id="current-invoice-settings"
-            value={'Status'}
-            onChange={(e) => setSelectedData(e.target.value)}
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
             sx={{
-             
+              borderRadius: '5px',
               width: 'fit-content',
               '.MuiOutlinedInput-notchedOutline': {
                 borderColor: theme.palette.secondary.light,
@@ -179,16 +175,16 @@ const PayrollTopContainer = () => {
               Paid
             </MenuItem>
             <MenuItem
-              value={'Unpaid'}
+              value={'false'}
               sx={{ fontWeight: 500 }}
             >
               Unpaid
             </MenuItem>
           </Select>
           {isCreateInvoiceModalOpen && (
-        <CreateInvoiceModal
-          open={isCreateInvoiceModalOpen}
-          setOpen={setCreateInvoiceModalOpen}
+          <CreateInvoiceModal
+            open={isCreateInvoiceModalOpen}
+            setOpen={setCreateInvoiceModalOpen}
         />
       )}
         </Box>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, {
@@ -7,6 +7,7 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import {
+  Box,
   Table,
   TableCell,
   TableContainer,
@@ -14,6 +15,17 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
+
+
+interface  payrollHeaderData {
+  startDate:string,
+  endDate:string,
+  totalHours:string,
+  totalSalary:string,
+  totalCommission:string,
+
+}
+
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -51,7 +63,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function TableAccordion({ children }: any) {
-  const [expanded, setExpanded] = React.useState<string | false>('1');
+  const [expanded, setExpanded] = useState<string | false>('1');
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -61,10 +73,14 @@ export default function TableAccordion({ children }: any) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+  useEffect(() => {
+    console.log(children)
+  },[])
+
   return (
-    <div>
-      {['1', '2', '3', '4', '5'].map((d) => (
-        <Accordion
+    <Box sx={{borderRadius: '3px', overflow: 'auto',}}>
+      {['1', '2', '3', '4', '5'].reverse().map((d, index) => (
+        <Accordion key={index}
           expanded={expanded === d}
           onChange={handleChange(d)}
           sx={{ borderColor: isDarkTheme ? '#292929' : '#fff' }}
@@ -85,7 +101,7 @@ export default function TableAccordion({ children }: any) {
           </AccordionDetails>
         </Accordion>
       ))}
-    </div>
+    </Box>
   );
 }
 
@@ -93,10 +109,7 @@ const AccordionHeaderData = ({ d }: any) => {
    const theme = useTheme();
    const isDarkTheme = theme.palette.mode === 'dark';
 
-
-
-
-  return (
+   return (
     <>
       <TableContainer>
         <Table aria-label="simple table">
