@@ -169,7 +169,7 @@ const PayrollTopContainer = ({filterPayrolls}: any) => {
               Status
             </MenuItem>
             <MenuItem
-              value={'Paid'}
+              value={'true'}
               sx={{ fontWeight: 500 }}
             >
               Paid

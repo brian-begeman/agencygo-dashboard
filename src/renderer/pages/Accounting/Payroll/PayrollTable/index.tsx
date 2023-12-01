@@ -20,12 +20,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TableAccordion from '../TableAccordion';
 import { useState, ChangeEvent } from 'react';
 
-//import { AnyNsRecord } from 'dns';
-
-import { allUsersMock, allPayrollsMock } from '../mockData/payrollTablaData';
-
-
 const PayrollTable = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
+ 
   return (
     <TableAccordion>
       <TableData allUsers={allUsers} allPayrolls={allPayrolls} setAllPayrolls={setAllPayrolls} />
@@ -36,10 +32,20 @@ const PayrollTable = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
 
 export default PayrollTable;
 
-
+interface payrollType{
+  _id:string
+  employeeId:string,
+  hourlyPay: string,
+  commissionEarned: string,
+  bonus: string,
+  status:boolean,
+  totalHours:string,
+  totalPayment:number
+}
 
 const defaultPayroll:payrollType = {
-  employeeId:'234',
+  _id:'',
+  employeeId:'',
   hourlyPay: '0',
   commissionEarned: '0',
   bonus: '0',
@@ -51,12 +57,7 @@ const defaultPayroll:payrollType = {
 //hourlyPay, Commission Earned and Bonus editable Contents type
 const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
 
-  const [payrollInputs, setPayrollInputs] = useState({
-    hourlyPay:false,
-    bonus:false,
-    commission:false
-  })
-
+  const [payrollInputs, setPayrollInputs] = useState({  hourlyPay:false,  bonus:false,  commission:false })
   const [selectedPayroll, setSelectedPayroll] = useState<payrollType>(defaultPayroll);
   const [editingIndex, setEditingIndex] = useState<any>(null);
 
@@ -64,35 +65,34 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
     setSelectedPayroll({ ...selectedPayroll, [e.target.name]: e.target.value });
   };
 
-  const editPayroll = (fieldName:string, payrollId:number) => {
+  const editPayroll = (fieldName:string, payrollIndex:number) => {
      setPayrollInputs({...payrollInputs, [fieldName]:true})
-     setEditingIndex(payrollId);
+     setEditingIndex(payrollIndex);
 
-    if (allPayrolls[payrollId]) {
-      const HBCFromTableData2: payrollType = allPayrolls[payrollId];
-      setSelectedPayroll(HBCFromTableData2);
+    if (allPayrolls[payrollIndex]) {
+      const selectedPayroll: payrollType = allPayrolls[payrollIndex];
+      setSelectedPayroll(selectedPayroll);
     }
   };
 
-  const savePayroll = async (fieldName:string, payrollId: number) => {
+  const savePayroll = async (fieldName:string, payrollIndex: number) => {
+
     setPayrollInputs({...payrollInputs,[fieldName]:false})
+
     try {
       const response = await fetch(`${API_URL}/payroll/${selectedPayroll?._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({...selectedPayroll, 
-          // status: `${selectedPayroll.status}`
-        }),
+        body: JSON.stringify(selectedPayroll),
       });
-      console.log("Updated payroll res:", response)
       if (response.ok) {
         const payroll = await response.json();
         const payrolls = [...allPayrolls];
-        payrolls[payrollId] = payroll?.data;
-        setAllPayrolls(payrolls);
-        console.log('All payrolls:', payroll );
+        payrolls[payrollIndex] = payroll?.data;
+        setAllPayrolls([...payrolls]);
+        console.log(allPayrolls[payrollIndex])
       } else {
         console.error('Failed to get users');
       }
@@ -103,8 +103,8 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
 
   const findUser = (employeeId: string) =>{
     // Find the user based on the employeeId in payroll
-    const user = allUsers.filter((thisUser: {_id: string}) => thisUser?._id === employeeId);
-    return user.length> 0? user[0] : null;
+    const user = allUsers.find((thisUser: {_id: string}) => thisUser?._id === employeeId);
+    return user??null;
   }
 
   const theme = useTheme();
@@ -284,12 +284,12 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
                   }}
                 >
 
-                  {payroll?.status? 'Paid' : 'Unpaid'}
+                  {payroll?.status === 'true' ? 'Paid' : 'Unpaid'}
                 </Typography>
               </TableCell>
 
               <TableCell>
-                {payroll?.totalHours ? payroll?.totalHours + ' Hrs' : ''}
+                {payroll?.totalHours ? payroll.totalHours + ' Hrs' : ''}
               </TableCell>
 
               <TableCell>
