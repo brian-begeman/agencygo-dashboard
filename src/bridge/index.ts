@@ -174,15 +174,13 @@ const startIPCBridge = ({
 
   ipcMain.on('attempt-login' as IPCChannels, async (e, arg) => {
     try {
-      console.log(arg);
       ofBrowserView = new BrowserView({
         webPreferences: {
           partition: 'persist:' + arg.creatorId,
         },
       });
 
-      const proxyURL = `${arg.proxy.hostname}:${arg.proxy.port}`;
-
+      // const proxyURL = `${arg.proxy.hostname}:${arg.proxy.port}`;
       mainWindow.addBrowserView(ofBrowserView);
       /* ofBrowserView.setBounds({
         x: -999999,
@@ -191,28 +189,29 @@ const startIPCBridge = ({
         height: 789
       }) */
       ofBrowserView.setBounds(arg.bounds);
+      const page = await pie.getPage(ofBrowser, ofBrowserView);
 
-      const [_, partitionCookies, page] = await Promise.all([
-        session.fromPartition('persist:' + arg.creatorId).setProxy({
-          proxyRules: proxyURL,
-        }),
-        session
-          .fromPartition('persist:' + arg.creatorId)
-          .cookies.get({ name: 'auth_id' }),
-        pie.getPage(ofBrowser, ofBrowserView),
-      ]);
+      // const [_, partitionCookies, page] = await Promise.all([
+      //   // session.fromPartition('persist:' + arg.creatorId).setProxy({
+      //   //   proxyRules: proxyURL,
+      //   // }),
+      //   session
+      //     .fromPartition('persist:' + arg.creatorId)
+      //     .cookies.get({ name: 'auth_id' }),
+      //   pie.getPage(ofBrowser, ofBrowserView),
+      // ]);
 
-      const isLogged = partitionCookies.length;
+      // const isLogged = partitionCookies.length;
 
-      isLogged && ofBrowserView?.setBounds(arg.bounds);
+      // isLogged && ofBrowserView?.setBounds(arg.bounds);
 
-      await page.authenticate({
-        username: arg.proxy.username,
-        password: arg.proxy.password,
-      });
+      // await page.authenticate({
+      //   username: arg.proxy.username,
+      //   password: arg.proxy.password,
+      // });
 
       // ofBrowserView?.setBounds(arg.bounds)
-      // return await page.goto('https://iproyal.com/ip-lookup/');
+      return await page.goto('https://iproyal.com/ip-lookup/');
 
       const pageUrl = getPageUrl(arg.page);
       await page.goto(pageUrl as string);
@@ -263,11 +262,11 @@ const startIPCBridge = ({
         }
       };
 
-      if (!partitionCookies.length) {
-        ofBrowserView?.setBounds(arg.bounds);
+      // if (!partitionCookies.length) {
+        // ofBrowserView?.setBounds(arg.bounds);
         await loginOFAccount();
         return;
-      }
+      // }
 
       console.log('Already logged in');
     } catch (err) {

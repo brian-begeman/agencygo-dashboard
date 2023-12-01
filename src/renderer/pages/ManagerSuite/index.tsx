@@ -8,7 +8,7 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import { CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
 import { useParams } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export default function ManagerSuite() {
   const agencyId = localStorage.getItem('AgencyId');
 
   const [search, setSearch] = useState('');
-  // const [ selectedCreator,setSelectedCreator]=useState()
+
   const {
     creators,
     isLoading,
@@ -52,33 +52,44 @@ export default function ManagerSuite() {
   };
 
   function onclick(creator: any) {
-    setSelectedCreator(creator._id);
-    window.electron.ipcRenderer.sendMessage('remove-browser-view');
-    window.electron.ipcRenderer.sendMessage('attempt-login', {
-      bounds: getDivBounds('browser-view'),
-      // Remove later
-      email: creator.ofcreds.email,
-      password: creator.ofcreds.password,
-      creatorId: creator._id,
-      proxy: creator.proxy.creds,
-      page,
-    });
+    setSelectedCreator(creator);
   }
+
+  useEffect(() => {
+    console.log('send event?')
+    console.log(selectedCreator);
+    if (selectedCreator && selectedCreator.email && selectedCreator.password) {
+      console.log('for sure');
+      window.electron.ipcRenderer.sendMessage('piev-event', {
+        page,
+        bounds: getDivBounds('browser-view'),
+        // Remove later
+        creatorId: selectedCreator.id,
+        email: selectedCreator.email,
+        password: selectedCreator.password,
+        // creatorId: creator._id,
+        // proxy: creator.proxy.creds,
+        // page,
+      });
+    }
+  }, [page, selectedCreator]);
 
   return (
     <Dashboard>
       <section className={styles.wrapper}>
         <PageTopbar>
           <PageTopbar.HeaderText>
-            {localisation.onlyFansManagerSuite}{' '}
+            {localisation.onlyFansManagerSuite}{` `}
             <span style={{ textTransform: 'capitalize' }}>{page}</span>
+            <Box />
           </PageTopbar.HeaderText>
         </PageTopbar>
-        <section>
-          <Grid container>
-            <Grid xs={3} item>
+        {/* <section> */}
+        <Box display="flex" gap="5px" padding="6px">
+          <Stack display={'flex'}>
+            <PageAside className={styles.usersMenu}>
               <div className={styles.search}>
-                <SearchInput
+              <SearchInput
                   value={search}
                   onUpdateSearch={onSearch}
                   onSearch={() => {
@@ -95,28 +106,29 @@ export default function ManagerSuite() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '60vh',
+                    // height: '60vh',
                   }}
                 >
                   <CircularProgress />
                 </div>
               ) : creators?.length > 0 ? (
                 creators
-                  .filter(
-                    (c) =>
-                      c.proxy !== null &&
-                      c?.proxy?.hasOwnProperty('creds') &&
-                      c?.proxy?.hasOwnProperty('proxyUser')
-                  )
+                  // .filter(
+                  //   (c) =>
+                  //     c.proxy !== null &&
+                  //     c?.proxy?.hasOwnProperty('creds') &&
+                  //     c?.proxy?.hasOwnProperty('proxyUser')
+                  // )
                   .map((c) => (
                     <UserCardWImage
+                      id={c.id}
                       name={c.creatorName}
                       autoRelink={c?.autoRelink}
                       profileImage={ProfilePic}
                       // profileImage={c.imageSrc}
                       notificationCount={0}
                       messageCount={0}
-                      selected={selectedCreator === c._id}
+                      selected={selectedCreator?._id === c._id}
                       onClick={() => onclick(c)}
                     />
                   ))
@@ -127,39 +139,39 @@ export default function ManagerSuite() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: '60vh',
                   }}
                 >
                   No chat Found Start Chatting
                 </div>
               )}
-            </Grid>
-            <Grid xs={9} item>
-              <div
-                style={{
-                  width: '100%',
-                  height: '100vh',
-                  background: '#000',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                id="browser-view"
+            </PageAside>
+          </Stack>
+          <Stack flex={1}>
+            <div
+              style={{
+                width: '100%',
+                // height: '100vh',
+                background: '#000',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1
+              }}
+              id="browser-view"
+            >
+              <CircularProgress />
+              <Typography
+                variant="h3"
+                color="#fff"
+                fontSize={'18px'}
+                marginLeft={'20px'}
+                fontWeight={500}
               >
-                <CircularProgress />
-                <Typography
-                  variant="h3"
-                  color="#fff"
-                  fontSize={'18px'}
-                  marginLeft={'20px'}
-                  fontWeight={500}
-                >
-                  Please wait, Logging you in...
-                </Typography>
-              </div>
-            </Grid>
-          </Grid>
-        </section>
+                Please wait, Logging you in...
+              </Typography>
+            </div>
+          </Stack>
+        </Box>
       </section>
     </Dashboard>
   );

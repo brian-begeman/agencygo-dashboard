@@ -21,12 +21,12 @@ function Dashboard({ children }: $Props) {
   return (
     <>
       <div className={classes.dashboardWrapper} >
-     <Box>
-        <SideBar />
+        <Box>
+          <SideBar />
         </Box>
         <div className={classes.secondChild}>
           <Header />
-          <Box sx={{ marginTop: '100px',}}>{children}</Box>
+          <Box display='flex' flex={1} sx={{ marginTop: '100px', paddingBottom: '50px' }}>{children}</Box>
         </div>
         <div
           style={{

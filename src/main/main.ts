@@ -33,11 +33,18 @@ import Store from 'electron-store';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import * as pie from '../packages/electron-puppeteer';
+import PuppeteerInElectronView from '../packages/piev';
 
 let mainWindow: BrowserWindow | null = null;
 let ofBrowser: Browser | null = null;
+const piev = new PuppeteerInElectronView();
 
+async function main(): Promise<void> {
+  await piev.initalize(app, ipcMain);
+  await app.whenReady();
+}
+
+main();
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -108,12 +115,15 @@ const createWindow = async () => {
     show: true,
     width: winDimens.width,
     height: winDimens.height,
-    minWidth: 1281,
-    minHeight: 800,
+    minWidth: winDimens.width,
+    minHeight: winDimens.height,
     icon: getAssetPath('icon.png'),
     resizable: true,
     roundedCorners: true,
     frame: true,
+    webPreferences: {
+      webviewTag: true,
+    }
     // titleBarStyle: 'hiddenInset',
   });
 
@@ -128,7 +138,7 @@ const createWindow = async () => {
   });
 
   mainWindow.addBrowserView(view1);
-
+  piev.addWindow(mainWindow);
   view1.setBounds({
     x: 0,
     y: 0,
@@ -173,12 +183,6 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 
-  if (mainWindow && ofBrowser) {
-    startIPCBridge({
-      mainWindow,
-      ofBrowser,
-    });
-  }
   mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
     (details, callback) => {
       callback({
@@ -197,6 +201,7 @@ const createWindow = async () => {
       });
     }
   );
+
 };
 
 /**
@@ -211,27 +216,21 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) createWindow();
+});
+
 ipcMain.handle("copy-to-clipboard", async (event, text) => {
   console.log(text);
   clipboard.writeText(text);
 });
 
-const main = async () => {
-  try {
-    await pie.initialize(app);
-    ofBrowser = await pie.connect(app, puppeteer as any);
-    await app.whenReady();
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
-  } catch (err) {
-    console.error('Eeeefaaaaaa', err);
-  }
-};
+
 app.on('ready', createWindow);
 
-main();
+
+// main();
 
 export default mainWindow;

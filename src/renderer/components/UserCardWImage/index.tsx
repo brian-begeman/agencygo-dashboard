@@ -12,7 +12,7 @@ interface $Props {
   name: string;
   profileImage: string;
   notificationCount?: number;
-  data: any;
+  // data: any;
   id: string;
   messageCount?: number;
   selected: boolean;
@@ -23,7 +23,7 @@ export default function UserCardWImage({
   name,
   autoRelink,
   profileImage,
-  data,
+  // data,
   id,
   notificationCount,
   messageCount,
