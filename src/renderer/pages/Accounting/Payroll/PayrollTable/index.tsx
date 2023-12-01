@@ -16,21 +16,8 @@ import { API_URL } from 'config';
 
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
-import TableAccordion from '../TableAccordion';
-import { useState, ChangeEvent } from 'react';
-
-const PayrollTable = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
- 
-  return (
-    <TableAccordion>
-      <TableData allUsers={allUsers} allPayrolls={allPayrolls} setAllPayrolls={setAllPayrolls} />
-    </TableAccordion>
-  );
-};
-
-
-export default PayrollTable;
+import { useState, ChangeEvent, useEffect } from 'react';
+import { format_MMM_DD_YYYY } from '../helpers/formateDates';
 
 interface payrollType{
   _id:string
@@ -55,7 +42,7 @@ const defaultPayroll:payrollType = {
 }
 
 //hourlyPay, Commission Earned and Bonus editable Contents type
-const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
+ const PayrollTable = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
 
   const [payrollInputs, setPayrollInputs] = useState({  hourlyPay:false,  bonus:false,  commission:false })
   const [selectedPayroll, setSelectedPayroll] = useState<payrollType>(defaultPayroll);
@@ -127,9 +114,9 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
             <TableCell>Hourly Pay</TableCell>
             <TableCell>Commission earned</TableCell>
             <TableCell>Bonuses</TableCell>
-            <TableCell>Date paid</TableCell>
+            <TableCell>Date_Paid</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Total Hours</TableCell>
+            <TableCell>Total_Hours</TableCell>
             <TableCell>Total Compensation</TableCell>
           </TableRow>
         </TableHead>
@@ -265,7 +252,8 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
                 </Box>
               </TableCell>
               <TableCell>
-                {payroll?.datePaid??''}
+                {/* {payroll?.datePaid??''} */}
+                {format_MMM_DD_YYYY(payroll?.createdAt)}
               </TableCell>
               <TableCell
                 sx={{
@@ -284,7 +272,7 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
                   }}
                 >
 
-                  {payroll?.status === 'true' ? 'Paid' : 'Unpaid'}
+                  {payroll?.status ? 'Paid' : 'Unpaid'}
                 </Typography>
               </TableCell>
 
@@ -306,3 +294,5 @@ const TableData = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
     </TableContainer>
   );
  }
+
+ export default PayrollTable

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 import PayrollTopContainer from './PayrollTopContainer';
-import PayrollTable from './PayrollTable';
-import { allUsersMock } from './mockData/payrollTablaData';
+import { allUsersMock, allPayrollsWithTimestampMock } from './mockData/payrollTablaData';
 
 import { API_URL } from 'config';
+import { groupingPayrolls } from './helpers/groupingPayrolls';
+import TableAccordion from './TableAccordion';
 
 export interface payrollType {
   employeeId: string,
@@ -25,12 +26,16 @@ const HTTP_GET_OPTIONS = {
 };
 
 export default function Payroll() {
-  const [allUsers, setAllUsers] = useState<any>([]);
-  // const [allUsers, setAllUsers] = useState<any>([...allUsersMock]);
-  const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([]);
-  const [filteredPayrolls, setFilteredPayrolls] = useState<payrollType[] | []>([])
-  const [filteredUser, setFilteredUser] = useState<any[] | []>([])
-  // const [filteredUser, setFilteredUser] = useState<any[] | []>([...allUsersMock])
+  // const [allUsers, setAllUsers] = useState<any>([]);
+  // const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([]);
+  // const [filteredPayrolls, setFilteredPayrolls] = useState<payrollType[] | []>([])
+  // const [filteredUser, setFilteredUser] = useState<any[] | []>([])
+  const [groupedPayrolls, setGroupedPayrolls] = useState<any>([]);
+
+  const [allUsers, setAllUsers] = useState<any>([...allUsersMock]);
+  const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([...allPayrollsWithTimestampMock]);
+  const [filteredUser, setFilteredUser] = useState<any[] | []>([...allUsersMock])
+  const [payrollGroupTitle, setPayrollGroupTitle] = useState<string>('Weekly')
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -62,7 +67,6 @@ export default function Payroll() {
       if (response.ok) {
         const payroll = await response.json();
         setAllPayrolls(payroll?.data);
-        setFilteredPayrolls(payroll?.data);
         console.log('All payrolls:', payroll);
       } else {
         console.error('Failed to get users');
@@ -73,38 +77,38 @@ export default function Payroll() {
   }
 
   useEffect(() => {
-    getAllUsers();
-    getAllPayrolls()
+    // getAllUsers();
+    // getAllPayrolls()
   }, []);
 
 
   const filterPayrolls = (selectedFrequency: any, selectedRole: any, selectedStatus: any) => {
+    let payrollsInGroup:any[] = [];
     //filter based on Roles
-      if (selectedRole === 'Roles') {
-        setFilteredUser(allUsers)
-      }
-      else {
-        const userFilters = allUsers.filter((user: any) => user.role == selectedRole);
-        setFilteredUser(userFilters)
-      }
+    if (selectedRole === 'Roles') {
+      setFilteredUser(allUsers)
+    }
+    else {
+      const userFilters = allUsers.filter((user: any) => user.role == selectedRole);
+      setFilteredUser(userFilters)
+    }
 
     // filter based on status
-      if(selectedStatus === 'Status'){
-        setFilteredPayrolls(allPayrolls)
-       }else{
-        const payrollFilters = allPayrolls.filter((payroll: any) => String(payroll.status) == String(selectedStatus));
-        console.log(payrollFilters)
-        setFilteredPayrolls(payrollFilters)
-       }
+    if (selectedStatus === 'Status') {
+      payrollsInGroup = groupingPayrolls(allPayrolls, selectedFrequency);
+    } else {
+      const payrollFilters = allPayrolls.filter((payroll: any) => `${payroll.status}` === selectedStatus);
+      payrollsInGroup = groupingPayrolls(payrollFilters, selectedFrequency);
+    }
+    setGroupedPayrolls(payrollsInGroup);
 
-
+    setPayrollGroupTitle(selectedFrequency);
   }
 
   return (
     <Box
       display="flex"
       gap="5px"
-      padding={'6px'}
       sx={{ background: isDarkTheme ? '#121212' : 'white' }}
     >
       <Stack
@@ -112,11 +116,14 @@ export default function Payroll() {
         padding={'10px'}
         sx={{
           background: isDarkTheme ? '#0c0c0c' : '#EAF1FF', borderRadius: '5px',
-          marginTop: '30px'
         }}
       >
-        <PayrollTopContainer allPayrolls={allPayrolls} filterPayrolls={filterPayrolls}/>
-        <PayrollTable allUsers={filteredUser} allPayrolls={filteredPayrolls} setAllPayrolls={setFilteredPayrolls} />
+        <PayrollTopContainer allPayrolls={allPayrolls} filterPayrolls={filterPayrolls} />
+        <TableAccordion
+        allUsers={filteredUser}
+        setAllPayrolls={setAllPayrolls} 
+        groupedPayrolls={groupedPayrolls}
+        payrollGroupTitle={payrollGroupTitle} />
       </Stack>
     </Box>
   );
