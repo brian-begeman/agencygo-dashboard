@@ -17,16 +17,27 @@ export default function Timekeeping() {
     setRefresh(moment().toISOString());
   };
 
+  const { userData } = useContext(AuthContext);
+  const checkRole = () => {
+    if (
+      userData?.user?.role === 'manager' ||
+      userData?.user?.role === 'admin'
+    ) {
+      return true;
+    }
+  };
+
   const shiftStart = 10 * 60 * 60; // 10am in seconds
   const shiftEnd = 19 * 60 * 60; // 7pm in seconds
 
   const shiftDuration = shiftEnd - shiftStart;
   const [isDisable, setIsDisable] = useState(true);
+  const [tab, setTab] = useState("Employee");
 
   return (
     <>
       <Stack sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
-        <HeaderBar isDisable={isDisable} setIsDisable={setIsDisable} />
+        <HeaderBar tab={tab} setTab={setTab} />
       </Stack>
 
       <Box
@@ -45,20 +56,23 @@ export default function Timekeeping() {
           />
         </Stack>
 
-        <Stack
+        {checkRole() && tab === 'Manager' &&
+          <Stack
           width={'70%'}
           sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
         >
           <TimesheetReportsTable refresh={refresh} isDisable={isDisable} />
-        </Stack>
+        </Stack> }
       </Box>
 
-      <Stack
-        sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}
-        padding="15px 10px 12px 10px"
-      >
+      {checkRole() && tab === 'Manager' &&
+        <Stack
+          sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}
+          padding="15px 10px 12px 10px"
+        >
         <AttendanceTrackTable refresh={refresh} shiftDuration={shiftDuration} />
-      </Stack>
+      </Stack>}
+
     </>
   );
 }

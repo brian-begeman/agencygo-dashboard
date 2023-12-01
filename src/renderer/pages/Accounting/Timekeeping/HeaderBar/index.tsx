@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 
-const HeaderBar = ({ isDisable, setIsDisable }) => {
+const HeaderBar = ({ tab, setTab }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   const { userData } = useContext(AuthContext);
@@ -38,10 +38,10 @@ const HeaderBar = ({ isDisable, setIsDisable }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
-                bgcolor: !isDisable ? '#000' : '#fff',
+                bgcolor: tab === "Employee" ? '#000' : '#2196f3',
               }}
-              disabled={isDisable}
-              onClick={() => setIsDisable(!isDisable)}
+              disabled={tab === "Employee"}
+              onClick={() => setTab("Employee")}
             >
               <Typography
                 sx={{
@@ -51,7 +51,7 @@ const HeaderBar = ({ isDisable, setIsDisable }) => {
                   marginTop: '2px',
                 }}
               >
-                Employees
+                Employee
               </Typography>
             </Button>
             <Button
@@ -65,10 +65,10 @@ const HeaderBar = ({ isDisable, setIsDisable }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
-                bgcolor: isDisable ? '#000' : '#fff',
+                bgcolor: tab === "Manager" ? '#000' : '#2196f3',
               }}
-              disabled={!isDisable}
-              onClick={() => setIsDisable(!isDisable)}
+              disabled={tab === "Manager"}
+              onClick={() => setTab("Manager")}
             >
               <Typography
                 sx={{

@@ -92,11 +92,9 @@ const AttendanceTrackTable = ({ refresh, shiftDuration }: $trackprops) => {
           <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
             <TableRow>
               <TableCell>Check-in</TableCell>
-              <TableCell>Username</TableCell>
+              <TableCell>User</TableCell>
               <TableCell>Notes</TableCell>
-              <TableCell>Time Sheet Notes</TableCell>
-              <TableCell>Check-out</TableCell>
-              <TableCell>Total Hours</TableCell>
+              <TableCell>Progress</TableCell>
 
               {/* {checkRole() && <TableCell>Edit Log</TableCell>} */}
             </TableRow>
@@ -120,7 +118,7 @@ const AttendanceTrackTable = ({ refresh, shiftDuration }: $trackprops) => {
                       {moment(e.startDateTime).format('dddd, DD, YYYY h:mma')}
                     </TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>
-                      {`${e?.users?.[0]?.firstName} ${e?.users?.[0]?.lastName}`}
+                      {e?.users?.[0]?.email}
                     </TableCell>
 
                     <TableCell sx={{ color: '#FFFFFF' }}>
@@ -132,34 +130,6 @@ const AttendanceTrackTable = ({ refresh, shiftDuration }: $trackprops) => {
                         shiftDuration={shiftDuration}
                       />
                     </TableCell>
-                    <TableCell sx={{ color: '#FFFFFF' }}>
-                      {e.isClockedOut
-                        ? moment(e.endDateTime).format('dddd, DD, YYYY h:mma')
-                        : '00:00:00'}
-                    </TableCell>
-                    <TableCell sx={{ color: '#FFFFFF' }}>
-                      {formatTime(e.totalHours) || '00:00:00'}
-                      Hrs
-                    </TableCell>
-                    {/* 
-                    {checkRole() && (
-                      <TableCell sx={{ color: '#04A1FF' }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                          }}
-                        >
-                          <Box
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() => handleClose(e)}
-                          >
-                            <CreateIcon style={{ color: '#04A1FF' }} />
-                          </Box>
-                        </Box>
-                      </TableCell>
-                    )} */}
                   </TableRow>
                 );
               })}

@@ -205,7 +205,7 @@ const TimesheetReportsTable = ({
                         {moment(e.startDateTime).format('DD/MM/YYYY')}
                       </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
-                        {`${e?.users?.[0]?.firstName} ${e?.users?.[0]?.lastName}`}
+                        {e?.users?.[0]?.email}
                       </TableCell>
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {formatTime(e.totalHours) ?? '00:00:00'}
