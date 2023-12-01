@@ -178,7 +178,7 @@ const AccordionHeaderData = ({ payrollGroup, payrollGroupTitle, index }: any) =>
                 <Typography sx={{ fontSize: '10px', }}>
                   Total Hours
                 </Typography>
-                <Typography>{totalHours.toFixed(2)} hrs</Typography>
+                <Typography>{parseFloat(totalHours).toFixed(2)} hrs</Typography>
               </TableCell>
               <TableCell
                 sx={{
@@ -191,7 +191,7 @@ const AccordionHeaderData = ({ payrollGroup, payrollGroupTitle, index }: any) =>
                 <Typography sx={{ fontSize: '10px'}}>
                   Total Salary
                 </Typography>
-                <Typography>${totalSalary.toFixed(2)}</Typography>
+                <Typography>${parseFloat(totalSalary).toFixed(2)}</Typography>
               </TableCell>
               <TableCell
                 sx={{
@@ -204,7 +204,7 @@ const AccordionHeaderData = ({ payrollGroup, payrollGroupTitle, index }: any) =>
                 <Typography sx={{ fontSize: '10px'}}>
                   Total Commission
                 </Typography>
-                <Typography>${totalCommissionEarned.toFixed(2)}</Typography>
+                <Typography>${parseFloat(totalCommissionEarned).toFixed(2)}</Typography>
               </TableCell>
               <TableCell
                 sx={{
@@ -230,7 +230,7 @@ const AccordionHeaderData = ({ payrollGroup, payrollGroupTitle, index }: any) =>
                   padding: 0,
                 }}
               >
-                ${totalPayment.toFixed(2)}
+                ${parseFloat(totalPayment).toFixed(2)}
               </TableCell>
             </TableRow>
           </TableHead>

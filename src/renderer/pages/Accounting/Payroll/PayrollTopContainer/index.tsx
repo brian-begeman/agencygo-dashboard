@@ -15,21 +15,14 @@ type status = 'Paid'|'Unpaid'
 type role = 'Admin'|'Manager'|'Employee'
 
 const payrollFrequency = ['Weekly', 'Biweekly', 'Monthly', 'Annually']
-const PayrollTopContainer = ({filterPayrolls}: any) => {
+const PayrollTopContainer = ({filters, setFilters}: any) => {
   
   const [isCreateInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
-  const [selectedFrequency, setSelectedFrequency] = useState('Weekly');
-  const [selectedRole, setSelectedRole] = useState('Roles');
-  const [selectedStatus, setSelectedStatus] = useState('Status');
 
   const handleOpen = () => setCreateInvoiceModalOpen(true);
 
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-
-  useEffect(()=>{
-      filterPayrolls(selectedFrequency, selectedRole, selectedStatus);
-  }, [selectedFrequency, selectedRole, selectedStatus])
 
   return (
     <Box margin={'10px 0px'}>
@@ -48,8 +41,8 @@ const PayrollTopContainer = ({filterPayrolls}: any) => {
         <Box display={'flex'} gap={'10px'}>
           <Select
             id="current-invoice-settings"
-            value={selectedFrequency}
-            onChange={(e) => setSelectedFrequency(e.target.value)}
+            value={filters.frequency}
+            onChange={(e) => setFilters({...filters, frequency: e.target.value})}
             sx={{
               borderRadius: '5px',
               width: 'fit-content',
@@ -83,8 +76,8 @@ const PayrollTopContainer = ({filterPayrolls}: any) => {
           </Select>
           <Select
             id="current-invoice-settings"
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
+            value={filters.role}
+            onChange={(e) => setFilters({...filters, role: e.target.value})}
             sx={{
               borderRadius: '5px',
               width: 'fit-content',
@@ -136,8 +129,8 @@ const PayrollTopContainer = ({filterPayrolls}: any) => {
           </Select>
           <Select
             id="current-invoice-settings"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
+            value={filters.status}
+            onChange={(e) => setFilters({...filters, status: e.target.value})}
             sx={{
               borderRadius: '5px',
               width: 'fit-content',

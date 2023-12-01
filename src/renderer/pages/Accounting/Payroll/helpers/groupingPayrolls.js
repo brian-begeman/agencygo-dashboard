@@ -11,20 +11,16 @@ function getStartDate(date, interval) {
     switch (interval) {
         case 'Weekly':
             newDate.setDate(newDate.getDate() - newDate.getDay());
-            console.log("Interval:", interval);
             break;
         case 'Biweekly':
             const biweeklyOffset = newDate.getDate() % 14;
             newDate.setDate(newDate.getDate() - biweeklyOffset);
-            console.log("Interval:", interval);
             break;
         case 'Monthly':
             newDate.setDate(1);
-            console.log("Interval:", interval);
             break;
         case 'Annually':
             newDate.setMonth(0, 1);
-            console.log("Interval:", interval);
             break;
     }
 
@@ -35,7 +31,7 @@ function groupData(data, interval) {
     const groups = {};
 
     data.forEach(item => {
-        const createdAt = new Date(item.createdAt);
+        const createdAt = new Date(item.createdAt??new Date());
         const groupStart = getStartDate(createdAt, interval).toISOString();
 
         if (!groups[groupStart]) {

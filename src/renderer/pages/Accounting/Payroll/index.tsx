@@ -25,17 +25,32 @@ const HTTP_GET_OPTIONS = {
   },
 };
 
-export default function Payroll() {
-  // const [allUsers, setAllUsers] = useState<any>([]);
-  // const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([]);
-  // const [filteredPayrolls, setFilteredPayrolls] = useState<payrollType[] | []>([])
-  // const [filteredUser, setFilteredUser] = useState<any[] | []>([])
-  const [groupedPayrolls, setGroupedPayrolls] = useState<any>([]);
+type frequency = 'Weekly'|'Biweekly'|'Monthly'|'Annually'
+type status = 'true'|'false' | "Status"
+type role = 'admin'|'manager'|'employee' | 'Roles'
 
-  const [allUsers, setAllUsers] = useState<any>([...allUsersMock]);
-  const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([...allPayrollsWithTimestampMock]);
-  const [filteredUser, setFilteredUser] = useState<any[] | []>([...allUsersMock])
-  const [payrollGroupTitle, setPayrollGroupTitle] = useState<string>('Weekly')
+const frequencies = ['Weekly', 'Biweekly', 'Monthly', 'Annually']
+const statuses = ['true', 'false']
+const roles = ['admin', 'manager', 'employee']
+
+interface filters {
+  frequency: frequency;
+  role: role;
+  status: status;
+}
+
+const initialFilters:filters = {frequency: 'Weekly', role: 'Roles', status: 'Status'}
+
+export default function Payroll() {
+  const [allUsers, setAllUsers] = useState<any>([]);
+  const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([]);
+  const [filteredUser, setFilteredUser] = useState<any[] | []>([])
+  const [groupedPayrolls, setGroupedPayrolls] = useState<any>([]);
+  const [filters, setFilters] = useState<filters>(initialFilters)
+
+  // const [allUsers, setAllUsers] = useState<any>([...allUsersMock]);
+  // const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([...allPayrollsWithTimestampMock]);
+  // const [filteredUser, setFilteredUser] = useState<any[] | []>([...allUsersMock])
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -77,32 +92,36 @@ export default function Payroll() {
   }
 
   useEffect(() => {
-    // getAllUsers();
-    // getAllPayrolls()
+    getAllUsers();
+    getAllPayrolls()
   }, []);
+
+  useEffect(() => {
+    filterPayrolls(filters.frequency, filters.role, filters.status );
+  }, [allPayrolls, filters]);
 
 
   const filterPayrolls = (selectedFrequency: any, selectedRole: any, selectedStatus: any) => {
     let payrollsInGroup:any[] = [];
     //filter based on Roles
-    if (selectedRole === 'Roles') {
-      setFilteredUser(allUsers)
-    }
-    else {
+    if (roles.includes(selectedRole)) {
       const userFilters = allUsers.filter((user: any) => user.role == selectedRole);
       setFilteredUser(userFilters)
     }
+    else {
+      setFilteredUser(allUsers)
+    }
 
     // filter based on status
-    if (selectedStatus === 'Status') {
-      payrollsInGroup = groupingPayrolls(allPayrolls, selectedFrequency);
-    } else {
+    if ( statuses.includes(selectedStatus)) {
       const payrollFilters = allPayrolls.filter((payroll: any) => `${payroll.status}` === selectedStatus);
       payrollsInGroup = groupingPayrolls(payrollFilters, selectedFrequency);
+    } else {
+      payrollsInGroup = groupingPayrolls(allPayrolls, selectedFrequency);
     }
     setGroupedPayrolls(payrollsInGroup);
 
-    setPayrollGroupTitle(selectedFrequency);
+    setFilters({frequency: selectedFrequency, role: selectedRole, status: selectedStatus});
   }
 
   return (
@@ -118,12 +137,12 @@ export default function Payroll() {
           background: isDarkTheme ? '#0c0c0c' : '#EAF1FF', borderRadius: '5px',
         }}
       >
-        <PayrollTopContainer allPayrolls={allPayrolls} filterPayrolls={filterPayrolls} />
+        <PayrollTopContainer filters={filters} setFilters={setFilters}  />
         <TableAccordion
         allUsers={filteredUser}
         setAllPayrolls={setAllPayrolls} 
         groupedPayrolls={groupedPayrolls}
-        payrollGroupTitle={payrollGroupTitle} />
+        payrollGroupTitle={filters.frequency} />
       </Stack>
     </Box>
   );
