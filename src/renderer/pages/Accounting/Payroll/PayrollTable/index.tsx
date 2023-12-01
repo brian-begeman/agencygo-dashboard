@@ -253,7 +253,7 @@ const defaultPayroll:payrollType = {
               </TableCell>
               <TableCell>
                 {/* {payroll?.datePaid??''} */}
-                {format_MMM_DD_YYYY(payroll?.createdAt)}
+                {format_MMM_DD_YYYY(payroll?.paidDate)}
               </TableCell>
               <TableCell
                 sx={{
