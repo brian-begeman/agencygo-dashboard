@@ -83,7 +83,7 @@ const getAllPayrolls = async () => {
       const payrollFilters = allPayrolls.filter((payroll: any) => payroll.status == selectedStatus);
       setFilteredPayrolls(payrollFilters)
     }
-    if(selectedRole === 'Role') {
+    if(selectedRole === 'Roles') {
       setFilteredPayrolls(allPayrolls);
     }
     else{
