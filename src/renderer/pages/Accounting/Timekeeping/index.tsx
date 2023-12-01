@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 
-import AttendenceTrackTable from './AttendenceTrackTable';
-import TimeSheetTable from './TimeSheetTable';
 import Attendance from './Attendance';
 import HeaderBar from './HeaderBar';
 import { AuthContext } from 'renderer/contexts/AuthContext';
+import AttendanceTrackTable from './AttendanceTrackTable';
+import TimesheetReportsTable from './TimesheetReportsTable';
+import moment from 'moment';
 
 export default function Timekeeping() {
   const theme = useTheme();
@@ -13,17 +14,19 @@ export default function Timekeeping() {
 
   const [refresh, setRefresh] = useState(false);
   const toggleRefresh = () => {
-    setRefresh(!refresh);
+    setRefresh(moment().toISOString());
   };
 
   const shiftStart = 10 * 60 * 60; // 10am in seconds
   const shiftEnd = 19 * 60 * 60; // 7pm in seconds
+
   const shiftDuration = shiftEnd - shiftStart;
+  const [isDisable, setIsDisable] = useState(true);
 
   return (
     <>
       <Stack sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
-        <HeaderBar />
+        <HeaderBar isDisable={isDisable} setIsDisable={setIsDisable} />
       </Stack>
 
       <Box
@@ -46,7 +49,7 @@ export default function Timekeeping() {
           width={'70%'}
           sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
         >
-          <AttendenceTrackTable refresh={refresh} />
+          <TimesheetReportsTable refresh={refresh} isDisable={isDisable} />
         </Stack>
       </Box>
 
@@ -54,7 +57,7 @@ export default function Timekeeping() {
         sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}
         padding="15px 10px 12px 10px"
       >
-        <TimeSheetTable refresh={refresh} shiftDuration={shiftDuration} />
+        <AttendanceTrackTable refresh={refresh} shiftDuration={shiftDuration} />
       </Stack>
     </>
   );

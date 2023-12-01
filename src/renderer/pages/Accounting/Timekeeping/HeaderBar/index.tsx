@@ -3,10 +3,11 @@ import { useTheme } from '@emotion/react';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 
-const HeaderBar = () => {
+const HeaderBar = ({ isDisable, setIsDisable }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   const { userData } = useContext(AuthContext);
+  console.log('userData?.user?.role', userData?.user?.role);
 
   const checkRole = () => {
     if (
@@ -17,7 +18,6 @@ const HeaderBar = () => {
     }
   };
 
-  const [isDisable, setIsDisable] = useState(true);
   return (
     <Box
       className="timekeep-topbar"
@@ -29,7 +29,6 @@ const HeaderBar = () => {
           <ButtonGroup sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
             <Button
               variant="contained"
-              color="primary"
               sx={{
                 marginLeft: 'auto',
                 width: 'max-content',
@@ -39,6 +38,7 @@ const HeaderBar = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
+                bgcolor: !isDisable ? '#000' : '#fff',
               }}
               disabled={isDisable}
               onClick={() => setIsDisable(!isDisable)}
@@ -56,7 +56,6 @@ const HeaderBar = () => {
             </Button>
             <Button
               variant="contained"
-              color="primary"
               sx={{
                 marginLeft: 'auto',
                 width: 'max-content',
@@ -66,6 +65,7 @@ const HeaderBar = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
+                bgcolor: isDisable ? '#000' : '#fff',
               }}
               disabled={!isDisable}
               onClick={() => setIsDisable(!isDisable)}

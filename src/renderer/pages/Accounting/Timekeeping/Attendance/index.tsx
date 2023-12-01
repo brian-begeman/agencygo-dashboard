@@ -87,6 +87,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setTimerActive(true);
     createAttendanceData();
     setStateFn(setCreateData, 'startDateTime', nowTime);
+    toggleRefresh();
     setTimeline([
       ...timeline,
       {
@@ -102,13 +103,14 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
     setTimeline([...timeline]);
-    updateAttendanceData({ timeline });
+    updateAttendanceData({ timeline, clockedOut: true });
     toggleRefresh();
     const payload = {
       attendanceId: createData.attendanceData._id,
       ...timeline[timeline.length - 1],
     };
     saveTimeline(payload);
+    setStateFn(setCreateData, 'notes', '');
   };
   const startBreak = () => {
     setOnBreak(true);
@@ -183,8 +185,10 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   };
   const updateAttendanceData = async ({
     timeline,
+    clockedOut = false,
   }: {
     timeline?: TimeLine[];
+    clockedOut?: boolean;
   }) => {
     const payload = {
       startDateTime: moment(createData.startDateTime).format(
@@ -202,6 +206,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       totalHours: time,
       breakHours: breakTime,
       timeLine: timeline,
+      isClockedOut: clockedOut,
     };
     try {
       await updateAttendance(payload, createData.attendanceData._id);

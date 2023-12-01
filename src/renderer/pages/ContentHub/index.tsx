@@ -41,13 +41,11 @@ import {
   ListObjectsCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-} from '@aws-sdk/client-s3';
-
-import {
   S3Client,
   PutObjectCommand,
   ListObjectsV2Command,
 } from '@aws-sdk/client-s3';
+
 import DeleteConfirmationDialog from './CreateFolderModal/confirmDelete';
 import MediaTypeItem from './MediaTypeItem';
 import axios from 'axios';
@@ -626,7 +624,6 @@ export default function ContentHub() {
     const expiresInSeconds = 7 * 24 * 60 * 60; // 7 days is the max
     const command = new GetObjectCommand({
       Bucket: 'dropbox-demo',
-      // Key: '6566f4b87aca650437a81da1/folder 1/MicrosoftTeamsImg55.jpeg',
       Key: key,
     });
     const url = await getSignedUrl(s3Client, command, {

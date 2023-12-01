@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import fetchReq from 'utils/fetch';
 
 // Create Attendance
@@ -72,6 +73,22 @@ async function getEmpAttendance(startDate, endDate) {
   }
 }
 
+// Get Emp Attendance
+async function getEmpAttendanceAll() {
+  try {
+    const endPoint = `attendence/getAttendanceAll`;
+    const options = {
+      method: 'GET' as 'GET',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
 // Get All Attendance
 async function getAllTimeSheets() {
   try {
@@ -88,10 +105,79 @@ async function getAllTimeSheets() {
   }
 }
 
+// filter data
+async function getAttendanceByFilter(startDate, endDate, isEmp) {
+  try {
+    const filter = {
+      startDate,
+      endDate,
+      isEmp,
+    };
+
+    let endPoint = `attendence/getAttendanceByFilter?${Object.keys(filter)
+      .map((key) => {
+        return `${key}=${encodeURIComponent(filter[key])}`;
+      })
+      .join('&')}`;
+
+    // if ((startDate !== null && endDate !== null) || isEmp) {
+    //   endPoint = `attendence/getAttendanceByFilter?${startDate}/${endDate}`;
+    // } else {
+    //   endPoint = `attendence/getAttendanceByFilter?`;
+    // }
+    const options = {
+      method: 'GET' as 'GET',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
+// Update timeSheet
+async function updateTimesheet(payload: any, attId: String) {
+  const endPoint = `attendence/update/timesheet/${attId}`;
+  const options = {
+    method: 'PATCH' as 'PATCH',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+    body: JSON.stringify(payload),
+  };
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();
+  return resp;
+}
+
+// Get Emp Attendance
+async function deleteById(attendanceId) {
+  try {
+    const endPoint = `attendence/delete/timesheet/${attendanceId}`;
+
+    const options = {
+      method: 'DELETE' as 'DELETE',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
 export {
   createAttendance,
   updateAttendance,
   getEmpAttendance,
   getAllTimeSheets,
   updateNotes,
+  getEmpAttendanceAll,
+  getAttendanceByFilter,
+  updateTimesheet,
+  deleteById,
 };

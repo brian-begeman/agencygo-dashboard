@@ -56,20 +56,4 @@ async function getAllTimlineDataAll() {
   }
 }
 
-// Get Emp Attendance
-async function deleteById(timlineId) {
-  try {
-    const endPoint = `timeline/delete/${timlineId}`;
-    const options = {
-      method: 'DELETE' as 'DELETE',
-      withAuth: true,
-    };
-    let responce = await fetchReq(endPoint, options);
-    let resp = await responce.json();
-    return resp;
-  } catch (error: any) {
-    throw new Error(error?.message);
-  }
-}
-
-export { createTimeline, getAllTimlineData, getAllTimlineDataAll, deleteById };
+export { createTimeline, getAllTimlineData, getAllTimlineDataAll };

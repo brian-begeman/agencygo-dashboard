@@ -3,7 +3,13 @@ import Modal from '@mui/material/Modal';
 import { Alert, Button, Typography } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect, useState } from 'react';
-import { deleteById } from 'services/timeline';
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import SecondsInput from '../SecondsInput';
+import { deleteById, updateTimesheet } from 'services/attendance';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -21,25 +27,66 @@ export default function TimesheetEditModal({
   showEdit,
   handleClose,
   editData,
+  getData,
 }) {
   const [snakbarOpen, setSnackbarOpen] = useState(false);
   const [timeSheetData, setTimeSheetData] = useState(editData);
-  useEffect(() => {
-    setTimeSheetData(editData);
-  }, [editData]);
 
-  const onChange = (e) => {
-    setTimeSheetData((prevState) => {
-      let { name, value } = e.target;
-      return { ...prevState, [name]: value };
-    });
+  const [totalHR, setTotalHR] = useState(0);
+  const [totalMN, setTotalMN] = useState(0);
+  const [totalSEC, setTotalSEC] = useState(0);
+  const [breakHR, setBreakHR] = useState(0);
+  const [breakMN, setBreakMN] = useState(0);
+  const [breakSEC, setBreakSEC] = useState(0);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   };
+
+  const updatetimeSheetData = async () => {
+    let theHr = (hr) => +hr * 3600;
+    let theMin = (min) => +min * 60;
+
+    const payload = {
+      totalHours: `${theHr(totalHR) + theMin(totalMN) + +totalSEC}`,
+      breakHours: `${theHr(breakHR) + theMin(breakMN) + +breakSEC}`,
+    };
+    try {
+      const response = await updateTimesheet(payload, editData._id);
+      console.log('response', response);
+      if (response.ack === 1) {
+        setSnackbarOpen(true);
+        handleClose();
+        getData();
+      }
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    try {
+      setTimeSheetData(editData);
+      const totalhrData = formatTime(editData.totalHours).split(':');
+      setTotalHR(totalhrData[0]);
+      setTotalMN(totalhrData[1]);
+      setTotalSEC(totalhrData[2]);
+      const breakhrData = formatTime(editData.breakHours).split(':');
+      setBreakHR(breakhrData[0]);
+      setBreakMN(breakhrData[1]);
+      setBreakSEC(breakhrData[2]);
+    } catch (err) {}
+  }, [editData]);
 
   const deleteTimeline = async (timelineId) => {
     try {
       const response = await deleteById(timelineId);
       if (response.ack === 1) {
         handleClose();
+        getData();
       }
     } catch (err) {
       console.log('Error', err);
@@ -74,24 +121,81 @@ export default function TimesheetEditModal({
             sx={{
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               gap: 2,
               padding: '0px 20px 15px 20px',
             }}
           >
-            <input
-              placeholder="Total Hours"
-              value={timeSheetData?.total}
-              name="totalHours"
-              style={{ padding: 10 }}
-              onChange={onChange}
-            />
-            <input
-              placeholder="Break Hours"
-              name="breakHours"
-              value={timeSheetData?.total}
-              style={{ padding: 10 }}
-              onChange={onChange}
-            />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <label style={{ marginRight: 5, width: '30%' }}>
+                Total Hours
+              </label>
+              <input
+                placeholder="Total Hours"
+                value={totalHR}
+                name="totalHours"
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setTotalHR(e.target.value)}
+              />
+              <span style={{ fontSize: 30, fontWeight: 'bolder' }}>:</span>
+              <input
+                placeholder="Total Hours"
+                value={totalMN}
+                name="totalHours"
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setTotalMN(e.target.value)}
+              />
+              <span style={{ fontSize: 30, fontWeight: 'bolder' }}>:</span>
+              <input
+                placeholder="SS"
+                name="totalHours"
+                value={totalSEC}
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setTotalSEC(e.target.value)}
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <label style={{ marginRight: 5, width: '30%' }}>
+                Break Hours
+              </label>
+              <input
+                placeholder="HH"
+                name="breakHours"
+                value={breakHR}
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setBreakHR(e.target.value)}
+              />
+              <span style={{ fontSize: 30, fontWeight: 'bolder' }}>:</span>
+              <input
+                placeholder="MM"
+                name="breakHours"
+                value={breakMN}
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setBreakMN(e.target.value)}
+              />
+              <span style={{ fontSize: 30, fontWeight: 'bolder' }}>:</span>
+              <input
+                placeholder="SS"
+                name="breakHours"
+                value={breakSEC}
+                style={{ padding: 10, width: '20%', height: '20%' }}
+                onChange={(e) => setBreakSEC(e.target.value)}
+              />
+            </div>
           </Box>
 
           <Box
@@ -102,56 +206,53 @@ export default function TimesheetEditModal({
               padding: '0px 20px',
             }}
           >
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => setSnackbarOpen(true)}
-            >
-              <Typography
-                style={{
-                  textTransform: 'none',
-                  color: '#fff',
-                  fontSize: '14px',
-                }}
+            <div>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => deleteTimeline(timeSheetData?._id)}
               >
-                Save
-              </Typography>
-            </Button>
+                <Typography
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    fontSize: '14px',
+                  }}
+                >
+                  Delete
+                </Typography>
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => updatetimeSheetData(true)}
+                sx={{ marginRight: 1 }}
+              >
+                <Typography
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    fontSize: '14px',
+                  }}
+                >
+                  Save
+                </Typography>
+              </Button>
 
-            <Button variant="contained" onClick={handleClose}>
-              <Typography
-                style={{
-                  textTransform: 'none',
-                  color: '#fff',
-                  fontSize: '14px',
-                }}
-              >
-                Cancel
-              </Typography>
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => deleteTimeline(timeSheetData?._id)}
-            >
-              <Typography
-                style={{
-                  textTransform: 'none',
-                  color: '#fff',
-                  fontSize: '14px',
-                }}
-              >
-                Delete
-              </Typography>
-            </Button>
+              <Button variant="contained" onClick={handleClose}>
+                <Typography
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    fontSize: '14px',
+                  }}
+                >
+                  Cancel
+                </Typography>
+              </Button>
+            </div>
           </Box>
         </Box>
       </Modal>
