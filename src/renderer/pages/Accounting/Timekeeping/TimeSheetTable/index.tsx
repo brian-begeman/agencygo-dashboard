@@ -182,8 +182,8 @@ const TimeSheetTable = ({ refresh, shiftDuration }: $trackprops) => {
                     </TableCell>
                     <TableCell sx={{ color: '#FFFFFF' }}>
                       {formatTime(
-                        e.timeline.length > 0
-                          ? e.timeline.reduce((a, b) => {
+                        e?.timeline?.length > 0
+                          ? e?.timeline.reduce((a, b) => {
                               return a + b.total;
                             }, 0)
                           : '00:00:00'

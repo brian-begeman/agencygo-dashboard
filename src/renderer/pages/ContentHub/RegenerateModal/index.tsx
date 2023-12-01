@@ -6,6 +6,7 @@ import { Divider, Snackbar } from '@mui/material';
 import styles from '../styles.module.css';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
+import { updatePresignedUrl } from 'services/content';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -24,7 +25,7 @@ export default function RegenerateModal({
   open,
   dialogOpenClose,
   link,
-  createPresignedUrl,
+  updateLink,
 }: any) {
   const [openCliboardMsg, setOpenCliboardMsg] = useState(false);
 
@@ -32,8 +33,8 @@ export default function RegenerateModal({
     dialogOpenClose(false);
   };
   const onClick = () => {
-    createPresignedUrl();
-    window.electron.copyToClipboard(link);
+    // window.electron.copyToClipboard(link);
+    updateLink();
   };
   function truncateString(str: string, maxLength: number) {
     if (str.length > maxLength) {

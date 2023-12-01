@@ -57,7 +57,11 @@ import GridSelectionItem from 'renderer/components/GridSelection';
 import useQuery from 'renderer/hooks/useQuery';
 import RegenerateModal from './RegenerateModal';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { deleteContentData, getContentData } from 'services/content';
+import {
+  deleteContentData,
+  getContentData,
+  updatePresignedUrl,
+} from 'services/content';
 
 export default function ContentHub() {
   const [search, setSearch] = useState('');
@@ -82,7 +86,7 @@ export default function ContentHub() {
   const [sizeUsed, setSizeUsed] = useState(0);
   const [sizeUsedUnit, setSizeUsedUnit] = useState('B');
   const [selectedStatus, setSelectedStatus] = useState('Filter');
-
+  const [signedImageList, setSignedImageList] = useState([]);
   const [presignedLink, setPresignedLink] = useState('');
 
   // Function to toggle image selection
@@ -142,7 +146,6 @@ export default function ContentHub() {
   };
 
   const deleteFolderFromS3 = async (key) => {
-    console.log('key', key);
     try {
       const listObjectsCommand = {
         Bucket: 'dropbox-demo',
@@ -185,7 +188,7 @@ export default function ContentHub() {
         await deleteContentData({ type: 'keys', keyList: [deletingImage] });
         // Remove the deleted image from the state
         setImages((prevImages) =>
-          prevImages.filter((image) => image.imageKey !== deletingImage)
+          prevImages.filter((image) => image !== deletingImage)
         );
 
         // Clear the `deletingImage` state and close the confirmation dialog
@@ -500,14 +503,28 @@ export default function ContentHub() {
   };
   const getImagesInFolder = async (key: string) => {
     try {
+      const params = {
+        Bucket: 'dropbox-demo', // Replace with your S3 bucket name
+        Prefix: `${selectedCreator}/` + key + '/', // Use an empty prefix to list objects from the root of the bucket
+      };
+      let folder = await s3Client.send(new ListObjectsV2Command(params));
+      const modifiedData = folder.Contents.slice(1); // Removing the first item
+
       const response = await getContentData(selectedCreator, key);
-      setImages(response.data.data);
+      setSignedImageList(response.data.data);
+
+      console.log('modifiedData', modifiedData);
+      const keyList = modifiedData.map((item: { Key: any }) => item.Key);
+      setImages(keyList);
     } catch (error) {
       console.log('Error', error);
     }
   };
+
   const handleRowClick = (params: { row: any }, event: any) => {
     console.log(params.row.foldername);
+
+    // change to s3 delete below
     getImagesInFolder(params.row.foldername);
 
     toggleGrid();
@@ -605,17 +622,18 @@ export default function ContentHub() {
   // S3 functions
 
   // create presignde url
-  const createPresignedUrl = async (data: boolean, key: string) => {
+  const createPresignedUrl = async (key: string) => {
     const expiresInSeconds = 7 * 24 * 60 * 60; // 7 days is the max
     const command = new GetObjectCommand({
       Bucket: 'dropbox-demo',
-      Key: '6566f4b87aca650437a81da1/folder 1/MicrosoftTeamsImg55.jpeg',
+      // Key: '6566f4b87aca650437a81da1/folder 1/MicrosoftTeamsImg55.jpeg',
+      Key: key,
     });
     const url = await getSignedUrl(s3Client, command, {
       expiresIn: expiresInSeconds,
     });
     setPresignedLink(url);
-    setRegenerateModalOpen(data);
+    setRegenerateModalOpen(true);
   };
   // Function to delete selected images
   const deleteSelectedImages = async () => {
@@ -640,9 +658,7 @@ export default function ContentHub() {
       }
       await deleteContentData({ type: 'keys', keyList: imagesToDelete });
       // Remove the deleted images from the state
-      updatedImages = images.filter(
-        (image) => !imagesToDelete.includes(image.imageKey)
-      );
+      updatedImages = images.filter((image) => !imagesToDelete.includes(image));
 
       // Update the state with the updated list of images
       setImages(updatedImages);
@@ -738,6 +754,37 @@ export default function ContentHub() {
     return null;
   };
 
+  const getSignedUrlFromDb = () => {
+    const signedUrl = signedImageList.filter(
+      (e) => e.imageKey === selectedImages[0]
+    );
+
+    setPresignedLink(signedUrl[0].presignUrl);
+    setRegenerateModalOpen(!isRegenerateModalOpen);
+  };
+
+  const updateLink = async () => {
+    const expiresInSeconds = 7 * 24 * 60 * 60; // 7 days is the max
+    const command = new GetObjectCommand({
+      Bucket: 'dropbox-demo',
+      Key: selectedImages[0],
+    });
+    const url = await getSignedUrl(s3Client, command, {
+      expiresIn: expiresInSeconds,
+    });
+
+    setPresignedLink(url);
+    try {
+      const payload = {
+        presignUrl: url,
+        imageKey: selectedImages[0],
+      };
+      await updatePresignedUrl(payload);
+    } catch (err) {
+      console.log('Err', err);
+    }
+  };
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
@@ -830,7 +877,8 @@ export default function ContentHub() {
                     variant="contained"
                     sx={{ color: '#fff', textTransform: 'capitalize' }}
                     startIcon={<InsertLinkSharpIcon />}
-                    onClick={RegeneratedialogOpenClose}
+                    onClick={getSignedUrlFromDb}
+                    disabled={!(selectedImages.length == 1)}
                   >
                     Regenerate link
                   </Button>
@@ -945,10 +993,10 @@ export default function ContentHub() {
                       handleDeleteImage={handleDeleteImage}
                       handleDownloadImage={downloadImageFromS3}
                       // handleZoomImage={handleZoomImage}
-                      handleSelectImage={(imageKey) =>
-                        handleToggleImageSelection(imageKey)
+                      handleSelectImage={() =>
+                        handleToggleImageSelection(image)
                       }
-                      isSelected={selectedImages.includes(image.imageKey)}
+                      isSelected={selectedImages.includes(image)}
                     />
                   ))}
                 </div>
@@ -967,9 +1015,9 @@ export default function ContentHub() {
               link={presignedLink}
               open={isRegenerateModalOpen}
               dialogOpenClose={() =>
-                RegeneratedialogOpenClose(!isRegenerateModalOpen)
+                setRegenerateModalOpen(!isRegenerateModalOpen)
               }
-              createPresignedUrl={createPresignedUrl}
+              updateLink={updateLink}
             />
           )}
           {isCreateFolderModalOpen && (

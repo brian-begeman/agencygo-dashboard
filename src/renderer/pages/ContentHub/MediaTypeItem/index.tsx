@@ -6,25 +6,8 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-
-export interface ContentHub {
-  userId: string;
-  createorId: string;
-  timeStamp: Date;
-  s3url: string;
-  signedUrl: string;
-  fileName: string;
-  mimeType: string;
-  imageKey: string;
-  presignUrl: string;
-  s3Key: string;
-  bucketName: string;
-  folderId: string;
-  folderName: string;
-}
-
 interface ImageProps {
-  image: ContentHub;
+  image: string;
   handleDeleteImage: (image: string) => void;
   handleSelectImage: (image: string) => void;
   handleDownloadImage: (image: string) => void;
@@ -55,7 +38,7 @@ export default function MediaTypeItem({
       >
         <div
           className={styles.CheckIcon}
-          onClick={() => handleSelectImage(image.imageKey)}
+          onClick={() => handleSelectImage(image)}
         >
           {isSelected ? (
             <CheckCircleOutlinedIcon className={styles.Icon} />
@@ -63,12 +46,16 @@ export default function MediaTypeItem({
             <CircleOutlinedIcon className={styles.Icon} />
           )}
         </div>
-        <img src={image.presignUrl} alt="Image" className={styles.imageitem} />
+        <img
+          src={`https://dropbox-demo.s3.us-east-2.amazonaws.com/${image}`}
+          alt="Image"
+          className={styles.imageitem}
+        />
         {hovered && (
           <div className={styles.actions}>
             <div
               className={styles.icon}
-              onClick={() => handleDeleteImage(image.imageKey)}
+              onClick={() => handleDeleteImage(image)}
             >
               <DeleteIcon />
             </div>
@@ -78,7 +65,11 @@ export default function MediaTypeItem({
 
             <div
               className={styles.icon}
-              onClick={() => handleDownloadImage(image.presignUrl)}
+              onClick={() =>
+                handleDownloadImage(
+                  `https://dropbox-demo.s3.us-east-2.amazonaws.com/${image}`
+                )
+              }
             >
               <FileDownloadOutlinedIcon />
             </div>
@@ -89,7 +80,7 @@ export default function MediaTypeItem({
         {isZoomed && (
           <div className={styles.zoomedImageContainer} onClick={toggleZoom}>
             <img
-              src={image.presignUrl}
+              src={`https://dropbox-demo.s3.us-east-2.amazonaws.com/${image}`}
               alt="Zoomed Image"
               className={styles.zoomedImage}
             />

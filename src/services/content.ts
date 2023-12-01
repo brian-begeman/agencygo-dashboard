@@ -52,4 +52,23 @@ async function deleteContentData(keyList: string[]) {
   }
 }
 
-export { uploadContent, getContentData, deleteContentData };
+// Update presigned url
+async function updatePresignedUrl(payload: {
+  presignUrl: string;
+  imageKey: string;
+}) {
+  const endPoint = `content/update/presignedurl`;
+  const options = {
+    method: 'PATCH' as 'PATCH',
+    headers: {
+      'content-type': 'application/json',
+    },
+    withAuth: true,
+    body: JSON.stringify(payload),
+  };
+  let responce = await fetchReq(endPoint, options);
+  let resp = await responce.json();
+  return resp;
+}
+
+export { uploadContent, getContentData, deleteContentData, updatePresignedUrl };
