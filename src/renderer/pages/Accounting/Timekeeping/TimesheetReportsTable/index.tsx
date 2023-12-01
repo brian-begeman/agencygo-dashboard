@@ -73,21 +73,10 @@ const TimesheetReportsTable = ({
 
   const getData = async () => {
     try {
-      let isEmp = false;
-      if (checkRole()) {
-        if (isDisable) {
-          isEmp = true;
-        } else {
-          isEmp = false;
-        }
-      } else {
-        isEmp = true;
-      }
-
       const response = await getAttendanceByFilter(
         valueLeft,
         valueRight,
-        isEmp
+        false
       );
       if (response.ack === 1) {
         setAttendanceTrackData(response.data);
