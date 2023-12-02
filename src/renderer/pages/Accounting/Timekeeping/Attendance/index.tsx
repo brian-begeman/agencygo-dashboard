@@ -4,9 +4,14 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import moment from 'moment';
 
-import { createAttendance, updateAttendance } from 'services/attendance';
+import {
+  createAttendance,
+  updateAttendance,
+  updateNotes,
+} from 'services/attendance';
 import { $props, CreateData, TimeLine } from '../Types/index.types';
 import ProgressBar from '../Timebar';
+import { createTimeline } from 'services/timeline';
 
 // Attendance Component
 const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
@@ -14,7 +19,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const [isOnBreak, setOnBreak] = useState(false);
   const [timerActive, setTimerActive] = useState(false);
   const [time, setTime] = useState(0);
-  const [notesArray, setNotesArray] = useState<string[]>([]);
   const [breaksArray, setBreaksArray] = useState<number[]>([]);
   const [createData, setCreateData] = useState<CreateData>({
     startDateTime: moment(),
@@ -34,12 +38,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       return { ...prevState, [key]: value };
     });
   };
-  const saveNotes = () => {
-    const newNotes = [...notesArray, createData.notes];
-    setNotesArray(newNotes);
-    setStateFn(setCreateData, 'notes', '');
-    updateAttendanceData({ isNote: true, notes: newNotes });
-  };
+
   const saveBreaks = () => {
     if (breaksArray.length === 0) {
       setBreaksArray([...breaksArray, breakTime]);
@@ -88,6 +87,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setTimerActive(true);
     createAttendanceData();
     setStateFn(setCreateData, 'startDateTime', nowTime);
+    toggleRefresh();
     setTimeline([
       ...timeline,
       {
@@ -102,31 +102,33 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setTimerActive(false);
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     setTimeline([...timeline]);
-    updateAttendanceData({ timeline });
-
+    updateAttendanceData({ timeline, clockedOut: true });
     toggleRefresh();
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
+    setStateFn(setCreateData, 'notes', '');
   };
   const startBreak = () => {
     setOnBreak(true);
     setTimerActive(false);
     setBreakTimerActive(true);
     timeline[timeline.length - 1].endTime = new Date();
-
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     let newTimeLine: TimeLine = {
       startTime: new Date(),
       type: 'break',
       endTime: null,
     };
     setTimeline([...timeline, newTimeLine]);
+
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
   };
   const endBreak = () => {
     setOnBreak(false);
@@ -134,10 +136,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     setBreakTimerActive(false);
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
-    // timeline[timeline.length - 1] = {
-    //   ...timeline[timeline.length - 1],
-    //   endTime: new Date(),
-    // };
     setTimeline([
       ...timeline,
       {
@@ -146,6 +144,13 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
         endTime: null,
       },
     ]);
+
+    const payload = {
+      attendanceId: createData.attendanceData._id,
+      ...timeline[timeline.length - 1],
+    };
+    saveTimeline(payload);
+
     updateAttendanceData({ timeline });
   };
 
@@ -166,7 +171,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     const payload = {
       startDateTime: createData.startDateTime,
       breakTime: breaksArray,
-      notes: notesArray,
+      notes: createData.notes,
       totalHours: time,
       breakHours: breakTime,
       timeLine: timeline,
@@ -179,13 +184,11 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     } catch (error) {}
   };
   const updateAttendanceData = async ({
-    isNote = false,
-    notes = [],
     timeline,
+    clockedOut = false,
   }: {
-    isNote?: boolean;
-    notes?: string[];
     timeline?: TimeLine[];
+    clockedOut?: boolean;
   }) => {
     const payload = {
       startDateTime: moment(createData.startDateTime).format(
@@ -200,14 +203,41 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
             .filter((e) => e.type === 'break')
             .map((e) => ({ startTime: e.startTime, endTime: e.endTime })),
         }),
-      notes: isNote ? notes : notesArray,
       totalHours: time,
       breakHours: breakTime,
       timeLine: timeline,
+      isClockedOut: clockedOut,
     };
     try {
       await updateAttendance(payload, createData.attendanceData._id);
     } catch (error) {}
+  };
+  const updateNotesData = async () => {
+    try {
+      const payload = {
+        notes: createData.notes,
+      };
+      const response = await updateNotes(
+        payload,
+        createData.attendanceData._id
+      );
+      if (response.ack === 1) {
+        toggleRefresh();
+      }
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
+  const saveNotes = () => {
+    updateNotesData();
+  };
+
+  const saveTimeline = async (payload) => {
+    try {
+      const response = await createTimeline(payload);
+    } catch (error) {
+      console.log('Error', error);
+    }
   };
 
   return (

@@ -169,8 +169,10 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
     // },
   ];
 
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
+   const theme = useTheme();
+   const isDarkTheme = theme.palette.mode === 'dark';
+
+
 
   return (
     <>
@@ -188,7 +190,6 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
               justifyContent: 'space-between',
               alignItems: 'center',
               margin: '10px 0px',
-              color: isDarkTheme ? '#fff' : '#000',
             }}
           >
             <Typography> Create Invoiceee </Typography>
@@ -197,7 +198,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
             </Typography>
           </Box>
           <Divider sx={{ bgcolor: '#292929' }} />
-          <Typography margin={'12px 0px'} color={isDarkTheme ? '#fff' : '#000'}>
+          <Typography margin={'12px 0px'}>
             Pick a template or create an invoice from scratch
           </Typography>
           <Box

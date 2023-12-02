@@ -228,7 +228,7 @@ export default function ManageCreators() {
           </Button>
         </PageTopbar>
 
-        <Stack direction="row" sx={{ height: '85%' }}>
+        <Stack direction="row">
           <Filter
             handleSearch={handleSearch}
             refetch={handleSearch}

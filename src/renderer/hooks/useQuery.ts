@@ -85,6 +85,26 @@ const useQuery = (props: IProps) => {
           setLoading(false);
         });
     }
+    if (key === 'get-earnings') {
+      let endPoint = 'earnings/' + params.agencyId;
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json'
+        },
+        withAuth: true,
+      };
+      fetchReq(endPoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
 
     // window.electron.ipcRenderer.sendMessage(`${key}-request`, params);
     // window.electron.ipcRenderer.on(`${key}-response`, (res) => {

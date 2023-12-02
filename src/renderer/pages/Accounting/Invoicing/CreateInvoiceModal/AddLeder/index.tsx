@@ -60,7 +60,7 @@ export default function AddLeder({ submitInvoice, allFieldsFilled, open, setOpen
           }}
         >
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
-
+          
           <div
             style={{
               display: 'flex',
