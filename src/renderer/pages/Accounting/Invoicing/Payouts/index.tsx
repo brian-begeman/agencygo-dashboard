@@ -20,13 +20,13 @@ import ViewModal from './ViewModal';
 const Payouts = () => {
   const [openView, setOpenView] = useState<boolean>(false);
   const [invoiceSelectedFilter, setInvoiceSelectedFilter] = useState('Filter');
-  const [invoiceStatus, setInvoiceStatus] = useState<any>('');
   const [invoiceData, setInvoiceData] = useState<any>('');
   
   const { data, creatorInvoices, setCreatorInvoices } = useContext(MyInvoiceContext);
 
 
   const getInvoice = async () => {
+    // Get selected user invoices data?._id = selected userID
     const options = {
       method: 'GET',
       headers: {
@@ -50,27 +50,19 @@ const Payouts = () => {
     }
   };
 
-  const dataForReactApi = {
-    status: invoiceStatus,
-  };
-
-  const updateInvoice = async (id: any) => {
+  const updateInvoice = async (index:number, invoiceStatus: boolean, _id:string) => {
+    // console.log("Selected invoice:", invoice)
     try {
-      const response = await fetch(`http://localhost:3000/invoicing/${id}`, {
+      const response = await fetch(`http://localhost:3000/invoicing/${_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataForReactApi),
+        body: JSON.stringify({ status: invoiceStatus}),
       });
 
-      if (response.ok) {
-        // Update the state after a successful update
         getInvoice();
-        console.log('Invoice updated successfully');
-      } else {
-        console.error('Failed to update the invoice');
-      }
+        console.log("response:", await response.json())
     } catch (error) {
       console.error(error);
     }
@@ -83,11 +75,6 @@ const Payouts = () => {
   const handleView = (invoice: any) => {
     setInvoiceData(invoice);
     setOpenView(true);
-  };
-
-  const handleStatusToggle = (isTrue: any) => {
-    console.log(isTrue);
-    setInvoiceStatus((isTrue: any) => (isTrue ? true : false));
   };
   
  const theme = useTheme();
@@ -192,28 +179,20 @@ const Payouts = () => {
                     <TableCell
                       scope="row"
                       sx={{
-                        color: item?.status ? '#FEC84A' : '#37DE8F',
+                        color: item?.status ?  '#37DE8F' : '#FEC84A',
                         cursor: 'pointer',
                         '&:hover': {
                           textDecoration: 'underline',
                         },
-                      }}
-                      onClick={() => {
-                        handleStatusToggle(item?.status);
-                        updateInvoice(item?._id);
                       }}
                     >
                       <Select
                         value={item?.status ? 'Paid' : 'Unpaid'}
                         onChange={(e) => {
                           console.log(e.target.value);
-                          updateInvoice(item?._id);
-
-                          setInvoiceStatus(
-                            e.target.value === 'Paid' ? true : false
-                          );
+                          updateInvoice(index, e.target.value === 'Paid' ? true : false, item?._id);
                         }}
-                        style={{ color: item?.status ? '#FEC84A' : '#37DE8F' }}
+                        style={{ color: item?.status ?  '#37DE8F' : '#FEC84A' }}
                       >
                         <MenuItem value="Paid">Paid</MenuItem>
                         <MenuItem value="Unpaid">Unpaid</MenuItem>
