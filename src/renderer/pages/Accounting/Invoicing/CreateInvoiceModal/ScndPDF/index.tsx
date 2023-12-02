@@ -1,9 +1,8 @@
+import { useContext, useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import React, { useContext, useState } from 'react';
 import { MyInvoiceContext } from '../../context/context';
-// import './ScndPDF.css';
 
 const style = {
   position: 'absolute',
@@ -18,76 +17,28 @@ const style = {
   boxShadow: 24,
 };
 
-export default function ScndPDF({ open, setOpen, name }: any) {
+export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue, viewOnly }: any) {
   const handleClose = () => setOpen(false);
 
   const { data } = useContext(MyInvoiceContext);
+  
 
-  const pdfData = {
-    userName: data?.firstName,
-    companyName: '',
-    clientCompanyName: '',
-    companyAddress: '',
-    companyContact: '',
-    contactDetails: '',
-    description: '',
-    qty: 11,
-    unitPrice: 12.11,
-    total: 0,
-    userId: data?._id,
-    employeeId: data?._id,
-    email: data?.email,
-    amount: 0,
-    status: true,
-    address: 'test',
-    invoiceNo: 'INC0001',
-    paymentTerms: 'test',
-    contactName: 'test',
-    nameDept: 'test',
-    addresss: 'test',
-    phone: 'test',
-    invoiceTitle: 'test',
-    paymentInstructions: 'test',
-    subtotal: 0,
-    discount: 0,
-    subtotalLessDiscount: 0,
-    taxRate: 'test',
-    totalTax: 0,
-    shippingHandling: 0,
-    balanceDue: '$25310',
-    date: '2023-11-06',
-    addressShipTo: 'test',
-    phoneShipTo: 'test',
-  };
-  // },[name])
   const truevalue = true;
   const falsevalue = false;
 
-  const [invoicedetails, setInvoiceDeails] = useState<any>(pdfData);
+  const [invoicedetails, setInvoiceDetails] = useState<any>(pdfData);
 
-  const [editpdf, setEditpdf] = useState({
-    companyName: false,
-    clientCompanyName: false,
-    companyAddress: false,
-    companyContact: false,
-    contactDetails: false,
-    description: false,
-    qty: false,
-    unitPrice: false,
-  });
+  const [editpdf, setEditpdf] = useState({...initialPdfValue});
 
   const handleContactClick = (field: any, value: any) => {
-    setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
-    console.log(invoicedetails);
-
-    setInvoiceDeails({
+    setInvoiceDetails({
       ...invoicedetails,
       [event.target.name]: event.target.value,
     });
-    // console.log(invoicedetails, '===>>invoice data');
   };
 
   const handlePDF = async () => {
@@ -101,13 +52,11 @@ export default function ScndPDF({ open, setOpen, name }: any) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template3`,
+        `http://localhost:3000/invoicing/create?templateName=template2`,
         options
       );
       const responseData = await response.json();
-
       console.log(responseData.data);
-
       window.location.href = responseData.data;
       // setpdfURl(responseData.data)
     } catch (error) {
@@ -126,14 +75,15 @@ export default function ScndPDF({ open, setOpen, name }: any) {
     >
       <Box sx={style}>
         <div
-          className="main_boxx"
+          className="main_box"
           style={{
             backgroundColor: 'white',
             color: 'black',
-            padding: '20px',
+            padding: '5px 20px',
             boxSizing: 'border-box',
             height: '100%',
             overflowY: 'auto',
+            borderRadius: '5px'
           }}
         >
           {/* First box */}
@@ -144,10 +94,10 @@ export default function ScndPDF({ open, setOpen, name }: any) {
               alignItems: 'center',
               width: '100%',
               boxSizing: 'border-box',
+              marginTop: '20px'
             }}
           >
             <div
-              className=""
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -174,6 +124,8 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                   lineHeight: '4px',
                   backgroundColor: '#f1f4ff',
                   marginLeft: '10px',
+                  padding: '0px 4px',
+                  borderRadius: '2px',
                 }}
               >
                 <h3>
@@ -183,47 +135,25 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                 <p>{data?.email}</p>
               </div>
             </div>
-            <div className="">
+            <div>
               <div
-                className=""
-                style={{ lineHeight: '4px', backgroundColor: '#f1f4ff' }}
+                style={{ lineHeight: '4px', height: '70px', borderRadius: '2px', backgroundColor: '#f1f4ff', padding: '0px 10px' }}
               >
-                <h3>Invoice#00000</h3>
-                <p>issue date</p>
-                <p>mm/dd/yyyy</p>
+                <h4>Invoice Number: {pdfData?.invoiceNo}</h4>
+                <p>Issue Date</p>
+                <p>{pdfData?.date}</p>
               </div>
             </div>
           </div>
 
           <div
             style={{
-              margin: '20px 0px',
+              margin: '40px 0px',
               height: '10px',
               backgroundColor: '#576474',
               boxSizing: 'border-box',
             }}
           ></div>
-
-          <div>
-            <h1
-              style={{
-                backgroundColor: '#f1f4ff',
-                color: '#576474',
-                padding: '10px 0px',
-              }}
-            >
-              Business Name
-            </h1>
-            <h5
-              style={{
-                backgroundColor: '#f1f4ff',
-                color: '#576474',
-                padding: '10px 0px',
-              }}
-            >
-              Add a message her for your customer
-            </h5>
-          </div>
 
           <div
             style={{
@@ -233,6 +163,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             }}
           >
             <div style={{ lineHeight: '4px' }}>
+              <h3 style={{ color: '#576474' }}>Bill To </h3>
               <div
                 style={{
                   height: '5px',
@@ -240,10 +171,9 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                   borderRadius: '2px',
                 }}
               ></div>
-              <h3 style={{ color: '#576474' }}>Bill To </h3>
               <h5
                 onClick={() => handleContactClick('companyName', truevalue)}
-                style={{ cursor: 'pointer', color: '#576474' }}
+                style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.companyName ? (
                   <input
@@ -261,7 +191,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                 onClick={() =>
                   handleContactClick('clientCompanyName', truevalue)
                 }
-                style={{ cursor: 'pointer', color: '#576474' }}
+                style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.clientCompanyName ? (
                   <input
@@ -279,7 +209,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
               </h5>
               <h5
                 onClick={() => handleContactClick('companyAddress', truevalue)}
-                style={{ cursor: 'pointer', color: '#576474' }}
+                style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.companyAddress ? (
                   <input
@@ -296,7 +226,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
               </h5>
               <h5
                 onClick={() => handleContactClick('companyContact', truevalue)}
-                style={{ cursor: 'pointer', color: '#576474' }}
+                style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.companyContact ? (
                   <input
@@ -313,7 +243,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
               </h5>
               <h5
                 onClick={() => handleContactClick('contactDetails', truevalue)}
-                style={{ cursor: 'pointer', color: '#576474' }}
+                style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.contactDetails ? (
                   <input
@@ -331,6 +261,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             </div>
 
             <div style={{ lineHeight: '4px' }}>
+              <h4 style={{ color: '#576474' }}>Customer Name</h4>
               <div
                 style={{
                   height: '5px',
@@ -338,9 +269,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                   borderRadius: '2px',
                 }}
               ></div>
-              <h3 style={{ color: '#576474' }}> Details </h3>
 
-              <h4 style={{ color: '#576474' }}>Customer Name</h4>
               <h5 style={{ color: '#576474' }}>
                 &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
               </h5>
@@ -362,6 +291,7 @@ export default function ScndPDF({ open, setOpen, name }: any) {
             </div>
 
             <div style={{ lineHeight: '4px' }}>
+              <h3 style={{ color: '#576474' }}>Payment</h3>
               <div
                 style={{
                   height: '5px',
@@ -369,7 +299,6 @@ export default function ScndPDF({ open, setOpen, name }: any) {
                   borderRadius: '2px',
                 }}
               ></div>
-              <h3 style={{ color: '#576474' }}>Payment</h3>
 
               <h5 style={{ color: '#576474' }}>
                 &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
@@ -391,318 +320,22 @@ export default function ScndPDF({ open, setOpen, name }: any) {
               </h5>
             </div>
           </div>
+          
+          <Box sx={{display: 'flex', justifyContent:'end', borderColor: 'red', backgroundColor: '#f1f4ff', padding: '5px', margin: '40px 0px', borderRadius:'2px'}}>
+            <Typography variant='h6'>${pdfData?.amount}</Typography>
+          </Box>
 
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ width: '100%', display: 'flex' }}>
-              <div style={{ width: '60%' }}>ITM</div>
-              <div style={{ width: '10%' }}>QTY</div>
-              <div style={{ width: '10%' }}>PRICE</div>
-              <div style={{ width: '10%' }}>AMOUNT</div>
-            </div>
-
-            <div style={{ width: '100%', display: 'flex', margin: '20px 0px' }}>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                <p
-                  onClick={() => handleContactClick('description', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf.description ? (
-                    <input
-                      type="text"
-                      name="description"
-                      value={invoicedetails?.description}
-                      onChange={handleContactChange}
-                      onBlur={() =>
-                        handleContactClick('description', falsevalue)
-                      }
-                    />
-                  ) : (
-                    invoicedetails?.description || 'Item 1'
-                  )}
-                </p>
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                <p
-                  onClick={() => handleContactClick('qty', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {editpdf.qty ? (
-                    <input
-                      type="number"
-                      name="qty"
-                      value={invoicedetails?.qty}
-                      onChange={handleContactChange}
-                      onBlur={() => handleContactClick('qty', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.qty || '0'
-                  )}
-                </p>
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                <p
-                  onClick={() => handleContactClick('unitPrice', truevalue)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  $
-                  {editpdf.unitPrice ? (
-                    <input
-                      type="number"
-                      name="unitPrice"
-                      value={invoicedetails?.unitPrice}
-                      onChange={handleContactChange}
-                      onBlur={() => handleContactClick('unitPrice', falsevalue)}
-                    />
-                  ) : (
-                    invoicedetails?.unitPrice || '0'
-                  )}
-                </p>
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                ${invoicedetails?.qty * invoicedetails?.unitPrice}
-              </div>
-            </div>
-
-            <div style={{ width: '100%', display: 'flex', margin: '20px 0px' }}>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                Item name
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                0
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-            </div>
-
-            <div style={{ width: '100%', display: 'flex', margin: '20px 0px' }}>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                Item name
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                0
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-            </div>
-
-            <div style={{ width: '100%', display: 'flex', margin: '20px 0px' }}>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                Item name
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                0
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                $0.00
-              </div>
-            </div>
-
-            <div style={{ width: '100%', display: 'flex', marginTop: '20px' }}>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                subtotal
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                0
-              </div>
-            </div>
-
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                marginTop: '20px',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <div style={{ width: '60%', padding: '10px', color: 'black' }}>
-                subtotal
-              </div>
-              <div
-                style={{
-                  width: '60%',
-                  backgroundColor: '#f1f4ff',
-                  padding: '10px',
-                }}
-              >
-                0
-              </div>
-            </div>
-          </div>
-
-          {/* <div>
-            <div className="Business-name">
-              <h1>Business Name</h1>
-            </div>
-            <div className="Business-p">
-              <p>add address Lorem ipsum dolor sit amet.</p>
-            </div>
-          </div> */}
-
-          {/* <div className="billing-div-main">
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                BILL TO
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>email address</p>
-                <p style={{ margin: '1px 0px' }}>phone number</p>
-                <p style={{ margin: '1px 0px' }}>Street address</p>
-                <p style={{ margin: '1px 0px' }}>country/code</p>
-              </div>
-            </div>
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                DETAILS
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>Your address</p>
-                <p style={{ margin: '1px 0px' }}>Your contact details</p>
-              </div>
-            </div>
-            <div className="sub-billing-div-main">
-              <p style={{ padding: '50px 0px 0px 0px', marginLeft: '10px', borderTop: '3px solid #8080805c' }}>
-                PAYMENT
-              </p>
-              <div className="companyName">
-                <p style={{ margin: '1px 0px' }}>Your Company Name</p>
-                <p style={{ margin: '1px 0px' }}>Your address</p>
-              </div>
-            </div>
-          </div> */}
-
-          {/* 3 boxes */}
-
-          <div>{/* Additional content if needed */}</div>
-
-          <Button
-            variant="contained"
-            sx={{ color: '#fff', textTransform: 'capitalize' }}
-            onClick={handlePDF}
-          >
-            Create Invoice
-          </Button>
+          <Box sx={{width: '100%', display: 'flex', paddingTop: '6px', justifyContent: 'end', gap: '4px'}}>
+            {!viewOnly &&
+            <Button variant="contained" sx={{ color: '#fff', textTransform: 'capitalize' }}
+              onClick={handlePDF} >
+              Create Invoice
+            </Button>}
+            <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize' }} 
+              onClick={()=> {setInvoiceDetails(pdfData); setEditpdf(initialPdfValue); setOpen(false); }}>
+                close
+            </Button> 
+          </Box>
         </div>
         <Button onClick={handlePDF}>Create</Button>
       </Box>

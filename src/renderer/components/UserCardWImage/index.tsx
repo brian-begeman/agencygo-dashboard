@@ -6,14 +6,14 @@ import styles from './styles.module.css';
 import { useContext, useEffect, useState } from 'react';
 
 import { MyInvoiceContext } from 'renderer/pages/Accounting/Invoicing/context/context';
+import { agencyCreatorSplit, randomNumber } from 'renderer/pages/Accounting/Invoicing';
 
 interface $Props {
   name: string;
   profileImage: string;
   notificationCount?: number;
-  data: any;
+  // data: any;
   id: string;
-  selectName: any;
   messageCount?: number;
   selected: boolean;
   onClick: () => void;
@@ -23,9 +23,8 @@ export default function UserCardWImage({
   name,
   autoRelink,
   profileImage,
-  data,
+  // data,
   id,
-  selectName,
   notificationCount,
   messageCount,
   selected,

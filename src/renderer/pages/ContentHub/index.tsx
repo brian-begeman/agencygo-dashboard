@@ -913,6 +913,8 @@ export default function ContentHub() {
                 data.data.creators.map((c) => (
                   <UserCardWImage
                     key={c._id}
+                    id={c.id}
+                    autoRelink={false}
                     name={c.creatorName}
                     profileImage={ProfilePic}
                     notificationCount={0}
