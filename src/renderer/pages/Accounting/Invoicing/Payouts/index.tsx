@@ -173,7 +173,7 @@ const Payouts = () => {
                         color: item?.delivery === true ? '#37DE8F' : '#FEC84A',
                       }}
                     >
-                      {item?.delivery === true ? 'Successfull' : 'Pending'}
+                      {item?.delivery === true ? 'Successful' : 'Pending'}
                     </TableCell>
                     <TableCell>{item?.createdAt}</TableCell>
                     <TableCell
