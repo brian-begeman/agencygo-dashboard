@@ -222,9 +222,9 @@ const sideBarMenuConst = [
     icon: <EmployeSvg />,
     menu: [
       {
-        label: 'Time Keeping',
+        label: 'Timekeeping',
         value: 'time-keeping',
-        link: '/accounting/time-keeping',
+        link: '/timekeeping',
       },
       {
         label: 'Manage Employees',

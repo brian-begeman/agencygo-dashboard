@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 
 import Attendance from './Attendance';
-import HeaderBar from './HeaderBar';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 import AttendanceTrackTable from './AttendanceTrackTable';
 import TimesheetReportsTable from './TimesheetReportsTable';
 import moment from 'moment';
+import Dashboard from "../../../components/Dashboard";
 
 export default function Timekeeping() {
   const theme = useTheme();
@@ -33,11 +33,7 @@ export default function Timekeeping() {
   const shiftDuration = shiftEnd - shiftStart;
 
   return (
-    <>
-      <Stack sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
-        <HeaderBar />
-      </Stack>
-
+    <Dashboard>
       <Box
         display="flex"
         gap="10px"
@@ -70,6 +66,6 @@ export default function Timekeeping() {
         <AttendanceTrackTable refresh={refresh} shiftDuration={shiftDuration} />
       </Stack>}
 
-    </>
+    </Dashboard>
   );
 }
