@@ -48,10 +48,6 @@ export default function Payroll() {
   const [groupedPayrolls, setGroupedPayrolls] = useState<any>([]);
   const [filters, setFilters] = useState<filters>(initialFilters)
 
-  // const [allUsers, setAllUsers] = useState<any>([...allUsersMock]);
-  // const [allPayrolls, setAllPayrolls] = useState<payrollType[] | []>([...allPayrollsWithTimestampMock]);
-  // const [filteredUser, setFilteredUser] = useState<any[] | []>([...allUsersMock])
-
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
@@ -59,10 +55,9 @@ export default function Payroll() {
     try {
       const response = await fetch(`${API_URL}/users`, HTTP_GET_OPTIONS);
       if (response.ok) {
-        const data = await response.json();
-        setAllUsers(data?.data);
-        setFilteredUser(data?.data);
-        console.log('get users Data:', data,);
+        const res = await response.json();
+        setAllUsers(res?.data);
+        setFilteredUser(res?.data);
       } else {
         console.error('Failed to get users');
       }
@@ -80,9 +75,8 @@ export default function Payroll() {
         },
       });
       if (response.ok) {
-        const payroll = await response.json();
-        setAllPayrolls(payroll?.data);
-        console.log('All payrolls:', payroll);
+        const res = await response.json();
+        setAllPayrolls(res?.data);
       } else {
         console.error('Failed to get users');
       }
@@ -120,8 +114,6 @@ export default function Payroll() {
       payrollsInGroup = groupingPayrolls(allPayrolls, selectedFrequency);
     }
     setGroupedPayrolls(payrollsInGroup);
-
-    setFilters({frequency: selectedFrequency, role: selectedRole, status: selectedStatus});
   }
 
   return (
@@ -140,6 +132,7 @@ export default function Payroll() {
         <PayrollTopContainer filters={filters} setFilters={setFilters}  />
         <TableAccordion
         allUsers={filteredUser}
+        allPayrolls={allPayrolls}
         setAllPayrolls={setAllPayrolls} 
         groupedPayrolls={groupedPayrolls}
         payrollGroupTitle={filters.frequency} />

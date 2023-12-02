@@ -31,7 +31,8 @@ function groupData(data, interval) {
     const groups = {};
 
     data.forEach(item => {
-        const createdAt = new Date(item.createdAt??new Date());
+        if(!!!item.createdAt) return null
+        const createdAt = new Date(item.createdAt);
         const groupStart = getStartDate(createdAt, interval).toISOString();
 
         if (!groups[groupStart]) {

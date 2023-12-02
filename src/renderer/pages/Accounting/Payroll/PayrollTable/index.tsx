@@ -42,7 +42,7 @@ const defaultPayroll:payrollType = {
 }
 
 //hourlyPay, Commission Earned and Bonus editable Contents type
- const PayrollTable = ({allUsers, allPayrolls, setAllPayrolls}: any) => {
+ const PayrollTable = ({allUsers, groupPayrolls, allPayrolls, setAllPayrolls}: any) => {
 
   const [payrollInputs, setPayrollInputs] = useState({  hourlyPay:false,  bonus:false,  commission:false })
   const [selectedPayroll, setSelectedPayroll] = useState<payrollType>(defaultPayroll);
@@ -53,7 +53,8 @@ const defaultPayroll:payrollType = {
   };
 
   const editPayroll = (fieldName:string, payrollIndex:number) => {
-     setPayrollInputs({...payrollInputs, [fieldName]:true})
+    const defaultIn = {  hourlyPay:false,  bonus:false,  commission:false }
+     payrollIndex != editingIndex ? setPayrollInputs({...defaultIn, [fieldName]:true})  : setPayrollInputs({...payrollInputs, [fieldName]:true})
      setEditingIndex(payrollIndex);
 
     if (allPayrolls[payrollIndex]) {
@@ -78,8 +79,7 @@ const defaultPayroll:payrollType = {
         const payroll = await response.json();
         const payrolls = [...allPayrolls];
         payrolls[payrollIndex] = payroll?.data;
-        setAllPayrolls([...payrolls]);
-        console.log(allPayrolls[payrollIndex])
+        setAllPayrolls(payrolls);
       } else {
         console.error('Failed to get users');
       }
@@ -122,7 +122,7 @@ const defaultPayroll:payrollType = {
         </TableHead>
         
         <TableBody>
-          {allPayrolls.map((payroll: any, payrollIndex: any) => {
+          {groupPayrolls.map((payroll: any, payrollIndex: any) => {
             const user = findUser(payroll?.employeeId);
             if(!user) return null
             return(
@@ -162,7 +162,7 @@ const defaultPayroll:payrollType = {
                   )}
                   {editingIndex === payrollIndex && payrollInputs.hourlyPay ? (
                     <IconButton size="small"
-                      onClick={() => savePayroll("hourlyPay",payrollIndex)}>
+                      onClick={() => savePayroll("hourlyPay", payrollIndex)}>
                      <AddIcon fontSize="inherit" color='primary' />
                    </IconButton>
                   ) : (
@@ -257,7 +257,7 @@ const defaultPayroll:payrollType = {
               </TableCell>
               <TableCell
                 sx={{
-                  color: payroll?.status?  '#37DE8F' : '#FEC84A',
+                  color: payroll?.status === 'true' || payroll?.status === true?  '#37DE8F' : '#FEC84A',
                 }}
               >
                 <Typography
@@ -267,12 +267,12 @@ const defaultPayroll:payrollType = {
                     borderRadius: '15px',
                     fontSize: '12px',
                     background:
-                    payroll?.status ? '#072718': '#473200',
+                    payroll?.status === 'true' || payroll?.status === true ? '#072718': '#473200',
                     textAlign: 'center'
                   }}
                 >
 
-                  {payroll?.status ? 'Paid' : 'Unpaid'}
+                  {payroll?.status === 'true' || payroll?.status === true ? 'Paid' : 'Unpaid'}
                 </Typography>
               </TableCell>
 

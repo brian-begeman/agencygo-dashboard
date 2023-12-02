@@ -63,7 +63,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function TableAccordion({allUsers, setAllPayrolls, groupedPayrolls, payrollGroupTitle }: any) {
+export default function TableAccordion({allUsers, allPayrolls, setAllPayrolls, groupedPayrolls, payrollGroupTitle }: any) {
   const [expanded, setExpanded] = useState<string | false>('1');
 
   const handleChange =
@@ -76,8 +76,8 @@ export default function TableAccordion({allUsers, setAllPayrolls, groupedPayroll
 
   return (
     <Box sx={{borderRadius: '3px', overflow: 'auto',}}>
-      {groupedPayrolls.map((payrollGroup:any, index:number) => (
-        <Accordion key={index+1}
+      {groupedPayrolls.map((payrollGroup:any, index:number) => {
+        return <Accordion key={index+1}
           expanded={expanded === `${index+1}`}
           onChange={handleChange(`${index+1}`)}
           sx={{ borderColor: isDarkTheme ? '#292929' : '#fff' }}
@@ -99,11 +99,12 @@ export default function TableAccordion({allUsers, setAllPayrolls, groupedPayroll
           >
              <PayrollTable
              allUsers={allUsers}
-             allPayrolls={payrollGroup?.data??[]}
+             groupPayrolls={payrollGroup?.data??[]}
+             allPayrolls={allPayrolls}
              setAllPayrolls={setAllPayrolls} />
           </AccordionDetails>
         </Accordion>
-      ))}
+      })}
     </Box>
   );
 }
