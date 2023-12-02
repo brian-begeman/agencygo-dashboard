@@ -42,11 +42,12 @@ const defaultPayroll:payrollType = {
 }
 
 //hourlyPay, Commission Earned and Bonus editable Contents type
- const PayrollTable = ({allUsers, groupPayrolls, allPayrolls, setAllPayrolls}: any) => {
+ const PayrollTable = ({allUsers, payrollGroup, allPayrolls, setAllPayrolls}: any) => {
 
   const [payrollInputs, setPayrollInputs] = useState({  hourlyPay:false,  bonus:false,  commission:false })
   const [selectedPayroll, setSelectedPayroll] = useState<payrollType>(defaultPayroll);
   const [editingIndex, setEditingIndex] = useState<any>(null);
+  const [thisPayrollGroup, setThisPayrollGroup] = useState([...payrollGroup])
 
   const handlePayrollUpdate = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedPayroll({ ...selectedPayroll, [e.target.name]: e.target.value });
@@ -57,8 +58,8 @@ const defaultPayroll:payrollType = {
      payrollIndex != editingIndex ? setPayrollInputs({...defaultIn, [fieldName]:true})  : setPayrollInputs({...payrollInputs, [fieldName]:true})
      setEditingIndex(payrollIndex);
 
-    if (allPayrolls[payrollIndex]) {
-      const selectedPayroll: payrollType = allPayrolls[payrollIndex];
+    if (payrollGroup[payrollIndex]) {
+      const selectedPayroll: payrollType = payrollGroup[payrollIndex];
       setSelectedPayroll(selectedPayroll);
     }
   };
@@ -77,9 +78,9 @@ const defaultPayroll:payrollType = {
       });
       if (response.ok) {
         const payroll = await response.json();
-        const payrolls = [...allPayrolls];
+        const payrolls = [...thisPayrollGroup];
         payrolls[payrollIndex] = payroll?.data;
-        setAllPayrolls(payrolls);
+        setThisPayrollGroup(payrolls);
       } else {
         console.error('Failed to get users');
       }
@@ -122,13 +123,13 @@ const defaultPayroll:payrollType = {
         </TableHead>
         
         <TableBody>
-          {groupPayrolls.map((payroll: any, payrollIndex: any) => {
+          {thisPayrollGroup.map((payroll: any, payrollIndex: any) => {
             const user = findUser(payroll?.employeeId);
             if(!user) return null
             return(
             <TableRow
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              key={payroll?._id}
+              key={payrollIndex}
             >
               <TableCell> {`${user?.firstName} ${user?.lastName}`} </TableCell>
               <TableCell>
@@ -157,7 +158,7 @@ const defaultPayroll:payrollType = {
                     />
                   ): (
                     <Typography width={'60px'} padding= '3px 5px' >
-                      ${!allPayrolls[payrollIndex]?.hourlyPay? 0: allPayrolls[payrollIndex]?.hourlyPay}
+                      ${!payroll?.hourlyPay? 0: payroll?.hourlyPay}
                     </Typography>
                   )}
                   {editingIndex === payrollIndex && payrollInputs.hourlyPay ? (
@@ -195,7 +196,7 @@ const defaultPayroll:payrollType = {
                   />
                   ) : (
                     <Typography width={'60px'} padding= '3px 5px' >
-                      ${!allPayrolls[payrollIndex]?.commissionEarned? 0 : allPayrolls[payrollIndex]?.commissionEarned}
+                      ${!payroll?.commissionEarned? 0 : payroll?.commissionEarned}
                     </Typography>
                   )}
                   
@@ -234,7 +235,7 @@ const defaultPayroll:payrollType = {
                     />
                   ) : (
                     <Typography width={'60px'} padding= '3px 5px'>
-                      ${!allPayrolls[payrollIndex]?.bonus? 0: allPayrolls[payrollIndex]?.bonus}
+                      ${!payroll?.bonus? 0: payroll?.bonus}
                     </Typography>
                   )}
                   

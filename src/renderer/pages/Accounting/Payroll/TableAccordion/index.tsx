@@ -6,6 +6,8 @@ import MuiAccordionSummary, {
 } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
+import FolderOffIcon from '@mui/icons-material/FolderOff';
+
 import {
   Box,
   Table,
@@ -76,7 +78,7 @@ export default function TableAccordion({allUsers, allPayrolls, setAllPayrolls, g
 
   return (
     <Box sx={{borderRadius: '3px', overflow: 'auto',}}>
-      {groupedPayrolls.map((payrollGroup:any, index:number) => {
+      {!!groupedPayrolls.length ? groupedPayrolls.map((payrollGroup:any, index:number) => {
         return <Accordion key={index+1}
           expanded={expanded === `${index+1}`}
           onChange={handleChange(`${index+1}`)}
@@ -98,13 +100,18 @@ export default function TableAccordion({allUsers, allPayrolls, setAllPayrolls, g
             sx={{ background: isDarkTheme ? '#0C0C0C' : '#fff' }}
           >
              <PayrollTable
+             key={`${index+1}`}
              allUsers={allUsers}
-             groupPayrolls={payrollGroup?.data??[]}
+             payrollGroup={payrollGroup?.data??[]}
              allPayrolls={allPayrolls}
              setAllPayrolls={setAllPayrolls} />
           </AccordionDetails>
         </Accordion>
-      })}
+      }) : 
+      <Box width={'100%'} display={'flex'} gap={'5px'} justifyContent={'center'} alignItems={'center'} height={'150px'}>
+        <FolderOffIcon sx={{fontSize: '36px'}} />
+      <Typography fontSize={'20px'}>No matching data!</Typography>  
+      </Box>}
     </Box>
   );
 }

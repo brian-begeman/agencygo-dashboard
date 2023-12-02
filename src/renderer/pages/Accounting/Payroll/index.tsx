@@ -113,6 +113,7 @@ export default function Payroll() {
     } else {
       payrollsInGroup = groupingPayrolls(allPayrolls, selectedFrequency);
     }
+    console.log("payrollsInGroup:", payrollsInGroup)
     setGroupedPayrolls(payrollsInGroup);
   }
 
@@ -135,7 +136,8 @@ export default function Payroll() {
         allPayrolls={allPayrolls}
         setAllPayrolls={setAllPayrolls} 
         groupedPayrolls={groupedPayrolls}
-        payrollGroupTitle={filters.frequency} />
+        payrollGroupTitle={filters.frequency}
+         />
       </Stack>
     </Box>
   );
