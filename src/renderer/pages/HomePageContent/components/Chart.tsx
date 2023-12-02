@@ -4,15 +4,34 @@ import { Line } from 'react-chartjs-2';
 ChartJS.register(Filler);
 
 export function TotalEarningsChart(props: { data: { labels: string[]; data: number[]; }}) {
-  const { data } = props;
+  // const { data } = props;
+  const data = {
+      labels: [
+        '1 Aug',
+        '7 Aug',
+        '14 Aug',
+        '21 Aug',
+        '28 Aug',
+        '4 Sep',
+        '11 Sep',
+        '18 Sep',
+        '25 Sep',
+        '2 Oct',
+      ],
+      data: [65, 59, 62, 70, 72, 75, 68, 66, 71, 74],
+  }
   return (
     <Line
-      style={{ width: '100%' }}
+      style={{ width: '500px', height: '70px'}}
+      width={300}
+      height={80}
+      // height={100}
       options={{
+        // maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
           y: {
-            suggestedMin: 50,
+            suggestedMin: 0,
             suggestedMax: 100,
             grid: {
               color: '#111',
@@ -20,7 +39,7 @@ export function TotalEarningsChart(props: { data: { labels: string[]; data: numb
             ticks: {
               // Include a dollar sign in the ticks and ensure two decimal places
               callback: function (value, index, values) {
-                return '$' + value.toFixed(2);
+                return '$' + (typeof value === 'string' ? value : value.toFixed(2));
               },
             },
           },
@@ -61,6 +80,7 @@ export function TotalEarningsChart(props: { data: { labels: string[]; data: numb
         ],
       }}
     />
+    // <></>
   );
 }
 
@@ -82,7 +102,7 @@ export function ChatterSalesChart() {
             ticks: {
               // Include a dollar sign in the ticks and ensure two decimal places
               callback: function (value, index, values) {
-                return '$' + value.toFixed(2);
+                return '$' + (typeof value === 'string' ? value : value.toFixed(2));;
               },
             },
           },

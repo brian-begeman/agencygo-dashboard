@@ -56,10 +56,7 @@ export default function ManagerSuite() {
   }
 
   useEffect(() => {
-    console.log('send event?')
-    console.log(selectedCreator);
     if (selectedCreator && selectedCreator.email && selectedCreator.password) {
-      console.log('for sure');
       window.electron.ipcRenderer.sendMessage('piev-event', {
         page,
         bounds: getDivBounds('browser-view'),

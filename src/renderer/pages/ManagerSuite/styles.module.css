@@ -12,7 +12,7 @@
 
 .usersMenu {
   display: 'flex';
-  height: '200px';
+  /* height: '100px'; */
 }
 
 .search {

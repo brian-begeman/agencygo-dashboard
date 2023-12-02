@@ -137,64 +137,61 @@ export default function Earnings() {
         />
       </Box>
       <Stack flexDirection="row" gap="20px">
-        <Grid spacing={3} container>
-          <Grid item md={5}>
-            <Box
-              padding={3}
-              borderRadius={2}
-              sx={{
-                background: '#181818',
-              }}
-            >
-              <Grid container spacing={1}>
-                {earningsData.map((item) => (
-                  <Grid item md={6}>
-                    <EarningsCard
-                      key={item.title}
-                      title={item.title}
-                      amount={item.amount.toString()}
-                    />
-                  </Grid>
-                ))}
+        <Box
+          padding={3}
+          borderRadius={2}
+          flex={3}
+          sx={{
+            background: '#181818',
+          }}
+        >
+          <Grid container spacing={1}>
+            {earningsData.map((item) => (
+              <Grid item md={4}>
+                <EarningsCard
+                  key={item.title}
+                  title={item.title}
+                  amount={item.amount.toString()}
+                />
               </Grid>
-            </Box>
+            ))}
           </Grid>
+        </Box>
 
-          <Grid item md={7}>
-            <Box
-              borderRadius="16px"
-              sx={{
-                padding: '32px',
-                minWidth: '250px',
-                background: '#181818',
-              }}
-            >
-              <Box
+        <Box
+          borderRadius="16px"
+          // flex={2}
+          sx={{
+            padding: '18px',
+            // minWidth: '250px',
+            maxHeight: '260px',
+            background: '#181818',
+          }}
+        >
+          <Box
+            sx={{
+              marginBottom: 3,
+            }}
+          >
+            <Stack flexDirection="row" alignItems="center" marginBottom={2}>
+              <Typography>Total Earnings</Typography>
+              <KeyboardArrowUp
                 sx={{
-                  marginBottom: 5,
+                  color: theme.palette.primary.light,
+                  marginLeft: '30px',
+                  fontSize: '14px',
                 }}
-              >
-                <Stack flexDirection="row" alignItems="center" marginBottom={2}>
-                  <Typography>Total Earnings</Typography>
-                  <KeyboardArrowUp
-                    sx={{
-                      color: theme.palette.primary.light,
-                      marginLeft: '30px',
-                      fontSize: '14px',
-                    }}
-                  />
-                  <Typography color={theme.palette.info.main} fontSize="14px">
-                    12.7%
-                  </Typography>
-                </Stack>
-                <Typography variant="h3" fontWeight="700" fontSize={'36px'}>
-                  ${totalEarnings.toFixed(2)}
-                </Typography>
-              </Box>
-              <TotalEarningsChart data={chartData}/>
-            </Box>
-          </Grid>
-        </Grid>
+              />
+              <Typography color={theme.palette.info.main} fontSize="14px">
+                12.7%
+              </Typography>
+            </Stack>
+            <Typography variant="h3" fontWeight="700" fontSize={'24px'}>
+              ${totalEarnings.toFixed(2)}
+            </Typography>
+          </Box>
+          <TotalEarningsChart data={chartData}/>
+        </Box>
       </Stack>
     </Box>
   );

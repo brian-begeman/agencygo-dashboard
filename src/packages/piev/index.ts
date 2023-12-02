@@ -78,7 +78,9 @@ export default class PuppeteerInElectronView {
       if (!view) view = this.addView(action.creatorId);
       this.attachView(action.creatorId, action.bounds);
       const page = await this.getPage(view);
-      // this.runAction(action, page);
+      if (page) {
+        await page.goto(onlyFansUrlMap[action.page]);
+      }
     }  
   }
 
@@ -116,6 +118,7 @@ export default class PuppeteerInElectronView {
         this.window.removeBrowserView(this.currentView);
       }
       this.window.addBrowserView(view);
+      this.window.setTopBrowserView(view);
       view.setBounds(bounds);
       this.currentView = view;
     }

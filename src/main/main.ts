@@ -21,14 +21,11 @@ import {
   BrowserWindow,
   shell,
   BrowserView,
-  screen,
   ipcMain,
   clipboard,
-  session,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import puppeteer, { Browser } from 'puppeteer';
 import Store from 'electron-store';
 import startIPCBridge from '../bridge';
 import MenuBuilder from './menu';
@@ -36,7 +33,6 @@ import { resolveHtmlPath } from './util';
 import PuppeteerInElectronView from '../packages/piev';
 
 let mainWindow: BrowserWindow | null = null;
-let ofBrowser: Browser | null = null;
 const piev = new PuppeteerInElectronView();
 
 async function main(): Promise<void> {
@@ -227,10 +223,8 @@ ipcMain.handle("copy-to-clipboard", async (event, text) => {
   clipboard.writeText(text);
 });
 
+startIPCBridge();
 
 app.on('ready', createWindow);
-
-
-// main();
 
 export default mainWindow;

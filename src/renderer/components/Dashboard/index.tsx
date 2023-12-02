@@ -26,7 +26,7 @@ function Dashboard({ children }: $Props) {
         </Box>
         <div className={classes.secondChild}>
           <Header />
-          <Box display='flex' flex={1} sx={{ marginTop: '100px', paddingBottom: '50px' }}>{children}</Box>
+          <Box display='flex' sx={{ marginTop: '100px', paddingBottom: '50px' }}>{children}</Box>
         </div>
         <div
           style={{
