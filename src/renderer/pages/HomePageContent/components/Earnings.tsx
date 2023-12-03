@@ -141,9 +141,6 @@ export default function Earnings() {
           padding={3}
           borderRadius={2}
           flex={3}
-          sx={{
-            background: '#181818',
-          }}
         >
           <Grid container spacing={1}>
             {earningsData.map((item) => (
@@ -165,7 +162,7 @@ export default function Earnings() {
             padding: '18px',
             // minWidth: '250px',
             maxHeight: '260px',
-            background: '#181818',
+            background: isDarkTheme? '#181818' : "#EAF1FF",
           }}
         >
           <Box
