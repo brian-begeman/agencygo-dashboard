@@ -81,13 +81,8 @@ export default function ManagerSuite() {
           </PageTopbar.HeaderText>
         </PageTopbar>
         {/* <section> */}
-<<<<<<< Updated upstream
-        <Box display="flex" gap="5px" padding="6px">
-          <Stack display={'flex'}>
-=======
         <Box display="flex" gap="5px" padding="6px 0px">
           <Stack display={'flex'} maxHeight={'68vh'}>
->>>>>>> Stashed changes
             <PageAside className={styles.usersMenu}>
               <div className={styles.search}>
               <SearchInput
@@ -114,21 +109,11 @@ export default function ManagerSuite() {
                 </div>
               ) : creators?.length > 0 ? (
                 creators
-<<<<<<< Updated upstream
-                  // .filter(
-                  //   (c) =>
-                  //     c.proxy !== null &&
-                  //     c?.proxy?.hasOwnProperty('creds') &&
-                  //     c?.proxy?.hasOwnProperty('proxyUser')
-                  // )
-                  .map((c) => (
-=======
                   .filter(
                     (c) =>
                       !!c.email && !!c.password
                   )
                   .map((c, index) => (
->>>>>>> Stashed changes
                     <UserCardWImage
                       id={c.id}
                       name={c.creatorName}
