@@ -116,8 +116,9 @@ export default function ManagerSuite() {
                   //     c?.proxy?.hasOwnProperty('creds') &&
                   //     c?.proxy?.hasOwnProperty('proxyUser')
                   // )
-                  .map((c) => (
+                  .map((c, index) => (
                     <UserCardWImage
+                      key={index}
                       id={c.id}
                       name={c.creatorName}
                       autoRelink={c?.autoRelink}

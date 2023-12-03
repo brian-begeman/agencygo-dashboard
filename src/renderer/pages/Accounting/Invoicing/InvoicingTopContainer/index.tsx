@@ -107,6 +107,7 @@ const InvoicingTopContainer = ({allUsers}: Props) => {
             </MenuItem>
             {allUsers.map((item: any, index: any) => (
               <MenuItem
+                key={index}
                 value={`${item?._id}`}
                 sx={{
                   fontWeight: 500,
@@ -127,10 +128,10 @@ const InvoicingTopContainer = ({allUsers}: Props) => {
         </Box>
       </Box>
       <Box display={'flex'} gap={'10px'} margin={'16px 0px'}>
-        {cardData.map((data) => {
+        {cardData.map((data, index) => {
           return (
             <Stack
-              key={data.id}
+              key={index}
               width={'50%'}
               flexDirection="row"
               borderRadius="16px"
