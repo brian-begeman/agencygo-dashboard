@@ -41,13 +41,16 @@ const defaultPayroll:payrollType = {
   totalPayment:0
 }
 
-//hourlyPay, Commission Earned and Bonus editable Contents type
  const PayrollTable = ({allUsers, payrollGroup, allPayrolls, setAllPayrolls}: any) => {
 
+  //hourlyPay, Commission Earned and Bonus editable Contents type
   const [payrollInputs, setPayrollInputs] = useState({  hourlyPay:false,  bonus:false,  commission:false })
+
+  //the payroll that is selected to be edited
   const [selectedPayroll, setSelectedPayroll] = useState<payrollType>(defaultPayroll);
+
+  // index of the selected payroll
   const [editingIndex, setEditingIndex] = useState<any>(null);
-  const [thisPayrollGroup, setThisPayrollGroup] = useState([...payrollGroup])
 
   const handlePayrollUpdate = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedPayroll({ ...selectedPayroll, [e.target.name]: e.target.value });
@@ -78,9 +81,13 @@ const defaultPayroll:payrollType = {
       });
       if (response.ok) {
         const payroll = await response.json();
-        const payrolls = [...thisPayrollGroup];
+        const payrolls = [...payrollGroup];
         payrolls[payrollIndex] = payroll?.data;
-        setThisPayrollGroup(payrolls);
+
+        const alPayrolls =[...allPayrolls]
+        const index = alPayrolls.findIndex(pr => pr._id==payrolls[payrollIndex]._id)
+        index!=-1 && ((alPayrolls[index] = (payrolls[payrollIndex])) && setAllPayrolls(alPayrolls) )
+
       } else {
         console.error('Failed to get users');
       }
@@ -123,7 +130,7 @@ const defaultPayroll:payrollType = {
         </TableHead>
         
         <TableBody>
-          {thisPayrollGroup.map((payroll: any, payrollIndex: any) => {
+          {payrollGroup.map((payroll: any, payrollIndex: any) => {
             const user = findUser(payroll?.employeeId);
             if(!user) return null
             return(

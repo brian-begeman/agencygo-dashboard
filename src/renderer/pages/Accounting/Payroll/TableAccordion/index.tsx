@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, {
@@ -18,17 +18,6 @@ import {
   useTheme,
 } from '@mui/material';
 import PayrollTable from '../PayrollTable';
-
-
-interface  payrollHeaderData {
-  startDate:string,
-  endDate:string,
-  totalHours:string,
-  totalSalary:string,
-  totalCommission:string,
-
-}
-
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -66,6 +55,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function TableAccordion({allUsers, allPayrolls, setAllPayrolls, groupedPayrolls, payrollGroupTitle }: any) {
+
   const [expanded, setExpanded] = useState<string | false>('1');
 
   const handleChange =
