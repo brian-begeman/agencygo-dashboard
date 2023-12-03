@@ -6,6 +6,7 @@ import { Divider, Switch, styled } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { API_URL } from 'config';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -48,7 +49,7 @@ export default function PromoTacker({ open, setOpen, userData }: any) {
       body: JSON.stringify(value),
     };
     try {
-      const response = await fetch('http://localhost:3000/invoicing', options);
+      const response = await fetch(`${API_URL}/invoicing`, options);
       if (response.ok) {
         const data = await response.json();
       } else {

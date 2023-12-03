@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from 'react';
 import DownloadSvgIcon from 'renderer/assets/svg/downloadSvg';
 import { MyInvoiceContext } from '../context/context';
 import ViewModal from './ViewModal';
+import { API_URL } from 'config';
 
 const Payouts = () => {
   const [openView, setOpenView] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const Payouts = () => {
     };
     try {
       const response = await fetch(
-        `http://localhost:3000/invoicing/user/${data?._id}/invoices`,
+        `${API_URL}/invoicing/user/${data?._id}/invoices`,
         options
       );
       if (response.ok) {
@@ -53,7 +54,7 @@ const Payouts = () => {
   const updateInvoice = async (index:number, invoiceStatus: boolean, _id:string) => {
     // console.log("Selected invoice:", invoice)
     try {
-      const response = await fetch(`http://localhost:3000/invoicing/${_id}`, {
+      const response = await fetch(`${API_URL}/invoicing/${_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

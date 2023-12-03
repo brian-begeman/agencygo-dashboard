@@ -5,6 +5,8 @@ import InvoicingTopContainer from './InvoicingTopContainer';
 import Payouts from './Payouts';
 import Wrapper from './context/Wrapper';
 
+import { API_URL } from 'config';
+
 export default function Invoicing() {
   const [allUsers, setAllUsers] = useState<[]>([]);
   const theme = useTheme();
@@ -12,7 +14,7 @@ export default function Invoicing() {
 
   const getUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/users');
+      const response = await fetch(`${API_URL}/users`);
       if (response.ok) {
         const data = await response.json();
         setAllUsers(data?.data);
