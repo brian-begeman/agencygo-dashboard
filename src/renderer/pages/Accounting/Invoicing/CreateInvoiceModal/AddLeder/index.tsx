@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Switch, styled } from '@mui/material';
+import { IconButton, Switch, styled } from '@mui/material';
 import './Addleder.css';
+import { MyInvoiceContext } from '../../context/context';
 
 const style = {
   position: 'absolute',
@@ -21,48 +22,20 @@ const style = {
   scrollBehavior: 'smooth',
 };
 
-export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
+export default function AddLeder({ submitInvoice, allFieldsFilled, open, setOpen, pdfData, initialPdfValue, viewOnly  }: any) {
   const handleClose = () => setOpen(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date())
 
-
-  const handlePDF = async () => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(invoiceDetails),
-    };
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template1`,
-        options
-      );
-      const responseData = await response.json();
-
-      console.log(responseData.data);
-      if (responseData?.data?.pdfUrl) {
-        setOpen(false)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const truevalue = true;
-  const falsevalue = false;
+  const trueValue = true;
+  const falseValue = false;
   const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
-  const [editpdf, setEditpdf] = useState({...initialPdfValue});
+  const [editPDF, setEditpdf] = useState({...initialPdfValue});
 
   const handleContactClick = (field: any, value: any) => {
-    if(!viewOnly) setEditpdf({ ...editpdf, [field]: value });
+    if(!viewOnly) setEditpdf({ ...editPDF, [field]: value });
   };
 
   const handleContactChange = (event: any) => {
-    console.log(invoiceDetails);
-
     setInvoiceDetails({
       ...invoiceDetails,
       [event.target.name]: event.target.value,
@@ -86,20 +59,6 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
             overflowY: 'auto',
           }}
         >
-           <Typography
-          style={{
-            float: 'right',
-            background: '#fff',
-            padding: '2px 8px',
-            marginBottom: '5px',
-            borderRadius: '100%',
-          margin: '2px'
-          }}
-          onClick={handleClose}
-          sx={{ cursor: 'pointer' }}
-        >
-          X
-        </Typography>
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
           
           <div
@@ -109,7 +68,7 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
               alignItems: 'center',
               backgroundColor: '#f3f3f3',
               color: '#333f4f',
-              padding: '20px',
+              padding: '0px 20px',
             }}
           >
             <div
@@ -151,7 +110,7 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
           </div>
           <div style={{background: '#ffffff',}}>
           {/* secound box */}
-            <div style={{ padding: '20px' }}>
+            <div style={{ padding: '10px 25px', }}>
               <div
                 style={{
                   display: 'flex',
@@ -166,99 +125,98 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
                     style={{ height: '3px', backgroundColor: '#bfbfbf' }}
                   ></div>
                   <h3
-                    onClick={() => handleContactClick('companyName', truevalue)}
+                    onClick={() => handleContactClick('companyName', trueValue)}
                     style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
-                    {editpdf?.companyName ? (
+                    {editPDF?.companyName ? (
                       <input
                         type="text"
                         name="companyName"
                         value={invoiceDetails?.companyName}
                         onChange={handleContactChange}
                         onBlur={() =>
-                          handleContactClick('companyName', falsevalue)
+                          handleContactClick('companyName', falseValue)
                         }
                       />
                     ) : (
                       invoiceDetails?.companyName || '< Contact Name >'
                     )}
                   </h3>
+
                   <h3
-                    onClick={() =>
-                      handleContactClick('clientCompanyName', truevalue)
-                    }
+                    onClick={() => handleContactClick('clientCompanyName', trueValue)}
                     style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
-                    {editpdf?.clientCompanyName ? (
+                    {editPDF?.clientCompanyName ? (
                       <input
                         type="text"
                         name="clientCompanyName"
                         value={invoiceDetails?.clientCompanyName}
                         onChange={handleContactChange}
                         onBlur={() =>
-                          handleContactClick('clientCompanyName', falsevalue)
+                          handleContactClick('clientCompanyName', falseValue)
                         }
                       />
                     ) : (
-                      invoiceDetails?.clientCompanyName ||
-                      '<Client Company Name >'
+                      invoiceDetails?.clientCompanyName ||  '<Client Company Name >'
                     )}
                   </h3>
+
                   <h3
-                    onClick={() =>
-                      handleContactClick('companyAddress', truevalue)
-                    }
+                    onClick={() => handleContactClick('companyAddress', trueValue)}
                     style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
-                    {editpdf?.companyAddress ? (
+                    {editPDF?.companyAddress ? (
                       <input
                         type="text"
                         name="companyAddress"
                         value={invoiceDetails?.companyAddress}
                         onChange={handleContactChange}
-                        onBlur={() => () =>
-                          handleContactClick('companyAddress', falsevalue)}
+                        onBlur={() =>
+                          handleContactClick('companyAddress', falseValue)
+                        }
                       />
                     ) : (
-                      invoiceDetails?.companyAddress || '<Address >'
+                      invoiceDetails?.companyAddress ||  '<Address >'
                     )}
                   </h3>
+
                   <h3
-                    onClick={() =>
-                      handleContactClick('companyContact', truevalue)
-                    }
+                    onClick={() => handleContactClick('companyContact', trueValue)}
                     style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
-                    {editpdf?.companyContact ? (
+                    {editPDF?.companyContact ? (
                       <input
                         type="text"
                         name="companyContact"
                         value={invoiceDetails?.companyContact}
                         onChange={handleContactChange}
-                        onBlur={() => () =>
-                          handleContactClick('companyContact', falsevalue)}
+                        onBlur={() =>
+                          handleContactClick('companyContact', falseValue)
+                        }
                       />
                     ) : (
-                      invoiceDetails?.companyContact || '<Phone >'
+                      invoiceDetails?.companyContact ||  '<Phone >'
                     )}
                   </h3>
+
+
                   <h3
-                    onClick={() =>
-                      handleContactClick('contactDetails', truevalue)
-                    }
+                    onClick={() => handleContactClick('contactDetails', trueValue)}
                     style={{ cursor: `${!viewOnly? 'pointer': ''}` }}
                   >
-                    {editpdf?.contactDetails ? (
+                    {editPDF?.contactDetails ? (
                       <input
                         type="text"
                         name="contactDetails"
                         value={invoiceDetails?.contactDetails}
                         onChange={handleContactChange}
-                        onBlur={() => () =>
-                          handleContactClick('contactDetails', falsevalue)}
+                        onBlur={() =>
+                          handleContactClick('contactDetails', falseValue)
+                        }
                       />
                     ) : (
-                      invoiceDetails?.contactDetails || '<Email >'
+                      invoiceDetails?.contactDetails ||  '<Email >'
                     )}
                   </h3>
                 </div>
@@ -291,12 +249,14 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'end',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 width: '100%',
-                padding: ' 20px ',
+                padding: '10px ',
                 color: '#333f4f',
               }}
             >
+               <Typography color={'error'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
               <h2 style={{ backgroundColor: 'pink', padding: '2px 10px', height: '37px', textAlign: 'end', borderRadius: '2px' }}>
                 ${pdfData.amount}
               </h2>
@@ -305,99 +265,20 @@ export default function AddLeder({ open, setOpen, pdfData, initialPdfValue, view
           <div style={{ height: '30px', backgroundColor: 'tomato' }}></div>
         </Box>
         
-        <div style={{
-            float: 'right',
-           padding:'10px 10px'
-          }}
-          >
-            {!viewOnly && 
+        <Box style={{float: 'right', padding:'5px 10px'}}>
+          {!viewOnly && 
             <Button variant="contained" sx={{ color: '#fff', textTransform: 'capitalize', marginRight: '4px'  }} 
-            onClick={handlePDF}>
+              onClick={()=>submitInvoice(invoiceDetails)}>
               Create Invoice
             </Button>}
 
-            
             <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize'}}
-            onClick={()=> {setInvoiceDetails(pdfData); setEditpdf(initialPdfValue);setOpen(false)}}
-            >
+             onClick={()=> {setInvoiceDetails(pdfData); setEditpdf(initialPdfValue);setOpen(false)}}>
               Close
             </Button>
-          </div>
+          </Box>
       </Box>
     </Modal>
   );
 }
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 28,
-  height: 16,
-  padding: 0,
-  display: 'flex',
-  '&:active': {
-    '& .MuiSwitch-thumb': {
-      width: 15,
-    },
-    '& .MuiSwitch-switchBase.Mui-checked': {
-      transform: 'translateX(9px)',
-    },
-  },
-  '& .MuiSwitch-switchBase': {
-    padding: 2,
-    '&.Mui-checked': {
-      transform: 'translateX(12px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
-      },
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    transition: theme.transitions.create(['width'], {
-      duration: 200,
-    }),
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? 'rgba(255,255,255,.35)'
-        : 'rgba(0,0,0,.25)',
-    boxSizing: 'border-box',
-  },
-}));
-
-const FrequencySelector = ({ frequencyFilter }: any) => {
-  const [selected, setSelected] = useState(1);
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        border: '1px solid #04A1FF',
-        width: 'fit-content',
-        borderRadius: '10px',
-        overflow: 'hidden',
-      }}
-    >
-      {frequencyFilter.map((data: string, index: number) => (
-        <Box
-          sx={{
-            bgcolor: index + 1 === selected ? '#04A1FF' : 'transparent',
-            cursor: 'pointer',
-            padding: '8px 10px',
-            border: '1px solid #04A1FF',
-          }}
-          key={index}
-          onClick={() => setSelected(index + 1)}
-        >
-          {data}
-        </Box>
-      ))}
-    </Box>
-  );
-};

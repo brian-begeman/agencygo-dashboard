@@ -10,10 +10,10 @@ import { agencyCreatorSplit, randomNumber } from 'renderer/pages/Accounting/Invo
 
 interface Props {
   allUsers: [];
-  setAllUsers: ()=>{}
+  getUsers: ()=>{}
 }
 
-export default function SearchUsers({allUsers, setAllUsers}: Props) {
+export default function SearchUsers({allUsers, getUsers}: Props) {
   const [search, setSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<any>([]);
   const {data, setData } = useContext<any>(MyInvoiceContext);
@@ -25,33 +25,29 @@ export default function SearchUsers({allUsers, setAllUsers}: Props) {
     const length = allUsers.length;
     if (length > 0) {
       // Automatically set the first user in the list as the default selected user
-      setData({
+      setData((prevData: any) => ({
+        ...prevData,
         ...(allUsers[length-length] as {}), 
         currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
-        agencyPer: data?.agencyPer?? agencyCreatorSplit()});
+        agencyPer: data?.agencyPer?? agencyCreatorSplit()
+      }))
     }
   }, [allUsers])
 
-  const getUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/users');
-      if (response.ok) {
-        const data = await response.json();
-        setAllUsers(data?.data);
-      } else {
-        console.error('Failed to fetch users');
-      }
-    } catch (error) {
-      console.error(error);
+  const onSearch = (value: string) => {
+    setSearch(value);
+    if (value === '') {
+      // If the search value is empty, show all users
+      setFilteredUsers(allUsers??[]);
+    } else {
+      // Filter the users based on the search input
+      const usersFromSearch = allUsers.filter((item: any) => {
+        return item.firstName.toLowerCase().includes(value.toLowerCase());
+      });
+      setFilteredUsers(usersFromSearch);
     }
   };
 
-  useEffect(() => {
-    // Fetch all users when the component mounts
-    getUsers();
-  }, []);
-
-  const [selectName, setSelectName] = useState<any>('');
 
   return (
     <aside
@@ -70,25 +66,18 @@ export default function SearchUsers({allUsers, setAllUsers}: Props) {
           <SearchInput.ReloadButton onRefresh={getUsers} />
         </SearchInput>
       </div>
-      {allUsers.map((item: any, index: any) => (
-        <div
-          style={{
-            background: item?.firstName === selectName ? '#04A1FF' : '',
-          }}
-          key={item?._id}
-        >
-          <UserCardWImage
-            data={item}
-            id={item._id}
-            name={`${item?.firstName} ${item?.lastName}`}
-            notificationCount={item?.notificationCount}
-            messageCount={item?.messageCount}
-            key={item?._id} // Use a unique key, such as _id
-            profileImage={''}
-            selected={false}
-            onClick={() => {}}
-            autoRelink={false}
-            selectName={setSelectName}
+      {filteredUsers.map((item: any, index: any) => (
+      <div style={{ background: item?._id === data?._id ? '#04A1FF' : '' }} key={item?._id} >
+        <UserCardWImage
+          data={item}
+          id={item._id}
+          name={`${item?.firstName} ${item?.lastName}`}
+          notificationCount={item?.notificationCount}
+          messageCount={item?.messageCount}
+          key={item?._id} // Use a unique key, such as _id
+          profileImage={''}
+          selected={false}
+          autoRelink={false}
           />
         </div>
       ))}

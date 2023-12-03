@@ -12,23 +12,21 @@ interface $Props {
   name: string;
   profileImage: string;
   notificationCount?: number;
-  // data: any;
+  data: any;
   id: string;
   messageCount?: number;
   selected: boolean;
-  onClick: () => void;
   autoRelink: boolean;
 }
 export default function UserCardWImage({
   name,
   autoRelink,
   profileImage,
-  // data,
+  data,
   id,
   notificationCount,
   messageCount,
   selected,
-  onClick,
 }: $Props) {
   // const [selected, setSelected] = useState(false);
   const cardClass = selected
@@ -42,10 +40,7 @@ export default function UserCardWImage({
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-
-  // const selctfunction = (data: any) => {
-  //   selectName(data);
-  // };
+ 
   return (
     <Box
       // spacing={1}
@@ -54,9 +49,12 @@ export default function UserCardWImage({
       alignItems={'center'}
       className={cardClass}
       onClick={() => {
-        onClick();
-        // selctfunction(data?.firstName);
-        // setData(data);
+        setData({
+          ...data, 
+          currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
+          agencyPer: data?.agencyPer?? agencyCreatorSplit()
+        });
+        console.log("Selected creator:", data)
       }}
     >
       {profileImage !== '' ? (
@@ -75,9 +73,6 @@ export default function UserCardWImage({
         width={'100%'}
       >
         <Typography
-          onClick={() => {
-            onClick();
-          }}
           variant="h3"
           fontSize={'18px'}
           sx={{ cursor: 'pointer' }}

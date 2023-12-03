@@ -13,7 +13,6 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect, useMemo } from 'react';
 import styles from './styles.module.css';
-import { KeyboardArrowDown } from '@mui/icons-material';
 import AddEmployeeModal from './AddEmployeeModal';
 import useDataEmployees from './hooks/useData';
 import Filter from 'renderer/components/Filter';
@@ -304,24 +303,6 @@ export default function ManageEmployees() {
                 gap: '15px',
               }}
             >
-              <Button
-                variant="contained"
-                endIcon={
-                  <KeyboardArrowDown
-                    sx={{ color: '#fff', marginTop: 0, fontSize: '14px' }}
-                  />
-                }
-              >
-                <Typography
-                  style={{
-                    textTransform: 'none',
-                    color: '#fff',
-                    fontSize: '14px',
-                  }}
-                >
-                  Batch Operations
-                </Typography>
-              </Button>
 
               <Button
                 variant="contained"

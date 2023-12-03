@@ -181,7 +181,7 @@ const useFormCreator = (
     if (dataEmployeeRaw?.data) {
       console.log(dataEmployeeRaw,"dataEmployeeRaw99999999999");
       
-      const employeeRes = dataEmployeeRaw?.data?.employees.map((item: any) => {
+      const employeeRes = dataEmployeeRaw?.data?.employees?.map((item: any) => {
         return {
           label: item?.name,
           // eslint-disable-next-line no-underscore-dangle

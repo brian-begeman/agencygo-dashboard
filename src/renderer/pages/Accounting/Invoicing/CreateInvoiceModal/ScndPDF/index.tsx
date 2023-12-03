@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue, viewOnly }: any) {
+export default function ScndPDF({ submitInvoice, allFieldsFilled, open, setOpen, name, pdfData, initialPdfValue, viewOnly }: any) {
   const handleClose = () => setOpen(false);
 
   const { data } = useContext(MyInvoiceContext);
@@ -26,7 +26,7 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
   const truevalue = true;
   const falsevalue = false;
 
-  const [invoicedetails, setInvoiceDetails] = useState<any>(pdfData);
+  const [invoiceDetails, setInvoiceDetails] = useState<any>(pdfData);
 
   const [editpdf, setEditpdf] = useState({...initialPdfValue});
 
@@ -36,32 +36,9 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
 
   const handleContactChange = (event: any) => {
     setInvoiceDetails({
-      ...invoicedetails,
+      ...invoiceDetails,
       [event.target.name]: event.target.value,
     });
-  };
-
-  const handlePDF = async () => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(invoicedetails),
-    };
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=template2`,
-        options
-      );
-      const responseData = await response.json();
-      console.log(responseData.data);
-      window.location.href = responseData.data;
-      // setpdfURl(responseData.data)
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -86,7 +63,6 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
             borderRadius: '5px'
           }}
         >
-          {/* First box */}
           <div
             style={{
               display: 'flex',
@@ -179,12 +155,12 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
                   <input
                     type="text"
                     name="companyName"
-                    value={invoicedetails?.companyName}
+                    value={invoiceDetails?.companyName}
                     onChange={handleContactChange}
                     onBlur={() => handleContactClick('companyName', falsevalue)}
                   />
                 ) : (
-                  invoicedetails?.companyName || '< Contact Name >'
+                  invoiceDetails?.companyName || '< Contact Name >'
                 )}
               </h5>
               <h5
@@ -197,65 +173,77 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
                   <input
                     type="text"
                     name="clientCompanyName"
-                    value={invoicedetails?.clientCompanyName}
+                    value={invoiceDetails?.clientCompanyName}
                     onChange={handleContactChange}
                     onBlur={() =>
                       handleContactClick('clientCompanyName', falsevalue)
                     }
                   />
                 ) : (
-                  invoicedetails?.clientCompanyName || '<Client Company Name >'
+                  invoiceDetails?.clientCompanyName || '<Client Company Name >'
                 )}
               </h5>
+
               <h5
-                onClick={() => handleContactClick('companyAddress', truevalue)}
+                onClick={() =>
+                  handleContactClick('companyAddress', truevalue)
+                }
                 style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.companyAddress ? (
                   <input
                     type="text"
                     name="companyAddress"
-                    value={invoicedetails?.companyAddress}
+                    value={invoiceDetails?.companyAddress}
                     onChange={handleContactChange}
-                    onBlur={() => () =>
-                      handleContactClick('companyAddress', falsevalue)}
+                    onBlur={() =>
+                      handleContactClick('companyAddress', falsevalue)
+                    }
                   />
                 ) : (
-                  invoicedetails?.companyAddress || '<Address >'
+                  invoiceDetails?.companyAddress || '<Address >'
                 )}
               </h5>
+
               <h5
-                onClick={() => handleContactClick('companyContact', truevalue)}
+                onClick={() =>
+                  handleContactClick('companyContact', truevalue)
+                }
                 style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.companyContact ? (
                   <input
                     type="text"
                     name="companyContact"
-                    value={invoicedetails?.companyContact}
+                    value={invoiceDetails?.companyContact}
                     onChange={handleContactChange}
-                    onBlur={() => () =>
-                      handleContactClick('companyContact', falsevalue)}
+                    onBlur={() =>
+                      handleContactClick('companyContact', falsevalue)
+                    }
                   />
                 ) : (
-                  invoicedetails?.companyContact || '<Phone >'
+                  invoiceDetails?.companyContact || '<Phone >'
                 )}
               </h5>
+
               <h5
-                onClick={() => handleContactClick('contactDetails', truevalue)}
+                onClick={() =>
+                  handleContactClick('contactDetails', truevalue)
+                }
                 style={{ cursor: `${!viewOnly? 'pointer': ''}`, color: '#576474' }}
               >
                 {editpdf?.contactDetails ? (
                   <input
                     type="text"
                     name="contactDetails"
-                    value={invoicedetails?.contactDetails}
+                    value={invoiceDetails?.contactDetails}
                     onChange={handleContactChange}
-                    onBlur={() => () =>
-                      handleContactClick('contactDetails', falsevalue)}
+                    onBlur={() =>
+                      handleContactClick('contactDetails', falsevalue)
+                    }
                   />
                 ) : (
-                  invoicedetails?.contactDetails || '<Email >'
+                  invoiceDetails?.contactDetails || '<Email >'
                 )}
               </h5>
             </div>
@@ -271,22 +259,22 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
               ></div>
 
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
+                &lt;{invoiceDetails?.companyName || '  Name / Dept '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
                 &lt;
-                {invoicedetails?.clientCompanyName || 'Client Company Name'}
+                {invoiceDetails?.clientCompanyName || 'Client Company Name'}
                 &gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
                 {' '}
-                &lt;{invoicedetails?.companyAddress || ' Address '}&gt;
+                &lt;{invoiceDetails?.companyAddress || ' Address '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.companyContact || ' phone '}&gt;
+                &lt;{invoiceDetails?.companyContact || ' phone '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.contactDetails || '  Email '}&gt;
+                &lt;{invoiceDetails?.contactDetails || '  Email '}&gt;
               </h5>
             </div>
 
@@ -301,34 +289,35 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
               ></div>
 
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.companyName || '  Name / Dept '}&gt;
+                &lt;{invoiceDetails?.companyName || '  Name / Dept '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
                 &lt;
-                {invoicedetails?.clientCompanyName || 'Client Company Name'}
+                {invoiceDetails?.clientCompanyName || 'Client Company Name'}
                 &gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
                 {' '}
-                &lt;{invoicedetails?.companyAddress || ' Address '}&gt;
+                &lt;{invoiceDetails?.companyAddress || ' Address '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.companyContact || ' phone '}&gt;
+                &lt;{invoiceDetails?.companyContact || ' phone '}&gt;
               </h5>
               <h5 style={{ color: '#576474' }}>
-                &lt;{invoicedetails?.contactDetails || '  Email '}&gt;
+                &lt;{invoiceDetails?.contactDetails || '  Email '}&gt;
               </h5>
             </div>
           </div>
           
-          <Box sx={{display: 'flex', justifyContent:'end', borderColor: 'red', backgroundColor: '#f1f4ff', padding: '5px', margin: '40px 0px', borderRadius:'2px'}}>
+          <Box sx={{display: 'flex', justifyContent:'space-between', alignItems: 'center', borderColor: 'red', backgroundColor: '#f1f4ff', padding: '5px', margin: '40px 0px', borderRadius:'2px'}}>
+            <Typography color={'error'}> {allFieldsFilled === false && `Please fill all fields!`}</Typography>
             <Typography variant='h6'>${pdfData?.amount}</Typography>
           </Box>
 
           <Box sx={{width: '100%', display: 'flex', paddingTop: '6px', justifyContent: 'end', gap: '4px'}}>
             {!viewOnly &&
             <Button variant="contained" sx={{ color: '#fff', textTransform: 'capitalize' }}
-              onClick={handlePDF} >
+            onClick={()=>submitInvoice(invoiceDetails)} >
               Create Invoice
             </Button>}
             <Button variant="outlined" sx={{ borderColor: '#000',color: '#000', textTransform: 'capitalize' }} 
@@ -337,7 +326,6 @@ export default function ScndPDF({ open, setOpen, name, pdfData, initialPdfValue,
             </Button> 
           </Box>
         </div>
-        <Button onClick={handlePDF}>Create</Button>
       </Box>
     </Modal>
   );

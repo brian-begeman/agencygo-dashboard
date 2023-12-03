@@ -19,12 +19,15 @@
     margin-left: 39px;
     border-bottom-left-radius: 40%;
     border-bottom-right-radius: 40%;
-    width: 178px;
+    min-width: 180px;
+    max-width: 250px;
+    width: auto;
     height: 200px;
     background-color: #ffe3fe;
     justify-content: center;
     align-items: center;
     display: flex;
+    padding: 5px;
 }
 .invoicee{
     display: flex;
@@ -41,8 +44,11 @@
 }
 
 .Juliana h1{
-    font-size: 46px;
-    color: #df287b
+    font-size: 35px;
+    color: #df287b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .invoicee h1{
     font-size: 46px;
