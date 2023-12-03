@@ -11,6 +11,7 @@ import {useFormik} from 'formik';
 
 
 import TextField from '@mui/material/TextField';
+import { API_URL } from 'config';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -63,7 +64,7 @@ export default function CustomInvoiceModal({ userData, open, setOpen, setCreateI
       body: JSON.stringify(value),
     };
     try {
-      const response = await fetch('http://localhost:3000/invoicing', options);
+      const response = await fetch(`${API_URL}/invoicing`, options);
         const data = await response.json();
     } catch (error) {
       console.error(error);

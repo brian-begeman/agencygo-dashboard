@@ -11,6 +11,7 @@ import FourthPDF from './FourthPDF';
 import TrdPDF from './TrdPDF';
 import { MyInvoiceContext } from '../context/context';
 import { agencyCreatorSplit } from 'renderer/utils/invoice';
+import { API_URL } from 'config';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -111,7 +112,7 @@ export default function CreateInvoiceModal({ open, setOpen }: any) {
     if(haveAllInvoiceFieldsValue === true){
       try {
       const response = await fetch(
-        `http://localhost:3000/invoicing/create?templateName=${selectedTemplate}`,
+        `${API_URL}/invoicing/create?templateName=${selectedTemplate}`,
         options
       );
       const responseData = await response.json();

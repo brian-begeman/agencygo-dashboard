@@ -1,13 +1,16 @@
 import { ChatterSalesChart } from './Chart';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme} from '@mui/material';
 
 const ChatterSales = () => {
+  
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
   return (
     <Box
       padding="16px"
       borderRadius={2}
       sx={{
-        background: '#181818',
+        background: isDarkTheme ? '#181818' : '#FFFFFF',
       }}
     >
       <Box marginBottom="10px" display="flex" justifyContent="space-between">

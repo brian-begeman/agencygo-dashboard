@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Divider, Switch, styled } from '@mui/material';
+import { Divider, Switch, styled, useTheme } from '@mui/material';
 import { InputWithLabel } from 'renderer/components/Settings/Wallet/Common/ModalComponents';
 import { useState } from 'react';
 import { useFormik } from 'formik';
@@ -13,13 +13,14 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   borderRadius: '10px',
-  bgcolor: '#121212',
-  color: '#fff',
   boxShadow: 24,
 };
 
 export default function ViewModal({ open, setOpen, invoiceData }: any) {
   const handleClose = () => setOpen(false);
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
     <Modal
@@ -30,7 +31,7 @@ export default function ViewModal({ open, setOpen, invoiceData }: any) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
+        <Box sx={{...style, backgroundColor: isDarkTheme ? '#181818' : '#EAF1FF',}} >
           <Box
             sx={{
               display: 'flex',
@@ -38,10 +39,7 @@ export default function ViewModal({ open, setOpen, invoiceData }: any) {
               alignItems: 'center',
             }}
           >
-            <Typography sx={{ fontSize: '40px', padding: '10px' }}>
-              {' '}
-              View Data{' '}
-            </Typography>
+            <Typography sx={{ fontSize: '40px', padding: '10px' }}> View Data</Typography>
             <span style={{ fontSize: '30px', padding: '10px' }}>
               {invoiceData?.userName}
             </span>
@@ -50,7 +48,7 @@ export default function ViewModal({ open, setOpen, invoiceData }: any) {
             className="bvb"
             style={{
               boxSizing: 'border-box',
-              backgroundColor: '#625f5f',
+              backgroundColor: isDarkTheme ? '#292929' : '#FFFFFF',
               padding: '30px',
             }}
           >

@@ -78,6 +78,13 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
           profileImage={''}
           selected={false}
           autoRelink={false}
+          onClick={()=> 
+            {setData({
+              ...item, 
+              currentModalBalance: item?.currentModalBalance?? randomNumber(25000, 1000),
+              agencyPer: item?.agencyPer?? agencyCreatorSplit()
+            });
+            console.log("Selected creator:", item)}}
           />
         </div>
       ))}

@@ -21,7 +21,7 @@ export default function EarningsCard({ title, amount }: $Props) {
         padding: '18px',
         border: '1px solid',
         borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
-        background: '#0C0C0C',
+        // background: isDarkTheme ? '#0C0C0C' : 'white' ,
       }}
     >
       <Stack spacing="10px" minWidth="60%">

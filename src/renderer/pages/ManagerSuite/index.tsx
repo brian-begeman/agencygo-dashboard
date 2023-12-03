@@ -8,7 +8,7 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import PageAside from 'renderer/components/PageAside';
 import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
-import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material';
+import {useTheme, Box, CircularProgress, Grid, Stack, Typography } from '@mui/material';
 import useDataCreators from '../ManageCreators/hooks/useData';
 import { useParams } from 'react-router-dom';
 
@@ -34,6 +34,9 @@ export default function ManagerSuite() {
   const selectedCreatorId = localStorage.getItem('CreatorId');
 
   const [search, setSearch] = useState('');
+  
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
 
   const {
     creators,
@@ -115,6 +118,7 @@ export default function ManagerSuite() {
                   )
                   .map((c, index) => (
                     <UserCardWImage
+                      key={index}
                       id={c.id}
                       name={c.creatorName}
                       autoRelink={c?.autoRelink}
@@ -146,7 +150,7 @@ export default function ManagerSuite() {
               style={{
                 width: '100%',
                 // height: '100vh',
-                background: '#000',
+                background: isDarkTheme? '#000' : '#EAF1FF',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -157,7 +161,6 @@ export default function ManagerSuite() {
               <CircularProgress />
               <Typography
                 variant="h3"
-                color="#fff"
                 fontSize={'18px'}
                 marginLeft={'20px'}
                 fontWeight={500}
