@@ -1,8 +1,9 @@
 import { BrowserWindow, BrowserView, Rectangle, App, IpcMain, IpcMainEvent } from 'electron';
 import getPort from 'get-port';
-import puppeteer, { Browser, Page, PuppeteerNode } from 'puppeteer-core';
+import puppeteer, { Browser, HTTPResponse, Page, PuppeteerNode } from 'puppeteer-core';
 import axios from 'axios';
 import { v4 } from 'uuid';
+import { navigate } from './actions/navigate.action';
 
 const onlyFansUrlMap: { [key: string]: string } = {
   'notifications': 'https://onlyfans.com/my/notifications',
@@ -35,6 +36,7 @@ type PievAction = {
 
 export default class PuppeteerInElectronView {
   views: Map<string, BrowserView> = new Map<string, BrowserView>();
+  pages: Map<string, Page> = new Map<string, Page>;
   window: BrowserWindow | null = null;
   browser: Browser | null = null;
   currentView: BrowserView | null = null;
@@ -59,7 +61,7 @@ export default class PuppeteerInElectronView {
       "NetworkService"
     );
     await app.whenReady();
-    const json = await axios.get<BrowserReport>(`http://127.0.0.1:${actualPort}/json/version`).catch(err => console.log(err));
+    const json = await axios.get<BrowserReport>(`http://127.0.0.1:${actualPort}/json/version`);
     if (!json) {
       throw new Error('Unable to connect to electron debug url');
     } 
@@ -68,6 +70,7 @@ export default class PuppeteerInElectronView {
       defaultViewport: null,
     });
     ipc.on('piev-event', this.handleIpc.bind(this));
+    ipc.on('piev-dismiss', this.handleDetachAll.bind(this));
   }
 
   async handleIpc(event: IpcMainEvent, ...args: any[]) {
@@ -75,13 +78,20 @@ export default class PuppeteerInElectronView {
       const action: PievAction = args[0];
       // Does it already exist?
       let view = this.views.get(action.creatorId);
-      if (!view) view = this.addView(action.creatorId);
+      if (!view) view = await this.addView(action.creatorId);
       this.attachView(action.creatorId, action.bounds);
       const page = await this.getPage(view);
       if (page) {
-        await page.goto(onlyFansUrlMap[action.page]);
+        await navigate(page, onlyFansUrlMap[action.page], { email: action.email, password: action.password} );
       }
     }  
+  }
+
+  async handleDetachAll(event: IpcMainEvent, ...args: any[]) {
+    if (this.window && this.browser && this.currentView) {
+      this.window.removeBrowserView(this.currentView);
+      this.currentView = null;
+    }
   }
 
 
@@ -89,7 +99,7 @@ export default class PuppeteerInElectronView {
     this.window = window;
   }
 
-  addView(creatorId: string, config?: {
+  async addView(creatorId: string, config?: {
     proxy: {
       host: string;
       port: number;
@@ -97,16 +107,18 @@ export default class PuppeteerInElectronView {
       password: string;
     };
     userDirS3: string;
-  }): BrowserView {
+  }): Promise<BrowserView> {
     const view = new BrowserView({
       webPreferences: {
         partition: `persist:${creatorId}`,
       }
     });
     view.setAutoResize({
-      vertical: true,
-      horizontal: true,
+      height: true,
+      width: true,
     });
+    // const path = view.webContents.session.getStoragePath();
+    await view.webContents.loadURL('https://onlyfans.com');
     this.views.set(creatorId, view);
     return view;
   }
@@ -118,7 +130,7 @@ export default class PuppeteerInElectronView {
         this.window.removeBrowserView(this.currentView);
       }
       this.window.addBrowserView(view);
-      this.window.setTopBrowserView(view);
+      // this.window.setTopBrowserView(view);
       view.setBounds(bounds);
       this.currentView = view;
     }
@@ -135,20 +147,21 @@ export default class PuppeteerInElectronView {
     if (this.window && this.browser && view) {
       const guid = v4();
       await this.window.webContents.loadURL('about:blank');
-      await this.window.webContents.executeJavaScript(`window.puppeteer = "${guid}"`);
+      await view.webContents.executeJavaScript(`window.puppeteer = '${guid}'`);
       const pages = await this.browser.pages();
       const guids = await Promise.all(pages?.map(async (_page) => await _page.evaluate('window.puppeteer')));
       const index = guids.findIndex((_guid) => _guid === guid);
       const page = pages[index];
+      // page.on('response', (resp: HTTPResponse) => console.log(resp));
       return page;
     }
   }
 
-  navigateView(creatorId: string, page: string) {
+  async navigateView(creatorId: string, page: string) {
     const view = this.views.get(creatorId);
     const url = onlyFansUrlMap[page];
     if (view && url) {
-      // const page = await pie
+      
     }
   }
 }

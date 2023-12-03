@@ -4,7 +4,7 @@ import useQuery from 'renderer/hooks/useQuery';
 import { Creator } from 'renderer/types/creator';
 import fetchReq from 'utils/fetch';
 
-const useDataCreators = () => {
+const useDataCreators = (preselected?: string | null) => {
   const { userData } = useContext(AuthContext);
   const agencyId = localStorage.getItem('AgencyId')
   const [creators, setCreators] = useState<Creator[]>([]);
@@ -23,9 +23,20 @@ const useDataCreators = () => {
         ...item,
         id: item?._id,
       })) || [];
-      
+    const creators = creatorsRes as Creator[];
     setCreators(creatorsRes);
-    setTotalCreatorsCount (data?.data?.totalDocument)
+    setTotalCreatorsCount (data?.data?.totalDocument);
+    if (preselected) {
+      const selected = creators.find(c => c.id === preselected);
+      if (selected) {
+        setSelectedCreator(selected);
+      }
+    } else {
+      const selected = creators.at(0);
+      if (selected) {
+        setSelectedCreator(selected);
+      }
+    }
   }, [data]);
 
   const handleSearch = (data: any) => {
