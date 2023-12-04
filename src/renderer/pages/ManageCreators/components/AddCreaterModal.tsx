@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
   Link,
@@ -275,7 +276,7 @@ export default function AddCreaterModal({
               }}
               label="Internal notes"
               inputIdentifierName="internalNotes"
-              placeholder="Enter name"
+              placeholder="Add Internal Notes"
               register={register as any}
             />
             <Box>
@@ -290,7 +291,7 @@ export default function AddCreaterModal({
                     border: '1px solid #292929',
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
-                  label=""
+                  label="Agency"
                   type="number"
                   max={10}
                   min={1}
@@ -303,7 +304,7 @@ export default function AddCreaterModal({
                     border: '1px solid #292929',
                     backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
                   }}
-                  label=" "
+                  label="Creator "
                   type="number"
                   max={10}
                   min={1}
