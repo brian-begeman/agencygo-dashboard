@@ -49,8 +49,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     });
   };
 
-  console.log('props', time, breakTime, breakInterval);
-
   useEffect(() => {
     if (time > 0) {
       setClockedIn(true);
@@ -344,8 +342,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
         </div>
         <Box>
           <div style={{ fontSize: 12 }}>
-            Notes:
-            {attandanceData && attandanceData.notes}
+            Notes: {attandanceData && attandanceData.notes}
           </div>
           <div style={{ fontSize: 12 }}>
             Breaks:{' '}
@@ -353,7 +350,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
               attandanceData.timeline
                 .filter((e) => e.type === 'break')
                 .map((e, i) => {
-                  return <span key={i}>{checkBreakTime(e.total)}, </span>;
+                  return <span key={i}>{checkBreakTime(e.total)}{i < attandanceData.timeline.filter((e) => e.type === 'break').length - 1 ? ',' : ''} </span>;
                 })
             ) : (
               <></>
