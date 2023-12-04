@@ -183,12 +183,14 @@ export default function ShiftTable() {
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: '10px',
-                  border: 'solid 1px #7B7E85',
+                  border: 'solid 1px',
+                  borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
                 }}
               >
                 <div
                   style={{
-                    background: '#292929',
+                    // background: '#292929',
+                    background: isDarkTheme? '#181818' : "#EAF1FF",
                     overflow: 'auto',
                     padding: '14px',
                     borderRadius: 'inherit',

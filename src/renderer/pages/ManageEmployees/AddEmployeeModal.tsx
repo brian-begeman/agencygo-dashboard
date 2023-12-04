@@ -204,12 +204,12 @@ export default function AddEmployeeModal({
             </Box>
 
             <Box>
-              <LabelText label={'Pay Rate'} />
+              <LabelText label={'$ Pay Rate '} />
               <Box sx={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                 <InputWithLabel
                   label=""
                   inputIdentifierName="payRate"
-                  placeholder="Enter Rate"
+                  placeholder="$ Enter Rate"
                   register={register as any}
                 />
                 <DropdownWithLabel
@@ -230,12 +230,12 @@ export default function AddEmployeeModal({
                 />
                 <LabelText label={'0.10%'} />
               </Box>
-              <DropdownWithLabel
+              {/* <DropdownWithLabel
                 label="Shift Schedule"
                 inputIdentifierName="shiftSchedular"
                 options={scheduleList}
                 register={register as any}
-              />
+              /> */}
             </Box>
 
             <MultiSelectDropdown

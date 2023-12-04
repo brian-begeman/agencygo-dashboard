@@ -216,8 +216,8 @@
   padding: 0px;
   width: 95px;
   margin-right: -10px;
+  color: #ffff;
 }
-
 .left-date-picker svg {
   display: none;
 }
@@ -230,6 +230,13 @@
 .left-date-picker .MuiInput-root button:hover {
   background-color: transparent;
 }
+.left-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:before {
+  border-bottom: none;
+  display: none;
+}
+.left-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:after {
+  display: none;
+}
 
 .right-date-picker .MuiInputBase-root input {
   background-color: #000;
@@ -238,24 +245,16 @@
   border: none;
   width: 80px;
   margin: -13px;
+  color: #ffff;
 }
 .right-date-picker .MuiInputBase-root {
   border: none;
-}
-
-.left-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:before {
-  border-bottom: none;
-  display: none;
 }
 .right-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:before {
   border-bottom: none;
   display: none;
 }
-
 .right-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:after {
-  display: none;
-}
-.left-date-picker .css-59p9m6-MuiInputBase-root-MuiInput-root:after {
   display: none;
 }
 
@@ -274,6 +273,20 @@
   border-radius: 10px;
   margin: 3px;
   background-color: #000;
+}
+.timesheet-reports-date-picker .MuiInputBase-root {
+  border-radius: 12px;
+}
+.timesheet-reports-date-picker .MuiFormControl-root {
+  border-radius: 12px;
+}
+.timesheet-reports-date-picker .MuiInputBase-root input {
+  font-size: 14px;
+  padding: 12px 8px;
+  width: 80px;
+}
+.timesheet-reports-date-picker .MuiInputBase-root {
+  border: none;
 }
 
 /* Add more specific color styles for segments */

@@ -8,7 +8,6 @@ const links = [
   { id: 1, text: 'Invoicing', link: 'invoicing' },
   { id: 2, text: 'Payroll', link: 'payroll' },
   { id: 3, text: 'Book Keeping', link: 'book-keeping' },
-  { id: 3, text: 'Time Keeping', link: 'time-keeping' },
 ];
 
 export default function Accounting() {
@@ -22,19 +21,17 @@ export default function Accounting() {
   return (
     <Dashboard>
       <section className={styles.wrapper}>
-
         <Box
           sx={{
             display: 'grid',
             gridTemplateColumns: '200px 1fr',
-            color:isDarkTheme ? '#fff' : '#000',
+            color: isDarkTheme ? '#fff' : '#000',
             height: '100%',
             zIndex: 30,
           }}
         >
           <Box
             sx={{
-
               position: 'absolute',
               top: 50,
               height: '100vh',
@@ -44,17 +41,17 @@ export default function Accounting() {
             }}
           >
             <Typography sx={{ padding: '20px 0px ' }}>Accounting</Typography>
-            {links.map(({text,link}) => {
+            {links.map(({ text, link }) => {
               return (
                 <PageTopbar.Button
-                tabButton={true}
-                key={text}
-                color="secondary"
-                text={text}
-                isActiveLink={path.includes(link)}
-                isLink
-                onClick={() => navigate(`/accounting/${link}`)}
-              />
+                  tabButton={true}
+                  key={text}
+                  color="secondary"
+                  text={text}
+                  isActiveLink={path.includes(link)}
+                  isLink
+                  onClick={() => navigate(`/accounting/${link}`)}
+                />
               );
             })}
           </Box>

@@ -20,14 +20,14 @@ export interface CreateData {
   attendanceData: any;
 }
 export interface $trackprops {
-  refresh: boolean;
+  refresh: any;
   shiftDuration: number;
 }
 export interface AttendanceTrackData {
   startDateTime: Date;
   endDateTime: Date;
   breakTime: string[];
-  notes: string[];
+  notes: string;
   totalHours: number;
   breakHours: number;
   timeLine: TimeLine[];
@@ -38,4 +38,13 @@ export interface AttendanceTimeSheet {
   endDateTime: Date;
   totalHours: number;
   timeLine: TimeLine[];
+  timeline: TimeLine[];
+  notes: string;
+}
+
+export interface TimeSheetEdit {
+  showEdit: boolean;
+  handleClose: () => void;
+  editData: any;
+  getData: () => void;
 }

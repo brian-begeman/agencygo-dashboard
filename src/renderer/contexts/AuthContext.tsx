@@ -83,6 +83,13 @@ export default function AuthProvider({ children }: $Props) {
       })
       .catch((err) => {
         console.log('Error occured: ', err);
+        //Clear auth token, and set to login screen as fallback;
+        localStorage.removeItem('Authorization');
+        localStorage.removeItem('AgencyId');
+        localStorage.removeItem('UserId');
+        localStorage.removeItem('TwilioToken');
+        setIsLogin(false);
+        setUserData({});
       });
   };
 
