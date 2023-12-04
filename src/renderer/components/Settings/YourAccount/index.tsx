@@ -14,12 +14,17 @@ import {
 import classes from './styles.module.css';
 import fetchReq from 'utils/fetch';
 import ChangePasswordModal from './ChangePassowrdModal';
+import axios from 'axios';
+import { API_URL } from 'config';
+import _ from 'lodash';
+
 interface InputProps {
   placeholder: string;
   name: string;
   value: string;
   handleOnChange: (value: string, name: string) => void;
 }
+
 function Input(props: InputProps) {
   const { placeholder, name, handleOnChange, value } = props;
   const theme = useTheme();
@@ -55,6 +60,7 @@ function YourAccount() {
     },
     agency: {
       agencyName: '',
+      agencyEmail:'',
     },
   });
 
@@ -86,6 +92,7 @@ function YourAccount() {
       .then((res) => {
         if (res.message == 'verify') {
           setUserData(res.data);
+          
         }
       })
       .catch((err) => {
@@ -97,10 +104,46 @@ function YourAccount() {
     fetchUserDetail();
   }, []);
 
-  const handelAccountDetail = () => {
+  const handelAccountDetail = async() => { 
+    try{
+    const _Id=userData?.user?._id    
+    const token = localStorage.getItem('Authorization');
+  if(userData?.user?.isEmployee == true){
+    const response= await axios.put(`${API_URL}/employee/updateEmployeeSetting/${_Id}`,
+    {
+        firstName:userData.user.firstName,
+        email:userData.user.email,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+    }
+  }
+    )
+    console.log(response,"personal detail======");
+  }else if(userData?.user?.isAdmin== true && userData?.user?.isAgency==true && userData?.user?.isEmployee == false){
+    const response= await axios.put(`${API_URL}/agency/updateAgencySetting/${_Id}`,
+    {
+        firstName:userData.user.firstName,
+        email:userData.user.email,
+        agencyName:userData.agency.agencyName,
+        agencyEmail:userData.agency.userId.email,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+    }
+  }
+    )
+    console.log(response,"admin data======");
+   }
     setEditUserDetail(false);
+  }catch{
+    console.log("can't update api error");
+    
+  }
   };
-
+ 
   const handleProfileImage = (e: any) => {
     if (e.target.files) {
       setProfileImage(e.target.files[0]);
@@ -141,9 +184,12 @@ function YourAccount() {
                   Change Password
                 </Button>
                 <Button
+                 size="small"
                   variant="contained"
                   sx={{ color: '#fff', textTransform: 'capitalize' }}
-                  onClick={() => setEditUserDetail(true)}
+                  onClick={() => {
+                    setEditUserDetail(true);
+                  }}
                 >
                   Edit
                 </Button>
@@ -164,7 +210,9 @@ function YourAccount() {
                   variant="contained"
                   sx={{ color: '#fff' }}
                   className={classes.savebutton}
-                  onClick={() => handelAccountDetail()}
+                  onClick={() =>{
+                     handelAccountDetail();
+                  }}
                 >
                   Save
                 </Button>
@@ -210,7 +258,7 @@ function YourAccount() {
                       fontSize: '5px',
                       cursor: 'pointer',
                     }}
-                    disabled={!editUserDetail}
+                    // disabled={!editUserDetail}
                   >
                     <label
                       className={classes.changePictureText}
@@ -264,8 +312,8 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
+                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
                   }}
                 />
                 <Typography color={'gray'}>E-mail</Typography>
@@ -291,8 +339,8 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
+                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
                   }}
                 />
               </Stack>
@@ -321,7 +369,7 @@ function YourAccount() {
                       fontSize: '5px',
                       cursor: 'pointer',
                     }}
-                    disabled={!editUserDetail}
+                    // disabled={!editUserDetail}
                   >
                     <label
                       className={classes.changePictureText}
@@ -374,16 +422,26 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
+                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
                   }}
                 />
                 <Typography color={'gray'}>E-mail</Typography>
                 <input
                   placeholder="Enter agency email"
-                  value={userData?.user?.email}
+                  value={userData?.agency?.userId?.email}
                   disabled={!editUserDetail}
-                  // onChange={(e) => setGroupName(e.target.value)}
+                  onChange={(e) =>
+                    setUserData((prev: any) => {
+                      return {
+                        ...prev,
+                        agency: {
+                          ...prev.agency,
+                          agencyEmail: e.target.value,
+                        },
+                      };
+                    })
+                  }
                   style={{
                     borderRadius: '3px',
                     border: '1px solid #aaa',
@@ -391,8 +449,8 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
+                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
                   }}
                 />
               </Stack>

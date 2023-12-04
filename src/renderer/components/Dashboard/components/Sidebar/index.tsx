@@ -23,6 +23,8 @@ import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
 import brandLogoImg from 'renderer/assets/png/agency-go-logo.png'
 import { useNavigate } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 const sideBarMenuConst = [
   {
@@ -239,6 +241,12 @@ const sideBarMenuConst = [
         link: '/employees-manage-shifts',
       },
     ],
+  },
+  {
+    name: localisation.settings,
+    icon: <SettingsIcon />,
+    menu: [],
+    link: '/settings',
   },
 ];
 

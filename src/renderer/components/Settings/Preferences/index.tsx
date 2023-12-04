@@ -4,7 +4,6 @@ import classes from './styles.module.css';
 function Preferences() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-
   return (
     <div className={classes.wrapper}>
       <div className={classes.prefernceWrapper}>
@@ -48,6 +47,22 @@ function Preferences() {
             >
               <option>Sunday</option>
               <option>Monday</option>
+            </select>
+          </div>
+          <label className={classes.labellist}>Language</label>
+          <div className={classes.select_box}>
+            <select
+              className={classes.optionlist}
+              style={{
+                backgroundColor: isDarkTheme ? '#121212' : '#fff',
+                color: isDarkTheme ? '#fff' : '#121212',
+              }}
+            >
+              <option>English</option>
+              <option>German</option>
+              <option>French</option>
+              <option>Spanish</option>
+              <option>Russian</option>
             </select>
           </div>
         </div>

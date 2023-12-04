@@ -39,7 +39,7 @@ const useFormWhiteLabel = () => {
     if (whiteLables) {
       setAgencyLogo(whiteLables.agencyLogo);
       setValue('agencyName', whiteLables.agencyName);
-      setValue('email', whiteLables?.email);
+      setValue('email', whiteLables.agencyDetails[0].email);
       setValue('primaryColor', whiteLables.primaryColor);
       setValue('secondaryColor', whiteLables.secondaryColor);
       setValue('websiteUrl', whiteLables.websiteUrl);

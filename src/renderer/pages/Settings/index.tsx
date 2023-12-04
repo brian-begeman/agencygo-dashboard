@@ -5,9 +5,9 @@ import PageTopbar from 'renderer/components/PageTopbar';
 import AccountSvg from 'renderer/assets/svg/AccountSvg';
 import PreferencesSvg from 'renderer/assets/svg/PreferencesSvg';
 import BillingSvg from 'renderer/assets/svg/BillingSvg';
-import WalletSvg from 'renderer/assets/svg/WalletSvg';
+// import WalletSvg from 'renderer/assets/svg/WalletSvg';
 import RoleSvg from 'renderer/assets/svg/RoleSvg';
-import SalesSvg from 'renderer/assets/svg/SalesSvg';
+// import SalesSvg from 'renderer/assets/svg/SalesSvg';
 import AboutSvg from 'renderer/assets/svg/AboutSvg';
 import PartnersSvg from 'renderer/assets/svg/PartnersSvg';
 import { useState } from 'react';
@@ -40,21 +40,21 @@ const navList = [
     icon: <BillingSvg />,
     value: 'billing',
   },
-  {
-    label: 'Wallet',
-    icon: <WalletSvg />,
-    value: 'wallet',
-  },
+  // {
+  //   label: 'Wallet',
+  //   icon: <WalletSvg />,
+  //   value: 'wallet',
+  // },
   {
     label: 'Role Settings',
     icon: <RoleSvg />,
     value: 'roleSetting',
   },
-  {
-    label: 'Sales Settings',
-    icon: <SalesSvg />,
-    value: 'salesSettings',
-  },
+  // {
+  //   label: 'Sales Settings',
+  //   icon: <SalesSvg />,
+  //   value: 'salesSettings',
+  // },
   {
     label: 'White Label',
     icon: <WhiteLabelSvg />,
@@ -85,8 +85,8 @@ export default function Settings() {
         return <Preferences />;
       case 'billing':
         return <Billing />;
-      case 'wallet':
-        return <Wallet />;
+      // case 'wallet':
+      //   return <Wallet />;
       case 'about':
         return <AboutGO />;
       case 'partners':
