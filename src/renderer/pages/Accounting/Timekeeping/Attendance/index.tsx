@@ -20,33 +20,27 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const {
     setTimerActive,
     time,
-    breakTime,
     setBreakTimerActive,
+    breakTime,
     setTime,
     setBreakTime,
     interval,
     breakInterval,
+    isClockedIn,
+    setClockedIn,
+    isOnBreak,
+    setOnBreak,
+    timeline,
+    setTimeline,
+    attandanceData,
+    setAttendanceData,
+    breaksArray,
+    setBreaksArray,
+    createData,
+    setCreateData,
   } = useContext(TimerContext);
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-
-  const [isClockedIn, setClockedIn] = useState(false);
-  const [isOnBreak, setOnBreak] = useState(false);
-  // const [timerActive, setTimerActive] = useState(false);
-  // const [time, setTime] = useState(0);
-  const [breaksArray, setBreaksArray] = useState<number[]>([]);
-  const [createData, setCreateData] = useState<CreateData>({
-    startDateTime: moment(),
-    endDateTime: moment(),
-    notes: '',
-    attendanceData: {},
-  });
-  // const [breakTimerActive, setBreakTimerActive] = useState(false);
-  // const [breakTime, setBreakTime] = useState<number>(0);
-  const [timeline, setTimeline] = useState<TimeLine[]>([]);
-  const [attandanceData, setAttendanceData] = useState({});
-
-  const nowTime = `${moment().format('YYYY-MM-DD HH:mm:ss')}`;
 
   // State Functions
   const setStateFn = (setState: Function, key: string, value: any) => {
@@ -55,7 +49,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     });
   };
 
-  // console.log('timeline', timeline);
   console.log('props', time, breakTime, breakInterval);
 
   useEffect(() => {
@@ -79,43 +72,15 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     }
   };
 
-  // Clock in timer
-  // useEffect(() => {
-  //   let interval: any = null;
-
-  //   if (timerActive) {
-  //     interval = setInterval(() => {
-  //       setTime((prevTime) => prevTime + 1);
-  //     }, 1000);
-  //     setStateFn(setCreateData, 'endDateTime', nowTime);
-  //   } else {
-  //     clearInterval(interval);
-  //   }
-  //   if (time === shiftDuration) {
-  //     updateAttendanceData({});
-  //     clearInterval(interval);
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [timerActive]);
-
-  // Break timer
-  // useEffect(() => {
-  //   let interval: null | any = null;
-  //   if (breakTimerActive) {
-  //     interval = setInterval(() => {
-  //       setBreakTime((prevTime) => prevTime + 1);
-  //     }, 1000);
-  //   } else {
-  //     clearInterval(interval);
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [breakTimerActive]);
-
   const clockIn = () => {
     setClockedIn(true);
     setTimerActive(true);
     createAttendanceData();
-    setStateFn(setCreateData, 'startDateTime', nowTime);
+    setStateFn(
+      setCreateData,
+      'startDateTime',
+      moment().format('YYYY-MM-DD HH:mm:ss')
+    );
     toggleRefresh();
     setTimeline([
       ...timeline,
@@ -127,19 +92,19 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     ]);
   };
 
-  const clockOut = () => {
+  const clockOut = async () => {
     setClockedIn(false);
     setTimerActive(false);
     saveBreaks();
     timeline[timeline.length - 1].endTime = new Date();
     setTimeline([...timeline]);
-    updateAttendanceData({ timeline, clockedOut: true });
+    await updateAttendanceData({ timeline, clockedOut: true });
     toggleRefresh();
     const payload = {
       attendanceId: createData.attendanceData._id,
       ...timeline[timeline.length - 1],
     };
-    saveTimeline(payload);
+    await saveTimeline(payload);
     setStateFn(setCreateData, 'notes', '');
     setAttendanceData({});
     setTime(0);
@@ -246,6 +211,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       await updateAttendance(payload, createData.attendanceData._id);
     } catch (error) {}
   };
+
   const updateNotesData = async () => {
     try {
       const payload = {
@@ -269,7 +235,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
 
   const saveTimeline = async (payload) => {
     try {
-      const response = await createTimeline(payload);
+      await createTimeline(payload);
     } catch (error) {
       console.log('Error', error);
     }
