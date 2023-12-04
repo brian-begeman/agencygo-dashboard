@@ -359,7 +359,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
           </div>
           <div style={{ fontSize: 12 }}>
             Breaks:{' '}
-            {attandanceData.timeline && attandanceData.timeline.length > 0 ? (
+            {attandanceData?.timeline && attandanceData.timeline.length > 0 ? (
               attandanceData.timeline
                 .filter((e) => e.type === 'break')
                 .map((e, i) => {
