@@ -1,15 +1,11 @@
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Alert, Button, Typography } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import { useEffect, useState } from 'react';
-
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import SecondsInput from '../SecondsInput';
+import { Alert, Button, Typography } from '@mui/material';
 import { deleteById, updateTimesheet } from 'services/attendance';
+import { TimeSheetEdit } from '../Types/index.types';
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -28,16 +24,16 @@ export default function TimesheetEditModal({
   handleClose,
   editData,
   getData,
-}) {
+}: TimeSheetEdit) {
   const [snakbarOpen, setSnackbarOpen] = useState(false);
   const [timeSheetData, setTimeSheetData] = useState(editData);
 
-  const [totalHR, setTotalHR] = useState(0);
-  const [totalMN, setTotalMN] = useState(0);
-  const [totalSEC, setTotalSEC] = useState(0);
-  const [breakHR, setBreakHR] = useState(0);
-  const [breakMN, setBreakMN] = useState(0);
-  const [breakSEC, setBreakSEC] = useState(0);
+  const [totalHR, setTotalHR] = useState<string>('');
+  const [totalMN, setTotalMN] = useState<string>('');
+  const [totalSEC, setTotalSEC] = useState<string>('');
+  const [breakHR, setBreakHR] = useState<string>('');
+  const [breakMN, setBreakMN] = useState<string>('');
+  const [breakSEC, setBreakSEC] = useState<string>('');
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -49,8 +45,8 @@ export default function TimesheetEditModal({
   };
 
   const updatetimeSheetData = async () => {
-    let theHr = (hr) => +hr * 3600;
-    let theMin = (min) => +min * 60;
+    let theHr = (hr: string) => +hr * 3600;
+    let theMin = (min: string) => +min * 60;
 
     const payload = {
       totalHours: `${theHr(totalHR) + theMin(totalMN) + +totalSEC}`,
@@ -81,7 +77,7 @@ export default function TimesheetEditModal({
     } catch (err) {}
   }, [editData]);
 
-  const deleteTimeline = async (timelineId) => {
+  const deleteTimeline = async (timelineId: number) => {
     try {
       const response = await deleteById(timelineId);
       if (response.ack === 1) {
@@ -227,7 +223,7 @@ export default function TimesheetEditModal({
               <Button
                 variant="contained"
                 color="success"
-                onClick={() => updatetimeSheetData(true)}
+                onClick={() => updatetimeSheetData()}
                 sx={{ marginRight: 1 }}
               >
                 <Typography

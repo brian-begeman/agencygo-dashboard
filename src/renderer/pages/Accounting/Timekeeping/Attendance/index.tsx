@@ -6,19 +6,25 @@ import moment from 'moment';
 
 import {
   createAttendance,
+  getAttendanceById,
   updateAttendance,
   updateNotes,
 } from 'services/attendance';
 import { $props, CreateData, TimeLine } from '../Types/index.types';
 import ProgressBar from '../Timebar';
 import { createTimeline } from 'services/timeline';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setClockOut,
+  setTotalBreakTime,
+  setTotalWorkTime,
+} from 'renderer/redux/actions/timerActions';
 
 // Attendance Component
 const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const [isClockedIn, setClockedIn] = useState(false);
   const [isOnBreak, setOnBreak] = useState(false);
   const [timerActive, setTimerActive] = useState(false);
-  const [time, setTime] = useState(0);
   const [breaksArray, setBreaksArray] = useState<number[]>([]);
   const [createData, setCreateData] = useState<CreateData>({
     startDateTime: moment(),
@@ -27,10 +33,15 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     attendanceData: {},
   });
   const [breakTimerActive, setBreakTimerActive] = useState(false);
-  const [breakTime, setBreakTime] = useState<number>(0);
   const [timeline, setTimeline] = useState<TimeLine[]>([]);
+  const [attandanceData, setAttendanceData] = useState({});
 
   const nowTime = `${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+
+  // Redux Functions
+  const timerData = useSelector((state: any) => state.timer);
+
+  const dispatch = useDispatch();
 
   // State Functions
   const setStateFn = (setState: Function, key: string, value: any) => {
@@ -41,11 +52,11 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
 
   const saveBreaks = () => {
     if (breaksArray.length === 0) {
-      setBreaksArray([...breaksArray, breakTime]);
+      setBreaksArray([...breaksArray, timerData.breakTime]);
     } else {
       setBreaksArray([
         ...breaksArray,
-        breakTime - breaksArray[breaksArray.length - 1],
+        timerData.breakTime - breaksArray[breaksArray.length - 1],
       ]);
     }
   };
@@ -56,13 +67,13 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
 
     if (timerActive) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
+        dispatch(setTotalWorkTime());
       }, 1000);
       setStateFn(setCreateData, 'endDateTime', nowTime);
     } else {
       clearInterval(interval);
     }
-    if (time === shiftDuration) {
+    if (timerData.workTime === shiftDuration) {
       updateAttendanceData({});
       clearInterval(interval);
     }
@@ -74,7 +85,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     let interval: null | any = null;
     if (breakTimerActive) {
       interval = setInterval(() => {
-        setBreakTime((prevTime) => prevTime + 1);
+        dispatch(setTotalBreakTime());
       }, 1000);
     } else {
       clearInterval(interval);
@@ -111,6 +122,8 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     };
     saveTimeline(payload);
     setStateFn(setCreateData, 'notes', '');
+    getByID();
+    dispatch(setClockOut());
   };
   const startBreak = () => {
     setOnBreak(true);
@@ -152,6 +165,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     saveTimeline(payload);
 
     updateAttendanceData({ timeline });
+    getByID();
   };
 
   // Convert seconds into hours, minutes, and seconds
@@ -172,8 +186,8 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       startDateTime: createData.startDateTime,
       breakTime: breaksArray,
       notes: createData.notes,
-      totalHours: time,
-      breakHours: breakTime,
+      totalHours: timerData.workTime,
+      breakHours: timerData.workTime,
       timeLine: timeline,
     };
     try {
@@ -197,16 +211,12 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       endDateTime: moment(createData.endDateTime).isValid()
         ? moment(createData.endDateTime).format('YYYY-MM-DD HH:mm:ss')
         : null,
-      ...(timeline &&
-        timeline.length > 0 && {
-          breakTime: timeline
-            .filter((e) => e.type === 'break')
-            .map((e) => ({ startTime: e.startTime, endTime: e.endTime })),
-        }),
-      totalHours: time,
-      breakHours: breakTime,
+
+      totalHours: timerData.workTime,
+      breakHours: timerData.breakTime,
       timeLine: timeline,
       isClockedOut: clockedOut,
+      breakTime: breaksArray,
     };
     try {
       await updateAttendance(payload, createData.attendanceData._id);
@@ -230,6 +240,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   };
   const saveNotes = () => {
     updateNotesData();
+    getByID();
   };
 
   const saveTimeline = async (payload) => {
@@ -238,6 +249,26 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     } catch (error) {
       console.log('Error', error);
     }
+  };
+
+  const checkBreakTime = (time) => {
+    let minCount = time / 60;
+    if (time > 59) {
+      return <span>{(Math.abs(time) / 60).toFixed(2)} min</span>;
+    } else if (minCount >= 60) {
+      return <span>{(Math.abs(minCount) / 60).toFixed(2)} hr</span>;
+    } else {
+      return <span>{time}sec</span>;
+    }
+  };
+
+  const getByID = async () => {
+    try {
+      const response = await getAttendanceById(createData.attendanceData._id);
+      if (response.ack === 1) {
+        setAttendanceData(response.data);
+      }
+    } catch (err) {}
   };
 
   return (
@@ -312,11 +343,35 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
             value={createData.notes}
             onChange={(e) => setStateFn(setCreateData, 'notes', e.target.value)}
           />
-          <button className="add-note" onClick={saveNotes}>
+          <button
+            className="add-note"
+            onClick={saveNotes}
+            disabled={!isClockedIn}
+          >
             Add note
           </button>
         </div>
-        <div className="timer">{formatTime(time)} Hrs</div>
+        <Box>
+          <div style={{ fontSize: 12 }}>
+            Notes: {attandanceData && attandanceData.notes}
+          </div>
+          <div style={{ fontSize: 12 }}>
+            Breaks:{' '}
+            {attandanceData ? (
+              attandanceData?.breakTime?.map((e, i) => {
+                return <span key={i}>{checkBreakTime(e)}, </span>;
+              })
+            ) : (
+              <></>
+            )}
+          </div>
+        </Box>
+        {isOnBreak ? (
+          <div className="timer">{formatTime(timerData.breakTime)} Hrs</div>
+        ) : (
+          <div className="timer">{formatTime(timerData.workTime)} Hrs</div>
+        )}
+
         <div className="date">17 Oct 2023</div>
         <div className="checked-in-msg">early by 6am</div>
         <div className="shift-txt">Shift</div>
