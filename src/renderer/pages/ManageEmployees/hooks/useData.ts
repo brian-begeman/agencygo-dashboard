@@ -31,7 +31,7 @@ interface IEmployeeList {
 const ROLE = {
   admin: 'Admin',
   manager: 'Manager',
-  chatter: 'Chatter',
+  employee: 'employee',
 };
 
 export interface IAssignedCreatorsToEmployee {
@@ -121,7 +121,7 @@ const useDataEmployees = () => {
             ? tempAssignedCreators.map((ta:any) => ta?.creatorName).join(', ')
             : '+ Please click to set',
           role: item?.role
-            ? ROLE[item?.role as 'admin' | 'manager' | 'chatter'] || ''
+            ? ROLE[item?.role as 'admin' | 'manager' | 'employee'] || ''
             : '',
           activated: item?.status,
           payRate:item?.payRate,

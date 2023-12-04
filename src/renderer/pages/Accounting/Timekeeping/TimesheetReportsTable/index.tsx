@@ -32,10 +32,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const TimesheetReportsTable = ({
   refresh,
-  isDisable,
 }: {
   refresh: boolean;
-  isDisable: boolean;
 }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -53,13 +51,14 @@ const TimesheetReportsTable = ({
     setShowEdit(!showEdit);
   };
 
-  const checkRole = () => {
+  const isManagerOrAdmin = () => {
     if (
       userData?.user?.role === 'manager' ||
       userData?.user?.role === 'admin'
     ) {
       return true;
     }
+    return false;
   };
 
   const formatTime = (seconds: number) => {
@@ -76,7 +75,7 @@ const TimesheetReportsTable = ({
       const response = await getAttendanceByFilter(
         valueLeft,
         valueRight,
-        false
+        !isManagerOrAdmin(),
       );
       if (response.ack === 1) {
         setAttendanceTrackData(response.data);
@@ -94,7 +93,7 @@ const TimesheetReportsTable = ({
 
   useEffect(() => {
     getData();
-  }, [refresh, isDisable]);
+  }, [refresh]);
 
   useEffect(() => {
     if (valueLeft && valueRight) {
@@ -170,10 +169,10 @@ const TimesheetReportsTable = ({
             <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>User Name</TableCell>
+                {isManagerOrAdmin() && <TableCell>Email</TableCell>}
                 <TableCell>Total Hours</TableCell>
                 <TableCell>Break Hours</TableCell>
-                {checkRole() && <TableCell>Edit Log</TableCell>}
+                {isManagerOrAdmin() && <TableCell>Edit Log</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -193,9 +192,11 @@ const TimesheetReportsTable = ({
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {moment(e.startDateTime).format('DD/MM/YYYY')}
                       </TableCell>
-                      <TableCell sx={{ color: '#FFFFFF' }}>
-                        {e?.users?.[0]?.email}
-                      </TableCell>
+                      {isManagerOrAdmin() &&
+                        <TableCell sx={{ color: '#FFFFFF' }}>
+                          {e?.users?.[0]?.email}
+                        </TableCell>
+                      }
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {formatTime(e.totalHours) ?? '00:00:00'}
                         Hrs
@@ -204,7 +205,7 @@ const TimesheetReportsTable = ({
                         {formatTime(e.breakHours) ?? '00:00:00'}
                         Hrs
                       </TableCell>
-                      {checkRole() && (
+                      {isManagerOrAdmin() && (
                         <TableCell sx={{ color: '#04A1FF' }}>
                           <Box
                             sx={{

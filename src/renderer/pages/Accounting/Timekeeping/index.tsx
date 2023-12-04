@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 
 import Attendance from './Attendance';
-import HeaderBar from './HeaderBar';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 import AttendanceTrackTable from './AttendanceTrackTable';
 import TimesheetReportsTable from './TimesheetReportsTable';
 import moment from 'moment';
+import Dashboard from "../../../components/Dashboard";
 
 export default function Timekeeping() {
   const theme = useTheme();
@@ -31,15 +31,9 @@ export default function Timekeeping() {
   const shiftEnd = 19 * 60 * 60; // 7pm in seconds
 
   const shiftDuration = shiftEnd - shiftStart;
-  const [isDisable, setIsDisable] = useState(true);
-  const [tab, setTab] = useState("Employee");
 
   return (
-    <>
-      <Stack sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}>
-        <HeaderBar tab={tab} setTab={setTab} />
-      </Stack>
-
+    <Dashboard>
       <Box
         display="flex"
         gap="10px"
@@ -56,16 +50,15 @@ export default function Timekeeping() {
           />
         </Stack>
 
-        {checkRole() && tab === 'Manager' &&
-          <Stack
+        <Stack
           width={'70%'}
           sx={{ background: isDarkTheme ? '#121212' : '#EAF1FF' }}
-        >
-          <TimesheetReportsTable refresh={refresh} isDisable={isDisable} />
-        </Stack> }
+          >
+          <TimesheetReportsTable refresh={refresh} />
+        </Stack>
       </Box>
 
-      {checkRole() && tab === 'Manager' &&
+      {checkRole() &&
         <Stack
           sx={{ bgcolor: isDarkTheme ? '#121212' : '#EAF1FF' }}
           padding="15px 10px 12px 10px"
@@ -73,6 +66,6 @@ export default function Timekeeping() {
         <AttendanceTrackTable refresh={refresh} shiftDuration={shiftDuration} />
       </Stack>}
 
-    </>
+    </Dashboard>
   );
 }

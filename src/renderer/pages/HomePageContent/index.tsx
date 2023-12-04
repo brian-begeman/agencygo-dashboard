@@ -16,9 +16,8 @@ export default function HomePage() {
     <Dashboard>
       <section className={`${styles.wrapper} ${mode}`}>
         <Earnings />
-        <ShiftTable />
         <ChatterSales />
-
+        <ShiftTable />
       </section>
     </Dashboard>
   );
