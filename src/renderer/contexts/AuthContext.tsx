@@ -6,6 +6,7 @@ interface AuthContextType {
   login: () => void;
   logout: () => void;
   userData: any;
+  userDetail: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -13,6 +14,7 @@ export const AuthContext = createContext<AuthContextType>({
   login: () => {},
   logout: () => {},
   userData: {},
+  userDetail: () => {},
 });
 
 interface $Props {
@@ -85,7 +87,9 @@ export default function AuthProvider({ children }: $Props) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, login, logout, userData }}>
+    <AuthContext.Provider
+      value={{ isLogin, login, logout, userData, userDetail }}
+    >
       {children}
     </AuthContext.Provider>
   );
