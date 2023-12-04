@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppRoutes from './AppRoutes';
 import AuthProvider from './contexts/AuthContext';
+import TimerContext from './contexts/TimerContext';
 import { useEffect, useState } from 'react';
 import lightTheme from './styles/muiTheme';
 import darkTheme from './styles/MuiThemeDark';
@@ -35,11 +36,13 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <ThemeProvider theme={theme}>
           <AuthProvider>
-            <Router>
-              <CssBaseline />
-              {/*<Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />*/}
-              <AppRoutes />
-            </Router>
+            <TimerContext>
+              <Router>
+                <CssBaseline />
+                {/*<Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />*/}
+                <AppRoutes />
+              </Router>
+            </TimerContext>
           </AuthProvider>
         </ThemeProvider>
       </PersistGate>
