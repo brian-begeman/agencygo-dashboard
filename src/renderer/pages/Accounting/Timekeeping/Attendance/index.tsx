@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './style.css'; // Make sure you have an Attendance.css file
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import moment from 'moment';
 
+import { TimerContext } from 'renderer/contexts/TimerContext';
 import {
   createAttendance,
   getAttendanceById,
@@ -16,10 +17,23 @@ import { createTimeline } from 'services/timeline';
 
 // Attendance Component
 const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
+  const {
+    setTimerActive,
+    time,
+    breakTime,
+    setBreakTimerActive,
+    setTime,
+    setBreakTime,
+    interval,
+    breakInterval,
+  } = useContext(TimerContext);
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === 'dark';
+
   const [isClockedIn, setClockedIn] = useState(false);
   const [isOnBreak, setOnBreak] = useState(false);
-  const [timerActive, setTimerActive] = useState(false);
-  const [time, setTime] = useState(0);
+  // const [timerActive, setTimerActive] = useState(false);
+  // const [time, setTime] = useState(0);
   const [breaksArray, setBreaksArray] = useState<number[]>([]);
   const [createData, setCreateData] = useState<CreateData>({
     startDateTime: moment(),
@@ -27,8 +41,8 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     notes: '',
     attendanceData: {},
   });
-  const [breakTimerActive, setBreakTimerActive] = useState(false);
-  const [breakTime, setBreakTime] = useState<number>(0);
+  // const [breakTimerActive, setBreakTimerActive] = useState(false);
+  // const [breakTime, setBreakTime] = useState<number>(0);
   const [timeline, setTimeline] = useState<TimeLine[]>([]);
   const [attandanceData, setAttendanceData] = useState({});
 
@@ -40,6 +54,19 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       return { ...prevState, [key]: value };
     });
   };
+
+  // console.log('timeline', timeline);
+  console.log('props', time, breakTime, breakInterval);
+
+  useEffect(() => {
+    if (time > 0) {
+      setClockedIn(true);
+      if (time === shiftDuration) {
+        updateAttendanceData({});
+        clearInterval(interval);
+      }
+    }
+  }, [time]);
 
   const saveBreaks = () => {
     if (breaksArray.length === 0) {
@@ -53,36 +80,36 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   };
 
   // Clock in timer
-  useEffect(() => {
-    let interval: any = null;
+  // useEffect(() => {
+  //   let interval: any = null;
 
-    if (timerActive) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1000);
-      setStateFn(setCreateData, 'endDateTime', nowTime);
-    } else {
-      clearInterval(interval);
-    }
-    if (time === shiftDuration) {
-      updateAttendanceData({});
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [timerActive]);
+  //   if (timerActive) {
+  //     interval = setInterval(() => {
+  //       setTime((prevTime) => prevTime + 1);
+  //     }, 1000);
+  //     setStateFn(setCreateData, 'endDateTime', nowTime);
+  //   } else {
+  //     clearInterval(interval);
+  //   }
+  //   if (time === shiftDuration) {
+  //     updateAttendanceData({});
+  //     clearInterval(interval);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [timerActive]);
 
   // Break timer
-  useEffect(() => {
-    let interval: null | any = null;
-    if (breakTimerActive) {
-      interval = setInterval(() => {
-        setBreakTime((prevTime) => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [breakTimerActive]);
+  // useEffect(() => {
+  //   let interval: null | any = null;
+  //   if (breakTimerActive) {
+  //     interval = setInterval(() => {
+  //       setBreakTime((prevTime) => prevTime + 1);
+  //     }, 1000);
+  //   } else {
+  //     clearInterval(interval);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [breakTimerActive]);
 
   const clockIn = () => {
     setClockedIn(true);
@@ -173,9 +200,6 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       .toString()
       .padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   };
-
-  const theme = useTheme();
-  const isDarkTheme = theme.palette.mode === 'dark';
 
   const createAttendanceData = async () => {
     const payload = {
