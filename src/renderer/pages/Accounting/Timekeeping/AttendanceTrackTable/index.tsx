@@ -104,6 +104,7 @@ const AttendanceTrackTable = ({ refresh, shiftDuration }: $trackprops) => {
               attedndanceTrackData?.map((e: AttendanceTimeSheet, i) => {
                 return (
                   <TableRow
+                    key={i}
                     // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     sx={{
                       '& td, & th': {

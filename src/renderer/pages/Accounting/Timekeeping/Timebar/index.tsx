@@ -10,7 +10,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   return (
     <>
       <div style={{ width: '100%' }}>
-        {timeline.map((t: TimeLine) => {
+        {timeline.map((t: TimeLine, i) => {
           if (t.endTime != null) {
             const widthDiff =
               new Date(t.endTime).valueOf() - new Date(t.startTime).valueOf();
@@ -18,6 +18,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
             progressedWidth += width;
             return (
               <div
+                key={i}
                 style={{
                   width: `${width}%`,
                   borderTop: 'dashed',
@@ -33,6 +34,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
             progressedWidth += width;
             return (
               <div
+                key={i}
                 style={{
                   width: `${width}%`,
                   borderTop: 'dashed',
