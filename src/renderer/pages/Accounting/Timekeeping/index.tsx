@@ -1,23 +1,25 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
+import moment from 'moment';
 
 import Attendance from './Attendance';
-import { AuthContext } from 'renderer/contexts/AuthContext';
+import Dashboard from '../../../components/Dashboard';
 import AttendanceTrackTable from './AttendanceTrackTable';
 import TimesheetReportsTable from './TimesheetReportsTable';
-import moment from 'moment';
-import Dashboard from '../../../components/Dashboard';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 
 export default function Timekeeping() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+  const { userData } = useContext(AuthContext);
+
   const [refresh, setRefresh] = useState('');
+
+  // State Functions
   const toggleRefresh = () => {
     setRefresh(moment().toISOString());
   };
-
-  const { userData } = useContext(AuthContext);
   const checkRole = () => {
     if (
       userData?.user?.role === 'manager' ||
@@ -29,7 +31,6 @@ export default function Timekeeping() {
 
   const shiftStart = 10 * 60 * 60; // 10am in seconds
   const shiftEnd = 19 * 60 * 60; // 7pm in seconds
-
   const shiftDuration = shiftEnd - shiftStart;
 
   return (
@@ -48,7 +49,6 @@ export default function Timekeeping() {
             <Attendance
               toggleRefresh={toggleRefresh}
               shiftDuration={shiftDuration}
-              refresh={refresh}
             />
           </Stack>
 
