@@ -19,7 +19,7 @@ const useFormCreator = (
       value: string;
     }[]
   >([]);
-  const { userData } = useContext(AuthContext);
+  const { userData, userDetail} = useContext(AuthContext);
   const [selectedValues, setSelectedValues] = useState<any>([]);
   const [creatorImage, setCreatorImage] = useState<any>('');
   const [creatorStatus,setCreatorStatus] = useState<any>(true)
@@ -79,8 +79,6 @@ const useFormCreator = (
     formdata.append('creatorComission',data.creatorComission);
     formdata.append('agencyId',userData?.agency?._id);  
     formdata.append('assignEmployee',JSON.stringify(data.assignEmployee));  
- 
-
       let endpoint = 'creators';
       let options = {
         method: 'POST' as 'POST',
@@ -99,9 +97,14 @@ const useFormCreator = (
         })
         .catch((err) => {
           console.log('Error occured: ', err);
+          callback();
+          setSelectedValues([]);
+          setCreatorImage('')
+          reset();
         });
     } else {
       data.status= creatorStatus
+      data.agencyId= userData?.agency?._id
       data.assignEmployee= selectedValues
       const ofCredsObj = {
         email: data?.email,
@@ -118,7 +121,7 @@ const useFormCreator = (
       formdata.append('status',data.status);
       formdata.append('agencyComission',data.agencyComission);
       formdata.append('creatorComission',data.creatorComission);
-      formdata.append('agencyId',userData?.agency?._id);  
+      formdata.append('agencyId', data.agencyId);  
       formdata.append('assignEmployee',JSON.stringify(data.assignEmployee));
       let endpoint = `creators/${selectedCreator?.id}`;
       let options = {
@@ -135,12 +138,16 @@ const useFormCreator = (
           if (res.message == 'creator updated successfully') {
             callback();
             setSelectedValues([]);
-            setCreatorImage(null)
+            setCreatorImage('')
             reset();
           }
         })
         .catch((err) => {
           console.log('Error occured: ', err);
+          callback();
+            setSelectedValues([]);
+            setCreatorImage('')
+            reset();
         });
       // mutateUpdate(
       //   { ...data, id: selectedCreator?.id },
@@ -179,9 +186,7 @@ const useFormCreator = (
 
   useEffect(() => {
     if (dataEmployeeRaw?.data) {
-      console.log(dataEmployeeRaw,"dataEmployeeRaw99999999999");
-      
-      const employeeRes = dataEmployeeRaw?.data?.employees?.map((item: any) => {
+      const employeeRes = dataEmployeeRaw?.data?.employees.map((item: any) => {
         return {
           label: item?.name,
           // eslint-disable-next-line no-underscore-dangle
@@ -191,6 +196,12 @@ const useFormCreator = (
       setEmployeeOptions(employeeRes);
     }
   }, [dataEmployeeRaw]);
+
+  useEffect(()=>{
+    if(userData==undefined){
+      userDetail()
+    }
+  },[userData])
 
   const toggleAutoRelink = () => {
     setValue('autoRelink', !getValues('autoRelink'));
