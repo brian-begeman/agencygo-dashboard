@@ -22,6 +22,8 @@ import NewSideBar from './newSideBar';
 import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
 import brandLogoImg from 'renderer/assets/png/agency-go-logo.png'
+import { useNavigate } from 'react-router-dom';
+
 const sideBarMenuConst = [
   {
     name: localisation.home,
@@ -239,12 +241,15 @@ const sideBarMenuConst = [
     ],
   },
 ];
+
 interface logoProp{
   open:boolean
 }
+
 function BrandLogo({ open }: logoProp) {
+  const navigate=useNavigate()
   return (
-    <div className={classes.brandLogo}>
+    <div className={classes.brandLogo} onClick={()=>navigate('/home')}>
       <div className={classes.brandIcon}>
       {open ? (
           <img src={brandLogoImg} height="50px" width="auto" alt="AgencyLogo" />
