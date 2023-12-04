@@ -38,7 +38,7 @@ const AttendanceTrackTable = ({ refresh, shiftDuration }: $trackprops) => {
     }
   };
 
-  const handleClose = (e) => {
+  const handleClose = (e: any) => {
     setEditData(e);
     setShowEdit(!showEdit);
   };

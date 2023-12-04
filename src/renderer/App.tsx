@@ -9,6 +9,9 @@ import AuthProvider from './contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import lightTheme from './styles/muiTheme';
 import darkTheme from './styles/MuiThemeDark';
+import { Provider } from 'react-redux';
+import { persistor, store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function App() {
   const [currentTheme, setTheme] = useState(true);
@@ -28,14 +31,18 @@ export default function App() {
   const theme = currentTheme ? darkTheme : lightTheme;
 
   return (
-    <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Router>
-          <CssBaseline />
-          {/*<Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />*/}
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <AuthProvider>
+            <Router>
+              <CssBaseline />
+              {/*<Switch checked={toggleDarkMode} onChange={toggleDarkTheme} />*/}
+              <AppRoutes />
+            </Router>
+          </AuthProvider>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   );
 }

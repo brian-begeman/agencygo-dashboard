@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import {
   createAttendance,
+  getAttendanceById,
   updateAttendance,
   updateNotes,
 } from 'services/attendance';
@@ -29,6 +30,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
   const [breakTimerActive, setBreakTimerActive] = useState(false);
   const [breakTime, setBreakTime] = useState<number>(0);
   const [timeline, setTimeline] = useState<TimeLine[]>([]);
+  const [attandanceData, setAttendanceData] = useState({});
 
   const nowTime = `${moment().format('YYYY-MM-DD HH:mm:ss')}`;
 
@@ -97,6 +99,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       },
     ]);
   };
+
   const clockOut = () => {
     setClockedIn(false);
     setTimerActive(false);
@@ -111,7 +114,12 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     };
     saveTimeline(payload);
     setStateFn(setCreateData, 'notes', '');
+    setAttendanceData({});
+    setTime(0);
+    setBreakTime(0);
+    setTimeline([]);
   };
+
   const startBreak = () => {
     setOnBreak(true);
     setTimerActive(false);
@@ -130,7 +138,8 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     };
     saveTimeline(payload);
   };
-  const endBreak = () => {
+
+  const endBreak = async () => {
     setOnBreak(false);
     setTimerActive(true);
     setBreakTimerActive(false);
@@ -149,9 +158,10 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       attendanceId: createData.attendanceData._id,
       ...timeline[timeline.length - 1],
     };
-    saveTimeline(payload);
+    await saveTimeline(payload);
 
-    updateAttendanceData({ timeline });
+    await updateAttendanceData({ timeline });
+    getByID();
   };
 
   // Convert seconds into hours, minutes, and seconds
@@ -223,6 +233,7 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
       );
       if (response.ack === 1) {
         toggleRefresh();
+        getByID();
       }
     } catch (error) {
       console.log('Error', error);
@@ -238,6 +249,31 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
     } catch (error) {
       console.log('Error', error);
     }
+  };
+
+  const checkBreakTime = (time) => {
+    try {
+      let minCount = time / 60;
+      if (time > 59) {
+        return <span>{(Math.abs(time) / 60).toFixed(2)} min</span>;
+      } else if (minCount >= 60) {
+        return <span>{(Math.abs(minCount) / 60).toFixed(2)} hr</span>;
+      } else {
+        return <span>{time}sec</span>;
+      }
+    } catch (error) {
+      return <span></span>;
+    }
+  };
+
+  const getByID = async () => {
+    try {
+      const response = await getAttendanceById(createData.attendanceData._id);
+
+      if (response.ack === 1) {
+        setAttendanceData(response.data[0]);
+      }
+    } catch (err) {}
   };
 
   return (
@@ -316,7 +352,30 @@ const Attendance = ({ toggleRefresh, shiftDuration }: $props) => {
             Add note
           </button>
         </div>
-        <div className="timer">{formatTime(time)} Hrs</div>
+        <Box>
+          <div style={{ fontSize: 12 }}>
+            Notes:
+            {attandanceData && attandanceData.notes}
+          </div>
+          <div style={{ fontSize: 12 }}>
+            Breaks:{' '}
+            {attandanceData?.timeline && attandanceData.timeline.length > 0 ? (
+              attandanceData.timeline
+                .filter((e) => e.type === 'break')
+                .map((e, i) => {
+                  return <span key={i}>{checkBreakTime(e.total)}, </span>;
+                })
+            ) : (
+              <></>
+            )}
+          </div>
+        </Box>
+        {isOnBreak ? (
+          <div className="timer">{formatTime(breakTime)} Hrs</div>
+        ) : (
+          <div className="timer">{formatTime(time)} Hrs</div>
+        )}
+
         <div className="date">17 Oct 2023</div>
         <div className="checked-in-msg">early by 6am</div>
         <div className="shift-txt">Shift</div>

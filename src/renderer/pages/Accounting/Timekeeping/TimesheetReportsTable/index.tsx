@@ -10,31 +10,17 @@ import {
   TableRow,
 } from '@mui/material';
 import moment from 'moment';
-import CreateIcon from '@mui/icons-material/Create';
-
-import {
-  getAllTimeSheets,
-  getAttendanceByFilter,
-  updateTimesheet,
-} from 'services/attendance';
-import { AttendanceTrackData } from '../Types/index.types';
-
-import dayjs, { Dayjs } from 'dayjs';
-import { AuthContext } from 'renderer/contexts/AuthContext';
 import TimesheetEditModal from '../EditModal';
-import { getAllTimlineData, getAllTimlineDataAll } from 'services/timeline';
-
 import { DatePicker } from '@mui/x-date-pickers';
+import CreateIcon from '@mui/icons-material/Create';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { getAttendanceByFilter, updateTimesheet } from 'services/attendance';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-const TimesheetReportsTable = ({
-  refresh,
-}: {
-  refresh: boolean;
-}) => {
+const TimesheetReportsTable = ({ refresh }: { refresh: string }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   const { userData } = useContext(AuthContext);
@@ -43,10 +29,10 @@ const TimesheetReportsTable = ({
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState({});
 
-  const [valueLeft, setValueLeft] = useState(null);
-  const [valueRight, setValueRight] = useState(null);
+  const [valueLeft, setValueLeft] = useState<string | null>(null);
+  const [valueRight, setValueRight] = useState<string | null>(null);
 
-  const handleClose = (e) => {
+  const handleClose = (e: any) => {
     setEditData(e);
     setShowEdit(!showEdit);
   };
@@ -75,7 +61,7 @@ const TimesheetReportsTable = ({
       const response = await getAttendanceByFilter(
         valueLeft,
         valueRight,
-        !isManagerOrAdmin(),
+        !isManagerOrAdmin()
       );
       if (response.ack === 1) {
         setAttendanceTrackData(response.data);
@@ -100,8 +86,6 @@ const TimesheetReportsTable = ({
       getData();
     }
   }, [valueLeft, valueRight]);
-
-  console.log('attedndanceTrackData', attedndanceTrackData);
 
   return (
     <Box>
@@ -192,11 +176,11 @@ const TimesheetReportsTable = ({
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {moment(e.startDateTime).format('DD/MM/YYYY')}
                       </TableCell>
-                      {isManagerOrAdmin() &&
+                      {isManagerOrAdmin() && (
                         <TableCell sx={{ color: '#FFFFFF' }}>
                           {e?.users?.[0]?.email}
                         </TableCell>
-                      }
+                      )}
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {formatTime(e.totalHours) ?? '00:00:00'}
                         Hrs
