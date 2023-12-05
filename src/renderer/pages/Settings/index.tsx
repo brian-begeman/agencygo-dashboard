@@ -23,6 +23,7 @@ import styles from './styles.module.css';
 import localisation from '../../components/localisation.json';
 import WhiteLabelSvg from 'renderer/assets/svg/WhiteLabelSvg';
 import WhiteLabel from 'renderer/components/Settings/WhiteLabel';
+import { useTranslation } from 'react-i18next';
 
 const navList = [
   {
@@ -72,6 +73,7 @@ const navList = [
   },
 ];
 export default function Settings() {
+  const { t } = useTranslation();
   const [selectedNav, setSelectedNav] = useState('yourAccount');
   const handleOnChange = (value: string) => {
     setSelectedNav(value);
@@ -99,11 +101,14 @@ export default function Settings() {
         return <h1>Not found</h1>;
     }
   };
+
   return (
     <Dashboard>
       <section className={styles.wrapper}>
         <PageTopbar>
-          <PageTopbar.HeaderText>{localisation.settings}</PageTopbar.HeaderText>
+          <PageTopbar.HeaderText>
+            {t(`${localisation.settings}`)}
+          </PageTopbar.HeaderText>
         </PageTopbar>
         <div className={styles.innerWrapper}>
           <aside className={styles.aside}>

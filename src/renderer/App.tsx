@@ -9,6 +9,7 @@ import AuthProvider from './contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import lightTheme from './styles/muiTheme';
 import darkTheme from './styles/MuiThemeDark';
+import './i18next.js';
 
 export default function App() {
   const [currentTheme, setTheme] = useState(true);

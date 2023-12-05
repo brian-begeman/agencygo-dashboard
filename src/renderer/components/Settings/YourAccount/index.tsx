@@ -17,6 +17,7 @@ import ChangePasswordModal from './ChangePassowrdModal';
 import axios from 'axios';
 import { API_URL } from 'config';
 import _ from 'lodash';
+import { t } from 'i18next';
 
 interface InputProps {
   placeholder: string;
@@ -60,7 +61,7 @@ function YourAccount() {
     },
     agency: {
       agencyName: '',
-      agencyEmail:'',
+      agencyEmail: '',
     },
   });
 
@@ -92,7 +93,6 @@ function YourAccount() {
       .then((res) => {
         if (res.message == 'verify') {
           setUserData(res.data);
-          
         }
       })
       .catch((err) => {
@@ -104,46 +104,51 @@ function YourAccount() {
     fetchUserDetail();
   }, []);
 
-  const handelAccountDetail = async() => { 
-    try{
-    const _Id=userData?.user?._id    
-    const token = localStorage.getItem('Authorization');
-  if(userData?.user?.isEmployee == true){
-    const response= await axios.put(`${API_URL}/employee/updateEmployeeSetting/${_Id}`,
-    {
-        firstName:userData.user.firstName,
-        email:userData.user.email,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  const handelAccountDetail = async () => {
+    try {
+      const _Id = userData?.user?._id;
+      const token = localStorage.getItem('Authorization');
+      if (userData?.user?.isEmployee == true) {
+        const response = await axios.put(
+          `${API_URL}/employee/updateEmployeeSetting/${_Id}`,
+          {
+            firstName: userData.user.firstName,
+            email: userData.user.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response, 'personal detail======');
+      } else if (
+        userData?.user?.isAdmin == true &&
+        userData?.user?.isAgency == true &&
+        userData?.user?.isEmployee == false
+      ) {
+        const response = await axios.put(
+          `${API_URL}/agency/updateAgencySetting/${_Id}`,
+          {
+            firstName: userData.user.firstName,
+            email: userData.user.email,
+            agencyName: userData.agency.agencyName,
+            agencyEmail: userData.agency.userId.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response, 'admin data======');
+      }
+      setEditUserDetail(false);
+    } catch {
+      console.log("can't update api error");
     }
-  }
-    )
-    console.log(response,"personal detail======");
-  }else if(userData?.user?.isAdmin== true && userData?.user?.isAgency==true && userData?.user?.isEmployee == false){
-    const response= await axios.put(`${API_URL}/agency/updateAgencySetting/${_Id}`,
-    {
-        firstName:userData.user.firstName,
-        email:userData.user.email,
-        agencyName:userData.agency.agencyName,
-        agencyEmail:userData.agency.userId.email,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-    }
-  }
-    )
-    console.log(response,"admin data======");
-   }
-    setEditUserDetail(false);
-  }catch{
-    console.log("can't update api error");
-    
-  }
   };
- 
+
   const handleProfileImage = (e: any) => {
     if (e.target.files) {
       setProfileImage(e.target.files[0]);
@@ -181,17 +186,17 @@ function YourAccount() {
                   sx={{ textTransform: 'capitalize' }}
                   onClick={() => setOpenAddEmployee(!OpenAddEmployee)}
                 >
-                  Change Password
+                  {t('Change Password')}
                 </Button>
                 <Button
-                 size="small"
+                  size="small"
                   variant="contained"
                   sx={{ color: '#fff', textTransform: 'capitalize' }}
                   onClick={() => {
                     setEditUserDetail(true);
                   }}
                 >
-                  Edit
+                  {t('Edit')}
                 </Button>
               </>
             ) : (
@@ -202,7 +207,7 @@ function YourAccount() {
                   className={classes.passwordheading}
                   onClick={() => setEditUserDetail(false)}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
 
                 <Button
@@ -210,11 +215,11 @@ function YourAccount() {
                   variant="contained"
                   sx={{ color: '#fff' }}
                   className={classes.savebutton}
-                  onClick={() =>{
-                     handelAccountDetail();
+                  onClick={() => {
+                    handelAccountDetail();
                   }}
                 >
-                  Save
+                  {t('Save')}
                 </Button>
               </>
             )}
@@ -234,10 +239,10 @@ function YourAccount() {
           >
             <Stack width={'100%'} gap={'10px'}>
               <Typography fontSize={'22px'} fontWeight={600}>
-                Personal Info
+                {t('Personal Info')}
               </Typography>
               <Stack gap={'10px'}>
-                <Typography color={'gray'}>Picture</Typography>
+                <Typography color={'gray'}>{t('Picture')}</Typography>
                 <div className={classes.changePictureTextWrapper}>
                   {profileImage ? (
                     <img
@@ -264,7 +269,7 @@ function YourAccount() {
                       className={classes.changePictureText}
                       htmlFor="profile-input"
                     >
-                      Change Picture
+                      {t('Change Picture')}
                       <input
                         type="file"
                         accept="image/png"
@@ -289,7 +294,7 @@ function YourAccount() {
                     </div>
                   </div> */}
                 </div>
-                <Typography color={'gray'}>User Name</Typography>
+                <Typography color={'gray'}>{t('User Name')}</Typography>
                 <input
                   placeholder="Enter user name"
                   value={userData?.user?.firstName}
@@ -312,11 +317,23 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
-                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
-                <Typography color={'gray'}>E-mail</Typography>
+                <Typography color={'gray'}>{t('E-mail')}</Typography>
                 <input
                   placeholder="Enter user email"
                   value={userData?.user?.email}
@@ -339,18 +356,30 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
-                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
               </Stack>
             </Stack>
             <Stack width={'100%'} gap={'10px'}>
               <Typography fontSize={'22px'} fontWeight={600}>
-                Agency Info
+                {t('Agency Info')}
               </Typography>
               <Stack gap={'10px'}>
-                <Typography color={'gray'}>Picture</Typography>
+                <Typography color={'gray'}>{t('Picture')}</Typography>
                 <div className={classes.changePictureTextWrapper}>
                   {agencyImage ? (
                     <img
@@ -375,7 +404,7 @@ function YourAccount() {
                       className={classes.changePictureText}
                       htmlFor="agency-input"
                     >
-                      Change Picture
+                      {t('Change Picture')}
                       <input
                         type="file"
                         accept="image/png"
@@ -399,7 +428,7 @@ function YourAccount() {
                     </div>
                   </div> */}
                 </div>
-                <Typography color={'gray'}>Agency Name</Typography>
+                <Typography color={'gray'}>{t('Agency Name')}</Typography>
                 <input
                   placeholder="Enter agency name"
                   value={userData?.agency?.agencyName}
@@ -422,11 +451,23 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
-                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
-                <Typography color={'gray'}>E-mail</Typography>
+                <Typography color={'gray'}>{t('E-mail')}</Typography>
                 <input
                   placeholder="Enter agency email"
                   value={userData?.agency?.userId?.email}
@@ -449,8 +490,20 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? editUserDetail ? '#000' :'#36454F' :editUserDetail? '#EAF1FF':'#D3D3D3',
-                    color: isDarkTheme ? editUserDetail ?'#fff':'gray' :editUserDetail ? '#000':'gray',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
               </Stack>

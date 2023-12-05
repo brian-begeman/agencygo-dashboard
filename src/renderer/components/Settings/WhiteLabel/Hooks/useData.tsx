@@ -19,7 +19,6 @@ const userWhiteLabel = () => {
     key: 'get-agencyById',
     params: { id: userData.agency._id },
   });
-console.log(data,"data===");
 
   useEffect(() => {
     if (data) {

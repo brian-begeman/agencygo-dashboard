@@ -87,26 +87,31 @@ function WhiteLabel() {
               <ImageUpload handleImageChange={handleImageChange} />
             )}
             {agencyLogo && <UploadedImage file={agencyLogo} />}
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                gap: 3,
-                margin: '20px 0px',
-              }}
-            >
-              <Button component="label">
-                Change
-                <VisuallyHiddenInput type="file" onChange={handleImageChange} />
-              </Button>
-              <ButtonEle
-                variant="contained"
-                onClick={handleImageChange}
-                className="btn"
+            {agencyLogo && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: 3,
+                  margin: '20px 0px',
+                }}
               >
-                Remove
-              </ButtonEle>
-            </Box>
+                <Button component="label">
+                  Change
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleImageChange}
+                  />
+                </Button>
+                <ButtonEle
+                  variant="contained"
+                  onClick={handleImageChange}
+                  className="btn"
+                >
+                  Remove
+                </ButtonEle>
+              </Box>
+            )}
           </Box>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <InputWithLabel
