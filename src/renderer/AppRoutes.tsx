@@ -102,6 +102,11 @@ const ROUTES = [
     pathName: 'Manage Employees',
   },
   {
+    path: 'timekeeping',
+    element: <Timekeeping />,
+    pathName: 'Timekeeping',
+  },
+  {
     path: 'analytics',
     element: <Analytics />,
     pathName: 'Analytics',
@@ -148,12 +153,6 @@ const ROUTES = [
         element: <BookKeeping />,
         pathName: 'Book Keeping',
         nestedLink: '/accounting/book-keeping',
-      },
-      {
-        path: 'time-keeping',
-        element: <Timekeeping />,
-        pathName: 'Time Keeping',
-        nestedLink: '/accounting/time-keeping',
       },
     ],
   },

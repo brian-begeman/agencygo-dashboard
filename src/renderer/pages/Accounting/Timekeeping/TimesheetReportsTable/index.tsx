@@ -10,33 +10,17 @@ import {
   TableRow,
 } from '@mui/material';
 import moment from 'moment';
-import CreateIcon from '@mui/icons-material/Create';
-
-import {
-  getAllTimeSheets,
-  getAttendanceByFilter,
-  updateTimesheet,
-} from 'services/attendance';
-import { AttendanceTrackData } from '../Types/index.types';
-
-import dayjs, { Dayjs } from 'dayjs';
-import { AuthContext } from 'renderer/contexts/AuthContext';
 import TimesheetEditModal from '../EditModal';
-import { getAllTimlineData, getAllTimlineDataAll } from 'services/timeline';
-
 import { DatePicker } from '@mui/x-date-pickers';
+import CreateIcon from '@mui/icons-material/Create';
+import { AuthContext } from 'renderer/contexts/AuthContext';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { getAttendanceByFilter, updateTimesheet } from 'services/attendance';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-const TimesheetReportsTable = ({
-  refresh,
-  isDisable,
-}: {
-  refresh: boolean;
-  isDisable: boolean;
-}) => {
+const TimesheetReportsTable = ({ refresh }: { refresh: string }) => {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   const { userData } = useContext(AuthContext);
@@ -45,21 +29,22 @@ const TimesheetReportsTable = ({
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState({});
 
-  const [valueLeft, setValueLeft] = useState(null);
-  const [valueRight, setValueRight] = useState(null);
+  const [valueLeft, setValueLeft] = useState<string | null>(null);
+  const [valueRight, setValueRight] = useState<string | null>(null);
 
-  const handleClose = (e) => {
+  const handleClose = (e: any) => {
     setEditData(e);
     setShowEdit(!showEdit);
   };
 
-  const checkRole = () => {
+  const isManagerOrAdmin = () => {
     if (
       userData?.user?.role === 'manager' ||
       userData?.user?.role === 'admin'
     ) {
       return true;
     }
+    return false;
   };
 
   const formatTime = (seconds: number) => {
@@ -76,7 +61,7 @@ const TimesheetReportsTable = ({
       const response = await getAttendanceByFilter(
         valueLeft,
         valueRight,
-        false
+        !isManagerOrAdmin()
       );
       if (response.ack === 1) {
         setAttendanceTrackData(response.data);
@@ -94,15 +79,13 @@ const TimesheetReportsTable = ({
 
   useEffect(() => {
     getData();
-  }, [refresh, isDisable]);
+  }, [refresh]);
 
   useEffect(() => {
     if (valueLeft && valueRight) {
       getData();
     }
   }, [valueLeft, valueRight]);
-
-  console.log('attedndanceTrackData', attedndanceTrackData);
 
   return (
     <Box>
@@ -170,10 +153,10 @@ const TimesheetReportsTable = ({
             <TableHead sx={{ bgcolor: isDarkTheme ? '#292929' : '#EAF1FF' }}>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>User Name</TableCell>
+                {isManagerOrAdmin() && <TableCell>Email</TableCell>}
                 <TableCell>Total Hours</TableCell>
                 <TableCell>Break Hours</TableCell>
-                {checkRole() && <TableCell>Edit Log</TableCell>}
+                {isManagerOrAdmin() && <TableCell>Edit Log</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -181,6 +164,7 @@ const TimesheetReportsTable = ({
                 attedndanceTrackData.map((e, i) => {
                   return (
                     <TableRow
+                      key={i}
                       sx={{
                         '& td, & th': {
                           borderTop: 0,
@@ -193,9 +177,11 @@ const TimesheetReportsTable = ({
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {moment(e.startDateTime).format('DD/MM/YYYY')}
                       </TableCell>
-                      <TableCell sx={{ color: '#FFFFFF' }}>
-                        {e?.users?.[0]?.email}
-                      </TableCell>
+                      {isManagerOrAdmin() && (
+                        <TableCell sx={{ color: '#FFFFFF' }}>
+                          {e?.users?.[0]?.email}
+                        </TableCell>
+                      )}
                       <TableCell sx={{ color: '#FFFFFF' }}>
                         {formatTime(e.totalHours) ?? '00:00:00'}
                         Hrs
@@ -204,7 +190,7 @@ const TimesheetReportsTable = ({
                         {formatTime(e.breakHours) ?? '00:00:00'}
                         Hrs
                       </TableCell>
-                      {checkRole() && (
+                      {isManagerOrAdmin() && (
                         <TableCell sx={{ color: '#04A1FF' }}>
                           <Box
                             sx={{

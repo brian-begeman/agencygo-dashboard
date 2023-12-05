@@ -4,22 +4,7 @@ import { Line } from 'react-chartjs-2';
 ChartJS.register(Filler);
 
 export function TotalEarningsChart(props: { data: { labels: string[]; data: number[]; }}) {
-  // const { data } = props;
-  const data = {
-      labels: [
-        '1 Aug',
-        '7 Aug',
-        '14 Aug',
-        '21 Aug',
-        '28 Aug',
-        '4 Sep',
-        '11 Sep',
-        '18 Sep',
-        '25 Sep',
-        '2 Oct',
-      ],
-      data: [65, 59, 62, 70, 72, 75, 68, 66, 71, 74],
-  }
+  const { data } = props;
   return (
     <Line
       style={{ width: '500px', height: '70px'}}
@@ -87,7 +72,7 @@ export function TotalEarningsChart(props: { data: { labels: string[]; data: numb
 export function ChatterSalesChart() {
   return (
     <Line
-      style={{ width: '100%', height: '400px' }}
+      style={{ width: '100%', height: '150px' }}
       options={{
         plugins: { legend: { display: false } },
         responsive: true,

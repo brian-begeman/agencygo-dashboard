@@ -1,6 +1,6 @@
 import Dashboard from 'renderer/components/Dashboard';
 import SearchInput from 'renderer/components/SearchInput';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import managers from 'renderer/utils/managerSuiteConstant';
 import ProfilePic from 'renderer/assets/png/profile.jpg';
 import UserCardWImage from 'renderer/components/UserCardWImage';
@@ -31,6 +31,7 @@ function getDivBounds(divId: string) {
 
 export default function ManagerSuite() {
   const agencyId = localStorage.getItem('AgencyId');
+  const selectedCreatorId = localStorage.getItem('CreatorId');
 
   const [search, setSearch] = useState('');
   
@@ -44,7 +45,7 @@ export default function ManagerSuite() {
     selectedCreator,
     setSelectedCreator,
     handleSearch,
-  } = useDataCreators();
+  } = useDataCreators(selectedCreatorId);
   useEffect(() => {
     handleSearch(agencyId);
   }, [agencyId]);
@@ -56,20 +57,18 @@ export default function ManagerSuite() {
 
   function onclick(creator: any) {
     setSelectedCreator(creator);
+    console.log(creator);
+    localStorage.setItem('CreatorId', creator._id);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selectedCreator && selectedCreator.email && selectedCreator.password) {
       window.electron.ipcRenderer.sendMessage('piev-event', {
         page,
         bounds: getDivBounds('browser-view'),
-        // Remove later
         creatorId: selectedCreator.id,
         email: selectedCreator.email,
         password: selectedCreator.password,
-        // creatorId: creator._id,
-        // proxy: creator.proxy.creds,
-        // page,
       });
     }
   }, [page, selectedCreator]);
@@ -86,7 +85,7 @@ export default function ManagerSuite() {
         </PageTopbar>
         {/* <section> */}
         <Box display="flex" gap="5px" padding="6px 0px">
-          <Stack display={'flex'}>
+          <Stack display={'flex'} maxHeight={'68vh'}>
             <PageAside className={styles.usersMenu}>
               <div className={styles.search}>
               <SearchInput
@@ -113,12 +112,10 @@ export default function ManagerSuite() {
                 </div>
               ) : creators?.length > 0 ? (
                 creators
-                  // .filter(
-                  //   (c) =>
-                  //     c.proxy !== null &&
-                  //     c?.proxy?.hasOwnProperty('creds') &&
-                  //     c?.proxy?.hasOwnProperty('proxyUser')
-                  // )
+                  .filter(
+                    (c) =>
+                      !!c.email && !!c.password
+                  )
                   .map((c, index) => (
                     <UserCardWImage
                       key={index}
@@ -131,6 +128,7 @@ export default function ManagerSuite() {
                       messageCount={0}
                       selected={selectedCreator?._id === c._id}
                       onClick={() => onclick(c)}
+                      data={c}
                     />
                   ))
               ) : (

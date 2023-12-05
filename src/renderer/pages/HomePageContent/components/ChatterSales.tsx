@@ -14,7 +14,7 @@ const ChatterSales = () => {
       }}
     >
       <Box marginBottom="10px" display="flex" justifyContent="space-between">
-        <Typography fontWeight="600" fontSize="22px">
+        <Typography fontWeight="600" fontSize="18px">
           Chatter Sales
         </Typography>
       </Box>

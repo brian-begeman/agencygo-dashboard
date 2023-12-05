@@ -21,6 +21,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NewSideBar from './newSideBar';
 import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
+import brandLogoImg from 'renderer/assets/png/agency-go-logo.png'
+import { useNavigate } from 'react-router-dom';
 
 const sideBarMenuConst = [
   {
@@ -222,9 +224,9 @@ const sideBarMenuConst = [
     icon: <EmployeSvg />,
     menu: [
       {
-        label: 'Time Keeping',
+        label: 'Timekeeping',
         value: 'time-keeping',
-        link: '/accounting/time-keeping',
+        link: '/timekeeping',
       },
       {
         label: 'Manage Employees',
@@ -240,11 +242,20 @@ const sideBarMenuConst = [
   },
 ];
 
-function BrandLogo() {
+interface logoProp{
+  open:boolean
+}
+
+function BrandLogo({ open }: logoProp) {
+  const navigate=useNavigate()
   return (
-    <div className={classes.brandLogo}>
+    <div className={classes.brandLogo} onClick={()=>navigate('/home')}>
       <div className={classes.brandIcon}>
-        <BrandLogoSvg />
+      {open ? (
+          <img src={brandLogoImg} height="50px" width="auto" alt="AgencyLogo" />
+        ) : (
+          <BrandLogoSvg />
+        )}
       </div>
     </div>
   );
@@ -279,10 +290,10 @@ function SideBar() {
   return (
     <div className={`${classes.sidebar} ${mode}`}>
       <Box>
-        <BrandLogo />
+       <BrandLogo open={open}/>
         <MenuIcon
           onClick={open ? handleDrawerClose : handleDrawerOpen}
-          sx={{ marginLeft: '22px', marginTop: '10px', color: '#fff' }}
+          sx={{ marginLeft: '20px', marginTop: '10px', color: '#fff' }}
         />
         <Drawer
           variant="permanent"

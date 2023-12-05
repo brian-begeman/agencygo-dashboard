@@ -8,7 +8,6 @@ const links = [
   { id: 1, text: 'Invoicing', link: 'invoicing' },
   { id: 2, text: 'Payroll', link: 'payroll' },
   { id: 3, text: 'Book Keeping', link: 'book-keeping' },
-  { id: 3, text: 'Time Keeping', link: 'time-keeping' },
 ];
 
 export default function Accounting() {

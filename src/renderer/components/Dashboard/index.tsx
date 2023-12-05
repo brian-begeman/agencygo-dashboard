@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import classes from './styles.module.css';
 import SideBar from './components/Sidebar';
 import Header from './components/Header';
@@ -18,6 +18,12 @@ function Dashboard({ children }: $Props) {
   const handleOpen = () => {
     setOpen(!open);
   };
+  useEffect(() => {
+    const isManager = window.location.pathname.startsWith('/manager-suite');
+    if (!isManager) {
+      window.electron.ipcRenderer.sendMessage('piev-dismiss');
+    }
+  }, [])
   return (
     <>
       <div className={classes.dashboardWrapper} >

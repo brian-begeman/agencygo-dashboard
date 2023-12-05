@@ -8,14 +8,16 @@ import {
   FormGroup,
   MenuItem,
   OutlinedInput,
+  Radio,
   Select,
   SelectChangeEvent,
   Switch,
   useTheme,
 } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import LensIcon from '@mui/icons-material/Lens';
+// import LensIcon from '@mui/icons-material/Lens';
 import { ReactNode, useState } from 'react';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 interface LabelTextProps {
   label: string;
@@ -139,6 +141,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName || '')}
       >
+          {label =='Group' ?<option value=''>None</option> :null}
         {options?.map((res, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <option key={index} value={res?.value}>
@@ -280,7 +283,7 @@ export function RadioButton({ title }: RadioProps) {
       <FormControlLabel
         control={
           <Checkbox
-            icon={<LensIcon sx={{ color: '#fff' }} />}
+            icon={<RadioButtonUncheckedIcon sx={{color:"#fff"}}  />}
             checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
           />
         }
@@ -345,6 +348,7 @@ any) {
           label="Select Values"
           onChange={handleOnChange}
         >
+          <MenuItem value="">None</MenuItem>
           {options?.map((val: any) => {
             return <MenuItem value={val?.value}>{val?.label}</MenuItem>;
           })}

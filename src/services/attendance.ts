@@ -170,6 +170,22 @@ async function deleteById(attendanceId) {
   }
 }
 
+// Get Emp Attendance
+async function getAttendanceById(attendanceId) {
+  try {
+    const endPoint = `attendence/getAttendance/${attendanceId}`;
+    const options = {
+      method: 'GET' as 'GET',
+      withAuth: true,
+    };
+    let responce = await fetchReq(endPoint, options);
+    let resp = await responce.json();
+    return resp;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
 export {
   createAttendance,
   updateAttendance,
@@ -180,4 +196,5 @@ export {
   getAttendanceByFilter,
   updateTimesheet,
   deleteById,
+  getAttendanceById,
 };

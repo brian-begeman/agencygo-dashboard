@@ -216,6 +216,7 @@
   padding: 0px;
   width: 95px;
   margin-right: -10px;
+  color: #ffff;
 }
 .left-date-picker svg {
   display: none;
@@ -244,6 +245,7 @@
   border: none;
   width: 80px;
   margin: -13px;
+  color: #ffff;
 }
 .right-date-picker .MuiInputBase-root {
   border: none;
