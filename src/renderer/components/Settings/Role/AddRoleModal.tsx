@@ -12,6 +12,7 @@ interface $roleData {
   id?: string;
   rolename?: string;
   description?: string;
+  status?:any
 }
 interface $props {
   type: string;
@@ -21,7 +22,7 @@ interface $props {
   value: $roleData | null;
 }
 
-const AddRoleModal = ({
+const  AddRoleModal = ({
   type,
   open,
   setOpen,
@@ -36,7 +37,7 @@ const AddRoleModal = ({
     setRoleData({ ...roleData, [name]: value });
   };
   const handleSubmit = () => {
-    if (roleData?.rolename && roleData?.description) {
+    if (roleData?.rolename && roleData?.description && roleData?.status) {
       if (type === 'edit') roleData.id = value?.id;
       handleOnSubmit(roleData, type);
       setOpen(false);
@@ -46,9 +47,9 @@ const AddRoleModal = ({
     setRoleData({
       rolename: value?.rolename || '',
       description: value?.description || '',
+      status:value?.status ,
     });
   }, [value]);
-
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
@@ -93,6 +94,16 @@ const AddRoleModal = ({
               value={roleData?.description}
               handleOnChange={handleOnChange}
             />
+            {type === 'edit' &&
+             <InputWithLabel
+             label="Status"
+             inputIdentifierName="status"
+             placeholder="Status"
+             value={roleData?.status}
+             handleOnChange={handleOnChange}
+           />
+            }
+            
           </Stack>
         </form>
       </Box>

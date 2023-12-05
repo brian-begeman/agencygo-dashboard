@@ -56,12 +56,12 @@ function YourAccount() {
   const token = localStorage.getItem('Authorization');
   const [userData, setUserData] = useState({
     user: {
-      firstName: '',
+      name: '',
       email: '',
     },
     agency: {
       agencyName: '',
-      agencyEmail: '',
+      email: '',
     },
   });
 
@@ -112,7 +112,7 @@ function YourAccount() {
         const response = await axios.put(
           `${API_URL}/employee/updateEmployeeSetting/${_Id}`,
           {
-            firstName: userData.user.firstName,
+            name: userData.user.firstName,
             email: userData.user.email,
           },
           {
@@ -122,18 +122,12 @@ function YourAccount() {
           }
         );
         console.log(response, 'personal detail======');
-      } else if (
-        userData?.user?.isAdmin == true &&
-        userData?.user?.isAgency == true &&
-        userData?.user?.isEmployee == false
-      ) {
+      } else if (userData?.user?.isAgency == true) {
         const response = await axios.put(
           `${API_URL}/agency/updateAgencySetting/${_Id}`,
           {
-            firstName: userData.user.firstName,
-            email: userData.user.email,
             agencyName: userData.agency.agencyName,
-            agencyEmail: userData.agency.userId.email,
+            email: userData.user.email,
           },
           {
             headers: {
@@ -432,7 +426,7 @@ function YourAccount() {
                 <input
                   placeholder="Enter agency name"
                   value={userData?.agency?.agencyName}
-                  disabled={!editUserDetail}
+                  disabled={userData.user.isAgency==false ? editUserDetail:!editUserDetail}
                   onChange={(e) =>
                     setUserData((prev: any) => {
                       return {
@@ -453,10 +447,10 @@ function YourAccount() {
                     boxSizing: 'border-box',
                     backgroundColor: isDarkTheme
                       ? editUserDetail
-                        ? '#000'
+                        ?  userData?.user?.isAgency == false ? '#36454F':'#000'
                         : '#36454F'
                       : editUserDetail
-                      ? '#EAF1FF'
+                      ? userData?.user?.isAgency == false ? '#D3D3D3':'#EAF1FF'
                       : '#D3D3D3',
                     color: isDarkTheme
                       ? editUserDetail
@@ -471,14 +465,14 @@ function YourAccount() {
                 <input
                   placeholder="Enter agency email"
                   value={userData?.agency?.userId?.email}
-                  disabled={!editUserDetail}
+                  disabled={userData?.user?.isAgency === false ? editUserDetail:editUserDetail}
                   onChange={(e) =>
                     setUserData((prev: any) => {
                       return {
                         ...prev,
                         agency: {
                           ...prev.agency,
-                          agencyEmail: e.target.value,
+                          email: e.target.value,
                         },
                       };
                     })
@@ -491,11 +485,11 @@ function YourAccount() {
                     marginTop: '2px',
                     boxSizing: 'border-box',
                     backgroundColor: isDarkTheme
-                      ? editUserDetail
-                        ? '#000'
+                      ? editUserDetail 
+                        ?  userData?.user?.isAgency == false ? '#36454F':'#000'
                         : '#36454F'
                       : editUserDetail
-                      ? '#EAF1FF'
+                      ?  userData?.user?.isAgency == false ? '#D3D3D3':'#EAF1FF'
                       : '#D3D3D3',
                     color: isDarkTheme
                       ? editUserDetail

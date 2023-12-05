@@ -34,6 +34,7 @@ function WhiteLabel() {
   const handleOnChange = (name: string, value: string) => {
     setWhiteLabelData({ ...whiteLabelData, [name]: value });
   };
+  
   const handleImageChange = (e: any) => {
     if (e.target.files) {
       const file = e.target?.files[0];

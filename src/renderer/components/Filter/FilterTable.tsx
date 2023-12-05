@@ -33,7 +33,7 @@ export default function FilterTable({
   return (
     <Box
       sx={{
-        width: '80%',
+        width: '100%',
         padding: '10px',
         overflow: 'auto',
       }}

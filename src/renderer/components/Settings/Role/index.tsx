@@ -26,7 +26,9 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import classes from './styles.module.css';
 import RoleManager from './Manager';
 import fetchReq from 'utils/fetch';
-
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 interface $roleData {
   id?: string;
   rolename?: string;
@@ -136,7 +138,6 @@ function RoleLanding(props: TabProps) {
   }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState('add');
-
   const doSearch = (item: any, type: string) => {
     const endPoint = `roles/search/data?${type}=${item.value}`;
     const options = {
@@ -289,6 +290,21 @@ function RoleLanding(props: TabProps) {
 
     setRoleData(null);
   };
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -404,14 +420,11 @@ function RoleLanding(props: TabProps) {
         </div>
       </div>
 
-      <FilterTable tableHeaders={employeesTableHeaders}>
+      <FilterTable tableHeaders={employeesTableHeaders} >
         <>
           {role.map(({ rolename, status, _id, description }, index) => (
             <TableRow
               key={index}
-              sx={{
-                '&:last-child td, &:last-child th': { border: 0 },
-              }}
               onClick={() => handleRowClick(rolename)}
             >
               <TableCell
@@ -459,7 +472,7 @@ function RoleLanding(props: TabProps) {
                 align="right"
               >
                 <Stack spacing={1} direction="row" alignItems="center">
-                  <div
+                  {/* <div
                     className={
                       status === 'active'
                         ? classes.deactivateTextCss
@@ -470,8 +483,8 @@ function RoleLanding(props: TabProps) {
                     }}
                   >
                     {status === 'active' ? 'Deactivate' : 'Activate'}
-                  </div>
-                  <CustomIconButton
+                  </div> */}
+                  {/* <CustomIconButton
                     aria-label="delete"
                     sx={{ color: 'white' }}
                     onClick={() => {
@@ -480,8 +493,33 @@ function RoleLanding(props: TabProps) {
                   >
                     <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
                   </CustomIconButton>
+                   */}
+<CustomIconButton
+              aria-label="delete"
+              sx={{ color: 'white' }}
+              onClick={handleOpen}
+            >
+              <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
+            </CustomIconButton>
+<Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box sx={style}>
+    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+      You are about to delete the team lead role. Are you sure ?
+    </Typography>
+    <Box sx={{display:'flex',gap:"10px" ,justifyContent:"end",alignItems:'end'}}>
+    <Button size='small' varient='outlined' onClick={()=>handleClose()}>Cancel</Button>
+    <Button size='small' varient='contained' sx={{backgroundColor:"red",color:"#fff"}} onClick={()=>handleRoleDelete(_id)}>Delete</Button>
+    </Box>
+  </Box>
+</Modal>
+
                   <IconButton
-                    aria-label="delete"
+                    aria-label="edit"
                     color="primary"
                     onClick={() => {
                       setRoleData({
@@ -538,3 +576,5 @@ function Role() {
 }
 
 export default Role;
+
+
