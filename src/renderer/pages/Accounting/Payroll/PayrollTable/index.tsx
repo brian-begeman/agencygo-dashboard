@@ -56,6 +56,10 @@ const defaultPayroll:payrollType = {
     setSelectedPayroll({ ...selectedPayroll, [e.target.name]: e.target.value });
   };
 
+  const calculateTotalPayment = ()=>{
+    return parseFloat(selectedPayroll?.hourlyPay) * parseFloat(selectedPayroll?.totalHours) +  parseFloat(selectedPayroll?.commissionEarned) + parseFloat(selectedPayroll?.bonus);
+  }
+
   const editPayroll = (fieldName:string, payrollIndex:number) => {
     const defaultIn = {  hourlyPay:false,  bonus:false,  commission:false }
      payrollIndex != editingIndex ? setPayrollInputs({...defaultIn, [fieldName]:true})  : setPayrollInputs({...payrollInputs, [fieldName]:true})
@@ -77,7 +81,9 @@ const defaultPayroll:payrollType = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(selectedPayroll),
+        body: JSON.stringify({...selectedPayroll, 
+          status: (!!selectedPayroll?.status).toString(),
+          totalPayment: calculateTotalPayment()}),
       });
       if (response.ok) {
         const payroll = await response.json();
@@ -132,13 +138,12 @@ const defaultPayroll:payrollType = {
         <TableBody>
           {payrollGroup.map((payroll: any, payrollIndex: any) => {
             const user = findUser(payroll?.employeeId);
-            if(!user) return null
             return(
             <TableRow
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               key={payrollIndex}
             >
-              <TableCell> {`${user?.firstName} ${user?.lastName}`} </TableCell>
+              <TableCell> {user?<>{`${user?.firstName??''} ${user?.lastName??''}`}</>: 'Employee not found!'} </TableCell>
               <TableCell>
                 {user?.role}
               </TableCell>
@@ -292,7 +297,7 @@ const defaultPayroll:payrollType = {
                 $
                 {(
                   parseFloat(payroll?.totalPayment)
-                  // parseFloat(payroll?.hourlyPay) * parseFloat(payroll?.totalHours) +  parseFloat(payroll?.commissionEarned) + parseFloat(payroll?.bonuses)
+                  // c
                 )?.toFixed(2)}
               </TableCell>
             </TableRow>
