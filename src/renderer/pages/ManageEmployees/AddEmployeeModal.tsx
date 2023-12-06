@@ -46,7 +46,7 @@ export default function AddEmployeeModal({
     selectedEmployee
   );
   const { userData } = useContext(AuthContext);
-  const [agencies, setagencies] = useState<
+  const [agencies, setAgencies] = useState<
     {
       label: string;
       value: string;
@@ -57,7 +57,7 @@ export default function AddEmployeeModal({
       value: '',
     },
   ]);
-  const [creators, setcreators] = useState<
+  const [creators, setCreators] = useState<
     {
       label: string;
       value: string;
@@ -79,11 +79,11 @@ export default function AddEmployeeModal({
     setValue('email', '');
     setValue('agencyId', '');
     setValue('role', '');
-    setValue('payRate', '');
+    setValue('payRate',0);
     setValue('payInterval', '');
-    setValue('commission', '');
+    setValue('commission', 0);
     setValue('shiftSchedular', '');
-    setValue('assignCreator', '');
+    setValue('assignCreator', []);
   };
 
   const handleModalClose = () => {
@@ -107,14 +107,14 @@ export default function AddEmployeeModal({
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        setagencies([]);
-        console.log(res);
+        setAgencies([]);
+        console.log(res, 'retrieved agencies');
         res.data.map((item: any) => {
           let tempdata = {
             value: item._id,
             label: item.agencyName,
           };
-          setagencies((previousdata) => [...previousdata, tempdata]);
+          setAgencies((previousdata) => [...previousdata, tempdata]);
         });
       })
       .catch((err) => {
@@ -133,13 +133,13 @@ export default function AddEmployeeModal({
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        setcreators([]);
+        setCreators([]);
         res.data?.creators?.map((item: any) => {
           let tempdata = {
             value: item._id,
             label: item.creatorName,
           };
-          setcreators((previousdata) => [...previousdata, tempdata]);
+          setCreators((previousdata) => [...previousdata, tempdata]);
         });
       })
       .catch((err) => {
@@ -204,16 +204,15 @@ export default function AddEmployeeModal({
             </Box>
 
             <Box>
-              <LabelText label={'$ Pay Rate '} />
               <Box sx={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                 <InputWithLabel
-                  label=""
+                  label="$ Pay Rate"
                   inputIdentifierName="payRate"
                   placeholder="$ Enter Rate"
                   register={register as any}
                 />
                 <DropdownWithLabel
-                  label=""
+                  label="Pay Rate Frequency"
                   inputIdentifierName="payInterval"
                   options={frequencyList}
                   register={register as any}
@@ -230,12 +229,6 @@ export default function AddEmployeeModal({
                 />
                 <LabelText label={'0.10%'} />
               </Box>
-              {/* <DropdownWithLabel
-                label="Shift Schedule"
-                inputIdentifierName="shiftSchedular"
-                options={scheduleList}
-                register={register as any}
-              /> */}
             </Box>
 
             <MultiSelectDropdown
