@@ -33,6 +33,7 @@ interface $roleData {
   id?: string;
   rolename?: string;
   description?: string;
+  status?: string;
 }
 
 const statusMenu = [
@@ -50,20 +51,12 @@ const statusMenu = [
   },
 ];
 
-
-
-
-
 const CustomButton = styled(Button)(() => ({
-
-  
   borderRadius: '8px', // Adjust the border radius,
   padding: '8px 16px',
- 
- 
+
   textTransform: 'none', // Prevent text from being uppercase,
   boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
- 
 }));
 
 const CustomIconButton = styled(IconButton)(() => ({
@@ -100,7 +93,6 @@ interface TabProps {
 function RoleLanding(props: TabProps) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
-
 
   function Options(props: any) {
     const { menu, handlePopoverClose, type } = props;
@@ -301,7 +293,7 @@ function RoleLanding(props: TabProps) {
     boxShadow: 24,
     p: 4,
   };
-  
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -420,13 +412,10 @@ function RoleLanding(props: TabProps) {
         </div>
       </div>
 
-      <FilterTable tableHeaders={employeesTableHeaders} >
+      <FilterTable tableHeaders={employeesTableHeaders}>
         <>
           {role.map(({ rolename, status, _id, description }, index) => (
-            <TableRow
-              key={index}
-              onClick={() => handleRowClick(rolename)}
-            >
+            <TableRow key={index} onClick={() => handleRowClick(rolename)}>
               <TableCell
                 sx={{
                   borderColor: theme.palette.primary.contrastText,
@@ -494,29 +483,50 @@ function RoleLanding(props: TabProps) {
                     <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
                   </CustomIconButton>
                    */}
-<CustomIconButton
-              aria-label="delete"
-              sx={{ color: 'white' }}
-              onClick={handleOpen}
-            >
-              <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
-            </CustomIconButton>
-<Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      You are about to delete the team lead role. Are you sure ?
-    </Typography>
-    <Box sx={{display:'flex',gap:"10px" ,justifyContent:"end",alignItems:'end'}}>
-    <Button size='small' varient='outlined' onClick={()=>handleClose()}>Cancel</Button>
-    <Button size='small' varient='contained' sx={{backgroundColor:"red",color:"#fff"}} onClick={()=>handleRoleDelete(_id)}>Delete</Button>
-    </Box>
-  </Box>
-</Modal>
+                  <CustomIconButton
+                    aria-label="delete"
+                    sx={{ color: 'white' }}
+                    onClick={handleOpen}
+                  >
+                    <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
+                  </CustomIconButton>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        You are about to delete the team lead role. Are you sure
+                        ?
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: '10px',
+                          justifyContent: 'end',
+                          alignItems: 'end',
+                        }}
+                      >
+                        <Button
+                          size="small"
+                          varient="outlined"
+                          onClick={() => handleClose()}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="small"
+                          varient="contained"
+                          sx={{ backgroundColor: 'red', color: '#fff' }}
+                          onClick={() => handleRoleDelete(_id)}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Modal>
 
                   <IconButton
                     aria-label="edit"
@@ -526,6 +536,7 @@ function RoleLanding(props: TabProps) {
                         id: _id,
                         rolename,
                         description,
+                        status,
                       });
                       setModalType('edit');
                       setIsOpen(true);
@@ -576,5 +587,3 @@ function Role() {
 }
 
 export default Role;
-
-

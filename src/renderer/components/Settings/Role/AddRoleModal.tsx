@@ -12,7 +12,7 @@ interface $roleData {
   id?: string;
   rolename?: string;
   description?: string;
-  status?:any
+  status?: string | undefined;
 }
 interface $props {
   type: string;
@@ -22,7 +22,12 @@ interface $props {
   value: $roleData | null;
 }
 
-const  AddRoleModal = ({
+const statusOptions = [
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' },
+];
+
+const AddRoleModal = ({
   type,
   open,
   setOpen,
@@ -33,7 +38,7 @@ const  AddRoleModal = ({
   const handleModalClose = () => {
     setOpen(false);
   };
-  const handleOnChange = (name: string, value: string) => {
+  const handleOnChange = (name: string, value?: string) => {
     setRoleData({ ...roleData, [name]: value });
   };
   const handleSubmit = () => {
@@ -47,9 +52,10 @@ const  AddRoleModal = ({
     setRoleData({
       rolename: value?.rolename || '',
       description: value?.description || '',
-      status:value?.status ,
+      status: value?.status,
     });
   }, [value]);
+
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   return (
@@ -61,7 +67,6 @@ const  AddRoleModal = ({
       <Box
         className={styles.modal}
         sx={{
-         
           backgroundColor: isDarkTheme ? '#292929' : '#fff',
         }}
       >
@@ -94,16 +99,23 @@ const  AddRoleModal = ({
               value={roleData?.description}
               handleOnChange={handleOnChange}
             />
-            {type === 'edit' &&
-             <InputWithLabel
-             label="Status"
-             inputIdentifierName="status"
-             placeholder="Status"
-             value={roleData?.status}
-             handleOnChange={handleOnChange}
-           />
-            }
-            
+            {type === 'edit' && (
+              // <InputWithLabel
+              //   label="Status"
+              //   inputIdentifierName="status"
+              //   placeholder="Status"
+              //   value={roleData?.status}
+              //   handleOnChange={handleOnChange}
+              // />
+              <DropdownWithLabel
+                label="Status"
+                inputIdentifierName="status"
+                placeholder="Enter Role description"
+                value={roleData?.status}
+                options={statusOptions}
+                handleOnChange={handleOnChange}
+              />
+            )}
           </Stack>
         </form>
       </Box>
