@@ -33,7 +33,7 @@ function WhiteLabel() {
     primaryColor,
     setPrimaryColor,
     secondaryColor,
-    setSecondaryColor
+    setSecondaryColor,
   } = useFormWhiteLabel();
   const [whiteLabelData, setWhiteLabelData] = useState<any>(null);
   // const [primaryColor, setPrimaryColor] = useState('');
@@ -94,7 +94,7 @@ function WhiteLabel() {
             ) : (
               <ImageUpload handleImageChange={handleImageChange} />
             )}
-            {agencyLogo && <UploadedImage file={agencyLogo} />}
+            {/* {agencyLogo && <UploadedImage file={agencyLogo} />} */}
             {agencyLogo && (
               <Box
                 sx={{
@@ -132,16 +132,15 @@ function WhiteLabel() {
                 border: '1px solid #292929',
                 backgroundColor: '#0C0C0C',
                 width: '50%',
-                padding:"8px",
-                borderRadius:"5px"
-
+                padding: '8px',
+                borderRadius: '5px',
               }}
-              onClick={()=>{
-                document.getElementById("primary-color-picker")?.click()
+              onClick={() => {
+                document.getElementById('primary-color-picker')?.click();
               }}
             >
               <input
-                placeholder='Choose primary color'
+                placeholder="Choose primary color"
                 value={primaryColor}
                 maxLength={7}
                 style={{
@@ -152,7 +151,10 @@ function WhiteLabel() {
                 }}
                 // {...register("primaryColor")}
               />
-              <InputColorPicker onChange={setPrimaryColor} id={"primary-color-picker"}/>
+              <InputColorPicker
+                onChange={setPrimaryColor}
+                id={'primary-color-picker'}
+              />
             </div>
             <div
               style={{
@@ -162,15 +164,15 @@ function WhiteLabel() {
                 border: '1px solid #292929',
                 backgroundColor: '#0C0C0C',
                 width: '50%',
-                padding:"8px",
-                borderRadius:"5px"
+                padding: '8px',
+                borderRadius: '5px',
               }}
-              onClick={()=>{
-                document.getElementById("secondary-color-picker")?.click()
+              onClick={() => {
+                document.getElementById('secondary-color-picker')?.click();
               }}
             >
               <input
-                placeholder='Choose secondary color'
+                placeholder="Choose secondary color"
                 value={secondaryColor}
                 maxLength={7}
                 style={{
@@ -181,7 +183,10 @@ function WhiteLabel() {
                 }}
                 // {...register("secondaryColor")}
               />
-              <InputColorPicker onChange={setSecondaryColor} id={"secondary-color-picker"} />
+              <InputColorPicker
+                onChange={setSecondaryColor}
+                id={'secondary-color-picker'}
+              />
             </div>
             {/* <InputWithLabel
               label="Primary Color"

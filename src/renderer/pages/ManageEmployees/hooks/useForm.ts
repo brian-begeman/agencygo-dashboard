@@ -35,7 +35,7 @@ export const useFormEmployee = (
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
-    agencyId: Yup.string(),
+    agencyId: Yup.string().required('Role is required'),
     assignCreator: Yup.array(),
     payRate: Yup.number().required('Pay rate is required'),
     payInterval: Yup.string().required('Pay Interval is required'),
