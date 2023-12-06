@@ -26,7 +26,7 @@ const useQuery = (props: IProps) => {
   const fetch = async () => {
     setLoading(true);
     if (key === 'verify') {
-      let endpoint = `/verify`;
+      let endpoint = `verify`;
       let options = {
         method: 'GET' as 'GET',
         headers: {
@@ -43,6 +43,7 @@ const useQuery = (props: IProps) => {
         .catch((error) => {
           setError(true);
           setLoading(false);
+          if (onError) onError();
         });
     }
     if (key === 'get-creator') {
