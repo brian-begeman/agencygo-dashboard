@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as React from 'react';
 import {
-  Avatar,
   Button,
   Chip,
   IconButton,
@@ -29,6 +28,8 @@ import fetchReq from 'utils/fetch';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
 interface $roleData {
   id?: string;
   rolename?: string;
@@ -124,6 +125,7 @@ function RoleLanding(props: TabProps) {
   const [anchorElStatus, setAnchorElStatus] =
     React.useState<HTMLButtonElement | null>(null);
   const [role, setRoles] = useState([]);
+  
   const [roleData, setRoleData] = useState<$roleData | null>(null);
   useEffect(() => {
     getRoles();
@@ -220,6 +222,7 @@ function RoleLanding(props: TabProps) {
       .catch((err) => {
         console.log(err);
       });
+      handleClose()
   };
   const handleRoleNameClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElRoleName(event.currentTarget);
@@ -285,6 +288,9 @@ function RoleLanding(props: TabProps) {
 
     setRoleData(null);
   };
+  const [roleUser,setRoleUser]=useState([])
+  console.log(roleUser,"roleUser=======");
+  
   const getUserByRole = (id: string) => {
     if (isShowUsers == true) {
       setIsShowUsers(false);
@@ -292,7 +298,7 @@ function RoleLanding(props: TabProps) {
     } else {
       setIsShowUsers(true);
       setRoleId(id);
-      const endpoint = 'getUsersByRole/' + id;
+      const endpoint = 'roles/getUsersByRole/' + id;
       const options = {
         method: 'GET' as 'GET',
         headers: {
@@ -304,6 +310,7 @@ function RoleLanding(props: TabProps) {
         .then((responce) => responce.json())
         .then((res) => {
           setRoleId(id);
+          setRoleUser(res.data)
           console.log(res, '---------------------');
         })
         .catch((error) => console.log(error));
@@ -327,21 +334,27 @@ function RoleLanding(props: TabProps) {
   const handleClose = () => setOpen(false);
   const dummydata = [
     {
-      _id: '656f9267a8ecfa49dfc07aa1',
-      rolename: 'employee',
-      description: 'employee role33',
-      status: 'inactive',
-      __v: 0,
+      image: <Avatar alt="" src="/static/images/avatar/1.jpg" />
     },
     {
-      _id: '656f9281a8ecfa49dfc07aa7',
-      rolename: 'manager',
-      description: 'manager role',
-      status: 'active',
-      __v: 0,
+      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    },
+    {
+      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    },
+    {
+      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    },
+    {
+      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    },
+    {
+      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    },
+    {
+      image: <Avatar alt="Sharp" src="/static/images/avatar/1.jpg" />
     },
   ];
-
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -477,12 +490,23 @@ function RoleLanding(props: TabProps) {
                   }}
                 >
                   <Stack spacing={4} direction="row" alignItems="center">
-                    <AvatarSvg />
+                  <AvatarGroup
+                  max={4}
+                      >
+                    {
+                      roleUser.map((ic)=>(
+                        <Avatar sx={{textTransform:"uppercase"}} alt={ic.firstName} src="/static/images/avatar/1.jpg" />
+                        ))
+                    }
+                     </AvatarGroup>
                     <div
                       className={classes.showUserText}
                       onClick={() => getUserByRole(_id)}
                     >
-                      Show users
+                      {
+                        isShowUsers == true ? "Collapse users":" Show users"
+                      }
+                     
                     </div>
                   </Stack>
                 </TableCell>
@@ -601,7 +625,7 @@ function RoleLanding(props: TabProps) {
               {isShowUsers == true &&
                 roleId == _id &&
                 // <>{console.log(isShowUsers, roleId,"::::::::::::::::::::::::::>>>>>>>>>>")}</>
-                dummydata.map((val) => {
+                roleUser.map((val) => {
                   return (
                     <TableRow
                       key={index}
@@ -620,7 +644,13 @@ function RoleLanding(props: TabProps) {
                         }}
                       >
                         <Stack spacing={4} direction="row" alignItems="center">
-                          <AvatarSvg />
+                          {/* <AvatarSvg /> */}
+                          <div
+                      className={classes.showUserText}
+                      onClick={() => getUserByRole(_id)}
+                    >
+                     {val.firstName}
+                    </div>
                         </Stack>
                       </TableCell>
                       <TableCell
@@ -661,6 +691,7 @@ function RoleLanding(props: TabProps) {
                               sx={{ color: 'white' }}
                             />
                           </CustomIconButton>
+                          <div>
                           <Modal
                             open={open}
                             onClose={handleClose}
@@ -694,14 +725,14 @@ function RoleLanding(props: TabProps) {
                                   size="small"
                                   varient="contained"
                                   sx={{ backgroundColor: 'red', color: '#fff' }}
-                                  onClick={() => handleRoleDelete(_id)}
+                                  onClick={() => handleRoleDelete(val._id)}
                                 >
                                   Delete
                                 </Button>
                               </Box>
                             </Box>
                           </Modal>
-
+                          </div>
                           <IconButton
                             aria-label="edit"
                             color="primary"
