@@ -49,7 +49,10 @@ const useFormCreator = (
     autoRelink: Yup.boolean(),
     agencyComission: Yup.number().min(0).max(100),
     creatorComission: Yup.number().min(0).max(100),
-    // isAgencyProxy:Yup.boolean(), 
+    proxy: Yup.object({
+      isAgencyProxy: Yup.boolean().optional(),
+      proxyString: Yup.string().optional()
+    }),
   });
 
   const { register, handleSubmit, reset, setValue, getValues, control } =

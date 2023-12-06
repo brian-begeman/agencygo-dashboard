@@ -25,6 +25,26 @@ const useQuery = (props: IProps) => {
 
   const fetch = async () => {
     setLoading(true);
+    if (key === 'verify') {
+      let endpoint = `/verify`;
+      let options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      }
+      fetchReq(endpoint, options)
+        .then((response) => response.json())
+        .then((res) => {
+          setData(res);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setLoading(false);
+        });
+    }
     if (key === 'get-creator') {
       let endpoint = `creators/${AgencyId}?page=${currentPage}&limt=${paginationLimit}`;
       let options = {

@@ -8,6 +8,8 @@
 .secondChild {
   display: grid;
   width: 100%;
+  /* overflow-y: scroll;
+  max-height: 90vh; */
 }
 
 .darkTheme {
