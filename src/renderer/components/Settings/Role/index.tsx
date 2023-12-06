@@ -50,20 +50,12 @@ const statusMenu = [
   },
 ];
 
-
-
-
-
 const CustomButton = styled(Button)(() => ({
-
-  
   borderRadius: '8px', // Adjust the border radius,
   padding: '8px 16px',
- 
- 
+
   textTransform: 'none', // Prevent text from being uppercase,
   boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
- 
 }));
 
 const CustomIconButton = styled(IconButton)(() => ({
@@ -101,7 +93,6 @@ function RoleLanding(props: TabProps) {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
-
   function Options(props: any) {
     const { menu, handlePopoverClose, type } = props;
     return (
@@ -138,6 +129,9 @@ function RoleLanding(props: TabProps) {
   }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState('add');
+  const [isShowUsers, setIsShowUsers] = useState(false);
+  const [roleId, setRoleId] = useState('');
+
   const doSearch = (item: any, type: string) => {
     const endPoint = `roles/search/data?${type}=${item.value}`;
     const options = {
@@ -290,6 +284,31 @@ function RoleLanding(props: TabProps) {
 
     setRoleData(null);
   };
+  const getUserByRole = (id: string) => {
+    if (isShowUsers == true) {
+      setIsShowUsers(false);
+      setRoleId(id);
+    } else {
+      setIsShowUsers(true);
+      setRoleId(id);
+      const endpoint = 'getUsersByRole/' + id;
+      const options = {
+        method: 'GET' as 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+        withAuth: true,
+      };
+      fetchReq(endpoint, options)
+        .then((responce) => responce.json())
+        .then((res) => {
+          setRoleId(id);
+          console.log(res, '---------------------');
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -301,10 +320,27 @@ function RoleLanding(props: TabProps) {
     boxShadow: 24,
     p: 4,
   };
-  
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dummydata = [
+    {
+      _id: '656f9267a8ecfa49dfc07aa1',
+      rolename: 'employee',
+      description: 'employee role33',
+      status: 'inactive',
+      __v: 0,
+    },
+    {
+      _id: '656f9281a8ecfa49dfc07aa7',
+      rolename: 'manager',
+      description: 'manager role',
+      status: 'active',
+      __v: 0,
+    },
+  ];
+
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -420,59 +456,62 @@ function RoleLanding(props: TabProps) {
         </div>
       </div>
 
-      <FilterTable tableHeaders={employeesTableHeaders} >
+      <FilterTable tableHeaders={employeesTableHeaders}>
         <>
           {role.map(({ rolename, status, _id, description }, index) => (
-            <TableRow
-              key={index}
-              onClick={() => handleRowClick(rolename)}
-            >
-              <TableCell
-                sx={{
-                  borderColor: theme.palette.primary.contrastText,
-                  color: '#fff',
-                }}
-                scope="row"
-              >
-                {rolename}
-              </TableCell>
-              <TableCell
-                sx={{
-                  borderColor: theme.palette.primary.contrastText,
-                }}
-              >
-                <Stack spacing={4} direction="row" alignItems="center">
-                  <AvatarSvg />
-                  <div className={classes.showUserText}>Show users</div>
-                </Stack>
-              </TableCell>
+            <>
+              <TableRow key={index} onClick={() => handleRowClick(rolename)}>
+                <TableCell
+                  sx={{
+                    borderColor: theme.palette.primary.contrastText,
+                    color: '#fff',
+                  }}
+                  scope="row"
+                >
+                  {rolename}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    borderColor: theme.palette.primary.contrastText,
+                  }}
+                >
+                  <Stack spacing={4} direction="row" alignItems="center">
+                    <AvatarSvg />
+                    <div
+                      className={classes.showUserText}
+                      onClick={() => getUserByRole(_id)}
+                    >
+                      Show users
+                    </div>
+                  </Stack>
+                </TableCell>
 
-              <TableCell
-                sx={{
-                  borderColor: theme.palette.primary.contrastText,
-                }}
-              >
-                {status === 'active' ? (
-                  <Chip label="Active" color="success" variant="outlined" />
-                ) : (
-                  <Chip
-                    label="Inactive"
-                    variant="outlined"
-                    sx={{
-                      border: '1px solid #750BB7',
-                      color: '#750BB7',
-                    }}
-                  />
-                )}
-              </TableCell>
-              <TableCell
-                sx={{
-                  borderColor: theme.palette.primary.contrastText,
-                }}
-                align="right"
-              >
-                <Stack spacing={1} direction="row" alignItems="center">
-                  {/* <div
+                <TableCell
+                  sx={{
+                    borderColor: theme.palette.primary.contrastText,
+                  }}
+                >
+                  {status === 'active' ? (
+                    <Chip label="Active" color="success" variant="outlined" />
+                  ) : (
+                    <Chip
+                      label="Inactive"
+                      variant="outlined"
+                      sx={{
+                        border: '1px solid #750BB7',
+                        color: '#750BB7',
+                      }}
+                    />
+                  )}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    borderColor: theme.palette.primary.contrastText,
+                  }}
+                  align="right"
+                >
+                  <Stack spacing={1} direction="row" alignItems="center">
+                    {/* <div
                     className={
                       status === 'active'
                         ? classes.deactivateTextCss
@@ -484,7 +523,7 @@ function RoleLanding(props: TabProps) {
                   >
                     {status === 'active' ? 'Deactivate' : 'Activate'}
                   </div> */}
-                  {/* <CustomIconButton
+                    {/* <CustomIconButton
                     aria-label="delete"
                     sx={{ color: 'white' }}
                     onClick={() => {
@@ -494,48 +533,194 @@ function RoleLanding(props: TabProps) {
                     <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
                   </CustomIconButton>
                    */}
-<CustomIconButton
-              aria-label="delete"
-              sx={{ color: 'white' }}
-              onClick={handleOpen}
-            >
-              <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
-            </CustomIconButton>
-<Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      You are about to delete the team lead role. Are you sure ?
-    </Typography>
-    <Box sx={{display:'flex',gap:"10px" ,justifyContent:"end",alignItems:'end'}}>
-    <Button size='small' varient='outlined' onClick={()=>handleClose()}>Cancel</Button>
-    <Button size='small' varient='contained' sx={{backgroundColor:"red",color:"#fff"}} onClick={()=>handleRoleDelete(_id)}>Delete</Button>
-    </Box>
-  </Box>
-</Modal>
+                    <CustomIconButton
+                      aria-label="delete"
+                      sx={{ color: 'white' }}
+                      onClick={handleOpen}
+                    >
+                      <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
+                    </CustomIconButton>
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          You are about to delete the team lead role. Are you
+                          sure ?
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: '10px',
+                            justifyContent: 'end',
+                            alignItems: 'end',
+                          }}
+                        >
+                          <Button
+                            size="small"
+                            varient="outlined"
+                            onClick={() => handleClose()}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            size="small"
+                            varient="contained"
+                            sx={{ backgroundColor: 'red', color: '#fff' }}
+                            onClick={() => handleRoleDelete(_id)}
+                          >
+                            Delete
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Modal>
 
-                  <IconButton
-                    aria-label="edit"
-                    color="primary"
-                    onClick={() => {
-                      setRoleData({
-                        id: _id,
-                        rolename,
-                        description,
-                      });
-                      setModalType('edit');
-                      setIsOpen(true);
-                    }}
-                  >
-                    <EditOutlinedIcon sx={{ color: 'white' }} />
-                  </IconButton>
-                </Stack>
-              </TableCell>
-            </TableRow>
+                    <IconButton
+                      aria-label="edit"
+                      color="primary"
+                      onClick={() => {
+                        setRoleData({
+                          id: _id,
+                          rolename,
+                          description,
+                        });
+                        setModalType('edit');
+                        setIsOpen(true);
+                      }}
+                    >
+                      <EditOutlinedIcon sx={{ color: 'white' }} />
+                    </IconButton>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+              {isShowUsers == true && roleId== _id &&
+              // <>{console.log(isShowUsers, roleId,"::::::::::::::::::::::::::>>>>>>>>>>")}</>
+                dummydata.map((val) => {
+                  return (
+                    <TableRow
+                      key={index}
+                      onClick={() => handleRowClick(rolename)}
+                    >
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                          color: '#fff',
+                        }}
+                        scope="row"
+                      ></TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        <Stack spacing={4} direction="row" alignItems="center">
+                          <AvatarSvg />
+                        </Stack>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                      >
+                        {val.status === 'active' ? (
+                          <Chip
+                            label="Active"
+                            color="success"
+                            variant="outlined"
+                          />
+                        ) : (
+                          <Chip
+                            label="Inactive"
+                            variant="outlined"
+                            sx={{
+                              border: '1px solid #750BB7',
+                              color: '#750BB7',
+                            }}
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          borderColor: theme.palette.primary.contrastText,
+                        }}
+                        align="right"
+                      >
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <CustomIconButton
+                            aria-label="delete"
+                            sx={{ color: 'white' }}
+                            onClick={handleOpen}
+                          >
+                            <DeleteOutlineOutlinedIcon
+                              sx={{ color: 'white' }}
+                            />
+                          </CustomIconButton>
+                          <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                          >
+                            <Box sx={style}>
+                              <Typography
+                                id="modal-modal-description"
+                                sx={{ mt: 2 }}
+                              >
+                                You are about to delete the team lead role. Are
+                                you sure ?
+                              </Typography>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  gap: '10px',
+                                  justifyContent: 'end',
+                                  alignItems: 'end',
+                                }}
+                              >
+                                <Button
+                                  size="small"
+                                  varient="outlined"
+                                  onClick={() => handleClose()}
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  size="small"
+                                  varient="contained"
+                                  sx={{ backgroundColor: 'red', color: '#fff' }}
+                                  onClick={() => handleRoleDelete(_id)}
+                                >
+                                  Delete
+                                </Button>
+                              </Box>
+                            </Box>
+                          </Modal>
+
+                          <IconButton
+                            aria-label="edit"
+                            color="primary"
+                            onClick={() => {
+                              setRoleData({
+                                id: _id,
+                                rolename,
+                                description,
+                              });
+                              setModalType('edit');
+                              setIsOpen(true);
+                            }}
+                          >
+                            <EditOutlinedIcon sx={{ color: 'white' }} />
+                          </IconButton>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+                }
+            </>
           ))}
         </>
       </FilterTable>
@@ -576,5 +761,3 @@ function Role() {
 }
 
 export default Role;
-
-

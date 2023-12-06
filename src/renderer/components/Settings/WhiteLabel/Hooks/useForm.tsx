@@ -12,6 +12,8 @@ const useFormWhiteLabel = () => {
   const { userData } = useContext(AuthContext);
   const [file, setFile] = useState<string | ArrayBuffer | null>('');
   const [agencyLogo, setAgencyLogo] = useState<string | null>(null);
+  const [primaryColor, setPrimaryColor] = useState('');
+  const [secondaryColor, setSecondaryColor] = useState('');
 
   const validationSchema = Yup.object().shape({
     agencyLogo: Yup.mixed(),
@@ -40,8 +42,10 @@ const useFormWhiteLabel = () => {
       setAgencyLogo(whiteLables.agencyLogo);
       setValue('agencyName', whiteLables.agencyName);
       // setValue('email', whiteLables?.agencyDetails[0]?.email);
-      setValue('primaryColor', whiteLables.primaryColor);
-      setValue('secondaryColor', whiteLables.secondaryColor);
+      // setValue('primaryColor', whiteLables.primaryColor);
+      // setValue('secondaryColor', whiteLables.secondaryColor);
+      setPrimaryColor(whiteLables?.primaryColor)
+      setSecondaryColor(whiteLables?.secondaryColor)
       setValue('websiteUrl', whiteLables.websiteUrl);
       setValue('phone', whiteLables.phone);
       setValue('agencyLogo', whiteLables.agencyLogo);
@@ -60,12 +64,12 @@ const useFormWhiteLabel = () => {
       data.email && formdataConvert.append('email', data.email);
     }
     {
-      data.primaryColor &&
-        formdataConvert.append('primaryColor', data.primaryColor);
+      primaryColor &&
+        formdataConvert.append('primaryColor', primaryColor);
     }
     {
-      data.secondaryColor &&
-        formdataConvert.append('secondaryColor', data.secondaryColor);
+      secondaryColor &&
+        formdataConvert.append('secondaryColor',secondaryColor);
     }
     {
       data.websiteUrl && formdataConvert.append('websiteUrl', data.websiteUrl);
@@ -101,6 +105,10 @@ const useFormWhiteLabel = () => {
     agencyLogo,
     errors,
     handleSubmit: handleSubmit(onSubmit),
+    setPrimaryColor,
+    primaryColor,
+    setSecondaryColor,
+    secondaryColor
   };
 };
 

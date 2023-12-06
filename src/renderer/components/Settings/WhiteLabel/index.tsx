@@ -6,6 +6,7 @@ import UploadedImage from './UploadedImage';
 import useFormWhiteLabel from './Hooks/useForm';
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import InputColorPicker from './ColorPicker';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -29,12 +30,18 @@ function WhiteLabel() {
     setFile,
     agencyLogo,
     setAgencyLogo,
+    primaryColor,
+    setPrimaryColor,
+    secondaryColor,
+    setSecondaryColor
   } = useFormWhiteLabel();
   const [whiteLabelData, setWhiteLabelData] = useState<any>(null);
+  // const [primaryColor, setPrimaryColor] = useState('');
+  // const [secondaryColor, setSecondaryColor] = useState('');
   const handleOnChange = (name: string, value: string) => {
     setWhiteLabelData({ ...whiteLabelData, [name]: value });
   };
-  
+
   const handleImageChange = (e: any) => {
     if (e.target.files) {
       const file = e.target?.files[0];
@@ -114,8 +121,69 @@ function WhiteLabel() {
               </Box>
             )}
           </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <InputWithLabel
+          <Box
+            sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '5px',
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+                width: '50%',
+                padding:"8px",
+                borderRadius:"5px"
+
+              }}
+              onClick={()=>{
+                document.getElementById("primary-color-picker")?.click()
+              }}
+            >
+              <input
+                placeholder='Choose primary color'
+                value={primaryColor}
+                maxLength={7}
+                style={{
+                  outline: 'none',
+                  color: '#fff',
+                  border: 'none',
+                  background: 'transparent',
+                }}
+                // {...register("primaryColor")}
+              />
+              <InputColorPicker onChange={setPrimaryColor} id={"primary-color-picker"}/>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '5px',
+                border: '1px solid #292929',
+                backgroundColor: '#0C0C0C',
+                width: '50%',
+                padding:"8px",
+                borderRadius:"5px"
+              }}
+              onClick={()=>{
+                document.getElementById("secondary-color-picker")?.click()
+              }}
+            >
+              <input
+                placeholder='Choose secondary color'
+                value={secondaryColor}
+                maxLength={7}
+                style={{
+                  outline: 'none',
+                  color: '#fff',
+                  border: 'none',
+                  background: 'transparent',
+                }}
+                // {...register("secondaryColor")}
+              />
+              <InputColorPicker onChange={setSecondaryColor} id={"secondary-color-picker"} />
+            </div>
+            {/* <InputWithLabel
               label="Primary Color"
               inputIdentifierName="primaryColor"
               placeholder="Enter primary color"
@@ -138,7 +206,7 @@ function WhiteLabel() {
               register={register as any}
               handleOnChange={handleOnChange}
               errors={errors}
-            />
+            /> */}
           </Box>
           <InputWithLabel
             label="Company/Agency Name"

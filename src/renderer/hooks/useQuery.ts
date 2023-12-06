@@ -14,14 +14,14 @@ interface IProps {
 const useQuery = (props: IProps) => {
   const { userData } = useContext(AuthContext);
 
-  const AgencyId = localStorage.getItem('AgencyId') 
+  const AgencyId = localStorage.getItem('AgencyId');
   const { key, params, notInitialFetch, onError, onSuccess } = props;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [data, setData] = useState<any>(null);
-  const [currentPage, setCurrnetPage]= useState<number>(1)
-  const [paginationLimit,setPaginationLimit] = useState<Number>(10)
+  const [currentPage, setCurrnetPage] = useState<number>(1);
+  const [paginationLimit, setPaginationLimit] = useState<Number>(10);
 
   const fetch = async () => {
     setLoading(true);
@@ -65,7 +65,7 @@ const useQuery = (props: IProps) => {
           setLoading(false);
         });
     }
-    if(key === 'get-agencyById'){
+    if (key === 'get-agencyById') {
       let endPoint = 'agency/' + params.id;
       let options = {
         method: 'GET' as 'GET',
@@ -90,7 +90,7 @@ const useQuery = (props: IProps) => {
       let options = {
         method: 'GET' as 'GET',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
         withAuth: true,
       };
@@ -143,7 +143,7 @@ const useQuery = (props: IProps) => {
     setCurrnetPage,
     currentPage,
     paginationLimit,
-    setPaginationLimit
+    setPaginationLimit,
   };
 };
 

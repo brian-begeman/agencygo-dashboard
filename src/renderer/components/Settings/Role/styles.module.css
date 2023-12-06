@@ -51,6 +51,7 @@
 .showUserText {
   color: #AAAAAA;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .deactivateTextCss {
