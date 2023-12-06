@@ -1,7 +1,49 @@
-import { useTheme } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Tooltip,
+  TooltipProps,
+  tooltipClasses,
+  useTheme,
+} from '@mui/material';
 import classes from './styles.module.css';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import styled from '@emotion/styled';
+
+function WeeklyTooltip() {
+  const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 200,
+      backgroundColor: '#e1e6e2',
+      color: 'rgba(0, 0, 0, 0.87)',
+      fontSize: 12,
+      fontWeight: 500,
+    },
+  });
+  return (
+    <CustomWidthTooltip
+      title="select when your Agency work week begins. if you 
+    choose Sunday then all your analytics will calculate according to that start day for 
+    the week and for Monday it will do Monday."
+    >
+      <IconButton
+        sx={{
+          border: '2px solid gray',
+          borderRadius: '50%',
+          fontSize: '10px',
+          fontWeight: 900,
+          padding: '3px 7px',
+          fontStyle: 'bold',
+          marginLeft: '10px',
+        }}
+      >
+        i
+      </IconButton>
+    </CustomWidthTooltip>
+  );
+}
 
 function Preferences() {
   const theme = useTheme();
@@ -72,7 +114,10 @@ function Preferences() {
             </div>
           </div>
           <div className={classes.inputBox}>
-            <label className={classes.labellist}>{t('Weekly reports')}</label>
+            <div className={classes.labellist} style={{}}>
+              <label className={classes.labellist}>{t('Weekly reports')}</label>
+              <WeeklyTooltip />
+            </div>
             <div className={classes.select_box}>
               <select
                 className={classes.optionlist}
