@@ -42,8 +42,10 @@ const AddRoleModal = ({
     setRoleData({ ...roleData, [name]: value });
   };
   const handleSubmit = () => {
-    if (roleData?.rolename && roleData?.description && roleData?.status) {
-      if (type === 'edit') roleData.id = value?.id;
+    if (roleData?.rolename && roleData?.description) {
+      if(roleData?.rolename && roleData?.description && roleData?.status){
+        if (type === 'edit') roleData.id = value?.id;
+      }
       handleOnSubmit(roleData, type);
       setOpen(false);
     }
@@ -100,13 +102,6 @@ const AddRoleModal = ({
               handleOnChange={handleOnChange}
             />
             {type === 'edit' && (
-              // <InputWithLabel
-              //   label="Status"
-              //   inputIdentifierName="status"
-              //   placeholder="Status"
-              //   value={roleData?.status}
-              //   handleOnChange={handleOnChange}
-              // />
               <DropdownWithLabel
                 label="Status"
                 inputIdentifierName="status"

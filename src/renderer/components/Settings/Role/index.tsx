@@ -125,7 +125,7 @@ function RoleLanding(props: TabProps) {
   const [anchorElStatus, setAnchorElStatus] =
     React.useState<HTMLButtonElement | null>(null);
   const [role, setRoles] = useState([]);
-  
+
   const [roleData, setRoleData] = useState<$roleData | null>(null);
   useEffect(() => {
     getRoles();
@@ -179,8 +179,11 @@ function RoleLanding(props: TabProps) {
       })
       .catch((err) => console.log(err));
   };
+  const [roleUserData,setRoleUserData]=useState([]);
+  console.log(roleUserData,"roleUserData======");
   const getRoles = () => {
-    const endPoint = 'roles';
+     const user_Id = localStorage.getItem("AgencyId")
+    const endPoint = 'roles/getUsersByRole/' + user_Id;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -199,6 +202,7 @@ function RoleLanding(props: TabProps) {
           ]);
         });
         setRoles(res.data);
+        setRoleUserData(res.data.users)
       })
       .catch((err) => {
         console.log('error trying to fetch role: ', err);
@@ -292,6 +296,7 @@ function RoleLanding(props: TabProps) {
   console.log(roleUser,"roleUser=======");
   
   const getUserByRole = (id: string) => {
+   
     if (isShowUsers == true) {
       setIsShowUsers(false);
       setRoleId(id);
@@ -332,29 +337,7 @@ function RoleLanding(props: TabProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const dummydata = [
-    {
-      image: <Avatar alt="" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-    },
-    {
-      image: <Avatar alt="Sharp" src="/static/images/avatar/1.jpg" />
-    },
-  ];
+ 
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
@@ -494,8 +477,8 @@ function RoleLanding(props: TabProps) {
                   max={4}
                       >
                     {
-                      roleUser.map((ic)=>(
-                        <Avatar sx={{textTransform:"uppercase"}} alt={ic.firstName} src="/static/images/avatar/1.jpg" />
+                      role.map((ic)=>(
+                        <Avatar sx={{ width: 30, height: 30,textTransform:"uppercase"}} alt={ic.rolename} src="/static/images/avatar/1.jpg" />
                         ))
                     }
                      </AvatarGroup>
