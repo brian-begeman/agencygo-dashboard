@@ -7,11 +7,17 @@ function Preferences() {
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
   const { t, i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const handleLanguageChange = (event: any) => {
-    setSelectedLanguage(event.target.value);
     i18n.changeLanguage(event.target.value);
   };
+
+  const languageOptions = [
+    { value: 'en', label: 'English' },
+    { value: 'de', label: 'German' },
+    { value: 'fr', label: 'French' },
+    { value: 'es', label: 'Spanish' },
+    { value: 'ru', label: 'Russian' },
+  ];
 
   return (
     <div className={classes.wrapper}>
@@ -27,13 +33,11 @@ function Preferences() {
                   color: isDarkTheme ? '#fff' : '#121212',
                 }}
                 onChange={handleLanguageChange}
-                defaultValue={selectedLanguage}
+                value={i18n.language}
               >
-                <option value={'en'}>English</option>
-                <option value={'de'}>German</option>
-                <option value={'fr'}>French</option>
-                <option value={'es'}>Spanish</option>
-                <option value={'ru'}>Russian</option>
+                {languageOptions.map((val) => {
+                  return <option value={val.value}>{val.label}</option>;
+                })}
               </select>
             </div>
           </div>

@@ -33,6 +33,7 @@ interface $roleData {
   id?: string;
   rolename?: string;
   description?: string;
+  status?: string;
 }
 
 const statusMenu = [
@@ -586,6 +587,7 @@ function RoleLanding(props: TabProps) {
                           id: _id,
                           rolename,
                           description,
+                          status
                         });
                         setModalType('edit');
                         setIsOpen(true);
@@ -596,8 +598,9 @@ function RoleLanding(props: TabProps) {
                   </Stack>
                 </TableCell>
               </TableRow>
-              {isShowUsers == true && roleId== _id &&
-              // <>{console.log(isShowUsers, roleId,"::::::::::::::::::::::::::>>>>>>>>>>")}</>
+              {isShowUsers == true &&
+                roleId == _id &&
+                // <>{console.log(isShowUsers, roleId,"::::::::::::::::::::::::::>>>>>>>>>>")}</>
                 dummydata.map((val) => {
                   return (
                     <TableRow
@@ -707,6 +710,7 @@ function RoleLanding(props: TabProps) {
                                 id: _id,
                                 rolename,
                                 description,
+                                status,
                               });
                               setModalType('edit');
                               setIsOpen(true);
@@ -718,8 +722,7 @@ function RoleLanding(props: TabProps) {
                       </TableCell>
                     </TableRow>
                   );
-                })
-                }
+                })}
             </>
           ))}
         </>
