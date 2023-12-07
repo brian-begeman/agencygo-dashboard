@@ -365,7 +365,7 @@ function RoleLanding(props: TabProps) {
               sx={{
                 backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
                 '&:hover': {
-                  backgroundColor: '#292929',
+                  backgroundColor:isDarkTheme ? '#292929':'lightgray',
                 },
                 color: isDarkTheme ? '#fff' : '#000',
                 border: '1px solid ',
@@ -398,7 +398,7 @@ function RoleLanding(props: TabProps) {
               sx={{
                 backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
                 '&:hover': {
-                  backgroundColor: '#292929',
+                  backgroundColor:isDarkTheme ? '#292929':'lightgray',
                 },
                 color: isDarkTheme ? '#fff' : '#000',
                 border: '1px solid ',
@@ -431,7 +431,7 @@ function RoleLanding(props: TabProps) {
               sx={{
                 backgroundColor: isDarkTheme ? '#0F0F0F' : '#fff', // Set the background color
                 '&:hover': {
-                  backgroundColor: '#292929',
+                  backgroundColor:isDarkTheme ? '#292929':'lightgray',
                 },
                 color: isDarkTheme ? '#fff' : '#000',
                 border: '1px solid ',
@@ -460,7 +460,7 @@ function RoleLanding(props: TabProps) {
                 <TableCell
                   sx={{
                     borderColor: theme.palette.primary.contrastText,
-                    color: '#fff',
+                    color:'#AAAAAA',
                   }}
                   scope="row"
                 >
@@ -547,7 +547,7 @@ function RoleLanding(props: TabProps) {
                       sx={{ color: 'white' }}
                       onClick={handleOpen}
                     >
-                      <DeleteOutlineOutlinedIcon sx={{ color: 'white' }} />
+                      <DeleteOutlineOutlinedIcon sx={{color:'#AAAAAA', }} />
                     </CustomIconButton>
                     <Modal
                       open={open}
@@ -601,7 +601,7 @@ function RoleLanding(props: TabProps) {
                         setIsOpen(true);
                       }}
                     >
-                      <EditOutlinedIcon sx={{ color: 'white' }} />
+                      <EditOutlinedIcon sx={{ color:'#AAAAAA', }} />
                     </IconButton>
                   </Stack>
                 </TableCell>
@@ -680,7 +680,7 @@ function RoleLanding(props: TabProps) {
                             onClick={handleOpen}
                           >
                             <DeleteOutlineOutlinedIcon
-                              sx={{ color: 'white' }}
+                              sx={{color:'#AAAAAA', }}
                             />
                           </CustomIconButton>
                           <div>
@@ -742,7 +742,7 @@ function RoleLanding(props: TabProps) {
                               setIsOpen(true);
                             }}
                           >
-                            <EditOutlinedIcon sx={{ color: 'white' }} />
+                            <EditOutlinedIcon sx={{color:'#AAAAAA',}} />
                           </IconButton>
                         </Stack>
                       </TableCell>

@@ -465,7 +465,7 @@ function YourAccount() {
                 <input
                   placeholder="Enter agency email"
                   value={userData?.agency?.userId?.email}
-                  disabled={userData?.user?.isAgency === false ? editUserDetail:editUserDetail}
+                  disabled={userData?.user?.isAgency === false ? editUserDetail:!editUserDetail}
                   onChange={(e) =>
                     setUserData((prev: any) => {
                       return {

@@ -326,7 +326,7 @@ function SideBar() {
             },
           }}
         >
-          <div className={classes.toolbar}>
+          {/* <div className={classes.toolbar}> */}
             {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
             {theme.direction === 'rtl' ? (
               open ? (
@@ -340,7 +340,7 @@ function SideBar() {
               <ChevronRightIcon />
             )}
           </IconButton> */}
-          </div>
+          {/* </div> */}
           <div className={classes.sidebarNavWrapper}>
             {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
               return (

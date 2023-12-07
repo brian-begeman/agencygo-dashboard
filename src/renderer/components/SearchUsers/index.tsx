@@ -55,6 +55,7 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
       style={{
         backgroundColor: isDarkTheme ? '#0C0C0C' : '#fff',
         borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
+        height:"75vh"
       }}
     >
       <div className={styles.search}>
