@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
 import MultiSelectDropdown, {
@@ -20,6 +20,7 @@ interface $Props {
   refetch: () => void;
   type: 'add' | 'edit';
   selectedEmployee?: any;
+  selectedAgency?: any;
 }
 
 export default function AddEmployeeModal({
@@ -28,6 +29,7 @@ export default function AddEmployeeModal({
   refetch,
   type,
   selectedEmployee,
+  selectedAgency,
 }: $Props) {
   const {
     assignCreator,
@@ -37,6 +39,8 @@ export default function AddEmployeeModal({
     selectedValues,
     setSelectedValues,
     setValue,
+    setAgencyId,
+    registrationError,
   } = useFormEmployee(
     () => {
       setOpen(false);
@@ -45,8 +49,9 @@ export default function AddEmployeeModal({
     type,
     selectedEmployee
   );
+  const id = () => selectedAgency._id
   const { userData } = useContext(AuthContext);
-  const [agencies, setAgencies] = useState<
+  const [agencyGroups, setAgencyGroups] = useState<
     {
       label: string;
       value: string;
@@ -69,17 +74,17 @@ export default function AddEmployeeModal({
     },
   ]);
   const addHandler = () => {
-    handleSubmit();
+    setAgencyId(selectedAgency.id)
+    handleSubmit(selectedAgency);
   };
-
   const cancelHandler = () => {
     setOpen(false);
     setSelectedValues([]);
     setValue('name', '');
     setValue('email', '');
-    setValue('agencyId', '');
     setValue('role', '');
-    setValue('payRate',0);
+    setValue('groupId','')
+    setValue('payRate', 0);
     setValue('payInterval', '');
     setValue('commission', 0);
     setValue('shiftSchedular', '');
@@ -89,14 +94,43 @@ export default function AddEmployeeModal({
   const handleModalClose = () => {
     setOpen(false);
   };
-
   useEffect(() => {
-    getAgencie();
+    getAgencyGroups();
     getCreators();
-  }, []);
+    // 
+  }, [selectedAgency]);
 
-  const getAgencie = () => {
-    const endpoint = 'agency';
+  console.log("errorRegi:", registrationError
+  )
+  // const getAgencie = () => {
+  //   const endpoint = 'agency';
+  //   let options = {
+  //     method: 'GET' as 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //     },
+  //     withAuth: true,
+  //   };
+  //   fetchReq(endpoint, options)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       setAgencyGroups([]);
+  //       res.data.map((item: any) => {
+  //         let tempData = {
+  //           value: item._id,
+  //           label: item.agencyName,
+  //         };
+  //         setAgencyGroups((previousData) => [...previousData, tempData]);
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+
+  const getAgencyGroups = () => {
+    let endpoint = 'agency/showgroup/' + selectedAgency?.id;
     let options = {
       method: 'GET' as 'GET',
       headers: {
@@ -107,20 +141,22 @@ export default function AddEmployeeModal({
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        setAgencies([]);
-        console.log(res, 'retrieved agencies');
-        res.data.map((item: any) => {
-          let tempdata = {
-            value: item._id,
-            label: item.agencyName,
-          };
-          setAgencies((previousdata) => [...previousdata, tempdata]);
-        });
+        if (res) {
+          setAgencyGroups([]);
+          res.data.map((item: any) => {
+            let tempData = {
+              value: item._id,
+              label: item.name,
+            };
+            setAgencyGroups((previousData) => [...previousData, tempData]);
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   const getCreators = () => {
     const endpoint = `creators/${userData?.agency?._id}`;
     let options = {
@@ -155,25 +191,34 @@ export default function AddEmployeeModal({
       open={open}
       handleClose={handleModalClose}
     >
+      
       <Box
         sx={{
           backgroundColor: isDarkTheme ? '#4B4B4B' : '#fff',
         }}
       >
+      <Box padding={'10px 30px 0px 30px'} height={'8'}>
+        <Typography color={'error'} width={'100%'} textAlign={'center'}>{registrationError??''}</Typography>
+      </Box>
         <form
           className={styles.modalBody}
           id="addEmployee"
-          onSubmit={handleSubmit}
+          onSubmit={() => {
+            setValue('agencyId', '00')
+            handleSubmit()
+          }
+          }
         >
           <Stack
             gap="10px"
             sx={{
               marginInline: '30px',
-              paddingTop: '31px',
+              paddingTop: '10px',
               paddingBottom: '50px',
             }}
             className={styles.inputListWrapper}
           >
+            <input value={selectedAgency._id} type="text" hidden />
             <Box sx={{ display: 'flex', gap: '20px' }}>
               <InputWithLabel
                 label="Employee name"
@@ -191,8 +236,8 @@ export default function AddEmployeeModal({
             <Box sx={{ display: 'flex', gap: '20px' }}>
               <DropdownWithLabel
                 label="Group"
-                inputIdentifierName="agencyId"
-                options={agencies}
+                inputIdentifierName="groupId"
+                options={agencyGroups}
                 register={register as any}
               />
               <DropdownWithLabel

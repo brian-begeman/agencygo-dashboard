@@ -27,15 +27,16 @@ const SetPassword = () => {
     const pass = data.password;
     const payload = {
       password: pass,
-      newInvite:true
+      newInvite:true,
+      status:'active'
     };
     let endpoint = `employee/${id}`;
     let options = {
-      method: 'PUT' as 'PUT',
+      method: 'PATCH' as 'PATCH',
       headers: {
         'content-type': 'application/json',
       },
-      // withAuth: true,
+      //withAuth: true,
       body: JSON.stringify(payload),
     };
 
@@ -52,7 +53,7 @@ const SetPassword = () => {
   return (
     <>
       <Box className={styles.header}>
-        <h1>INFLOWW LOGO</h1>
+        <h1>INFLOWW LOGO </h1>
       </Box>
       <Box className={styles.resetpass}>
         <h1 className={styles.heading}>Set Password</h1>

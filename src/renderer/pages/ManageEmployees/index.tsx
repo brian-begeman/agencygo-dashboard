@@ -236,6 +236,7 @@ export default function ManageEmployees() {
       .then((response) => response.json())
       .then((res) => {
         if (res) {
+          console.log(res, 'agency sub groups')
           setSubGroups(res.data);
         }
       })
@@ -243,6 +244,7 @@ export default function ManageEmployees() {
         console.log(err);
       });
   };
+  
   // const handleActivate = (id: string) => {
   //   const data = {
   //     to: email,
@@ -649,6 +651,7 @@ export default function ManageEmployees() {
         refetch={refetch}
         type={formType}
         selectedEmployee={selectedEmployee}
+        selectedAgency = {selectedAgency}
       />
       <AddGroupToAgencyModal
         setSubGroups={setSubGroups}
