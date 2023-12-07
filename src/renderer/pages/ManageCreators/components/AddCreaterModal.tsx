@@ -27,6 +27,7 @@ import { genderList } from '../constant';
 import useFormCreator from '../hooks/useForm';
 import ImageUpload from './ImageUploader';
 import IconCheckboxes from 'renderer/components/RadioButton';
+import SetProxyModal from './AddProxyMoxal';
 
 interface $Props {
   open: boolean;
@@ -112,7 +113,7 @@ export default function AddCreaterModal({
   );
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
+  const [proxyOpen, setProxyOpen] = useState<boolean>(false);
   const handleOptionChange = (optionValue: string) => {
     if (selectedOptions.includes(optionValue)) {
       setSelectedOptions(
@@ -155,10 +156,12 @@ export default function AddCreaterModal({
 
   useEffect(() => {
     if (type == 'add') {
-      setValue('agencyComission', 10);
-      setValue('creatorComission', 10);
+      setValue('agencyComission', 30);
+      setValue('creatorComission', 70);
     }
   }, [type]);
+
+
 
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
@@ -366,7 +369,7 @@ export default function AddCreaterModal({
               alignItems={'center'}
             >
               <Box display={'flex'} alignItems={'center'}>
-                <RadioButton title="Use AgencyGO Proxy" />
+                <FormControlLabel label="Use AgencyGO Proxy" control={<Checkbox />} onChange={(ev, checked) => setValue('proxy.isAgencyProxy', checked)}/>
                 {/* <IconCheckboxes
                   title="Use AgencyGO Proxy"
                   name={'isAgencyProxy'}
@@ -374,7 +377,7 @@ export default function AddCreaterModal({
                   // register={register as any}
                 /> */}
               </Box>
-              <Link>Use Custom Proxy</Link>
+              <Link onClick={() => setProxyOpen(true)}>Use Custom Proxy</Link>
             </Box>
             {/* <Typography fontSize={'14px'}>
               Model Data (select at least 3 and a maximum of 5 options)
@@ -420,7 +423,12 @@ export default function AddCreaterModal({
           </FormGroup>
         </form>
       </Box>
-
+      <SetProxyModal 
+        open={proxyOpen}
+        setOpen={setProxyOpen}
+        value='asdfasdf' 
+        onChange={(proxy) => setValue('proxy.proxyString', proxy)}
+      />
       <ModalFooter
         addHandler={addHandler}
         cancelHandler={cancelHandler}

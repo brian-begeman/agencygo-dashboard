@@ -14,7 +14,7 @@ function Options(props: any) {
   const isDarkTheme = theme.palette.mode === 'dark';
 
   return (
-    <Box onMouseLeave={handlePopoverClose} sx={{ borderRadius: '10px' }}>
+    <Box onMouseLeave={handlePopoverClose} sx={{ borderRadius: '10px', pointerEvents: 'auto' }}>
       {menu.map((menuItem: any, index: any) => (
         <Box sx={{ width: '100%' }} className={classes.optionWrapper}>
           <NavLink
@@ -128,9 +128,10 @@ export default function NewSideBar(props: any) {
           }
           aria-owns={open ? 'mouse-over-popover' : undefined}
           aria-haspopup="true"
+          // onMouseOver={openPopOver}
           onMouseEnter={openPopOver}
           ref={currentElem}
-          onMouseLeave={handlePopoverClose}
+          // onMouseLeave={handlePopoverClose}
         >
           <Box
             className={
@@ -157,7 +158,7 @@ export default function NewSideBar(props: any) {
           <Popover
             id="mouse-over-popover"
             sx={{
-              pointerEvents: 'cursor',
+              pointerEvents: 'none',
             }}
             open={open}
             elevation={20}
@@ -171,6 +172,7 @@ export default function NewSideBar(props: any) {
               horizontal: -20,
             }}
             onClose={handlePopoverClose}
+            disableRestoreFocus
           >
             <Options menu={menu} handlePopoverClose={handlePopoverClose} />
           </Popover>

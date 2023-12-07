@@ -85,7 +85,7 @@ export default function ManagerSuite() {
         </PageTopbar>
         {/* <section> */}
         <Box display="flex" gap="5px" padding="6px 0px">
-          <Stack display={'flex'} maxHeight={'68vh'}>
+          <Stack display={'flex'} height={'65vh'}>
             <PageAside className={styles.usersMenu}>
               <div className={styles.search}>
               <SearchInput
