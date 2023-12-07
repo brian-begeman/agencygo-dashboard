@@ -30,6 +30,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
+import { useTranslation } from 'react-i18next';
 interface $roleData {
   id?: string;
   rolename?: string;
@@ -89,6 +90,7 @@ const employeesTableData: any[] = [
 
 interface TabProps {
   handleTabChange: (name: string) => void;
+  t:any
 }
 
 function RoleLanding(props: TabProps) {
@@ -115,7 +117,7 @@ function RoleLanding(props: TabProps) {
     );
   }
 
-  const { handleTabChange } = props;
+  const { handleTabChange, t } = props;
   const [searchText, setSearchText] = useState('');
   const [anchorElRoleName, setAnchorElRoleName] =
     React.useState<HTMLButtonElement | null>(null);
@@ -179,10 +181,10 @@ function RoleLanding(props: TabProps) {
       })
       .catch((err) => console.log(err));
   };
-  const [roleUserData,setRoleUserData]=useState([]);
-  console.log(roleUserData,"roleUserData======");
+  const [roleUserData, setRoleUserData] = useState([]);
+
   const getRoles = () => {
-     const user_Id = localStorage.getItem("AgencyId")
+    const user_Id = localStorage.getItem('AgencyId');
     const endPoint = 'roles/getUsersByRole/' + user_Id;
     let options = {
       method: 'GET' as 'GET',
@@ -202,7 +204,7 @@ function RoleLanding(props: TabProps) {
           ]);
         });
         setRoles(res.data);
-        setRoleUserData(res.data.users)
+        setRoleUserData(res.data.users);
       })
       .catch((err) => {
         console.log('error trying to fetch role: ', err);
@@ -226,7 +228,7 @@ function RoleLanding(props: TabProps) {
       .catch((err) => {
         console.log(err);
       });
-      handleClose()
+    handleClose();
   };
   const handleRoleNameClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElRoleName(event.currentTarget);
@@ -292,11 +294,9 @@ function RoleLanding(props: TabProps) {
 
     setRoleData(null);
   };
-  const [roleUser,setRoleUser]=useState([])
-  console.log(roleUser,"roleUser=======");
-  
+  const [roleUser, setRoleUser] = useState([]);
+
   const getUserByRole = (id: string) => {
-   
     if (isShowUsers == true) {
       setIsShowUsers(false);
       setRoleId(id);
@@ -312,11 +312,10 @@ function RoleLanding(props: TabProps) {
         withAuth: true,
       };
       fetchReq(endpoint, options)
-        .then((responce) => responce.json())
+        .then((response) => response.json())
         .then((res) => {
           setRoleId(id);
-          setRoleUser(res.data)
-          console.log(res, '---------------------');
+          setRoleUser(res.data);
         })
         .catch((error) => console.log(error));
     }
@@ -337,11 +336,11 @@ function RoleLanding(props: TabProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
- 
+
   return (
     <div className={classes.roleWrapper}>
       <div className={classes.titleWrapper}>
-        <div className={classes.headingText}>Role Management</div>
+        <div className={classes.headingText}>{t("Role Management")}</div>
         <Button
           variant="contained"
           sx={{ color: 'white' }}
@@ -351,7 +350,7 @@ function RoleLanding(props: TabProps) {
             setIsOpen(true);
           }}
         >
-          Add role
+          {t("Add role")}
         </Button>
       </div>
 
@@ -373,7 +372,7 @@ function RoleLanding(props: TabProps) {
                 borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
               }}
             >
-              Role Name
+              {t("Role Name")}
             </CustomButton>
             <Popover
               id={roleNameId}
@@ -406,7 +405,7 @@ function RoleLanding(props: TabProps) {
                 borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
               }}
             >
-              Status
+              {t("Status")}
             </CustomButton>
             <Popover
               id={statusId}
@@ -439,7 +438,7 @@ function RoleLanding(props: TabProps) {
                 borderColor: isDarkTheme ? '#292929' : '#EAF1FF',
               }}
             >
-              Filters
+              {t("Filters")}
             </CustomButton>
           </div>
           <div className={classes.inputWrapper}>
@@ -447,7 +446,7 @@ function RoleLanding(props: TabProps) {
               onSearch={() => {}}
               onUpdateSearch={(v) => setSearchText(v)}
               value={searchText}
-              placeholder="Search employee name"
+              placeholder={t("Search employee name")}
             />
           </div>
         </div>
@@ -473,24 +472,26 @@ function RoleLanding(props: TabProps) {
                   }}
                 >
                   <Stack spacing={4} direction="row" alignItems="center">
-                  <AvatarGroup
-                  max={4}
-                      >
-                    {
-                      role.map((ic)=>(
-                        <Avatar sx={{ width: 30, height: 30,textTransform:"uppercase"}} alt={ic.rolename} src="/static/images/avatar/1.jpg" />
-                        ))
-                    }
-                     </AvatarGroup>
+                    <AvatarGroup max={4}>
+                      {role.map((ic) => (
+                        <Avatar
+                          sx={{
+                            width: 30,
+                            height: 30,
+                            textTransform: 'uppercase',
+                          }}
+                          alt={ic.rolename}
+                          src="/static/images/avatar/1.jpg"
+                        />
+                      ))}
+                    </AvatarGroup>
                     <div
                       className={classes.showUserText}
                       onClick={() => getUserByRole(_id)}
                     >
-                      {
-                        isShowUsers == true ? "Collapse users":" Show users"
-                      }
-                     
+                      {isShowUsers == true && roleId == _id ? 'Collapse users' : ' Show users'}
                     </div>
+                    
                   </Stack>
                 </TableCell>
 
@@ -594,7 +595,7 @@ function RoleLanding(props: TabProps) {
                           id: _id,
                           rolename,
                           description,
-                          status
+                          status,
                         });
                         setModalType('edit');
                         setIsOpen(true);
@@ -607,7 +608,6 @@ function RoleLanding(props: TabProps) {
               </TableRow>
               {isShowUsers == true &&
                 roleId == _id &&
-                // <>{console.log(isShowUsers, roleId,"::::::::::::::::::::::::::>>>>>>>>>>")}</>
                 roleUser.map((val) => {
                   return (
                     <TableRow
@@ -628,12 +628,21 @@ function RoleLanding(props: TabProps) {
                       >
                         <Stack spacing={4} direction="row" alignItems="center">
                           {/* <AvatarSvg /> */}
+                          <Avatar
+                            sx={{
+                              width: 30,
+                              height: 30,
+                              textTransform: 'uppercase',
+                            }}
+                            alt={val.rolename}
+                            src="/static/images/avatar/1.jpg"
+                          />
                           <div
-                      className={classes.showUserText}
-                      onClick={() => getUserByRole(_id)}
-                    >
-                     {val.firstName}
-                    </div>
+                            className={classes.showUserText}
+                            onClick={() => getUserByRole(_id)}
+                          >
+                            {val.rolename}
+                          </div>
                         </Stack>
                       </TableCell>
                       <TableCell
@@ -675,46 +684,49 @@ function RoleLanding(props: TabProps) {
                             />
                           </CustomIconButton>
                           <div>
-                          <Modal
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                          >
-                            <Box sx={style}>
-                              <Typography
-                                id="modal-modal-description"
-                                sx={{ mt: 2 }}
-                              >
-                                You are about to delete the team lead role. Are
-                                you sure ?
-                              </Typography>
-                              <Box
-                                sx={{
-                                  display: 'flex',
-                                  gap: '10px',
-                                  justifyContent: 'end',
-                                  alignItems: 'end',
-                                }}
-                              >
-                                <Button
-                                  size="small"
-                                  varient="outlined"
-                                  onClick={() => handleClose()}
+                            <Modal
+                              open={open}
+                              onClose={handleClose}
+                              aria-labelledby="modal-modal-title"
+                              aria-describedby="modal-modal-description"
+                            >
+                              <Box sx={style}>
+                                <Typography
+                                  id="modal-modal-description"
+                                  sx={{ mt: 2 }}
                                 >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  size="small"
-                                  varient="contained"
-                                  sx={{ backgroundColor: 'red', color: '#fff' }}
-                                  onClick={() => handleRoleDelete(val._id)}
+                                  You are about to delete the team lead role.
+                                  Are you sure ?
+                                </Typography>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    justifyContent: 'end',
+                                    alignItems: 'end',
+                                  }}
                                 >
-                                  Delete
-                                </Button>
+                                  <Button
+                                    size="small"
+                                    varient="outlined"
+                                    onClick={() => handleClose()}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    size="small"
+                                    varient="contained"
+                                    sx={{
+                                      backgroundColor: 'red',
+                                      color: '#fff',
+                                    }}
+                                    onClick={() => handleRoleDelete(val._id)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </Box>
                               </Box>
-                            </Box>
-                          </Modal>
+                            </Modal>
                           </div>
                           <IconButton
                             aria-label="edit"
@@ -754,16 +766,16 @@ function RoleLanding(props: TabProps) {
 
 function Role() {
   const [activeTab, setActiveTab] = useState('Role');
-
+  const { t } = useTranslation();
   const renderTab = (
     tabName: string,
     handleTabChange: (name: string) => void
   ) => {
     switch (tabName) {
       case 'Role':
-        return <RoleLanding handleTabChange={handleTabChange} />;
+        return <RoleLanding handleTabChange={handleTabChange} t={t} />;
       case 'RoleManager':
-        return <RoleManager handleTabChange={handleTabChange} />;
+        return <RoleManager handleTabChange={handleTabChange} t={t}/>;
 
       default:
         return <h5>Not found</h5>;

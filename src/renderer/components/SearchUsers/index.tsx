@@ -22,7 +22,7 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
 
   useEffect(()=>{
     setFilteredUsers(allUsers??[])
-    const length = allUsers.length;
+    const length = allUsers?.length;
     if (length > 0) {
       // Automatically set the first user in the list as the default selected user
       setData((prevData: any) => ({

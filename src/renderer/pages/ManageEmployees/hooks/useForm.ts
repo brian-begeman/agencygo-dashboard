@@ -35,7 +35,7 @@ export const useFormEmployee = (
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
-    agencyId: Yup.string().required('Role is required'),
+    agencyId: Yup.string().required('Agency id is required'),
     assignCreator: Yup.array(),
     payRate: Yup.number().required('Pay rate is required'),
     payInterval: Yup.string().required('Pay Interval is required'),
@@ -129,8 +129,8 @@ export const useFormEmployee = (
     fetchReq(endPoint, options)
       .then((responce) => responce.json())
       .then((responce) => {
-        if(responce.message=="Employee updated successfully"){
-          callback()
+        if (responce.message == 'Employee updated successfully') {
+          callback();
           refetch();
           setSelectedValues([]);
           // setOpenAddEmployee(false)
@@ -145,18 +145,16 @@ export const useFormEmployee = (
       setValue('email', selectedEmployee?.email);
       setValue('role', selectedEmployee?.role);
       setValue('agencyId', selectedEmployee?.agencyId);
-      setValue('payRate',selectedEmployee?.payRate);
-      setValue('commission',selectedEmployee?.commission);
-      setValue('payInterval',selectedEmployee?.payInterval);
-      setValue('shiftSchedular',selectedEmployee?.shiftSchedular);
+      setValue('payRate', selectedEmployee?.payRate);
+      setValue('commission', selectedEmployee?.commission);
+      setValue('payInterval', selectedEmployee?.payInterval);
+      setValue('shiftSchedular', selectedEmployee?.shiftSchedular);
       setSelectedValues(selectedEmployee?.assignedCreatorsForDropdown);
     } else {
       setSelectedValues([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmployee, type]);
-
-  
 
   return {
     register,

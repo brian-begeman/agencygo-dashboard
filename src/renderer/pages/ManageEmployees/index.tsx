@@ -145,7 +145,6 @@ export default function ManageEmployees() {
   };
 
   const handleActivate = (id: any, status: any) => {
-    console.log(id, status, 'asdfasfsadfs5555555555555555');
     mutateActivate(
       { id, status },
       {

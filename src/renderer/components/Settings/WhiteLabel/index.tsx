@@ -7,6 +7,7 @@ import useFormWhiteLabel from './Hooks/useForm';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import InputColorPicker from './ColorPicker';
+import { useTranslation } from 'react-i18next';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -35,6 +36,7 @@ function WhiteLabel() {
     secondaryColor,
     setSecondaryColor,
   } = useFormWhiteLabel();
+  const {t} = useTranslation()
   const [whiteLabelData, setWhiteLabelData] = useState<any>(null);
   // const [primaryColor, setPrimaryColor] = useState('');
   // const [secondaryColor, setSecondaryColor] = useState('');
@@ -85,7 +87,7 @@ function WhiteLabel() {
             }}
           >
             <Typography sx={{ mb: 2 }}>
-              Upload your Company/Agency's Logo
+              {t("Upload your Company/Agency's Logo")}
             </Typography>
             {agencyLogo ? (
               <Box>
@@ -105,7 +107,7 @@ function WhiteLabel() {
                 }}
               >
                 <Button component="label">
-                  Change
+                  {t("Change")}
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleImageChange}
@@ -116,7 +118,7 @@ function WhiteLabel() {
                   onClick={handleImageChange}
                   className="btn"
                 >
-                  Remove
+                  {t("Remove")}
                 </ButtonEle>
               </Box>
             )}
@@ -140,7 +142,7 @@ function WhiteLabel() {
               }}
             >
               <input
-                placeholder="Choose primary color"
+                placeholder={t("Choose primary color")}
                 value={primaryColor}
                 maxLength={7}
                 style={{
@@ -172,7 +174,7 @@ function WhiteLabel() {
               }}
             >
               <input
-                placeholder="Choose secondary color"
+                placeholder={t("Choose secondary color")}
                 value={secondaryColor}
                 maxLength={7}
                 style={{
@@ -214,9 +216,9 @@ function WhiteLabel() {
             /> */}
           </Box>
           <InputWithLabel
-            label="Company/Agency Name"
+            label={t("Company/Agency Name")}
             inputIdentifierName="agencyName"
-            placeholder="Enter agency name"
+            placeholder={t("Enter agency name")}
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
@@ -226,9 +228,9 @@ function WhiteLabel() {
             errors={errors}
           />
           <InputWithLabel
-            label="Company/Agency Email"
+            label={t("Company/Agency Email")}
             inputIdentifierName="email"
-            placeholder="Enter agency email"
+            placeholder={t("Enter agency email")}
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
@@ -238,9 +240,9 @@ function WhiteLabel() {
             errors={errors}
           />
           <InputWithLabel
-            label="Company/Agency Phone"
+            label={t("Company/Agency Phone")}
             inputIdentifierName="phone"
-            placeholder="Enter agency phone"
+            placeholder={t("Enter agency phone")}
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
@@ -250,9 +252,9 @@ function WhiteLabel() {
             errors={errors}
           />
           <InputWithLabel
-            label="Company/Agency Website"
+            label={t("Company/Agency Website")}
             inputIdentifierName="websiteUrl"
-            placeholder="Enter agency website"
+            placeholder={t("Enter agency website")}
             inputStyle={{
               border: '1px solid #292929',
               backgroundColor: '#0C0C0C',
@@ -263,7 +265,7 @@ function WhiteLabel() {
           />
           <Box sx={{ display: 'flex', justifyContent: 'end' }}>
             <ButtonEle type="submit" className="btn">
-              Save Changes
+              {t("Save Changes")}
             </ButtonEle>
           </Box>
         </Stack>

@@ -114,7 +114,7 @@ function Preferences() {
             </div>
           </div>
           <div className={classes.inputBox}>
-            <div className={classes.labellist} style={{}}>
+            <div className={classes.labellist} >
               <label className={classes.labellist}>{t('Weekly reports')}</label>
               <WeeklyTooltip />
             </div>

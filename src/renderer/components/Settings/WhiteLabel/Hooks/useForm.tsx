@@ -39,16 +39,16 @@ const useFormWhiteLabel = () => {
 
   useEffect(() => {
     if (whiteLables) {
-      setAgencyLogo(whiteLables.agencyLogo);
-      setValue('agencyName', whiteLables.agencyName);
-      setValue('email', whiteLables?.agencyDetails[0]?.email);
+      setAgencyLogo(whiteLables?.agencyLogo);
+      setValue('agencyName', whiteLables?.agencyName);
+      setValue('email', whiteLables?.agencyDetails && whiteLables?.agencyDetails[0]?.email);
       // setValue('primaryColor', whiteLables.primaryColor);
       // setValue('secondaryColor', whiteLables.secondaryColor);
       setPrimaryColor(whiteLables?.primaryColor)
       setSecondaryColor(whiteLables?.secondaryColor)
-      setValue('websiteUrl', whiteLables.websiteUrl);
-      setValue('phone', whiteLables.phone);
-      setValue('agencyLogo', whiteLables.agencyLogo);
+      setValue('websiteUrl', whiteLables?.websiteUrl);
+      setValue('phone', whiteLables?.phone);
+      setValue('agencyLogo', whiteLables?.agencyLogo);
     }
   }, [whiteLables]);
 
