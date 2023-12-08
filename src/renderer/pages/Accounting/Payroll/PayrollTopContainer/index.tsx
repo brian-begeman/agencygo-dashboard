@@ -6,19 +6,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import CreateInvoiceModal from '../CreateModal';
 import { OpenInNew } from '@mui/icons-material';
-
-type frequency = 'Weekly'|'Biweekly'|'Monthly'|'Annually'
-type status = 'Paid'|'Unpaid'
-type role = 'Admin'|'Manager'|'Employee'
 
 const payrollFrequency = ['Weekly', 'Biweekly', 'Monthly', 'Annually']
 const PayrollTopContainer = ({filters, setFilters}: any) => {
   
   const [isCreateInvoiceModalOpen, setCreateInvoiceModalOpen] = useState(false);
-
   const handleOpen = () => setCreateInvoiceModalOpen(true);
 
   const theme = useTheme();

@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Box, Stack, useTheme } from '@mui/material';
 import PayrollTopContainer from './PayrollTopContainer';
-import { allUsersMock, allPayrollsWithTimestampMock } from './mockData/payrollTablaData';
-
 import { API_URL } from 'config';
 import { groupingPayrolls } from './helpers/groupingPayrolls';
 import TableAccordion from './TableAccordion';
-
 export interface payrollType {
   employeeId: string,
   hourlyPay: string,
@@ -28,8 +25,6 @@ const HTTP_GET_OPTIONS = {
 type frequency = 'Weekly'|'Biweekly'|'Monthly'|'Annually'
 type status = 'true'|'false' | "Status"
 type role = 'admin'|'manager'|'employee' | 'Roles'
-
-const frequencies = ['Weekly', 'Biweekly', 'Monthly', 'Annually']
 const statuses = ['true', 'false']
 const roles = ['admin', 'manager', 'employee']
 

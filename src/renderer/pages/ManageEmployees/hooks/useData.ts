@@ -21,6 +21,7 @@ interface IEmployeeList {
   roleRaw: string;
   id: string;
   agencyId: string;
+  groupId?: string;
   commission:number;
   payRate:number;
   payInterval:string;
@@ -45,6 +46,7 @@ export interface ISelectedEmployee {
   role: string;
   id: string;
   agencyId: string;
+  groupId?: string;
   payRate:number;
   commission:number;
   payInterval:string;
@@ -66,6 +68,7 @@ const useDataEmployees = () => {
     params: selectedAgency,
   });
 
+  console.log(selectedEmployee)
 
   useEffect(() => {
     // window.electron.ipcRenderer
@@ -133,6 +136,7 @@ const useDataEmployees = () => {
           // eslint-disable-next-line no-underscore-dangle
           id: item?._id || '',
           agencyId: item?.agencyId,
+          groupId: item?.groupId,
         };
       });
       setEmployees(employeesRes || []);

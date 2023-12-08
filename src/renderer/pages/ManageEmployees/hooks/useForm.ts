@@ -12,6 +12,8 @@ export const useFormEmployee = (
   selectedEmployee: ISelectedEmployee
 ) => {
   const [selectedValues, setSelectedValues] = useState<any>([]);
+  const [agencyId, setAgencyId] = useState<string>('')
+  const [registrationError, setRegistrationError] = useState<string | null>(null)
   const [groupOptions, setGroupOptions] = useState<
     {
       label: string;
@@ -36,6 +38,7 @@ export const useFormEmployee = (
     email: Yup.string().required('Email is required'),
     role: Yup.string().required('Role is required'),
     agencyId: Yup.string(),
+    groupId:Yup.string(),
     assignCreator: Yup.array(),
     payRate: Yup.number().required('Pay rate is required'),
     payInterval: Yup.string().required('Pay Interval is required'),
@@ -65,7 +68,7 @@ export const useFormEmployee = (
 
   const onSubmit = (data: any) => {
     if (type === 'add') {
-      addEmployee(data);
+      addEmployee({...data, agencyId});
     } else {
       editEmployee({ ...data, id: selectedEmployee?.id });
       // mutateUpdate(
@@ -82,6 +85,7 @@ export const useFormEmployee = (
   };
 
   const addEmployee = (data: any) => {
+    const payload = data.groupId?data:{...data, groupId:null}
     const endPoint = 'employee/' + data.agencyId;
     const twilioEndPoint = 'chat/user';
     const options = {
@@ -90,7 +94,7 @@ export const useFormEmployee = (
         'content-type': 'application/json',
       },
       withAuth: true,
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload ),
     };
     const twilioOptions = {
       method: 'POST' as 'POST',
@@ -99,22 +103,25 @@ export const useFormEmployee = (
       },
       withAuth: true,
       body: JSON.stringify({
-        email: data.email,
+        email: payload .email,
       }),
     };
     fetchReq(endPoint, options)
       .then((response) => {
-        response.json();
         callback();
         reset();
         setSelectedValues([]);
+        return response.json();
       })
       .then((_res) => {
         fetchReq(twilioEndPoint, twilioOptions)
           .then((response) => response.json())
-          .catch((err) => console.log(err));
+          .catch((err) => {console.log(err), setRegistrationError(err)});
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err), 
+        setRegistrationError(err?.message)});
+      
   };
   const editEmployee = (data: any) => {
     const endPoint = 'employee/' + data.id;
@@ -167,6 +174,8 @@ export const useFormEmployee = (
     selectedValues,
     setSelectedValues,
     setValue,
+    setAgencyId,
+    registrationError
   };
 };
 

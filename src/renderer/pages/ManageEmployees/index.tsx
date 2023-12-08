@@ -43,6 +43,7 @@ const employeesTableHeaders = [
 ];
 
 export default function ManageEmployees() {
+  const[emailResent, setEmailResent] = useState<string | null>(null)
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [openAddSubGroupModal, setOpenAddSubGroupModal] = useState(false);
   const [openGroupToAgencyModal, setOpenGroupToAgencyModal] = useState(false);
@@ -78,7 +79,7 @@ export default function ManageEmployees() {
     setSelectedGroupId,
     selectedGroupId,
   } = useFormAgencyGroup();
-  const [group, setgroup] = useState([]);
+  const [group, setGroup] = useState([]);
   const { mutate: mutateDelete } = useMutation({ key: 'delete-employee' });
   const { mutate: mutateActivate } = useMutation({ key: 'activate-employee' });
   const { mutate: mutateDeactivate } = useMutation({
@@ -188,7 +189,7 @@ export default function ManageEmployees() {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        setgroup(res.data);
+        setGroup(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -216,7 +217,7 @@ export default function ManageEmployees() {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
+       setEmailResent(res.data.message)
       })
       .catch((err) => {
         console.log('Error occured: ', err);
@@ -236,6 +237,7 @@ export default function ManageEmployees() {
       .then((response) => response.json())
       .then((res) => {
         if (res) {
+          console.log(res, 'agency sub groups')
           setSubGroups(res.data);
         }
       })
@@ -243,6 +245,7 @@ export default function ManageEmployees() {
         console.log(err);
       });
   };
+  
   // const handleActivate = (id: string) => {
   //   const data = {
   //     to: email,
@@ -295,6 +298,12 @@ export default function ManageEmployees() {
             justifyContent="space-between"
           >
             <PageTopbar.HeaderText>Manage Employees</PageTopbar.HeaderText>
+            <Box sx={{
+                display: 'flex',
+                marginLeft: 'auto',
+                alignItems: 'center',
+                gap: '15px',
+              }}> { emailResent ? emailResent:'' } </Box>
             <Box
               sx={{
                 display: 'flex',
@@ -436,6 +445,7 @@ export default function ManageEmployees() {
                     commission,
                     id,
                     agencyId,
+                    groupId,
                     payInterval,
                     shiftSchedular,
                     assignedCreatorsForDropdown,
@@ -561,6 +571,7 @@ export default function ManageEmployees() {
                                       email,
                                       id,
                                       agencyId,
+                                      groupId,
                                       payRate,
                                       commission,
                                       payInterval,
@@ -649,6 +660,7 @@ export default function ManageEmployees() {
         refetch={refetch}
         type={formType}
         selectedEmployee={selectedEmployee}
+        selectedAgency = {selectedAgency}
       />
       <AddGroupToAgencyModal
         setSubGroups={setSubGroups}
