@@ -49,8 +49,7 @@ export default function AddEmployeeModal({
     type,
     selectedEmployee
   );
-  const id = () => selectedAgency._id
-  const { userData } = useContext(AuthContext);
+    const { userData } = useContext(AuthContext);
   const [agencyGroups, setAgencyGroups] = useState<
     {
       label: string;
@@ -74,7 +73,7 @@ export default function AddEmployeeModal({
     },
   ]);
   const addHandler = () => {
-    setAgencyId(selectedAgency.id)
+   
     handleSubmit(selectedAgency);
   };
   const cancelHandler = () => {
@@ -95,13 +94,12 @@ export default function AddEmployeeModal({
     setOpen(false);
   };
   useEffect(() => {
+    setAgencyId(selectedAgency.id)
     getAgencyGroups();
     getCreators();
     // 
   }, [selectedAgency]);
 
-  console.log("errorRegi:", registrationError
-  )
   // const getAgencie = () => {
   //   const endpoint = 'agency';
   //   let options = {

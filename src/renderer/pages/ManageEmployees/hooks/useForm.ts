@@ -85,7 +85,7 @@ export const useFormEmployee = (
   };
 
   const addEmployee = (data: any) => {
-    console.log(data)
+    const payload = data.groupId?data:{...data, groupId:null}
     const endPoint = 'employee/' + data.agencyId;
     const twilioEndPoint = 'chat/user';
     const options = {
@@ -94,7 +94,7 @@ export const useFormEmployee = (
         'content-type': 'application/json',
       },
       withAuth: true,
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload ),
     };
     const twilioOptions = {
       method: 'POST' as 'POST',
@@ -103,7 +103,7 @@ export const useFormEmployee = (
       },
       withAuth: true,
       body: JSON.stringify({
-        email: data.email,
+        email: payload .email,
       }),
     };
     fetchReq(endPoint, options)
