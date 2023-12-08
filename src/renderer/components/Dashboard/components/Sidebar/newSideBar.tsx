@@ -16,7 +16,7 @@ function Options(props: any) {
   return (
     <Box onMouseLeave={handlePopoverClose} sx={{ borderRadius: '10px', pointerEvents: 'auto' }}>
       {menu.map((menuItem: any, index: any) => (
-        <Box sx={{ width: '100%' }} className={classes.optionWrapper}>
+        <Box className={classes.optionWrapper} sx={{":hover":{backgroundColor:isDarkTheme?'#000':"lightgray"}}}>
           <NavLink
             to={menuItem.link || '#'}
             className={classes.optionItem}
@@ -24,7 +24,7 @@ function Options(props: any) {
           >
             {menuItem.label}
           </NavLink>
-          <div
+          {/* <div
             style={{
               width: '80%',
               height: '1px',
@@ -32,7 +32,7 @@ function Options(props: any) {
                 ? 'rgba(255, 255, 255, 0.2)'
                 : '#EAF1FF',
             }}
-          ></div>
+          ></div> */}
         </Box>
       ))}
     </Box>
@@ -107,9 +107,9 @@ export default function NewSideBar(props: any) {
     <div className={open || isActive ? activeClass : wrapperClass}>
       <NavLink to={link || '#'} className={classes.sidebarItemNav}>
         <Stack
-          alignSelf="center"
+          // alignSelf="center"
           direction="row" // Setting direction to row
-          justifyContent="flex-start" // Aligning items to start in a row
+          // justifyContent="flex-start" // Aligning items to start in a row
           sx={
             isDarkTheme
               ? {

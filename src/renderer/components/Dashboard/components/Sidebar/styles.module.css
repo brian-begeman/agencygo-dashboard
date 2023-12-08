@@ -40,12 +40,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 8px;
+  /* border: 8px; */
 }
 
 .optionItem {
-  padding: 16px 16px;
-
+  padding: 10px 10px;
   color: #aaa;
   font-size: 13px;
   font-weight: 600;
@@ -72,6 +71,7 @@
 .sidebarItemWrapperDark:hover {
   border-radius: 8px;
   background: #04a1ff;
+  transition: 0s;
 }
 
 .sidebarItemWrapperActiveDark {
@@ -99,6 +99,7 @@
 .sidebarItemWrapperLight:hover {
   border-radius: 8px;
   background: #fff;
+  transition: 0s;
 }
 
 .sidebarItemWrapperActiveLight {

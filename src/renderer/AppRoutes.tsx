@@ -22,7 +22,6 @@ import ShareForShare from './pages/ShareForShare';
 import DiscoverCreators from './pages/ShareForShare/DiscoverCreators';
 import InviteLink from './pages/ShareForShare/InviteLink';
 import CreatePost from './pages/ShareForShare/InviteLink/CreatePost';
-import useAuth from './hooks/useAuth';
 import Requests from './pages/ShareForShare/Requests';
 import TrialLinks from './pages/Growth/TrialLink';
 import Register from './pages/Auth/register';

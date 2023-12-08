@@ -119,33 +119,21 @@ export default function ChangePasswordModal({
           </div>
         </div>
         <div className={classes.buttonWrapper}>
-          <Button
-            onClick={cancelHandler}
-            variant="outlined"
-            fullWidth
-            sx={{
-              backgroundColor: 'your-desired-color-here',
-              '&.Mui-disabled': {
-                backgroundColor: 'rgba(4, 161, 255, 0.32)',
-              },
-            }}
-          >
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
-              Cancle
-            </Typography>
-          </Button>
+        <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ textTransform: 'capitalize',fontWeight:"500" }}
+                  onClick={cancelHandler}
+                >
+                 CANCEL
+                </Button>
+         
           <Button
             onClick={submitPassword}
             variant="contained"
             fullWidth
-            sx={{
-              backgroundColor: 'your-desired-color-here',
-              '&.Mui-disabled': {
-                backgroundColor: 'rgba(4, 161, 255, 0.32)',
-              },
-            }}
           >
-            <Typography fontWeight={500} fontSize="14px" sx={{ color: '#fff' }}>
+            <Typography sx={{ color: '#fff' }}>
               Save
             </Typography>
           </Button>

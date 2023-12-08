@@ -9,11 +9,11 @@ export const genderList = [
   },
   {
     label: 'Trans',
-    value: 'Trans',
+    value: 'trans',
   },
   {
     label: 'Other',
-    value: 'Other',
-  }
+    value: 'other',
+  },
 ];
 export const assignEmployeeList = [];

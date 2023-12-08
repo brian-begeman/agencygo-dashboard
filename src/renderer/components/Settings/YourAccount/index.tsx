@@ -14,12 +14,18 @@ import {
 import classes from './styles.module.css';
 import fetchReq from 'utils/fetch';
 import ChangePasswordModal from './ChangePassowrdModal';
+import axios from 'axios';
+import { API_URL } from 'config';
+import _ from 'lodash';
+import { t } from 'i18next';
+
 interface InputProps {
   placeholder: string;
   name: string;
   value: string;
   handleOnChange: (value: string, name: string) => void;
 }
+
 function Input(props: InputProps) {
   const { placeholder, name, handleOnChange, value } = props;
   const theme = useTheme();
@@ -50,11 +56,12 @@ function YourAccount() {
   const token = localStorage.getItem('Authorization');
   const [userData, setUserData] = useState({
     user: {
-      firstName: '',
+      name: '',
       email: '',
     },
     agency: {
       agencyName: '',
+      email: '',
     },
   });
 
@@ -97,8 +104,43 @@ function YourAccount() {
     fetchUserDetail();
   }, []);
 
-  const handelAccountDetail = () => {
-    setEditUserDetail(false);
+  const handelAccountDetail = async () => {
+    try {
+      const _Id = userData?.user?._id;
+      const token = localStorage.getItem('Authorization');
+      if (userData?.user?.isEmployee == true) {
+        const response = await axios.put(
+          `${API_URL}/employee/updateEmployeeSetting/${_Id}`,
+          {
+            name: userData.user.firstName,
+            email: userData.user.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response, 'personal detail======');
+      } else if (userData?.user?.isAgency == true) {
+        const response = await axios.put(
+          `${API_URL}/agency/updateAgencySetting/${_Id}`,
+          {
+            agencyName: userData.agency.agencyName,
+            email: userData.user.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response, 'admin data======');
+      }
+      setEditUserDetail(false);
+    } catch {
+      console.log("can't update api error");
+    }
   };
 
   const handleProfileImage = (e: any) => {
@@ -138,14 +180,17 @@ function YourAccount() {
                   sx={{ textTransform: 'capitalize' }}
                   onClick={() => setOpenAddEmployee(!OpenAddEmployee)}
                 >
-                  Change Password
+                  {t('Change Password')}
                 </Button>
                 <Button
+                  size="small"
                   variant="contained"
                   sx={{ color: '#fff', textTransform: 'capitalize' }}
-                  onClick={() => setEditUserDetail(true)}
+                  onClick={() => {
+                    setEditUserDetail(true);
+                  }}
                 >
-                  Edit
+                  {t('Edit')}
                 </Button>
               </>
             ) : (
@@ -156,7 +201,7 @@ function YourAccount() {
                   className={classes.passwordheading}
                   onClick={() => setEditUserDetail(false)}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
 
                 <Button
@@ -164,9 +209,11 @@ function YourAccount() {
                   variant="contained"
                   sx={{ color: '#fff' }}
                   className={classes.savebutton}
-                  onClick={() => handelAccountDetail()}
+                  onClick={() => {
+                    handelAccountDetail();
+                  }}
                 >
-                  Save
+                  {t('Save')}
                 </Button>
               </>
             )}
@@ -186,10 +233,10 @@ function YourAccount() {
           >
             <Stack width={'100%'} gap={'10px'}>
               <Typography fontSize={'22px'} fontWeight={600}>
-                Personal Info
+                {t('Personal Info')}
               </Typography>
               <Stack gap={'10px'}>
-                <Typography color={'gray'}>Picture</Typography>
+                <Typography color={'gray'}>{t('Picture')}</Typography>
                 <div className={classes.changePictureTextWrapper}>
                   {profileImage ? (
                     <img
@@ -210,13 +257,13 @@ function YourAccount() {
                       fontSize: '5px',
                       cursor: 'pointer',
                     }}
-                    disabled={!editUserDetail}
+                    // disabled={!editUserDetail}
                   >
                     <label
                       className={classes.changePictureText}
                       htmlFor="profile-input"
                     >
-                      Change Picture
+                      {t('Change Picture')}
                       <input
                         type="file"
                         accept="image/png"
@@ -241,7 +288,7 @@ function YourAccount() {
                     </div>
                   </div> */}
                 </div>
-                <Typography color={'gray'}>User Name</Typography>
+                <Typography color={'gray'}>{t('User Name')}</Typography>
                 <input
                   placeholder="Enter user name"
                   value={userData?.user?.firstName}
@@ -264,11 +311,23 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
-                <Typography color={'gray'}>E-mail</Typography>
+                <Typography color={'gray'}>{t('E-mail')}</Typography>
                 <input
                   placeholder="Enter user email"
                   value={userData?.user?.email}
@@ -291,18 +350,30 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ? '#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? '#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
               </Stack>
             </Stack>
             <Stack width={'100%'} gap={'10px'}>
               <Typography fontSize={'22px'} fontWeight={600}>
-                Agency Info
+                {t('Agency Info')}
               </Typography>
               <Stack gap={'10px'}>
-                <Typography color={'gray'}>Picture</Typography>
+                <Typography color={'gray'}>{t('Picture')}</Typography>
                 <div className={classes.changePictureTextWrapper}>
                   {agencyImage ? (
                     <img
@@ -321,13 +392,13 @@ function YourAccount() {
                       fontSize: '5px',
                       cursor: 'pointer',
                     }}
-                    disabled={!editUserDetail}
+                    // disabled={!editUserDetail}
                   >
                     <label
                       className={classes.changePictureText}
                       htmlFor="agency-input"
                     >
-                      Change Picture
+                      {t('Change Picture')}
                       <input
                         type="file"
                         accept="image/png"
@@ -351,11 +422,11 @@ function YourAccount() {
                     </div>
                   </div> */}
                 </div>
-                <Typography color={'gray'}>Agency Name</Typography>
+                <Typography color={'gray'}>{t('Agency Name')}</Typography>
                 <input
                   placeholder="Enter agency name"
                   value={userData?.agency?.agencyName}
-                  disabled={!editUserDetail}
+                  disabled={userData.user.isAgency==false ? editUserDetail:!editUserDetail}
                   onChange={(e) =>
                     setUserData((prev: any) => {
                       return {
@@ -374,16 +445,38 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail
+                        ?  userData?.user?.isAgency == false ? '#36454F':'#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ? userData?.user?.isAgency == false ? '#D3D3D3':'#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
-                <Typography color={'gray'}>E-mail</Typography>
+                <Typography color={'gray'}>{t('E-mail')}</Typography>
                 <input
                   placeholder="Enter agency email"
-                  value={userData?.user?.email}
-                  disabled={!editUserDetail}
-                  // onChange={(e) => setGroupName(e.target.value)}
+                  value={userData?.agency?.userId?.email}
+                  disabled={userData?.user?.isAgency === false ? editUserDetail:!editUserDetail}
+                  onChange={(e) =>
+                    setUserData((prev: any) => {
+                      return {
+                        ...prev,
+                        agency: {
+                          ...prev.agency,
+                          email: e.target.value,
+                        },
+                      };
+                    })
+                  }
                   style={{
                     borderRadius: '3px',
                     border: '1px solid #aaa',
@@ -391,8 +484,20 @@ function YourAccount() {
                     width: '80%',
                     marginTop: '2px',
                     boxSizing: 'border-box',
-                    backgroundColor: isDarkTheme ? '#000' : '#EAF1FF',
-                    color: isDarkTheme ? '#fff' : '#000',
+                    backgroundColor: isDarkTheme
+                      ? editUserDetail 
+                        ?  userData?.user?.isAgency == false ? '#36454F':'#000'
+                        : '#36454F'
+                      : editUserDetail
+                      ?  userData?.user?.isAgency == false ? '#D3D3D3':'#EAF1FF'
+                      : '#D3D3D3',
+                    color: isDarkTheme
+                      ? editUserDetail
+                        ? '#fff'
+                        : 'gray'
+                      : editUserDetail
+                      ? '#000'
+                      : 'gray',
                   }}
                 />
               </Stack>

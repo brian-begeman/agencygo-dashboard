@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
+import useQuery from 'renderer/hooks/useQuery';
 import fetchReq from 'utils/fetch';
 
 interface AuthContextType {
@@ -24,6 +25,15 @@ interface $Props {
 export default function AuthProvider({ children }: $Props) {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState({});
+  const authQuery = useQuery({
+    key: 'verify',
+    onSuccess() {
+      setIsLogin(true);
+    },
+    onError() {
+      setIsLogin(false);
+    }
+  })
   const token = localStorage.getItem('Authorization');
 
   useEffect(() => {
@@ -48,15 +58,18 @@ export default function AuthProvider({ children }: $Props) {
       .then((res) => {
         if (res.message == 'verify') {
           setUserData(res.data);
+          setIsLogin(true);
         }
       })
       .catch((err) => {
         console.log('Error occured: ', err);
+        setIsLogin(false);
       });
   };
 
   const login = () => {
-    setIsLogin(true);
+    authQuery.refetch();
+    // setIsLogin(true);
   };
 
   const logout = () => {
