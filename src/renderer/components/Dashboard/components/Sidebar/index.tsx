@@ -23,6 +23,8 @@ import ChatSvg from 'renderer/assets/svg/ChatSvg';
 import AntyBrowser from 'renderer/assets/svg/AnytBrowser';
 import brandLogoImg from 'renderer/assets/png/agency-go-logo.png'
 import { useNavigate } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 const sideBarMenuConst = [
   {
@@ -240,6 +242,12 @@ const sideBarMenuConst = [
       },
     ],
   },
+  {
+    name: localisation.settings,
+    icon: <SettingsIcon />,
+    menu: [],
+    link: '/settings',
+  },
 ];
 
 interface logoProp{
@@ -318,7 +326,7 @@ function SideBar() {
             },
           }}
         >
-          <div className={classes.toolbar}>
+          {/* <div className={classes.toolbar}> */}
             {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
             {theme.direction === 'rtl' ? (
               open ? (
@@ -332,7 +340,7 @@ function SideBar() {
               <ChevronRightIcon />
             )}
           </IconButton> */}
-          </div>
+          {/* </div> */}
           <div className={classes.sidebarNavWrapper}>
             {sideBarMenuConst.map(({ name, icon, menu, link }, index) => {
               return (

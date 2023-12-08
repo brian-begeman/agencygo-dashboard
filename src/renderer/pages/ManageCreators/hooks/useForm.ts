@@ -61,6 +61,7 @@ const useFormCreator = (
     });
 
   const onSubmit = (data: any) => {
+    console.log('trying');
     if (type === 'add') {
       data.status= true
       data.assignEmployee= selectedValues

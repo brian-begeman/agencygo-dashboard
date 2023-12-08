@@ -5,6 +5,7 @@
   margin-right: 16px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .aside {
@@ -21,6 +22,7 @@
   height: 70vh;
   overflow: auto;
 }
+
 .search {
   padding: 32px;
 }

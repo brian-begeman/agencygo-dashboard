@@ -13,6 +13,7 @@ import darkTheme from './styles/MuiThemeDark';
 import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import './i18next.js';
 
 export default function App() {
   const [currentTheme, setTheme] = useState(true);

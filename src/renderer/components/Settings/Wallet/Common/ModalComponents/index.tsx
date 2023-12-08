@@ -141,7 +141,7 @@ export function DropdownWithLabel(props: DropdownWithLabelProps) {
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(inputIdentifierName || '')}
       >
-          {label =='Group' ?<option value=''>None</option> :null}
+        {label == 'Group' ? <option value="">None</option> : null}
         {options?.map((res, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <option key={index} value={res?.value}>
@@ -283,7 +283,7 @@ export function RadioButton({ title }: RadioProps) {
       <FormControlLabel
         control={
           <Checkbox
-            icon={<RadioButtonUncheckedIcon sx={{color:"#fff"}}  />}
+            icon={<RadioButtonUncheckedIcon sx={{ color: '#fff' }} />}
             checkedIcon={<RadioButtonCheckedIcon sx={{ color: '#B2E2FF' }} />}
           />
         }

@@ -23,16 +23,21 @@ function Dashboard({ children }: $Props) {
     if (!isManager) {
       window.electron.ipcRenderer.sendMessage('piev-dismiss');
     }
-  }, [])
+  }, []);
   return (
     <>
-      <div className={classes.dashboardWrapper} >
+      <div className={classes.dashboardWrapper}>
         <Box>
           <SideBar />
         </Box>
         <div className={classes.secondChild}>
           <Header />
-          <Box display='flex' sx={{ marginTop: '100px', paddingBottom: '50px' }}>{children}</Box>
+          <Box
+            display="flex"
+            sx={{ marginTop: '100px', paddingBottom: '50px' }}
+          >
+            {children}
+          </Box>
         </div>
         <div
           style={{
