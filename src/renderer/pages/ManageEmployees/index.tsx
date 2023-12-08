@@ -7,6 +7,7 @@ import {
   TableRow,
   Typography,
   useTheme,
+ Alert,
 } from '@mui/material';
 import Dashboard from 'renderer/components/Dashboard';
 import PageTopbar from 'renderer/components/PageTopbar';
@@ -42,8 +43,18 @@ const employeesTableHeaders = [
   'Operations',
 ];
 
+interface alertMessage {
+  message:string,
+  type:string|undefined,
+}
+
+
+
 export default function ManageEmployees() {
-  const[emailResent, setEmailResent] = useState<string | null>(null)
+
+   const[alertMessage, setAlertMessage] = useState<alertMessage | null >(null)
+   const[showAlert, setShowAlert] = useState<boolean>(false)
+
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [openAddSubGroupModal, setOpenAddSubGroupModal] = useState(false);
   const [openGroupToAgencyModal, setOpenGroupToAgencyModal] = useState(false);
@@ -206,6 +217,7 @@ export default function ManageEmployees() {
   };
 
   const handleResend = (id: string) => {
+    console.log(id, 'id')
     let endpoint = `email/${id}`;
     let options = {
       method: 'POST' as 'POST',
@@ -217,12 +229,18 @@ export default function ManageEmployees() {
     fetchReq(endpoint, options)
       .then((response) => response.json())
       .then((res) => {
-       setEmailResent(res.data.message)
+        setAlertMessage({message:res?.data?.message, type:'success'})
+        setShowAlert(true)
       })
       .catch((err) => {
-        console.log('Error occured: ', err);
+        setAlertMessage({message:err, type:'error'})
+        setShowAlert(true)
       });
   };
+
+  const handleAlertClose = () =>{
+    setShowAlert(false)
+  }
 
   const showSubGroups = () => {
     let endpoint = 'agency/showgroup/' + selectedAgency?.id;
@@ -303,7 +321,16 @@ export default function ManageEmployees() {
                 marginLeft: 'auto',
                 alignItems: 'center',
                 gap: '15px',
-              }}> { emailResent ? emailResent:'' } </Box>
+              }}>
+              {
+                showAlert ?
+                  <Alert severity={alertMessage?.type} onClose={handleAlertClose}>
+                    {alertMessage?.message}
+                  </Alert>
+                  : ''
+              }
+               
+            </Box>
             <Box
               sx={{
                 display: 'flex',
@@ -571,7 +598,6 @@ export default function ManageEmployees() {
                                       email,
                                       id,
                                       agencyId,
-                                      groupId,
                                       payRate,
                                       commission,
                                       payInterval,

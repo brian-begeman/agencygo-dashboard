@@ -13,7 +13,7 @@ export const useFormEmployee = (
 ) => {
   const [selectedValues, setSelectedValues] = useState<any>([]);
   const [agencyId, setAgencyId] = useState<string>('')
-  const [registrationError, setRegistrationError] = useState<string | null>(null)
+  const [registrationError, setRegistrationError] = useState<string | boolean>(false);
   const [groupOptions, setGroupOptions] = useState<
     {
       label: string;
@@ -86,6 +86,7 @@ export const useFormEmployee = (
 
   const addEmployee = (data: any) => {
     const payload = data.groupId?data:{...data, groupId:null}
+
     const endPoint = 'employee/' + data.agencyId;
     const twilioEndPoint = 'chat/user';
     const options = {
@@ -175,7 +176,8 @@ export const useFormEmployee = (
     setSelectedValues,
     setValue,
     setAgencyId,
-    registrationError
+    registrationError,
+    setRegistrationError
   };
 };
 

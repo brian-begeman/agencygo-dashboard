@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme, Alert } from '@mui/material';
 import Overlay from 'renderer/components/Settings/Wallet/Common/Modal';
 import styles from 'renderer/components/Settings/Wallet/Common/Modal/styles.module.css';
 import MultiSelectDropdown, {
@@ -41,6 +41,7 @@ export default function AddEmployeeModal({
     setValue,
     setAgencyId,
     registrationError,
+    setRegistrationError
   } = useFormEmployee(
     () => {
       setOpen(false);
@@ -49,7 +50,7 @@ export default function AddEmployeeModal({
     type,
     selectedEmployee
   );
-    const { userData } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
   const [agencyGroups, setAgencyGroups] = useState<
     {
       label: string;
@@ -91,6 +92,8 @@ export default function AddEmployeeModal({
   };
 
   const handleModalClose = () => {
+    cancelHandler();
+    setRegistrationError(false);
     setOpen(false);
   };
   useEffect(() => {
@@ -99,7 +102,7 @@ export default function AddEmployeeModal({
     getCreators();
     // 
   }, [selectedAgency]);
-
+ 
   // const getAgencie = () => {
   //   const endpoint = 'agency';
   //   let options = {
@@ -183,6 +186,10 @@ export default function AddEmployeeModal({
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
+const handleAlert = () => {
+  setRegistrationError(false);
+}
+
   return (
     <Overlay
       heading={type === 'add' ? 'Add Employee' : 'Edit Employee'}
@@ -196,7 +203,13 @@ export default function AddEmployeeModal({
         }}
       >
       <Box padding={'10px 30px 0px 30px'} height={'8'}>
-        <Typography color={'error'} width={'100%'} textAlign={'center'}>{registrationError??''}</Typography>
+        
+        
+        {
+         !!registrationError? 
+        <Alert severity='error' onClose={handleAlert} >{registrationError??''} </Alert>
+        :''
+        }
       </Box>
         <form
           className={styles.modalBody}
@@ -280,8 +293,14 @@ export default function AddEmployeeModal({
               options={creators}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
+                if (selected.includes('')) {
+                  selected = [];
+                  setSelectedValues(() => [])
+                }
+                else { 
+                  setSelectedValues(selected);
+                }
                 setValue('assignCreator', selected);
-                setSelectedValues(selected);
               }}
             />
           </Stack>

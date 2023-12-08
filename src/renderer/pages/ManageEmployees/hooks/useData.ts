@@ -46,7 +46,6 @@ export interface ISelectedEmployee {
   role: string;
   id: string;
   agencyId: string;
-  groupId?: string;
   payRate:number;
   commission:number;
   payInterval:string;
@@ -136,7 +135,6 @@ const useDataEmployees = () => {
           // eslint-disable-next-line no-underscore-dangle
           id: item?._id || '',
           agencyId: item?.agencyId,
-          groupId: item?.groupId,
         };
       });
       setEmployees(employeesRes || []);
