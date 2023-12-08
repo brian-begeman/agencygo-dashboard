@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import '../../../styles/scrollBar.css'
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -161,8 +162,6 @@ export default function AddCreaterModal({
     }
   }, [type]);
 
-
-
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
@@ -173,7 +172,9 @@ export default function AddCreaterModal({
       handleClose={handleModalClose}
       style={{
         width: '700px',
-        height: '100vh',
+        height: '600px',
+        marginTop: '-50px',
+        overflowY: 'scroll'
       }}
     >
       <Box
@@ -193,6 +194,7 @@ export default function AddCreaterModal({
             sx={{
               paddingTop: '20px',
               paddingBottom: '20px',
+              '-ms-overflow-style': 'none'
             }}
             className={styles.inputListWrapper}
           >
@@ -266,8 +268,14 @@ export default function AddCreaterModal({
               options={employeeOptions}
               selectedValues={selectedValues}
               setSelectedValues={(selected: any) => {
+                if (selected.includes('')) {
+                  selected = [];
+                  setSelectedValues(() => [])
+                }
+                else { 
+                  setSelectedValues(selected);
+                }
                 setValue('assignEmployee', selected);
-                setSelectedValues(selected);
               }}
               label="Assign employee"
               inputIdentifierName="assignEmployee"
