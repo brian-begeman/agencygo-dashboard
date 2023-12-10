@@ -135,9 +135,9 @@ export const useFormEmployee = (
       body: JSON.stringify(data),
     };
     fetchReq(endPoint, options)
-      .then((responce) => responce.json())
-      .then((responce) => {
-        if (responce.message == 'Employee updated successfully') {
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.message == 'Employee updated successfully') {
           callback();
           refetch();
           setSelectedValues([]);
