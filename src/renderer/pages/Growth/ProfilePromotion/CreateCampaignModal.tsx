@@ -11,22 +11,24 @@ import { Stack } from '@mui/system';
 import fetchReq from 'utils/fetch';
 import { AuthContext } from 'renderer/contexts/AuthContext';
 import { useState } from 'react'
+import { use } from 'i18next';
+import { User } from 'twilio-chat';
 interface $Props {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    addPromotion:any,
-    promotions:promotionCampaign[]
+    addPromotion: any,
+    promotions: promotionCampaign[]
 }
 
 interface promotionCampaign {
-    userType: 'New'|'Expired' | 'Both',
+    userType: 'New' | 'Expired' | 'Both',
     activityType: 'Free trial' | 'First-month discount',
     offerLimit: 'No Limit' | number,
     offerExpiry: 'No Expiry' | number,
     message?: string | number | readonly string[] | undefined,
-    createdAt?:Date,
-    updatedAt?:Date,
-    offerExpiryAfterUpdate?:'No Expiry' | number
+    createdAt?: Date,
+    updatedAt?: Date,
+    offerExpiryAfterUpdate?: 'No Expiry' | number
 }
 
 export default function CreatePromotionCampaignModal({
@@ -53,32 +55,37 @@ export default function CreatePromotionCampaignModal({
     const isDarkTheme = theme.palette.mode === 'dark';
 
     const addHandler = () => {
-        handleSubmit(promotionState) 
-        console.log({...promotionState}, 'promotion state')
+        handleSubmit(promotionState)
         setOpen(false)
     };
 
-    const handleSubmit = (promotion:promotionCampaign)=>{
-        addPromotion([...promotions, promotion])
-    
-    //  const endPoint = '/promotion'
-    //  const options = {
-    //    method: 'POST' as 'POST',
-    //    headers: {
-    //      'content-type': 'application/json',
-    //    },
-    //    withAuth: true,
-    //    body: JSON.stringify(promotion),
-    //  };
-     
-    //  fetchReq(endPoint, options)
-    //    .then((response) => {
-    //     addPromotion([...promotions, response])
-    //     console.log({response}, 'response')
-    //    })
-    //    .catch((err) => {
-    //      console.log(err)
-    //     });
+    const handleSubmit = (promotion: promotionCampaign) => {
+        const agencyId = userData.agency._id
+        const payload = {
+            ...promotion,
+            agencyId,
+            creatorId: agencyId
+        }
+        console.log(payload)
+
+        const endPoint = 'promotion'
+        const options = {
+            method: 'POST' as 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            withAuth: true,
+            body: JSON.stringify(payload),
+        };
+
+        fetchReq(endPoint, options)
+            .then(async (response) => {
+                const result = await response.json()
+                addPromotion([...promotions, result.data])
+            })
+            .catch((err) => {
+                console.log(err)
+            });
     }
 
     const cancelHandler = () => {
@@ -86,7 +93,7 @@ export default function CreatePromotionCampaignModal({
     }
     const handleModalClose = () => {
         setOpen(false)
-     }
+    }
 
     return (
         <Overlay
@@ -103,10 +110,10 @@ export default function CreatePromotionCampaignModal({
 
             <Box sx={{ backgroundColor: isDarkTheme ? '#4B4B4B' : '#fff' }}>
                 <Box padding={'10px 30px 0px 30px'} height={'8'}>
-                    <form className={styles.modalBody} id="createPromotion"  onSubmit={() => {handleSubmit('kk') }} >
+                    <form className={styles.modalBody} id="createPromotion" onSubmit={() => { handleSubmit('kk') }} >
                         <Stack gap="10px" sx={{ marginInline: '30px', paddingTop: '10px', paddingBottom: '50px', }} className={styles.inputListWrapper}>
                             <Box>
-                                <InputLabel variant="standard" htmlFor="userType">
+                                <InputLabel variant="standard" htmlFor="{...userData}Type">
                                     User Type
                                 </InputLabel>
                                 <Select
@@ -155,8 +162,8 @@ export default function CreatePromotionCampaignModal({
                                 >
                                     <MenuItem style={{ minWidth: '100%' }} value={'No Expiry'} sx={{ width: '100%' }}>No Expiry</MenuItem>
                                     {
-                                        Array.from({ length: 29 }, (_, x) => (
-                                            <MenuItem value={x + 1}>{x + 1} {x===0?'Day':'Days'}</MenuItem>
+                                        Array.from({ length: 30 }, (_, x) => (
+                                            <MenuItem value={`${x + 1}${x === 0 ? ' Day' : ' Days'}`}>{x + 1}{x === 0 ? ' Day' : ' Days'}</MenuItem>
                                         ))
                                     }
                                 </Select>
@@ -178,8 +185,8 @@ export default function CreatePromotionCampaignModal({
                                 >
                                     <MenuItem style={{ minWidth: '100%' }} value={'No Limit'} sx={{ width: '100%' }}>No LImit</MenuItem>
                                     {
-                                        Array.from({ length: 99 }, (_, x) => (
-                                            <MenuItem value={x + 1}>{x + 1} subscriber</MenuItem>
+                                        Array.from({ length: 100 }, (_, x) => (
+                                            <MenuItem value={`${x + 1}${x === 0 ? ' subscriber' : ' subscribers'}`}>{x + 1}{x === 0 ? ' subscriber' : ' subscribers'}</MenuItem>
                                         ))
                                     }
                                 </Select>

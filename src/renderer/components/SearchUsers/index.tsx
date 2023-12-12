@@ -15,8 +15,8 @@ interface Props {
 
 export default function SearchUsers({allUsers, getUsers}: Props) {
   const [search, setSearch] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<any>([]);
-  const {data, setData } = useContext<any>(MyInvoiceContext);
+  const [filteredUsers, setFilteredUsers] = useState<any>(allUsers);
+  const {data, setData } = useContext< any | [] >([]);
   const theme = useTheme();
   const isDarkTheme = theme.palette.mode === 'dark';
 
@@ -26,10 +26,7 @@ export default function SearchUsers({allUsers, getUsers}: Props) {
     if (length > 0) {
       // Automatically set the first user in the list as the default selected user
       setData((prevData: any) => ({
-        ...prevData,
-        ...(allUsers[length-length] as {}), 
-        currentModalBalance: data?.currentModalBalance?? randomNumber(25000, 1000),
-        agencyPer: data?.agencyPer?? agencyCreatorSplit()
+        ...prevData
       }))
     }
   }, [allUsers])
