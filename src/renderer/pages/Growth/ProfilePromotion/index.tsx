@@ -10,6 +10,7 @@ import { AuthContext } from 'renderer/contexts/AuthContext';
 import SearchUsers from 'renderer/components/SearchUsers';
 import CreatorPromotion from './creatorPromotion'
 import CreatorsList from './creatorList'
+import { TextFields } from '@mui/icons-material';
 function ProfilePromotion() {
 
   const [creators, setCreators] = useState<[]>([])
@@ -72,7 +73,8 @@ function ProfilePromotion() {
       <Stack direction={'row'} justifyContent={'space-evenly'}>
         <Box width='40%'>
           <Box>
-            In
+            <TextFields/>
+            <label htmlFor=""></label>
           </Box>
          <CreatorsList/>
         </Box>
